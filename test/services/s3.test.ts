@@ -84,19 +84,17 @@ test(
   withBucket("itty-s3-lifecycle", (bucket) =>
     Effect.gen(function* () {
       // Head bucket to verify it exists
-      const headResult = yield* headBucket({ Bucket: bucket });
+      yield* headBucket({ Bucket: bucket });
       // Should not throw - bucket exists
 
       // Get bucket location
-      const locationResult = yield* getBucketLocation({ Bucket: bucket });
+      yield* getBucketLocation({ Bucket: bucket });
       // Location will be null for us-east-1, or the region name otherwise
 
       // List buckets and verify our bucket is in the list
       const listResult = yield* listBuckets({});
       const foundBucket = listResult.Buckets?.find((b) => b.Name === bucket);
-      if (!foundBucket) {
-        return yield* Effect.fail(new Error("Bucket not found in list"));
-      }
+      expect(foundBucket).toBeDefined();
     }),
   ),
 );
@@ -123,18 +121,10 @@ test(
 
       // Get and verify tags
       const tags = yield* getBucketTagging({ Bucket: bucket });
-      if (tags.TagSet?.length !== 3) {
-        return yield* Effect.fail(
-          new Error(`Expected 3 tags, got ${tags.TagSet?.length}`),
-        );
-      }
+      expect(tags.TagSet?.length).toEqual(3);
 
       const envTag = tags.TagSet?.find((t) => t.Key === "Environment");
-      if (envTag?.Value !== "Test") {
-        return yield* Effect.fail(
-          new Error(`Expected Environment=Test, got ${envTag?.Value}`),
-        );
-      }
+      expect(envTag?.Value).toEqual("Test");
 
       // Update tags (replace all)
       yield* putBucketTagging({
@@ -146,13 +136,7 @@ test(
 
       // Verify update
       const updatedTags = yield* getBucketTagging({ Bucket: bucket });
-      if (updatedTags.TagSet?.length !== 1) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 1 tag after update, got ${updatedTags.TagSet?.length}`,
-          ),
-        );
-      }
+      expect(updatedTags.TagSet?.length).toEqual(1);
 
       // Delete tags
       yield* deleteBucketTagging({ Bucket: bucket });
@@ -162,11 +146,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting tags"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -207,14 +187,10 @@ test(
 
       // Get and verify policy
       const policyResult = yield* getBucketPolicy({ Bucket: bucket });
-      if (!policyResult.Policy) {
-        return yield* Effect.fail(new Error("Expected policy to be returned"));
-      }
+      expect(policyResult.Policy).toBeDefined();
 
       const parsedPolicy = JSON.parse(policyResult.Policy!);
-      if (parsedPolicy.Statement[0].Sid !== "TestStatement") {
-        return yield* Effect.fail(new Error("Policy Sid mismatch"));
-      }
+      expect(parsedPolicy.Statement[0].Sid).toEqual("TestStatement");
 
       // Delete policy
       yield* deleteBucketPolicy({ Bucket: bucket });
@@ -224,11 +200,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting policy"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -267,25 +239,11 @@ test(
 
       // Get and verify CORS
       const corsResult = yield* getBucketCors({ Bucket: bucket });
-      if (corsResult.CORSRules?.length !== 2) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 2 CORS rules, got ${corsResult.CORSRules?.length}`,
-          ),
-        );
-      }
+      expect(corsResult.CORSRules?.length).toEqual(2);
 
       const firstRule = corsResult.CORSRules?.[0];
-      if (!firstRule?.AllowedMethods?.includes("PUT")) {
-        return yield* Effect.fail(new Error("Expected PUT in allowed methods"));
-      }
-      if (firstRule?.MaxAgeSeconds !== 3600) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected MaxAgeSeconds=3600, got ${firstRule?.MaxAgeSeconds}`,
-          ),
-        );
-      }
+      expect(firstRule?.AllowedMethods?.includes("PUT")).toBe(true);
+      expect(firstRule?.MaxAgeSeconds).toEqual(3600);
 
       // Delete CORS
       yield* deleteBucketCors({ Bucket: bucket });
@@ -295,11 +253,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting CORS"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -313,7 +267,7 @@ test(
   withBucket("itty-s3-versioning", (bucket) =>
     Effect.gen(function* () {
       // Initially, versioning is not enabled
-      const initialVersioning = yield* getBucketVersioning({
+      yield* getBucketVersioning({
         Bucket: bucket,
       });
 
@@ -329,11 +283,7 @@ test(
       const enabledVersioning = yield* getBucketVersioning({
         Bucket: bucket,
       });
-      if (enabledVersioning.Status !== "Enabled") {
-        return yield* Effect.fail(
-          new Error(`Expected Status=Enabled, got ${enabledVersioning.Status}`),
-        );
-      }
+      expect(enabledVersioning.Status).toEqual("Enabled");
 
       // Suspend versioning (can't disable once enabled, only suspend)
       yield* putBucketVersioning({
@@ -347,13 +297,7 @@ test(
       const suspendedVersioning = yield* getBucketVersioning({
         Bucket: bucket,
       });
-      if (suspendedVersioning.Status !== "Suspended") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Status=Suspended, got ${suspendedVersioning.Status}`,
-          ),
-        );
-      }
+      expect(suspendedVersioning.Status).toEqual("Suspended");
     }),
   ),
 );
@@ -381,20 +325,8 @@ test(
 
       // Get and verify website config
       const websiteResult = yield* getBucketWebsite({ Bucket: bucket });
-      if (websiteResult.IndexDocument?.Suffix !== "index.html") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected IndexDocument.Suffix=index.html, got ${websiteResult.IndexDocument?.Suffix}`,
-          ),
-        );
-      }
-      if (websiteResult.ErrorDocument?.Key !== "error.html") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ErrorDocument.Key=error.html, got ${websiteResult.ErrorDocument?.Key}`,
-          ),
-        );
-      }
+      expect(websiteResult.IndexDocument?.Suffix).toEqual("index.html");
+      expect(websiteResult.ErrorDocument?.Key).toEqual("error.html");
 
       // Update with routing rules
       yield* putBucketWebsite({
@@ -418,13 +350,7 @@ test(
 
       // Verify routing rules
       const updatedWebsite = yield* getBucketWebsite({ Bucket: bucket });
-      if (updatedWebsite.RoutingRules?.length !== 1) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 1 routing rule, got ${updatedWebsite.RoutingRules?.length}`,
-          ),
-        );
-      }
+      expect(updatedWebsite.RoutingRules?.length).toEqual(1);
 
       // Delete website config
       yield* deleteBucketWebsite({ Bucket: bucket });
@@ -434,11 +360,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting website config"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -472,13 +394,9 @@ test(
       });
       const rule =
         encryptionResult.ServerSideEncryptionConfiguration?.Rules?.[0];
-      if (rule?.ApplyServerSideEncryptionByDefault?.SSEAlgorithm !== "AES256") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected SSEAlgorithm=AES256, got ${rule?.ApplyServerSideEncryptionByDefault?.SSEAlgorithm}`,
-          ),
-        );
-      }
+      expect(rule?.ApplyServerSideEncryptionByDefault?.SSEAlgorithm).toEqual(
+        "AES256",
+      );
 
       // Delete encryption
       yield* deleteBucketEncryption({ Bucket: bucket });
@@ -543,31 +461,17 @@ test(
       const lifecycleResult = yield* getBucketLifecycleConfiguration({
         Bucket: bucket,
       });
-      if (lifecycleResult.Rules?.length !== 3) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 3 lifecycle rules, got ${lifecycleResult.Rules?.length}`,
-          ),
-        );
-      }
+      expect(lifecycleResult.Rules?.length).toEqual(3);
 
       const expireRule = lifecycleResult.Rules?.find(
         (r) => r.ID === "ExpireOldObjects",
       );
-      if (expireRule?.Expiration?.Days !== 90) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Expiration.Days=90, got ${expireRule?.Expiration?.Days}`,
-          ),
-        );
-      }
+      expect(expireRule?.Expiration?.Days).toEqual(90);
 
       const transitionRule = lifecycleResult.Rules?.find(
         (r) => r.ID === "TransitionToGlacier",
       );
-      if (transitionRule?.Transitions?.[0]?.StorageClass !== "GLACIER") {
-        return yield* Effect.fail(new Error("Expected transition to GLACIER"));
-      }
+      expect(transitionRule?.Transitions?.[0]?.StorageClass).toEqual("GLACIER");
 
       // Delete lifecycle
       yield* deleteBucketLifecycle({ Bucket: bucket });
@@ -579,11 +483,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting lifecycle config"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -619,13 +519,7 @@ test(
       let lifecycleResult = yield* getBucketLifecycleConfiguration({
         Bucket: bucket,
       });
-      if (lifecycleResult.Rules?.length !== 1) {
-        return yield* Effect.fail(
-          new Error(
-            `Test 1: Expected 1 rule, got ${lifecycleResult.Rules?.length}`,
-          ),
-        );
-      }
+      expect(lifecycleResult.Rules?.length).toEqual(1);
 
       // Test 2: Rule with Expiration and Filter
       yield* putBucketLifecycleConfiguration({
@@ -649,13 +543,7 @@ test(
       lifecycleResult = yield* getBucketLifecycleConfiguration({
         Bucket: bucket,
       });
-      if (lifecycleResult.Rules?.[0]?.Expiration?.Days !== 7) {
-        return yield* Effect.fail(
-          new Error(
-            `Test 2: Expected Days=7, got ${lifecycleResult.Rules?.[0]?.Expiration?.Days}`,
-          ),
-        );
-      }
+      expect(lifecycleResult.Rules?.[0]?.Expiration?.Days).toEqual(7);
 
       // Test 3: Complete rule with ID, Filter, Expiration, and Transitions (like AWS smithy example)
       yield* putBucketLifecycleConfiguration({
@@ -685,13 +573,7 @@ test(
       lifecycleResult = yield* getBucketLifecycleConfiguration({
         Bucket: bucket,
       });
-      if (lifecycleResult.Rules?.[0]?.ID !== "TestComplete") {
-        return yield* Effect.fail(
-          new Error(
-            `Test 3: Expected ID=TestComplete, got ${lifecycleResult.Rules?.[0]?.ID}`,
-          ),
-        );
-      }
+      expect(lifecycleResult.Rules?.[0]?.ID).toEqual("TestComplete");
 
       // Test 4: Empty Filter prefix (applies to all objects)
       yield* putBucketLifecycleConfiguration({
@@ -718,13 +600,9 @@ test(
           Bucket: bucket,
         });
         const rule = result.Rules?.[0];
-        if (rule?.AbortIncompleteMultipartUpload?.DaysAfterInitiation !== 1) {
-          return yield* Effect.fail(
-            new Error(
-              `Test 4: Expected DaysAfterInitiation=1, got rule: ${JSON.stringify(rule, null, 2)}`,
-            ),
-          );
-        }
+        expect(
+          rule?.AbortIncompleteMultipartUpload?.DaysAfterInitiation,
+        ).toEqual(1);
       }).pipe(
         Effect.retry({
           schedule: Schedule.spaced("1 second").pipe(
@@ -761,20 +639,10 @@ test(
       // Get and verify
       const pabResult = yield* getPublicAccessBlock({ Bucket: bucket });
       const config = pabResult.PublicAccessBlockConfiguration;
-      if (config?.BlockPublicAcls !== true) {
-        return yield* Effect.fail(new Error("Expected BlockPublicAcls=true"));
-      }
-      if (config?.IgnorePublicAcls !== true) {
-        return yield* Effect.fail(new Error("Expected IgnorePublicAcls=true"));
-      }
-      if (config?.BlockPublicPolicy !== true) {
-        return yield* Effect.fail(new Error("Expected BlockPublicPolicy=true"));
-      }
-      if (config?.RestrictPublicBuckets !== true) {
-        return yield* Effect.fail(
-          new Error("Expected RestrictPublicBuckets=true"),
-        );
-      }
+      expect(config?.BlockPublicAcls).toBe(true);
+      expect(config?.IgnorePublicAcls).toBe(true);
+      expect(config?.BlockPublicPolicy).toBe(true);
+      expect(config?.RestrictPublicBuckets).toBe(true);
 
       // Update with partial block
       yield* putPublicAccessBlock({
@@ -789,13 +657,9 @@ test(
 
       // Verify update
       const updatedPab = yield* getPublicAccessBlock({ Bucket: bucket });
-      if (
-        updatedPab.PublicAccessBlockConfiguration?.IgnorePublicAcls !== false
-      ) {
-        return yield* Effect.fail(
-          new Error("Expected IgnorePublicAcls=false after update"),
-        );
-      }
+      expect(
+        updatedPab.PublicAccessBlockConfiguration?.IgnorePublicAcls,
+      ).toBe(false);
 
       // Delete public access block
       yield* deletePublicAccessBlock({ Bucket: bucket });
@@ -805,11 +669,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting public access block"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -839,13 +699,7 @@ test(
         Bucket: bucket,
       });
       const rule = ownershipResult.OwnershipControls?.Rules?.[0];
-      if (rule?.ObjectOwnership !== "BucketOwnerEnforced") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ObjectOwnership=BucketOwnerEnforced, got ${rule?.ObjectOwnership}`,
-          ),
-        );
-      }
+      expect(rule?.ObjectOwnership).toEqual("BucketOwnerEnforced");
 
       // Update to ObjectWriter (allows ACLs)
       yield* putBucketOwnershipControls({
@@ -863,14 +717,9 @@ test(
       const updatedOwnership = yield* getBucketOwnershipControls({
         Bucket: bucket,
       });
-      if (
-        updatedOwnership.OwnershipControls?.Rules?.[0]?.ObjectOwnership !==
-        "ObjectWriter"
-      ) {
-        return yield* Effect.fail(
-          new Error("Expected ObjectOwnership=ObjectWriter after update"),
-        );
-      }
+      expect(
+        updatedOwnership.OwnershipControls?.Rules?.[0]?.ObjectOwnership,
+      ).toEqual("ObjectWriter");
 
       // Delete ownership controls
       yield* deleteBucketOwnershipControls({ Bucket: bucket });
@@ -882,11 +731,7 @@ test(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
-      if (result !== "error") {
-        return yield* Effect.fail(
-          new Error("Expected error after deleting ownership controls"),
-        );
-      }
+      expect(result).toEqual("error");
     }),
   ),
 );
@@ -915,24 +760,17 @@ test(
       const aclResult = yield* getBucketAcl({ Bucket: bucket });
 
       // Should have an owner
-      if (!aclResult.Owner?.ID) {
-        return yield* Effect.fail(new Error("Expected Owner.ID to be present"));
-      }
+      expect(aclResult.Owner?.ID).toBeDefined();
 
       // Should have grants
-      if (!aclResult.Grants || aclResult.Grants.length === 0) {
-        return yield* Effect.fail(new Error("Expected at least one grant"));
-      }
+      expect(aclResult.Grants).toBeDefined();
+      expect(aclResult.Grants!.length).toBeGreaterThan(0);
 
       // The owner should have FULL_CONTROL by default
       const fullControlGrant = aclResult.Grants?.find(
         (g) => g.Permission === "FULL_CONTROL",
       );
-      if (!fullControlGrant) {
-        return yield* Effect.fail(
-          new Error("Expected FULL_CONTROL grant for bucket owner"),
-        );
-      }
+      expect(fullControlGrant).toBeDefined();
     }),
   ),
 );
@@ -946,7 +784,7 @@ test(
   withBucket("itty-s3-accelerate", (bucket) =>
     Effect.gen(function* () {
       // Get initial state (should be Suspended or undefined)
-      const initialAccelerate = yield* getBucketAccelerateConfiguration({
+      yield* getBucketAccelerateConfiguration({
         Bucket: bucket,
       });
       // New buckets have no accelerate config
@@ -963,11 +801,7 @@ test(
       const enabledAccelerate = yield* getBucketAccelerateConfiguration({
         Bucket: bucket,
       });
-      if (enabledAccelerate.Status !== "Enabled") {
-        return yield* Effect.fail(
-          new Error(`Expected Status=Enabled, got ${enabledAccelerate.Status}`),
-        );
-      }
+      expect(enabledAccelerate.Status).toEqual("Enabled");
 
       // Disable accelerate
       yield* putBucketAccelerateConfiguration({
@@ -981,13 +815,7 @@ test(
       const suspendedAccelerate = yield* getBucketAccelerateConfiguration({
         Bucket: bucket,
       });
-      if (suspendedAccelerate.Status !== "Suspended") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Status=Suspended, got ${suspendedAccelerate.Status}`,
-          ),
-        );
-      }
+      expect(suspendedAccelerate.Status).toEqual("Suspended");
     }),
   ),
 );
@@ -1004,13 +832,7 @@ test(
       const initialPayment = yield* getBucketRequestPayment({
         Bucket: bucket,
       });
-      if (initialPayment.Payer !== "BucketOwner") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected initial Payer=BucketOwner, got ${initialPayment.Payer}`,
-          ),
-        );
-      }
+      expect(initialPayment.Payer).toEqual("BucketOwner");
 
       // Set to Requester pays
       yield* putBucketRequestPayment({
@@ -1024,11 +846,7 @@ test(
       const requesterPayment = yield* getBucketRequestPayment({
         Bucket: bucket,
       });
-      if (requesterPayment.Payer !== "Requester") {
-        return yield* Effect.fail(
-          new Error(`Expected Payer=Requester, got ${requesterPayment.Payer}`),
-        );
-      }
+      expect(requesterPayment.Payer).toEqual("Requester");
 
       // Set back to BucketOwner
       yield* putBucketRequestPayment({
@@ -1042,11 +860,7 @@ test(
       const ownerPayment = yield* getBucketRequestPayment({
         Bucket: bucket,
       });
-      if (ownerPayment.Payer !== "BucketOwner") {
-        return yield* Effect.fail(
-          new Error(`Expected Payer=BucketOwner, got ${ownerPayment.Payer}`),
-        );
-      }
+      expect(ownerPayment.Payer).toEqual("BucketOwner");
     }),
   ),
 );
@@ -1076,12 +890,10 @@ test(
         Key: testKey,
       });
 
-      if (!result.Body) {
-        return yield* Effect.fail(new Error("Expected Body in response"));
-      }
+      expect(result.Body).toBeDefined();
 
       // Body should be an Effect Stream - consume it
-      const actualContent = yield* result.Body.pipe(
+      const actualContent = yield* result.Body!.pipe(
         Stream.decodeText(),
         Stream.mkString,
       );
@@ -1117,13 +929,11 @@ test(
         Key: testKey,
       });
 
-      if (!result.Body) {
-        return yield* Effect.fail(new Error("Expected Body in response"));
-      }
+      expect(result.Body).toBeDefined();
 
       // Consume the stream
       const chunks: Uint8Array[] = [];
-      yield* Stream.runForEach(result.Body, (chunk) =>
+      yield* Stream.runForEach(result.Body!, (chunk) =>
         Effect.sync(() => {
           chunks.push(chunk);
         }),
@@ -1138,18 +948,10 @@ test(
         offset += chunk.length;
       }
 
-      if (fullBuffer.length !== testContent.length) {
-        return yield* Effect.fail(
-          new Error(
-            `Length mismatch: expected ${testContent.length}, got ${fullBuffer.length}`,
-          ),
-        );
-      }
+      expect(fullBuffer.length).toEqual(testContent.length);
 
       for (let i = 0; i < testContent.length; i++) {
-        if (fullBuffer[i] !== testContent[i]) {
-          return yield* Effect.fail(new Error(`Byte mismatch at index ${i}`));
-        }
+        expect(fullBuffer[i]).toEqual(testContent[i]);
       }
 
       // Cleanup
@@ -1189,12 +991,10 @@ test(
         Key: testKey,
       });
 
-      if (!result.Body) {
-        return yield* Effect.fail(new Error("Expected Body in response"));
-      }
+      expect(result.Body).toBeDefined();
 
       // Consume the stream
-      const actualContent = yield* result.Body.pipe(
+      const actualContent = yield* result.Body!.pipe(
         Stream.decodeText(),
         Stream.mkString,
       );
@@ -1268,25 +1068,9 @@ test(
         Key: testKey,
       });
 
-      if (result.ContentType !== "application/json") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ContentType=application/json, got ${result.ContentType}`,
-          ),
-        );
-      }
-
-      if (result.ContentLength !== testContent.length) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ContentLength=${testContent.length}, got ${result.ContentLength}`,
-          ),
-        );
-      }
-
-      if (!result.ETag) {
-        return yield* Effect.fail(new Error("Expected ETag to be present"));
-      }
+      expect(result.ContentType).toEqual("application/json");
+      expect(result.ContentLength).toEqual(testContent.length);
+      expect(result.ETag).toBeDefined();
 
       // Also verify body content matches what we wrote
       const actualContent = yield* result.Body!.pipe(
@@ -1382,30 +1166,14 @@ test(
       ]);
 
       // Verify each config
-      if (tags.TagSet?.length !== 2) {
-        return yield* Effect.fail(new Error("Tags not applied correctly"));
-      }
-      if (versioning.Status !== "Enabled") {
-        return yield* Effect.fail(new Error("Versioning not enabled"));
-      }
-      if (
+      expect(tags.TagSet?.length).toEqual(2);
+      expect(versioning.Status).toEqual("Enabled");
+      expect(
         encryption.ServerSideEncryptionConfiguration?.Rules?.[0]
-          ?.ApplyServerSideEncryptionByDefault?.SSEAlgorithm !== "AES256"
-      ) {
-        return yield* Effect.fail(
-          new Error("Encryption not configured correctly"),
-        );
-      }
-      if (pab.PublicAccessBlockConfiguration?.BlockPublicAcls !== true) {
-        return yield* Effect.fail(
-          new Error("Public access block not configured correctly"),
-        );
-      }
-      if (lifecycle.Rules?.length !== 1) {
-        return yield* Effect.fail(
-          new Error("Lifecycle not configured correctly"),
-        );
-      }
+          ?.ApplyServerSideEncryptionByDefault?.SSEAlgorithm,
+      ).toEqual("AES256");
+      expect(pab.PublicAccessBlockConfiguration?.BlockPublicAcls).toBe(true);
+      expect(lifecycle.Rules?.length).toEqual(1);
     }),
   ),
 );
@@ -1481,13 +1249,9 @@ test(
         ContentType: "text/plain",
       });
 
-      if (!initResult.UploadId) {
-        return yield* Effect.fail(
-          new Error("Expected UploadId from createMultipartUpload"),
-        );
-      }
+      expect(initResult.UploadId).toBeDefined();
 
-      const uploadId = initResult.UploadId;
+      const uploadId = initResult.UploadId!;
 
       try {
         // 2. Upload part 1 with streaming body and checksum
@@ -1505,11 +1269,7 @@ test(
           ChecksumAlgorithm: "CRC32",
         });
 
-        if (!part1Result.ETag) {
-          return yield* Effect.fail(
-            new Error("Expected ETag from uploadPart 1"),
-          );
-        }
+        expect(part1Result.ETag).toBeDefined();
 
         // 3. Upload part 2 with streaming body and checksum
         const part2Bytes = encoder.encode(part2Content);
@@ -1525,11 +1285,7 @@ test(
           ChecksumAlgorithm: "CRC32",
         });
 
-        if (!part2Result.ETag) {
-          return yield* Effect.fail(
-            new Error("Expected ETag from uploadPart 2"),
-          );
-        }
+        expect(part2Result.ETag).toBeDefined();
 
         // 4. Complete multipart upload
         yield* completeMultipartUpload({
@@ -1550,13 +1306,11 @@ test(
           Key: testKey,
         });
 
-        if (!result.Body) {
-          return yield* Effect.fail(new Error("Expected Body in response"));
-        }
+        expect(result.Body).toBeDefined();
 
         // Consume the stream
         const chunks: Uint8Array[] = [];
-        yield* Stream.runForEach(result.Body, (chunk) =>
+        yield* Stream.runForEach(result.Body!, (chunk) =>
           Effect.sync(() => {
             chunks.push(chunk);
           }),
@@ -1572,47 +1326,23 @@ test(
         }
 
         const expectedLength = part1Content.length + part2Content.length;
-        if (fullBuffer.length !== expectedLength) {
-          return yield* Effect.fail(
-            new Error(
-              `Length mismatch: expected ${expectedLength}, got ${fullBuffer.length}`,
-            ),
-          );
-        }
+        expect(fullBuffer.length).toEqual(expectedLength);
 
         // Check first few bytes of part 1 (should be 'A' = 65)
         for (let i = 0; i < 100; i++) {
-          if (fullBuffer[i] !== 65) {
-            return yield* Effect.fail(
-              new Error(
-                `Part 1 content mismatch at byte ${i}: expected 65 ('A'), got ${fullBuffer[i]}`,
-              ),
-            );
-          }
+          expect(fullBuffer[i]).toEqual(65);
         }
 
         // Check last few bytes of part 1 (should be 'A' = 65)
         const part1End = part1Content.length - 1;
         for (let i = part1End - 100; i <= part1End; i++) {
-          if (fullBuffer[i] !== 65) {
-            return yield* Effect.fail(
-              new Error(
-                `Part 1 content mismatch at byte ${i}: expected 65 ('A'), got ${fullBuffer[i]}`,
-              ),
-            );
-          }
+          expect(fullBuffer[i]).toEqual(65);
         }
 
         // Check part 2 content (should be 'B' = 66)
         const part2Start = part1Content.length;
         for (let i = part2Start; i < fullBuffer.length; i++) {
-          if (fullBuffer[i] !== 66) {
-            return yield* Effect.fail(
-              new Error(
-                `Part 2 content mismatch at byte ${i}: expected 66 ('B'), got ${fullBuffer[i]}`,
-              ),
-            );
-          }
+          expect(fullBuffer[i]).toEqual(66);
         }
 
         // Cleanup
@@ -1675,19 +1405,11 @@ test(
       );
 
       // The timeout should have triggered (result is None)
-      if (result._tag !== "None") {
-        return yield* Effect.fail(
-          new Error("Expected upload to be interrupted by timeout"),
-        );
-      }
+      expect(result._tag).toEqual("None");
 
       // Verify we didn't read all chunks (interrupted early)
       // The fact that we got here with timeout means the effect was interrupted
-      if (chunksRead >= 100) {
-        return yield* Effect.fail(
-          new Error(`Expected fewer than 100 chunks, got ${chunksRead}`),
-        );
-      }
+      expect(chunksRead < 100).toBe(true);
 
       // If we got here, the timeout worked - the upload was interrupted
       // Note: Stream cancel() propagation depends on fetch implementation
@@ -1735,18 +1457,10 @@ test(
       );
 
       // The timeout should win
-      if (result !== "timeout") {
-        return yield* Effect.fail(
-          new Error("Expected timeout to win the race"),
-        );
-      }
+      expect(result).toEqual("timeout");
 
       // Verify partial upload (not all chunks)
-      if (chunksRead >= 50) {
-        return yield* Effect.fail(
-          new Error(`Expected fewer than 50 chunks, got ${chunksRead}`),
-        );
-      }
+      expect(chunksRead < 50).toBe(true);
 
       // Cleanup
       yield* deleteObject({ Bucket: bucket, Key: testKey }).pipe(Effect.ignore);

@@ -931,7 +931,7 @@ export class UpdateConnectivityInfoRequest extends S.Class<UpdateConnectivityInf
   "UpdateConnectivityInfoRequest",
 )(
   {
-    thingName: S.String.pipe(T.HttpLabel(), T.JsonName("ThingName")),
+    thingName: S.String.pipe(T.HttpLabel("thingName"), T.JsonName("ThingName")),
     connectivityInfo: connectivityInfoList.pipe(T.JsonName("ConnectivityInfo")),
   },
   T.all(

@@ -290,7 +290,10 @@ export class AcceptAdministratorInvitationRequest extends S.Class<AcceptAdminist
   "AcceptAdministratorInvitationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AdministratorId: S.String.pipe(T.JsonName("administratorId")),
     InvitationId: S.String.pipe(T.JsonName("invitationId")),
   },
@@ -310,7 +313,10 @@ export class AcceptInvitationRequest extends S.Class<AcceptInvitationRequest>(
   "AcceptInvitationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MasterId: S.String.pipe(T.JsonName("masterId")),
     InvitationId: S.String.pipe(T.JsonName("invitationId")),
   },
@@ -330,7 +336,10 @@ export class ArchiveFindingsRequest extends S.Class<ArchiveFindingsRequest>(
   "ArchiveFindingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingIds: FindingIds.pipe(T.JsonName("findingIds")),
   },
   T.all(
@@ -350,7 +359,10 @@ export class CreateIPSetRequest extends S.Class<CreateIPSetRequest>(
   "CreateIPSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Name: S.String.pipe(T.JsonName("name")),
     Format: S.String.pipe(T.JsonName("format")),
     Location: S.String.pipe(T.JsonName("location")),
@@ -374,7 +386,10 @@ export class CreateSampleFindingsRequest extends S.Class<CreateSampleFindingsReq
   "CreateSampleFindingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingTypes: S.optional(FindingTypes).pipe(T.JsonName("findingTypes")),
   },
   T.all(
@@ -393,7 +408,10 @@ export class CreateThreatEntitySetRequest extends S.Class<CreateThreatEntitySetR
   "CreateThreatEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Name: S.String.pipe(T.JsonName("name")),
     Format: S.String.pipe(T.JsonName("format")),
     Location: S.String.pipe(T.JsonName("location")),
@@ -417,7 +435,10 @@ export class CreateThreatIntelSetRequest extends S.Class<CreateThreatIntelSetReq
   "CreateThreatIntelSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Name: S.String.pipe(T.JsonName("name")),
     Format: S.String.pipe(T.JsonName("format")),
     Location: S.String.pipe(T.JsonName("location")),
@@ -441,7 +462,10 @@ export class CreateTrustedEntitySetRequest extends S.Class<CreateTrustedEntitySe
   "CreateTrustedEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Name: S.String.pipe(T.JsonName("name")),
     Format: S.String.pipe(T.JsonName("format")),
     Location: S.String.pipe(T.JsonName("location")),
@@ -477,7 +501,12 @@ export class DeclineInvitationsRequest extends S.Class<DeclineInvitationsRequest
 export class DeleteDetectorRequest extends S.Class<DeleteDetectorRequest>(
   "DeleteDetectorRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({ method: "DELETE", uri: "/detector/{DetectorId}" }),
     svc,
@@ -494,8 +523,14 @@ export class DeleteFilterRequest extends S.Class<DeleteFilterRequest>(
   "DeleteFilterRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    FilterName: S.String.pipe(T.HttpLabel(), T.JsonName("filterName")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    FilterName: S.String.pipe(
+      T.HttpLabel("FilterName"),
+      T.JsonName("filterName"),
+    ),
   },
   T.all(
     T.Http({
@@ -529,8 +564,11 @@ export class DeleteIPSetRequest extends S.Class<DeleteIPSetRequest>(
   "DeleteIPSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    IpSetId: S.String.pipe(T.HttpLabel(), T.JsonName("ipSetId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    IpSetId: S.String.pipe(T.HttpLabel("IpSetId"), T.JsonName("ipSetId")),
   },
   T.all(
     T.Http({ method: "DELETE", uri: "/detector/{DetectorId}/ipset/{IpSetId}" }),
@@ -549,7 +587,7 @@ export class DeleteMalwareProtectionPlanRequest extends S.Class<DeleteMalwarePro
 )(
   {
     MalwareProtectionPlanId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("MalwareProtectionPlanId"),
       T.JsonName("malwareProtectionPlanId"),
     ),
   },
@@ -572,7 +610,10 @@ export class DeleteMembersRequest extends S.Class<DeleteMembersRequest>(
   "DeleteMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -588,8 +629,14 @@ export class DeletePublishingDestinationRequest extends S.Class<DeletePublishing
   "DeletePublishingDestinationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    DestinationId: S.String.pipe(T.HttpLabel(), T.JsonName("destinationId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    DestinationId: S.String.pipe(
+      T.HttpLabel("DestinationId"),
+      T.JsonName("destinationId"),
+    ),
   },
   T.all(
     T.Http({
@@ -610,9 +657,12 @@ export class DeleteThreatEntitySetRequest extends S.Class<DeleteThreatEntitySetR
   "DeleteThreatEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatEntitySetId"),
       T.JsonName("threatEntitySetId"),
     ),
   },
@@ -635,9 +685,12 @@ export class DeleteThreatIntelSetRequest extends S.Class<DeleteThreatIntelSetReq
   "DeleteThreatIntelSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatIntelSetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatIntelSetId"),
       T.JsonName("threatIntelSetId"),
     ),
   },
@@ -660,9 +713,12 @@ export class DeleteTrustedEntitySetRequest extends S.Class<DeleteTrustedEntitySe
   "DeleteTrustedEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     TrustedEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("TrustedEntitySetId"),
       T.JsonName("trustedEntitySetId"),
     ),
   },
@@ -685,7 +741,10 @@ export class DescribeOrganizationConfigurationRequest extends S.Class<DescribeOr
   "DescribeOrganizationConfigurationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -708,8 +767,14 @@ export class DescribePublishingDestinationRequest extends S.Class<DescribePublis
   "DescribePublishingDestinationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    DestinationId: S.String.pipe(T.HttpLabel(), T.JsonName("destinationId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    DestinationId: S.String.pipe(
+      T.HttpLabel("DestinationId"),
+      T.JsonName("destinationId"),
+    ),
   },
   T.all(
     T.Http({
@@ -742,7 +807,12 @@ export class DisableOrganizationAdminAccountResponse extends S.Class<DisableOrga
 export class DisassociateFromAdministratorAccountRequest extends S.Class<DisassociateFromAdministratorAccountRequest>(
   "DisassociateFromAdministratorAccountRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({
       method: "POST",
@@ -761,7 +831,12 @@ export class DisassociateFromAdministratorAccountResponse extends S.Class<Disass
 export class DisassociateFromMasterAccountRequest extends S.Class<DisassociateFromMasterAccountRequest>(
   "DisassociateFromMasterAccountRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({
       method: "POST",
@@ -781,7 +856,10 @@ export class DisassociateMembersRequest extends S.Class<DisassociateMembersReque
   "DisassociateMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -815,7 +893,12 @@ export class EnableOrganizationAdminAccountResponse extends S.Class<EnableOrgani
 export class GetAdministratorAccountRequest extends S.Class<GetAdministratorAccountRequest>(
   "GetAdministratorAccountRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({ method: "GET", uri: "/detector/{DetectorId}/administrator" }),
     svc,
@@ -828,7 +911,12 @@ export class GetAdministratorAccountRequest extends S.Class<GetAdministratorAcco
 export class GetDetectorRequest extends S.Class<GetDetectorRequest>(
   "GetDetectorRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({ method: "GET", uri: "/detector/{DetectorId}" }),
     svc,
@@ -842,8 +930,14 @@ export class GetFilterRequest extends S.Class<GetFilterRequest>(
   "GetFilterRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    FilterName: S.String.pipe(T.HttpLabel(), T.JsonName("filterName")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    FilterName: S.String.pipe(
+      T.HttpLabel("FilterName"),
+      T.JsonName("filterName"),
+    ),
   },
   T.all(
     T.Http({
@@ -865,7 +959,10 @@ export class GetFindingsRequest extends S.Class<GetFindingsRequest>(
   "GetFindingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingIds: FindingIds.pipe(T.JsonName("findingIds")),
     SortCriteria: S.optional(SortCriteria).pipe(T.JsonName("sortCriteria")),
   },
@@ -910,7 +1007,10 @@ export class GetFindingsStatisticsRequest extends S.Class<GetFindingsStatisticsR
   "GetFindingsStatisticsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingStatisticTypes: S.optional(FindingStatisticTypes).pipe(
       T.JsonName("findingStatisticTypes"),
     ),
@@ -942,8 +1042,11 @@ export class GetIPSetRequest extends S.Class<GetIPSetRequest>(
   "GetIPSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    IpSetId: S.String.pipe(T.HttpLabel(), T.JsonName("ipSetId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    IpSetId: S.String.pipe(T.HttpLabel("IpSetId"), T.JsonName("ipSetId")),
   },
   T.all(
     T.Http({ method: "GET", uri: "/detector/{DetectorId}/ipset/{IpSetId}" }),
@@ -959,7 +1062,7 @@ export class GetMalwareProtectionPlanRequest extends S.Class<GetMalwareProtectio
 )(
   {
     MalwareProtectionPlanId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("MalwareProtectionPlanId"),
       T.JsonName("malwareProtectionPlanId"),
     ),
   },
@@ -978,7 +1081,7 @@ export class GetMalwareProtectionPlanRequest extends S.Class<GetMalwareProtectio
 export class GetMalwareScanRequest extends S.Class<GetMalwareScanRequest>(
   "GetMalwareScanRequest",
 )(
-  { ScanId: S.String.pipe(T.HttpLabel(), T.JsonName("scanId")) },
+  { ScanId: S.String.pipe(T.HttpLabel("ScanId"), T.JsonName("scanId")) },
   T.all(
     T.Http({ method: "GET", uri: "/malware-scan/{ScanId}" }),
     svc,
@@ -991,7 +1094,12 @@ export class GetMalwareScanRequest extends S.Class<GetMalwareScanRequest>(
 export class GetMalwareScanSettingsRequest extends S.Class<GetMalwareScanSettingsRequest>(
   "GetMalwareScanSettingsRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({
       method: "GET",
@@ -1007,7 +1115,12 @@ export class GetMalwareScanSettingsRequest extends S.Class<GetMalwareScanSetting
 export class GetMasterAccountRequest extends S.Class<GetMasterAccountRequest>(
   "GetMasterAccountRequest",
 )(
-  { DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")) },
+  {
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+  },
   T.all(
     T.Http({ method: "GET", uri: "/detector/{DetectorId}/master" }),
     svc,
@@ -1021,7 +1134,10 @@ export class GetMemberDetectorsRequest extends S.Class<GetMemberDetectorsRequest
   "GetMemberDetectorsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -1040,7 +1156,10 @@ export class GetMembersRequest extends S.Class<GetMembersRequest>(
   "GetMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -1056,7 +1175,10 @@ export class GetRemainingFreeTrialDaysRequest extends S.Class<GetRemainingFreeTr
   "GetRemainingFreeTrialDaysRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -1075,9 +1197,12 @@ export class GetThreatEntitySetRequest extends S.Class<GetThreatEntitySetRequest
   "GetThreatEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatEntitySetId"),
       T.JsonName("threatEntitySetId"),
     ),
   },
@@ -1097,9 +1222,12 @@ export class GetThreatIntelSetRequest extends S.Class<GetThreatIntelSetRequest>(
   "GetThreatIntelSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatIntelSetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatIntelSetId"),
       T.JsonName("threatIntelSetId"),
     ),
   },
@@ -1119,9 +1247,12 @@ export class GetTrustedEntitySetRequest extends S.Class<GetTrustedEntitySetReque
   "GetTrustedEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     TrustedEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("TrustedEntitySetId"),
       T.JsonName("trustedEntitySetId"),
     ),
   },
@@ -1141,7 +1272,10 @@ export class InviteMembersRequest extends S.Class<InviteMembersRequest>(
   "InviteMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
     DisableEmailNotification: S.optional(S.Boolean).pipe(
       T.JsonName("disableEmailNotification"),
@@ -1183,7 +1317,10 @@ export class ListFiltersRequest extends S.Class<ListFiltersRequest>(
   "ListFiltersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1206,7 +1343,10 @@ export class ListFindingsRequest extends S.Class<ListFindingsRequest>(
   "ListFindingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingCriteria: S.optional(FindingCriteria).pipe(
       T.JsonName("findingCriteria"),
     ),
@@ -1249,7 +1389,10 @@ export class ListIPSetsRequest extends S.Class<ListIPSetsRequest>(
   "ListIPSetsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1290,7 +1433,10 @@ export class ListMembersRequest extends S.Class<ListMembersRequest>(
   "ListMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1332,7 +1478,10 @@ export class ListPublishingDestinationsRequest extends S.Class<ListPublishingDes
   "ListPublishingDestinationsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1357,7 +1506,12 @@ export class ListPublishingDestinationsRequest extends S.Class<ListPublishingDes
 export class ListTagsForResourceRequest extends S.Class<ListTagsForResourceRequest>(
   "ListTagsForResourceRequest",
 )(
-  { ResourceArn: S.String.pipe(T.HttpLabel(), T.JsonName("resourceArn")) },
+  {
+    ResourceArn: S.String.pipe(
+      T.HttpLabel("ResourceArn"),
+      T.JsonName("resourceArn"),
+    ),
+  },
   T.all(
     T.Http({ method: "GET", uri: "/tags/{ResourceArn}" }),
     svc,
@@ -1371,7 +1525,10 @@ export class ListThreatEntitySetsRequest extends S.Class<ListThreatEntitySetsReq
   "ListThreatEntitySetsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1394,7 +1551,10 @@ export class ListThreatIntelSetsRequest extends S.Class<ListThreatIntelSetsReque
   "ListThreatIntelSetsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1417,7 +1577,10 @@ export class ListTrustedEntitySetsRequest extends S.Class<ListTrustedEntitySetsR
   "ListTrustedEntitySetsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     MaxResults: S.optional(S.Number).pipe(
       T.HttpQuery("maxResults"),
       T.JsonName("maxResults"),
@@ -1440,7 +1603,10 @@ export class StartMonitoringMembersRequest extends S.Class<StartMonitoringMember
   "StartMonitoringMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -1456,7 +1622,10 @@ export class StopMonitoringMembersRequest extends S.Class<StopMonitoringMembersR
   "StopMonitoringMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
   },
   T.all(
@@ -1472,7 +1641,10 @@ export class TagResourceRequest extends S.Class<TagResourceRequest>(
   "TagResourceRequest",
 )(
   {
-    ResourceArn: S.String.pipe(T.HttpLabel(), T.JsonName("resourceArn")),
+    ResourceArn: S.String.pipe(
+      T.HttpLabel("ResourceArn"),
+      T.JsonName("resourceArn"),
+    ),
     Tags: TagMap.pipe(T.JsonName("tags")),
   },
   T.all(
@@ -1491,7 +1663,10 @@ export class UnarchiveFindingsRequest extends S.Class<UnarchiveFindingsRequest>(
   "UnarchiveFindingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingIds: FindingIds.pipe(T.JsonName("findingIds")),
   },
   T.all(
@@ -1513,7 +1688,10 @@ export class UntagResourceRequest extends S.Class<UntagResourceRequest>(
   "UntagResourceRequest",
 )(
   {
-    ResourceArn: S.String.pipe(T.HttpLabel(), T.JsonName("resourceArn")),
+    ResourceArn: S.String.pipe(
+      T.HttpLabel("ResourceArn"),
+      T.JsonName("resourceArn"),
+    ),
     TagKeys: TagKeyList.pipe(T.HttpQuery("tagKeys"), T.JsonName("tagKeys")),
   },
   T.all(
@@ -1585,7 +1763,10 @@ export class UpdateDetectorRequest extends S.Class<UpdateDetectorRequest>(
   "UpdateDetectorRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Enable: S.optional(S.Boolean).pipe(T.JsonName("enable")),
     FindingPublishingFrequency: S.optional(S.String).pipe(
       T.JsonName("findingPublishingFrequency"),
@@ -1613,8 +1794,14 @@ export class UpdateFilterRequest extends S.Class<UpdateFilterRequest>(
   "UpdateFilterRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    FilterName: S.String.pipe(T.HttpLabel(), T.JsonName("filterName")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    FilterName: S.String.pipe(
+      T.HttpLabel("FilterName"),
+      T.JsonName("filterName"),
+    ),
     Description: S.optional(S.String).pipe(T.JsonName("description")),
     Action: S.optional(S.String).pipe(T.JsonName("action")),
     Rank: S.optional(S.Number).pipe(T.JsonName("rank")),
@@ -1638,7 +1825,10 @@ export class UpdateFindingsFeedbackRequest extends S.Class<UpdateFindingsFeedbac
   "UpdateFindingsFeedbackRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FindingIds: FindingIds.pipe(T.JsonName("findingIds")),
     Feedback: S.String.pipe(T.JsonName("feedback")),
     Comments: S.optional(S.String).pipe(T.JsonName("comments")),
@@ -1659,8 +1849,11 @@ export class UpdateIPSetRequest extends S.Class<UpdateIPSetRequest>(
   "UpdateIPSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    IpSetId: S.String.pipe(T.HttpLabel(), T.JsonName("ipSetId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    IpSetId: S.String.pipe(T.HttpLabel("IpSetId"), T.JsonName("ipSetId")),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
     Location: S.optional(S.String).pipe(T.JsonName("location")),
     Activate: S.optional(S.Boolean).pipe(T.JsonName("activate")),
@@ -1690,8 +1883,14 @@ export class UpdatePublishingDestinationRequest extends S.Class<UpdatePublishing
   "UpdatePublishingDestinationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
-    DestinationId: S.String.pipe(T.HttpLabel(), T.JsonName("destinationId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
+    DestinationId: S.String.pipe(
+      T.HttpLabel("DestinationId"),
+      T.JsonName("destinationId"),
+    ),
     DestinationProperties: S.optional(DestinationProperties).pipe(
       T.JsonName("destinationProperties"),
     ),
@@ -1715,9 +1914,12 @@ export class UpdateThreatEntitySetRequest extends S.Class<UpdateThreatEntitySetR
   "UpdateThreatEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatEntitySetId"),
       T.JsonName("threatEntitySetId"),
     ),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
@@ -1746,9 +1948,12 @@ export class UpdateThreatIntelSetRequest extends S.Class<UpdateThreatIntelSetReq
   "UpdateThreatIntelSetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ThreatIntelSetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("ThreatIntelSetId"),
       T.JsonName("threatIntelSetId"),
     ),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
@@ -1777,9 +1982,12 @@ export class UpdateTrustedEntitySetRequest extends S.Class<UpdateTrustedEntitySe
   "UpdateTrustedEntitySetRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     TrustedEntitySetId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("TrustedEntitySetId"),
       T.JsonName("trustedEntitySetId"),
     ),
     Name: S.optional(S.String).pipe(T.JsonName("name")),
@@ -1845,7 +2053,10 @@ export class CreateMembersRequest extends S.Class<CreateMembersRequest>(
   "CreateMembersRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountDetails: AccountDetails.pipe(T.JsonName("accountDetails")),
   },
   T.all(
@@ -1861,7 +2072,10 @@ export class CreatePublishingDestinationRequest extends S.Class<CreatePublishing
   "CreatePublishingDestinationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     DestinationType: S.String.pipe(T.JsonName("destinationType")),
     DestinationProperties: DestinationProperties.pipe(
       T.JsonName("destinationProperties"),
@@ -2035,7 +2249,10 @@ export class GetUsageStatisticsRequest extends S.Class<GetUsageStatisticsRequest
   "GetUsageStatisticsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     UsageStatisticType: S.String.pipe(T.JsonName("usageStatisticsType")),
     UsageCriteria: UsageCriteria.pipe(T.JsonName("usageCriteria")),
     Unit: S.optional(S.String).pipe(T.JsonName("unit")),
@@ -2084,7 +2301,10 @@ export class ListCoverageRequest extends S.Class<ListCoverageRequest>(
   "ListCoverageRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     NextToken: S.optional(S.String).pipe(T.JsonName("nextToken")),
     MaxResults: S.optional(S.Number).pipe(T.JsonName("maxResults")),
     FilterCriteria: S.optional(CoverageFilterCriteria).pipe(
@@ -2532,7 +2752,7 @@ export class UpdateMalwareProtectionPlanRequest extends S.Class<UpdateMalwarePro
 )(
   {
     MalwareProtectionPlanId: S.String.pipe(
-      T.HttpLabel(),
+      T.HttpLabel("MalwareProtectionPlanId"),
       T.JsonName("malwareProtectionPlanId"),
     ),
     Role: S.optional(S.String).pipe(T.JsonName("role")),
@@ -2562,7 +2782,10 @@ export class UpdateMemberDetectorsRequest extends S.Class<UpdateMemberDetectorsR
   "UpdateMemberDetectorsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AccountIds: AccountIds.pipe(T.JsonName("accountIds")),
     DataSources: S.optional(DataSourceConfigurations).pipe(
       T.JsonName("dataSources"),
@@ -2984,7 +3207,10 @@ export class CreateFilterRequest extends S.Class<CreateFilterRequest>(
   "CreateFilterRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     Name: S.String.pipe(T.JsonName("name")),
     Description: S.optional(S.String).pipe(T.JsonName("description")),
     Action: S.optional(S.String).pipe(T.JsonName("action")),
@@ -3013,7 +3239,10 @@ export class DescribeMalwareScansRequest extends S.Class<DescribeMalwareScansReq
   "DescribeMalwareScansRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     NextToken: S.optional(S.String).pipe(T.JsonName("nextToken")),
     MaxResults: S.optional(S.Number).pipe(T.JsonName("maxResults")),
     FilterCriteria: S.optional(FilterCriteria).pipe(
@@ -3034,7 +3263,10 @@ export class GetCoverageStatisticsRequest extends S.Class<GetCoverageStatisticsR
   "GetCoverageStatisticsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     FilterCriteria: S.optional(CoverageFilterCriteria).pipe(
       T.JsonName("filterCriteria"),
     ),
@@ -3763,7 +3995,10 @@ export class UpdateMalwareScanSettingsRequest extends S.Class<UpdateMalwareScanS
   "UpdateMalwareScanSettingsRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     ScanResourceCriteria: S.optional(ScanResourceCriteria).pipe(
       T.JsonName("scanResourceCriteria"),
     ),
@@ -3790,7 +4025,10 @@ export class UpdateOrganizationConfigurationRequest extends S.Class<UpdateOrgani
   "UpdateOrganizationConfigurationRequest",
 )(
   {
-    DetectorId: S.String.pipe(T.HttpLabel(), T.JsonName("detectorId")),
+    DetectorId: S.String.pipe(
+      T.HttpLabel("DetectorId"),
+      T.JsonName("detectorId"),
+    ),
     AutoEnable: S.optional(S.Boolean).pipe(T.JsonName("autoEnable")),
     DataSources: S.optional(OrganizationDataSourceConfigurations).pipe(
       T.JsonName("dataSources"),

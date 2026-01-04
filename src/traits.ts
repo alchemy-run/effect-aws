@@ -102,7 +102,15 @@ export const HttpPayload = () => makeAnnotation(httpPayloadSymbol, true);
 
 /** smithy.api#httpLabel - Bind member to a URI label (path parameter) */
 export const httpLabelSymbol = Symbol.for("itty-aws/http-label");
-export const HttpLabel = () => makeAnnotation(httpLabelSymbol, true);
+/**
+ * HttpLabel trait - binds a member to a URI label (path parameter).
+ * @param labelName - Optional. The name to use in the URI template. If provided, this name
+ *                    is used for path substitution instead of the encoded property name.
+ *                    This is needed when the property also has a JsonName that differs
+ *                    from the URI template placeholder.
+ */
+export const HttpLabel = (labelName?: string) =>
+  makeAnnotation(httpLabelSymbol, labelName ?? true);
 
 /** smithy.api#httpQuery - Bind member to a query string parameter */
 export const httpQuerySymbol = Symbol.for("itty-aws/http-query");
@@ -1008,6 +1016,17 @@ export const getHttpHeader = (
 /** Check if property has httpLabel annotation */
 export const hasHttpLabel = (prop: AST.PropertySignature): boolean =>
   hasPropAnnotation(prop, httpLabelSymbol);
+
+/**
+ * Get the httpLabel name from a property, if specified.
+ * Returns the explicit label name if set, or undefined if just `true`.
+ */
+export const getHttpLabelName = (
+  prop: AST.PropertySignature,
+): string | undefined => {
+  const value = getPropAnnotation<string | boolean>(prop, httpLabelSymbol);
+  return typeof value === "string" ? value : undefined;
+};
 
 /** Get httpQuery annotation value from property */
 export const getHttpQuery = (prop: AST.PropertySignature): string | undefined =>

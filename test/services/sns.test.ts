@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Effect } from "effect";
 import {
   // Permissions
@@ -48,29 +49,17 @@ test(
     Effect.gen(function* () {
       // Get topic attributes
       const attributes = yield* getTopicAttributes({ TopicArn: topicArn });
-      if (!attributes.Attributes) {
-        return yield* Effect.fail(
-          new Error("Expected Attributes to be present"),
-        );
-      }
+      expect(attributes.Attributes).toBeDefined();
 
       // TopicArn should match
-      if (attributes.Attributes.TopicArn !== topicArn) {
-        return yield* Effect.fail(
-          new Error(
-            `TopicArn mismatch: expected ${topicArn}, got ${attributes.Attributes.TopicArn}`,
-          ),
-        );
-      }
+      expect(attributes.Attributes!.TopicArn).toEqual(topicArn);
 
       // List topics and verify our topic is in the list
       const listResult = yield* listTopics({});
       const foundTopic = listResult.Topics?.find(
         (t) => t.TopicArn === topicArn,
       );
-      if (!foundTopic) {
-        return yield* Effect.fail(new Error("Topic not found in list"));
-      }
+      expect(foundTopic).toBeDefined();
     }),
   ),
 );
@@ -88,13 +77,7 @@ test(
 
       // Verify the attribute was set
       const attributes = yield* getTopicAttributes({ TopicArn: topicArn });
-      if (attributes.Attributes?.DisplayName !== "My Test Topic") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected DisplayName='My Test Topic', got '${attributes.Attributes?.DisplayName}'`,
-          ),
-        );
-      }
+      expect(attributes.Attributes?.DisplayName).toEqual("My Test Topic");
 
       // Update the attribute
       yield* setTopicAttributes({
@@ -107,13 +90,9 @@ test(
       const updatedAttributes = yield* getTopicAttributes({
         TopicArn: topicArn,
       });
-      if (updatedAttributes.Attributes?.DisplayName !== "Updated Topic Name") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected DisplayName='Updated Topic Name', got '${updatedAttributes.Attributes?.DisplayName}'`,
-          ),
-        );
-      }
+      expect(updatedAttributes.Attributes?.DisplayName).toEqual(
+        "Updated Topic Name",
+      );
     }),
   ),
 );
@@ -138,18 +117,10 @@ test(
 
       // List and verify tags
       const tags = yield* listTagsForResource({ ResourceArn: topicArn });
-      if (tags.Tags?.length !== 3) {
-        return yield* Effect.fail(
-          new Error(`Expected 3 tags, got ${tags.Tags?.length}`),
-        );
-      }
+      expect(tags.Tags?.length).toEqual(3);
 
       const envTag = tags.Tags?.find((t) => t.Key === "Environment");
-      if (envTag?.Value !== "Test") {
-        return yield* Effect.fail(
-          new Error(`Expected Environment=Test, got ${envTag?.Value}`),
-        );
-      }
+      expect(envTag?.Value).toEqual("Test");
 
       // Remove one tag
       yield* untagResource({
@@ -159,20 +130,10 @@ test(
 
       // Verify removal
       const updatedTags = yield* listTagsForResource({ ResourceArn: topicArn });
-      if (updatedTags.Tags?.length !== 2) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 2 tags after removal, got ${updatedTags.Tags?.length}`,
-          ),
-        );
-      }
+      expect(updatedTags.Tags?.length).toEqual(2);
 
       const teamTag = updatedTags.Tags?.find((t) => t.Key === "Team");
-      if (teamTag) {
-        return yield* Effect.fail(
-          new Error("Team tag should have been removed"),
-        );
-      }
+      expect(teamTag).toBeUndefined();
 
       // Remove remaining tags
       yield* untagResource({
@@ -182,11 +143,9 @@ test(
 
       // Verify all tags removed
       const finalTags = yield* listTagsForResource({ ResourceArn: topicArn });
-      if (finalTags.Tags && finalTags.Tags.length > 0) {
-        return yield* Effect.fail(
-          new Error(`Expected 0 tags, got ${finalTags.Tags?.length}`),
-        );
-      }
+      expect(finalTags.Tags === undefined || finalTags.Tags.length === 0).toBe(
+        true,
+      );
     }),
   ),
 );
@@ -210,29 +169,18 @@ test(
       // In real AWS with HTTP, we get "pending confirmation" until endpoint confirms
       const subscriptionArn = subscribeResult.SubscriptionArn;
 
-      if (!subscriptionArn) {
-        return yield* Effect.fail(
-          new Error("Expected SubscriptionArn to be returned"),
-        );
-      }
+      expect(subscriptionArn).toBeDefined();
 
       // List subscriptions by topic
       const topicSubs = yield* listSubscriptionsByTopic({ TopicArn: topicArn });
-      if (!topicSubs.Subscriptions || topicSubs.Subscriptions.length === 0) {
-        return yield* Effect.fail(
-          new Error("Expected at least one subscription"),
-        );
-      }
+      expect(topicSubs.Subscriptions).toBeDefined();
+      expect(topicSubs.Subscriptions!.length).toBeGreaterThan(0);
 
       // Verify our subscription is in the list
       const foundSub = topicSubs.Subscriptions?.find(
         (s) => s.Endpoint === "https://example.com/sns-endpoint",
       );
-      if (!foundSub) {
-        return yield* Effect.fail(
-          new Error("Subscription not found in topic subscriptions"),
-        );
-      }
+      expect(foundSub).toBeDefined();
 
       // listSubscriptions is paginated and eventually consistent - just verify topic-level list works
       // Skip global listSubscriptions check as it may not include new subscriptions immediately
@@ -271,11 +219,7 @@ test(
         const foundSub = topicSubs.Subscriptions?.find(
           (s) => s.Endpoint === "https://example.com/sns-attrs-test",
         );
-        if (!foundSub) {
-          return yield* Effect.fail(
-            new Error("Subscription not found in topic subscriptions"),
-          );
-        }
+        expect(foundSub).toBeDefined();
         // Test passes - subscription created, just can't test attributes without confirmation
         return;
       }
@@ -285,11 +229,7 @@ test(
         SubscriptionArn: subscriptionArn,
       });
 
-      if (!attributes.Attributes) {
-        return yield* Effect.fail(
-          new Error("Expected Attributes to be present"),
-        );
-      }
+      expect(attributes.Attributes).toBeDefined();
 
       // Set RawMessageDelivery attribute (only works on confirmed HTTP/HTTPS/SQS/Lambda)
       yield* setSubscriptionAttributes({
@@ -303,13 +243,7 @@ test(
         SubscriptionArn: subscriptionArn,
       });
 
-      if (updatedAttributes.Attributes?.RawMessageDelivery !== "true") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected RawMessageDelivery=true, got ${updatedAttributes.Attributes?.RawMessageDelivery}`,
-          ),
-        );
-      }
+      expect(updatedAttributes.Attributes?.RawMessageDelivery).toEqual("true");
 
       // Cleanup - ignore errors since pending subscriptions can't be unsubscribed
       yield* unsubscribe({ SubscriptionArn: subscriptionArn }).pipe(
@@ -334,11 +268,7 @@ test(
         Subject: "Test Subject",
       });
 
-      if (!result.MessageId) {
-        return yield* Effect.fail(
-          new Error("Expected MessageId to be returned"),
-        );
-      }
+      expect(result.MessageId).toBeDefined();
     }),
   ),
 );
@@ -363,11 +293,7 @@ test(
         },
       });
 
-      if (!result.MessageId) {
-        return yield* Effect.fail(
-          new Error("Expected MessageId to be returned"),
-        );
-      }
+      expect(result.MessageId).toBeDefined();
     }),
   ),
 );
@@ -387,29 +313,18 @@ test(
       });
 
       // Check for successful entries
-      if (!result.Successful || result.Successful.length !== 3) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 3 successful messages, got ${result.Successful?.length}`,
-          ),
-        );
-      }
+      expect(result.Successful).toBeDefined();
+      expect(result.Successful!.length).toEqual(3);
 
       // Verify each message has a MessageId
-      for (const entry of result.Successful) {
-        if (!entry.MessageId) {
-          return yield* Effect.fail(
-            new Error(`Message ${entry.Id} missing MessageId`),
-          );
-        }
+      for (const entry of result.Successful!) {
+        expect(entry.MessageId).toBeDefined();
       }
 
       // Should have no failed entries
-      if (result.Failed && result.Failed.length > 0) {
-        return yield* Effect.fail(
-          new Error(`Expected no failures, got ${result.Failed.length}`),
-        );
-      }
+      expect(result.Failed === undefined || result.Failed.length === 0).toBe(
+        true,
+      );
     }),
   ),
 );
@@ -431,11 +346,7 @@ test(
         MessageStructure: "json",
       });
 
-      if (!result.MessageId) {
-        return yield* Effect.fail(
-          new Error("Expected MessageId to be returned"),
-        );
-      }
+      expect(result.MessageId).toBeDefined();
     }),
   ),
 );
@@ -463,19 +374,13 @@ test(
       // Verify permission was added by checking topic attributes
       const attributes = yield* getTopicAttributes({ TopicArn: topicArn });
       const policy = attributes.Attributes?.Policy;
-      if (!policy) {
-        return yield* Effect.fail(new Error("Expected Policy to be present"));
-      }
+      expect(policy).toBeDefined();
 
-      const parsedPolicy = JSON.parse(policy);
+      const parsedPolicy = JSON.parse(policy!);
       const statement = parsedPolicy.Statement?.find(
         (s: { Sid?: string }) => s.Sid === "TestPermission",
       );
-      if (!statement) {
-        return yield* Effect.fail(
-          new Error("TestPermission statement not found in policy"),
-        );
-      }
+      expect(statement).toBeDefined();
 
       // Remove permission
       yield* removePermission({
@@ -493,11 +398,7 @@ test(
         const removedStatement = parsedUpdatedPolicy.Statement?.find(
           (s: { Sid?: string }) => s.Sid === "TestPermission",
         );
-        if (removedStatement) {
-          return yield* Effect.fail(
-            new Error("TestPermission statement should have been removed"),
-          );
-        }
+        expect(removedStatement).toBeUndefined();
       }
     }),
   ),
@@ -527,13 +428,9 @@ test(
         ReturnSubscriptionArn: true,
       });
 
-      if (!subscribeResult.SubscriptionArn) {
-        return yield* Effect.fail(
-          new Error("Expected SubscriptionArn to be returned"),
-        );
-      }
+      expect(subscribeResult.SubscriptionArn).toBeDefined();
 
-      const subscriptionArn = subscribeResult.SubscriptionArn;
+      const subscriptionArn = subscribeResult.SubscriptionArn!;
 
       // Verify subscription was created (it may be pending confirmation)
       const subs = yield* listSubscriptionsByTopic({ TopicArn: topicArn });
@@ -541,11 +438,7 @@ test(
         (s) => s.Protocol === "lambda" && s.Endpoint === lambdaArn,
       );
 
-      if (!lambdaSub) {
-        return yield* Effect.fail(
-          new Error("Lambda subscription not found in topic subscriptions"),
-        );
-      }
+      expect(lambdaSub).toBeDefined();
 
       // Publish a message to the topic (would trigger Lambda if subscription was confirmed)
       const publishResult = yield* publish({
@@ -559,9 +452,7 @@ test(
         },
       });
 
-      if (!publishResult.MessageId) {
-        return yield* Effect.fail(new Error("Expected MessageId from publish"));
-      }
+      expect(publishResult.MessageId).toBeDefined();
 
       // Cleanup: only unsubscribe if confirmed (not pending)
       // In real AWS without actual Lambda permissions, subscriptions will be pending
@@ -604,13 +495,9 @@ test(
         },
       });
 
-      if (!subscribeResult.SubscriptionArn) {
-        return yield* Effect.fail(
-          new Error("Expected SubscriptionArn to be returned"),
-        );
-      }
+      expect(subscribeResult.SubscriptionArn).toBeDefined();
 
-      const subscriptionArn = subscribeResult.SubscriptionArn;
+      const subscriptionArn = subscribeResult.SubscriptionArn!;
 
       // Verify subscription was created (it may be pending confirmation)
       const subs = yield* listSubscriptionsByTopic({ TopicArn: topicArn });
@@ -618,11 +505,7 @@ test(
         (s) => s.Protocol === "sqs" && s.Endpoint === sqsArn,
       );
 
-      if (!sqsSub) {
-        return yield* Effect.fail(
-          new Error("SQS subscription not found in topic subscriptions"),
-        );
-      }
+      expect(sqsSub).toBeDefined();
 
       // If we got a valid subscription ARN (not pending), check attributes
       if (
@@ -635,13 +518,7 @@ test(
         });
 
         // RawMessageDelivery should be set
-        if (attrs.Attributes?.RawMessageDelivery !== "true") {
-          return yield* Effect.fail(
-            new Error(
-              `Expected RawMessageDelivery=true, got ${attrs.Attributes?.RawMessageDelivery}`,
-            ),
-          );
-        }
+        expect(attrs.Attributes?.RawMessageDelivery).toEqual("true");
 
         // Cleanup - ignore errors since pending subscriptions can't be unsubscribed
         yield* unsubscribe({ SubscriptionArn: subscriptionArn }).pipe(
@@ -699,33 +576,17 @@ test(
       ]);
 
       // Verify attributes
-      if (attributes.Attributes?.DisplayName !== "Combined Test Topic") {
-        return yield* Effect.fail(new Error("DisplayName not set correctly"));
-      }
+      expect(attributes.Attributes?.DisplayName).toEqual("Combined Test Topic");
 
       // Verify tags
-      if (tags.Tags?.length !== 2) {
-        return yield* Effect.fail(
-          new Error(`Expected 2 tags, got ${tags.Tags?.length}`),
-        );
-      }
+      expect(tags.Tags?.length).toEqual(2);
 
       // Verify subscription exists (may be pending in real AWS)
-      if (
-        !subscriptions.Subscriptions ||
-        subscriptions.Subscriptions.length === 0
-      ) {
-        return yield* Effect.fail(
-          new Error("Expected at least one subscription"),
-        );
-      }
+      expect(subscriptions.Subscriptions).toBeDefined();
+      expect(subscriptions.Subscriptions!.length).toBeGreaterThan(0);
 
       // Verify publish result
-      if (!publishResult.MessageId) {
-        return yield* Effect.fail(
-          new Error("Publish should have returned MessageId"),
-        );
-      }
+      expect(publishResult.MessageId).toBeDefined();
 
       // Cleanup subscription if possible - ignore errors for pending subscriptions
       const subscriptionArn = subscribeResult.SubscriptionArn;

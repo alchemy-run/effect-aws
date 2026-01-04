@@ -16,6 +16,7 @@
  * IMPORTANT: These tests require real AWS credentials (not LocalStack).
  */
 
+import { expect } from "@effect/vitest";
 import { Effect, Stream } from "effect";
 import {
   AudioEvent,
@@ -122,22 +123,14 @@ if (!isLocalStack) {
 
       // We expect at least one event (even if it's an error about signing)
       // This proves the bi-directional event stream infrastructure works
-      if (transcriptEvents.length === 0) {
-        return yield* Effect.fail(
-          new Error("Expected at least one response event"),
-        );
-      }
+      expect(transcriptEvents.length).toBeGreaterThan(0);
 
       // The event should be properly parsed as a typed object (not raw bytes)
       const firstEvent = transcriptEvents[0] as Record<string, unknown>;
       const eventType = Object.keys(firstEvent)[0];
 
       // Verify it's a proper object structure (parsed, not raw Uint8Array)
-      if (firstEvent[eventType] instanceof Uint8Array) {
-        return yield* Effect.fail(
-          new Error("Event was not properly parsed - still raw bytes"),
-        );
-      }
+      expect(firstEvent[eventType] instanceof Uint8Array).toBe(false);
     }),
   );
 

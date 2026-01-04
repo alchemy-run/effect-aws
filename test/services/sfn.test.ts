@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Console, Effect, Schedule } from "effect";
 import { afterAll, beforeAll } from "vitest";
 import { createRole, deleteRole } from "../../src/services/iam.ts";
@@ -112,58 +113,39 @@ test(
     });
 
     const activityArn = createResult.activityArn;
-    if (!activityArn) {
-      return yield* Effect.fail(new Error("No activityArn in create result"));
-    }
+    expect(activityArn).toBeDefined();
 
     try {
       // Describe activity
       const describeResult = yield* describeActivity({
-        activityArn: activityArn,
+        activityArn: activityArn!,
       });
 
-      if (describeResult.name !== activityName) {
-        return yield* Effect.fail(
-          new Error(
-            `Activity name mismatch: expected ${activityName}, got ${describeResult.name}`,
-          ),
-        );
-      }
-
-      if (!describeResult.creationDate) {
-        return yield* Effect.fail(
-          new Error("Expected creationDate in describe result"),
-        );
-      }
+      expect(describeResult.name).toEqual(activityName);
+      expect(describeResult.creationDate).toBeDefined();
 
       // List activities and verify our activity is in the list
       const listResult = yield* listActivities({});
       const foundActivity = listResult.activities?.find(
         (a) => a.activityArn === activityArn,
       );
-      if (!foundActivity) {
-        return yield* Effect.fail(new Error("Activity not found in list"));
-      }
+      expect(foundActivity).toBeDefined();
 
       // Delete activity
-      yield* deleteActivity({ activityArn: activityArn });
+      yield* deleteActivity({ activityArn: activityArn! });
 
       // Verify activity is gone by trying to describe (should fail)
       const describeAfterDelete = yield* describeActivity({
-        activityArn: activityArn,
+        activityArn: activityArn!,
       }).pipe(
         Effect.map(() => "success" as const),
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
 
-      if (describeAfterDelete !== "error") {
-        return yield* Effect.fail(
-          new Error("Activity should not exist after deletion"),
-        );
-      }
+      expect(describeAfterDelete).toEqual("error");
     } finally {
       // Clean up if not already deleted
-      yield* deleteActivity({ activityArn: activityArn }).pipe(Effect.ignore);
+      yield* deleteActivity({ activityArn: activityArn! }).pipe(Effect.ignore);
     }
   }),
 );
@@ -186,56 +168,35 @@ test(
     });
 
     const stateMachineArn = createResult.stateMachineArn;
-    if (!stateMachineArn) {
-      return yield* Effect.fail(
-        new Error("No stateMachineArn in create result"),
-      );
-    }
+    expect(stateMachineArn).toBeDefined();
 
     try {
       // Describe state machine
       const describeResult = yield* describeStateMachine({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
       });
 
-      if (describeResult.name !== stateMachineName) {
-        return yield* Effect.fail(
-          new Error(
-            `State machine name mismatch: expected ${stateMachineName}, got ${describeResult.name}`,
-          ),
-        );
-      }
-
-      if (describeResult.status !== "ACTIVE") {
-        return yield* Effect.fail(
-          new Error(`Expected status=ACTIVE, got ${describeResult.status}`),
-        );
-      }
+      expect(describeResult.name).toEqual(stateMachineName);
+      expect(describeResult.status).toEqual("ACTIVE");
 
       // Verify definition matches
       const returnedDef = JSON.parse(describeResult.definition || "{}");
       const expectedDef = JSON.parse(PASS_STATE_MACHINE_DEFINITION);
-      if (returnedDef.StartAt !== expectedDef.StartAt) {
-        return yield* Effect.fail(
-          new Error("State machine definition StartAt mismatch"),
-        );
-      }
+      expect(returnedDef.StartAt).toEqual(expectedDef.StartAt);
 
       // List state machines and verify ours is in the list
       const listResult = yield* listStateMachines({});
       const foundSm = listResult.stateMachines?.find(
         (sm) => sm.stateMachineArn === stateMachineArn,
       );
-      if (!foundSm) {
-        return yield* Effect.fail(new Error("State machine not found in list"));
-      }
+      expect(foundSm).toBeDefined();
 
       // Delete state machine
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn });
+      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! });
 
       // Verify state machine is gone or in DELETING status
       yield* describeStateMachine({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
       }).pipe(
         Effect.flatMap((result) =>
           result.status === "DELETING"
@@ -251,7 +212,7 @@ test(
       );
     } finally {
       // Clean up if not already deleted
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn }).pipe(
+      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
         Effect.ignore,
       );
     }
@@ -276,89 +237,56 @@ test(
     });
 
     const stateMachineArn = createSmResult.stateMachineArn;
-    if (!stateMachineArn) {
-      return yield* Effect.fail(new Error("No stateMachineArn"));
-    }
+    expect(stateMachineArn).toBeDefined();
 
     try {
       const inputData = JSON.stringify({ message: "Hello from itty-aws" });
 
       // Start execution (let AWS generate a unique name)
       const startResult = yield* startExecution({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
         input: inputData,
       });
 
       const executionArn = startResult.executionArn;
-      if (!executionArn) {
-        return yield* Effect.fail(new Error("No executionArn in start result"));
-      }
+      expect(executionArn).toBeDefined();
 
       // Describe execution
       const describeResult = yield* describeExecution({
-        executionArn: executionArn,
+        executionArn: executionArn!,
       });
 
-      if (!describeResult.name) {
-        return yield* Effect.fail(
-          new Error("Expected execution name in describe result"),
-        );
-      }
-
-      if (describeResult.input !== inputData) {
-        return yield* Effect.fail(
-          new Error(
-            `Execution input mismatch: expected ${inputData}, got ${describeResult.input}`,
-          ),
-        );
-      }
+      expect(describeResult.name).toBeDefined();
+      expect(describeResult.input).toEqual(inputData);
 
       // Status should be RUNNING or SUCCEEDED (pass state is fast)
       const status = describeResult.status;
-      if (status !== "RUNNING" && status !== "SUCCEEDED") {
-        return yield* Effect.fail(
-          new Error(`Expected status=RUNNING or SUCCEEDED, got ${status}`),
-        );
-      }
+      expect(["RUNNING", "SUCCEEDED"]).toContain(status);
 
       // List executions
       const listResult = yield* listExecutions({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
       });
 
       const foundExec = listResult.executions?.find(
         (e) => e.executionArn === executionArn,
       );
-      if (!foundExec) {
-        return yield* Effect.fail(new Error("Execution not found in list"));
-      }
+      expect(foundExec).toBeDefined();
 
       // Wait for execution to complete (pass state is fast)
       yield* Effect.sleep("2 seconds");
 
       // Verify execution succeeded
       const finalDescribe = yield* describeExecution({
-        executionArn: executionArn,
+        executionArn: executionArn!,
       });
 
-      if (finalDescribe.status !== "SUCCEEDED") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected final status=SUCCEEDED, got ${finalDescribe.status}`,
-          ),
-        );
-      }
+      expect(finalDescribe.status).toEqual("SUCCEEDED");
 
       // Output should match input for pass state
-      if (finalDescribe.output !== inputData) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected output=${inputData}, got ${finalDescribe.output}`,
-          ),
-        );
-      }
+      expect(finalDescribe.output).toEqual(inputData);
     } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn }).pipe(
+      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
         Effect.ignore,
       );
     }
@@ -379,36 +307,28 @@ test(
     });
 
     const stateMachineArn = createSmResult.stateMachineArn;
-    if (!stateMachineArn) {
-      return yield* Effect.fail(new Error("No stateMachineArn"));
-    }
+    expect(stateMachineArn).toBeDefined();
 
     try {
       // Start execution
       const startResult = yield* startExecution({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
         input: JSON.stringify({}),
       });
 
       const executionArn = startResult.executionArn;
-      if (!executionArn) {
-        return yield* Effect.fail(new Error("No executionArn"));
-      }
+      expect(executionArn).toBeDefined();
 
       // Verify execution is running
       const runningDescribe = yield* describeExecution({
-        executionArn: executionArn,
+        executionArn: executionArn!,
       });
 
-      if (runningDescribe.status !== "RUNNING") {
-        return yield* Effect.fail(
-          new Error(`Expected status=RUNNING, got ${runningDescribe.status}`),
-        );
-      }
+      expect(runningDescribe.status).toEqual("RUNNING");
 
       // Stop execution
       yield* stopExecution({
-        executionArn: executionArn,
+        executionArn: executionArn!,
         error: "TestError",
         cause: "Stopped by itty-aws test",
       });
@@ -418,18 +338,12 @@ test(
 
       // Verify execution is stopped (ABORTED)
       const stoppedDescribe = yield* describeExecution({
-        executionArn: executionArn,
+        executionArn: executionArn!,
       });
 
-      if (stoppedDescribe.status !== "ABORTED") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected status=ABORTED after stop, got ${stoppedDescribe.status}`,
-          ),
-        );
-      }
+      expect(stoppedDescribe.status).toEqual("ABORTED");
     } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn }).pipe(
+      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
         Effect.ignore,
       );
     }
@@ -454,24 +368,22 @@ test(
     });
 
     const stateMachineArn = createSmResult.stateMachineArn;
-    if (!stateMachineArn) {
-      return yield* Effect.fail(new Error("No stateMachineArn"));
-    }
+    expect(stateMachineArn).toBeDefined();
 
     try {
       // Start 3 executions in parallel (let AWS generate unique names)
       const executions = yield* Effect.all(
         [
           startExecution({
-            stateMachineArn: stateMachineArn,
+            stateMachineArn: stateMachineArn!,
             input: JSON.stringify({ id: 1 }),
           }),
           startExecution({
-            stateMachineArn: stateMachineArn,
+            stateMachineArn: stateMachineArn!,
             input: JSON.stringify({ id: 2 }),
           }),
           startExecution({
-            stateMachineArn: stateMachineArn,
+            stateMachineArn: stateMachineArn!,
             input: JSON.stringify({ id: 3 }),
           }),
         ],
@@ -480,11 +392,7 @@ test(
 
       // Verify all have execution ARNs
       for (let i = 0; i < executions.length; i++) {
-        if (!executions[i].executionArn) {
-          return yield* Effect.fail(
-            new Error(`Execution ${i + 1} missing executionArn`),
-          );
-        }
+        expect(executions[i].executionArn).toBeDefined();
       }
 
       // Wait for executions to complete
@@ -495,29 +403,18 @@ test(
         const describe = yield* describeExecution({
           executionArn: executions[i].executionArn!,
         });
-        if (describe.status !== "SUCCEEDED") {
-          return yield* Effect.fail(
-            new Error(
-              `Execution ${i + 1} status: expected SUCCEEDED, got ${describe.status}`,
-            ),
-          );
-        }
+        expect(describe.status).toEqual("SUCCEEDED");
       }
 
       // List executions and verify count
       const listResult = yield* listExecutions({
-        stateMachineArn: stateMachineArn,
+        stateMachineArn: stateMachineArn!,
       });
 
-      if (!listResult.executions || listResult.executions.length < 3) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected at least 3 executions, got ${listResult.executions?.length ?? 0}`,
-          ),
-        );
-      }
+      expect(listResult.executions).toBeDefined();
+      expect(listResult.executions!.length >= 3).toBe(true);
     } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn }).pipe(
+      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
         Effect.ignore,
       );
     }

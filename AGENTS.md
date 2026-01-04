@@ -39,6 +39,31 @@ Prefer const arrow functions over function declarations. Avoid return statements
 Commits:
 Use conventional commits (e.g. `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`)
 
+# Testing
+
+Use `import { expect } from "@effect/vitest"` for assertions in service tests. Do NOT use `Effect.fail(new Error(...))` for assertions - use `expect` from `@effect/vitest` instead.
+
+Example of the correct pattern:
+```typescript
+import { expect } from "@effect/vitest";
+import { Effect } from "effect";
+import { test } from "../test.ts";
+
+test("example test", Effect.gen(function* () {
+  const result = yield* someOperation();
+  
+  // ✅ Good - use expect for assertions
+  expect(result.value).toBeDefined();
+  expect(result.count).toEqual(3);
+  expect(result.name).toBe("expected-name");
+  
+  // ❌ Bad - don't use Effect.fail for assertions
+  // if (!result.value) {
+  //   return yield* Effect.fail(new Error("Expected value to be defined"));
+  // }
+}));
+```
+
 # Finding Missing Errors
 
 Use the `find:errors` script to discover undocumented or incorrectly named error codes in AWS APIs. It uses an AI agent to systematically probe AWS operations with various inputs and automatically records any newly discovered errors.

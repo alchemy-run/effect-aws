@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Effect, Schedule } from "effect";
 import { beforeAll } from "vitest";
 import {
@@ -77,23 +78,13 @@ test(
     });
 
     const keyId = createResult.KeyMetadata?.KeyId;
-    if (!keyId) {
-      return yield* Effect.fail(new Error("No KeyId in create result"));
-    }
+    expect(keyId).toBeDefined();
 
     try {
       // Describe the key
-      const describeResult = yield* describeKey({ KeyId: keyId });
-      if (describeResult.KeyMetadata?.KeyId !== keyId) {
-        return yield* Effect.fail(new Error("KeyId mismatch in describe"));
-      }
-      if (describeResult.KeyMetadata?.KeyState !== "Enabled") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected KeyState=Enabled, got ${describeResult.KeyMetadata?.KeyState}`,
-          ),
-        );
-      }
+      const describeResult = yield* describeKey({ KeyId: keyId! });
+      expect(describeResult.KeyMetadata?.KeyId).toEqual(keyId);
+      expect(describeResult.KeyMetadata?.KeyState).toEqual("Enabled");
 
       // List keys and verify our key is in the list (paginate through all)
       let foundKey = false;
@@ -107,13 +98,11 @@ test(
         marker = listResult.Truncated ? listResult.NextMarker : undefined;
       } while (marker);
 
-      if (!foundKey) {
-        return yield* Effect.fail(new Error("Key not found in list"));
-      }
+      expect(foundKey).toBe(true);
     } finally {
       // Schedule key deletion (minimum 7 days in AWS, but LocalStack may allow less)
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
     }
@@ -131,33 +120,25 @@ test(
     });
 
     const keyId = createResult.KeyMetadata?.KeyId;
-    if (!keyId) {
-      return yield* Effect.fail(new Error("No KeyId in create result"));
-    }
+    expect(keyId).toBeDefined();
 
     try {
       // Schedule deletion
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       });
 
       // Verify key is pending deletion
-      const describePending = yield* describeKey({ KeyId: keyId });
-      if (describePending.KeyMetadata?.KeyState !== "PendingDeletion") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected KeyState=PendingDeletion, got ${describePending.KeyMetadata?.KeyState}`,
-          ),
-        );
-      }
+      const describePending = yield* describeKey({ KeyId: keyId! });
+      expect(describePending.KeyMetadata?.KeyState).toEqual("PendingDeletion");
 
       // Cancel deletion
-      yield* cancelKeyDeletion({ KeyId: keyId });
+      yield* cancelKeyDeletion({ KeyId: keyId! });
 
       // Wait for key state to transition from PendingDeletion to Disabled/Enabled
       // AWS may take a moment to update the state after cancellation
-      yield* describeKey({ KeyId: keyId }).pipe(
+      yield* describeKey({ KeyId: keyId! }).pipe(
         Effect.flatMap((result) => {
           const state = result.KeyMetadata?.KeyState;
           if (state === "Disabled" || state === "Enabled") {
@@ -178,7 +159,7 @@ test(
     } finally {
       // Clean up - schedule deletion again
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
     }
@@ -200,9 +181,7 @@ test(
     });
 
     const keyId = createKeyResult.KeyMetadata?.KeyId;
-    if (!keyId) {
-      return yield* Effect.fail(new Error("No KeyId in create result"));
-    }
+    expect(keyId).toBeDefined();
 
     const aliasName = TEST_ALIAS;
 
@@ -210,48 +189,36 @@ test(
       // Create alias
       yield* createAlias({
         AliasName: aliasName,
-        TargetKeyId: keyId,
+        TargetKeyId: keyId!,
       });
 
       // List aliases and verify our alias is there
-      const listResult = yield* listAliases({ KeyId: keyId });
+      const listResult = yield* listAliases({ KeyId: keyId! });
       const foundAlias = listResult.Aliases?.find(
         (a) => a.AliasName === aliasName,
       );
-      if (!foundAlias) {
-        return yield* Effect.fail(new Error("Alias not found in list"));
-      }
-      if (foundAlias.TargetKeyId !== keyId) {
-        return yield* Effect.fail(new Error("Alias TargetKeyId mismatch"));
-      }
+      expect(foundAlias).toBeDefined();
+      expect(foundAlias?.TargetKeyId).toEqual(keyId);
 
       // Can describe key by alias
       const describeByAlias = yield* describeKey({ KeyId: aliasName });
-      if (describeByAlias.KeyMetadata?.KeyId !== keyId) {
-        return yield* Effect.fail(
-          new Error("Could not describe key by alias name"),
-        );
-      }
+      expect(describeByAlias.KeyMetadata?.KeyId).toEqual(keyId);
 
       // Delete alias
       yield* deleteAlias({ AliasName: aliasName });
 
       // Verify alias is gone
-      const listAfterDelete = yield* listAliases({ KeyId: keyId });
+      const listAfterDelete = yield* listAliases({ KeyId: keyId! });
       const aliasAfterDelete = listAfterDelete.Aliases?.find(
         (a) => a.AliasName === aliasName,
       );
-      if (aliasAfterDelete) {
-        return yield* Effect.fail(
-          new Error("Alias should not exist after deletion"),
-        );
-      }
+      expect(aliasAfterDelete).toBeUndefined();
     } finally {
       // Clean up alias if it still exists
       yield* deleteAlias({ AliasName: aliasName }).pipe(Effect.ignore);
       // Clean up key
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
     }
@@ -274,9 +241,7 @@ test(
     });
 
     const keyId = createResult.KeyMetadata?.KeyId;
-    if (!keyId) {
-      return yield* Effect.fail(new Error("No KeyId in create result"));
-    }
+    expect(keyId).toBeDefined();
 
     try {
       // Test data
@@ -284,50 +249,34 @@ test(
 
       // Encrypt
       const encryptResult = yield* encrypt({
-        KeyId: keyId,
+        KeyId: keyId!,
         Plaintext: plaintext,
       });
 
-      if (!encryptResult.CiphertextBlob) {
-        return yield* Effect.fail(
-          new Error("No CiphertextBlob in encrypt result"),
-        );
-      }
+      expect(encryptResult.CiphertextBlob).toBeDefined();
 
       // Verify ciphertext is different from plaintext
       const ciphertextStr = new TextDecoder().decode(
-        encryptResult.CiphertextBlob,
+        encryptResult.CiphertextBlob!,
       );
       const plaintextStr = new TextDecoder().decode(plaintext);
-      if (ciphertextStr === plaintextStr) {
-        return yield* Effect.fail(
-          new Error("Ciphertext should be different from plaintext"),
-        );
-      }
+      expect(ciphertextStr).not.toEqual(plaintextStr);
 
       // Decrypt
       const decryptResult = yield* decrypt({
-        KeyId: keyId,
-        CiphertextBlob: encryptResult.CiphertextBlob,
+        KeyId: keyId!,
+        CiphertextBlob: encryptResult.CiphertextBlob!,
       });
 
-      if (!decryptResult.Plaintext) {
-        return yield* Effect.fail(new Error("No Plaintext in decrypt result"));
-      }
+      expect(decryptResult.Plaintext).toBeDefined();
 
       // Verify decrypted data matches original
-      const decryptedStr = new TextDecoder().decode(decryptResult.Plaintext);
-      if (decryptedStr !== plaintextStr) {
-        return yield* Effect.fail(
-          new Error(
-            `Decrypted text mismatch: expected "${plaintextStr}", got "${decryptedStr}"`,
-          ),
-        );
-      }
+      const decryptedStr = new TextDecoder().decode(decryptResult.Plaintext!);
+      expect(decryptedStr).toEqual(plaintextStr);
     } finally {
       // Clean up key
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
     }
@@ -345,9 +294,7 @@ test(
     });
 
     const keyId = createResult.KeyMetadata?.KeyId;
-    if (!keyId) {
-      return yield* Effect.fail(new Error("No KeyId in create result"));
-    }
+    expect(keyId).toBeDefined();
 
     try {
       const plaintext = new TextEncoder().encode("Secret data");
@@ -358,37 +305,31 @@ test(
 
       // Encrypt with context
       const encryptResult = yield* encrypt({
-        KeyId: keyId,
+        KeyId: keyId!,
         Plaintext: plaintext,
         EncryptionContext: encryptionContext,
       });
 
-      if (!encryptResult.CiphertextBlob) {
-        return yield* Effect.fail(new Error("No CiphertextBlob"));
-      }
+      expect(encryptResult.CiphertextBlob).toBeDefined();
 
       // Decrypt with same context should succeed
       const decryptResult = yield* decrypt({
-        KeyId: keyId,
-        CiphertextBlob: encryptResult.CiphertextBlob,
+        KeyId: keyId!,
+        CiphertextBlob: encryptResult.CiphertextBlob!,
         EncryptionContext: encryptionContext,
       });
 
-      if (!decryptResult.Plaintext) {
-        return yield* Effect.fail(new Error("Decrypt with context failed"));
-      }
+      expect(decryptResult.Plaintext).toBeDefined();
 
       // Verify content
-      const decryptedStr = new TextDecoder().decode(decryptResult.Plaintext);
+      const decryptedStr = new TextDecoder().decode(decryptResult.Plaintext!);
       const originalStr = new TextDecoder().decode(plaintext);
-      if (decryptedStr !== originalStr) {
-        return yield* Effect.fail(new Error("Decrypted content mismatch"));
-      }
+      expect(decryptedStr).toEqual(originalStr);
 
       // Decrypt with wrong context should fail
       const wrongContextResult = yield* decrypt({
-        KeyId: keyId,
-        CiphertextBlob: encryptResult.CiphertextBlob,
+        KeyId: keyId!,
+        CiphertextBlob: encryptResult.CiphertextBlob!,
         EncryptionContext: {
           purpose: "wrong",
           environment: "wrong",
@@ -398,14 +339,10 @@ test(
         Effect.catchAll(() => Effect.succeed("error" as const)),
       );
 
-      if (wrongContextResult !== "error") {
-        return yield* Effect.fail(
-          new Error("Decrypt with wrong context should have failed"),
-        );
-      }
+      expect(wrongContextResult).toEqual("error");
     } finally {
       yield* scheduleKeyDeletion({
-        KeyId: keyId,
+        KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
     }

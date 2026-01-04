@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Data, Effect, Schedule, Stream } from "effect";
 import {
   createStream,
@@ -153,25 +154,12 @@ test(
       const foundStream = listResult.StreamNames?.find(
         (name) => name === streamName,
       );
-      if (!foundStream) {
-        return yield* Effect.fail(new Error("Stream not found in list"));
-      }
+      expect(foundStream).toBeDefined();
 
       // Describe stream
       const describeResult = yield* describeStream({ StreamName: streamName });
-      if (describeResult.StreamDescription?.StreamName !== streamName) {
-        return yield* Effect.fail(
-          new Error("Stream name mismatch in describe result"),
-        );
-      }
-
-      if (describeResult.StreamDescription?.StreamStatus !== "ACTIVE") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected StreamStatus=ACTIVE, got ${describeResult.StreamDescription?.StreamStatus}`,
-          ),
-        );
-      }
+      expect(describeResult.StreamDescription?.StreamName).toEqual(streamName);
+      expect(describeResult.StreamDescription?.StreamStatus).toEqual("ACTIVE");
     }),
   ),
 );
@@ -198,9 +186,7 @@ test(
         }),
       );
 
-      if (!putResult.ShardId) {
-        return yield* Effect.fail(new Error("No ShardId in put result"));
-      }
+      expect(putResult.ShardId).toBeDefined();
 
       // List shards to get the shard ID (with retry for eventual consistency)
       const shardsResult = yield* listShards({ StreamName: streamName }).pipe(
@@ -212,20 +198,16 @@ test(
         }),
       );
       const shardId = shardsResult.Shards?.[0]?.ShardId;
-      if (!shardId) {
-        return yield* Effect.fail(new Error("No shards found"));
-      }
+      expect(shardId).toBeDefined();
 
       // Get shard iterator
       const iteratorResult = yield* getShardIterator({
         StreamName: streamName,
-        ShardId: shardId,
+        ShardId: shardId!,
         ShardIteratorType: "TRIM_HORIZON",
       });
 
-      if (!iteratorResult.ShardIterator) {
-        return yield* Effect.fail(new Error("No shard iterator returned"));
-      }
+      expect(iteratorResult.ShardIterator).toBeDefined();
 
       // Get records (may need retry for record to appear)
       const recordsResult = yield* Effect.gen(function* () {
@@ -246,9 +228,7 @@ test(
 
       // Verify data matches
       const record = recordsResult.Records![0];
-      if (!record.Data) {
-        return yield* Effect.fail(new Error("Record has no data"));
-      }
+      expect(record.Data).toBeDefined();
     }),
   ),
 );
@@ -267,9 +247,7 @@ test(
       // Get stream ARN
       const describeResult = yield* describeStream({ StreamName: streamName });
       const streamArn = describeResult.StreamDescription?.StreamARN;
-      if (!streamArn) {
-        return yield* Effect.fail(new Error("No stream ARN found"));
-      }
+      expect(streamArn).toBeDefined();
 
       // Put some records into the stream BEFORE subscribing
       const testRecords = [
@@ -299,7 +277,7 @@ test(
       // Register a stream consumer (required for SubscribeToShard)
       const consumerName = "test-consumer";
       const registerResult = yield* registerStreamConsumer({
-        StreamARN: streamArn,
+        StreamARN: streamArn!,
         ConsumerName: consumerName,
       }).pipe(
         Effect.retry({
@@ -309,12 +287,10 @@ test(
       );
 
       const consumerArn = registerResult.Consumer?.ConsumerARN;
-      if (!consumerArn) {
-        return yield* Effect.fail(new Error("No consumer ARN returned"));
-      }
+      expect(consumerArn).toBeDefined();
 
       // Wait for consumer to become active
-      yield* waitForConsumerActive(consumerArn);
+      yield* waitForConsumerActive(consumerArn!);
 
       // Get shard ID
       const shardsResult = yield* listShards({ StreamName: streamName }).pipe(
@@ -324,15 +300,13 @@ test(
         }),
       );
       const shardId = shardsResult.Shards?.[0]?.ShardId;
-      if (!shardId) {
-        return yield* Effect.fail(new Error("No shards found"));
-      }
+      expect(shardId).toBeDefined();
 
       try {
         // Subscribe to shard - this returns an event stream
         const subscribeResult = yield* subscribeToShard({
-          ConsumerARN: consumerArn,
-          ShardId: shardId,
+          ConsumerARN: consumerArn!,
+          ShardId: shardId!,
           StartingPosition: {
             Type: "TRIM_HORIZON",
           },
@@ -358,13 +332,7 @@ test(
         );
 
         // Verify we received events
-        if (events.length === 0) {
-          return yield* Effect.fail(
-            new Error(
-              "No events received from SubscribeToShard - expected at least 1 event",
-            ),
-          );
-        }
+        expect(events.length).toBeGreaterThan(0);
 
         // Find SubscribeToShardEvent events with records
         // Events are tagged union members like { SubscribeToShardEvent: {...} }
@@ -403,31 +371,19 @@ test(
         }
 
         // Verify we received all the records we sent
-        if (allReceivedRecords.length !== testRecords.length) {
-          return yield* Effect.fail(
-            new Error(
-              `Expected ${testRecords.length} records, got ${allReceivedRecords.length}`,
-            ),
-          );
-        }
+        expect(allReceivedRecords.length).toEqual(testRecords.length);
 
         // Verify the content matches (records may be in different order)
         for (const sent of testRecords) {
           const found = allReceivedRecords.find(
             (r) => r.id === sent.id && r.message === sent.message,
           );
-          if (!found) {
-            return yield* Effect.fail(
-              new Error(
-                `Record not found in received data: ${JSON.stringify(sent)}`,
-              ),
-            );
-          }
+          expect(found).toBeDefined();
         }
       } finally {
         // Clean up consumer
         yield* deregisterStreamConsumer({
-          ConsumerARN: consumerArn,
+          ConsumerARN: consumerArn!,
         }).pipe(Effect.ignore);
       }
     }),
@@ -452,29 +408,23 @@ test(
       // Get stream ARN
       const describeResult = yield* describeStream({ StreamName: streamName });
       const streamArn = describeResult.StreamDescription?.StreamARN;
-      if (!streamArn) {
-        return yield* Effect.fail(new Error("No stream ARN found"));
-      }
+      expect(streamArn).toBeDefined();
 
       // Register a stream consumer
       const consumerName = "test-consumer-continuous";
       const registerResult = yield* registerStreamConsumer({
-        StreamARN: streamArn,
+        StreamARN: streamArn!,
         ConsumerName: consumerName,
       });
 
       const consumerArn = registerResult.Consumer?.ConsumerARN;
-      if (!consumerArn) {
-        return yield* Effect.fail(new Error("No consumer ARN returned"));
-      }
+      expect(consumerArn).toBeDefined();
 
-      yield* waitForConsumerActive(consumerArn);
+      yield* waitForConsumerActive(consumerArn!);
 
       const shardsResult = yield* listShards({ StreamName: streamName });
       const shardId = shardsResult.Shards?.[0]?.ShardId;
-      if (!shardId) {
-        return yield* Effect.fail(new Error("No shards found"));
-      }
+      expect(shardId).toBeDefined();
 
       try {
         // Track records we're going to send
@@ -505,8 +455,8 @@ test(
         // Consumer: subscribe and collect records
         const consumer = Effect.gen(function* () {
           const subscribeResult = yield* subscribeToShard({
-            ConsumerARN: consumerArn,
-            ShardId: shardId,
+            ConsumerARN: consumerArn!,
+            ShardId: shardId!,
             StartingPosition: {
               Type: "TRIM_HORIZON",
             },
@@ -564,26 +514,16 @@ test(
 
         // Verify we received a reasonable number of records
         // (LocalStack may not deliver all records immediately)
-        if (receivedRecords.length < sentRecords.length / 2) {
-          return yield* Effect.fail(
-            new Error(
-              `Expected at least ${sentRecords.length / 2} records, got ${receivedRecords.length}`,
-            ),
-          );
-        }
+        expect(receivedRecords.length >= sentRecords.length / 2).toBe(true);
 
         // Verify received records match sent records
         for (const received of receivedRecords) {
           const sent = sentRecords.find((s) => s.id === received.id);
-          if (!sent) {
-            return yield* Effect.fail(
-              new Error(`Received unexpected record id: ${received.id}`),
-            );
-          }
+          expect(sent).toBeDefined();
         }
       } finally {
         yield* deregisterStreamConsumer({
-          ConsumerARN: consumerArn,
+          ConsumerARN: consumerArn!,
         }).pipe(Effect.ignore);
       }
     }),

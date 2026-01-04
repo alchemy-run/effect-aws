@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Effect, Schedule } from "effect";
 import {
   changeMessageVisibility,
@@ -71,23 +72,13 @@ test(
   withQueue("itty-sqs-lifecycle", (queueUrl) =>
     Effect.gen(function* () {
       // Verify queue URL is returned
-      if (!queueUrl) {
-        return yield* Effect.fail(
-          new Error("Expected QueueUrl to be returned"),
-        );
-      }
+      expect(queueUrl).toBeDefined();
 
       // Get queue URL by name
       const getUrlResult = yield* getQueueUrl({
         QueueName: "itty-sqs-lifecycle",
       });
-      if (getUrlResult.QueueUrl !== queueUrl) {
-        return yield* Effect.fail(
-          new Error(
-            `Queue URL mismatch: expected ${queueUrl}, got ${getUrlResult.QueueUrl}`,
-          ),
-        );
-      }
+      expect(getUrlResult.QueueUrl).toEqual(queueUrl);
 
       // List queues and verify our queue is in the list
       const listResult = yield* listQueues({
@@ -96,9 +87,7 @@ test(
       const foundQueue = listResult.QueueUrls?.find((url) =>
         url.includes("itty-sqs-lifecycle"),
       );
-      if (!foundQueue) {
-        return yield* Effect.fail(new Error("Queue not found in list"));
-      }
+      expect(foundQueue).toBeDefined();
     }),
   ),
 );
@@ -132,38 +121,12 @@ test(
         ],
       });
 
-      if (attrs.Attributes?.VisibilityTimeout !== "60") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected VisibilityTimeout=60, got ${attrs.Attributes?.VisibilityTimeout}`,
-          ),
-        );
-      }
-
-      if (attrs.Attributes?.MessageRetentionPeriod !== "86400") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected MessageRetentionPeriod=86400, got ${attrs.Attributes?.MessageRetentionPeriod}`,
-          ),
-        );
-      }
-
-      if (attrs.Attributes?.DelaySeconds !== "5") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected DelaySeconds=5, got ${attrs.Attributes?.DelaySeconds}`,
-          ),
-        );
-      }
+      expect(attrs.Attributes?.VisibilityTimeout).toEqual("60");
+      expect(attrs.Attributes?.MessageRetentionPeriod).toEqual("86400");
+      expect(attrs.Attributes?.DelaySeconds).toEqual("5");
 
       // ApproximateNumberOfMessages should be 0 for empty queue
-      if (attrs.Attributes?.ApproximateNumberOfMessages !== "0") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ApproximateNumberOfMessages=0, got ${attrs.Attributes?.ApproximateNumberOfMessages}`,
-          ),
-        );
-      }
+      expect(attrs.Attributes?.ApproximateNumberOfMessages).toEqual("0");
     }),
   ),
 );
@@ -188,20 +151,8 @@ test(
 
       // List tags
       const tagsResult = yield* listQueueTags({ QueueUrl: queueUrl });
-      if (tagsResult.Tags?.Environment !== "Test") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Environment=Test, got ${tagsResult.Tags?.Environment}`,
-          ),
-        );
-      }
-      if (tagsResult.Tags?.Project !== "itty-aws") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Project=itty-aws, got ${tagsResult.Tags?.Project}`,
-          ),
-        );
-      }
+      expect(tagsResult.Tags?.Environment).toEqual("Test");
+      expect(tagsResult.Tags?.Project).toEqual("itty-aws");
 
       // Update a tag
       yield* tagQueue({
@@ -213,13 +164,7 @@ test(
 
       // Verify update
       const updatedTags = yield* listQueueTags({ QueueUrl: queueUrl });
-      if (updatedTags.Tags?.Environment !== "Production") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Environment=Production, got ${updatedTags.Tags?.Environment}`,
-          ),
-        );
-      }
+      expect(updatedTags.Tags?.Environment).toEqual("Production");
 
       // Remove a tag
       yield* untagQueue({
@@ -229,16 +174,8 @@ test(
 
       // Verify tag removal
       const finalTags = yield* listQueueTags({ QueueUrl: queueUrl });
-      if (finalTags.Tags?.Project !== undefined) {
-        return yield* Effect.fail(
-          new Error("Project tag should have been removed"),
-        );
-      }
-      if (finalTags.Tags?.Environment !== "Production") {
-        return yield* Effect.fail(
-          new Error("Environment tag should still exist"),
-        );
-      }
+      expect(finalTags.Tags?.Project).toBeUndefined();
+      expect(finalTags.Tags?.Environment).toEqual("Production");
     }),
   ),
 );
@@ -259,17 +196,8 @@ test(
         MessageBody: messageBody,
       });
 
-      if (!sendResult.MessageId) {
-        return yield* Effect.fail(
-          new Error("Expected MessageId to be returned"),
-        );
-      }
-
-      if (!sendResult.MD5OfMessageBody) {
-        return yield* Effect.fail(
-          new Error("Expected MD5OfMessageBody to be returned"),
-        );
-      }
+      expect(sendResult.MessageId).toBeDefined();
+      expect(sendResult.MD5OfMessageBody).toBeDefined();
 
       // Receive message
       const receiveResult = yield* receiveMessage({
@@ -278,27 +206,17 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length === 0) {
-        return yield* Effect.fail(new Error("Expected to receive a message"));
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toBeGreaterThan(0);
 
-      const message = receiveResult.Messages[0];
-      if (message.Body !== messageBody) {
-        return yield* Effect.fail(
-          new Error(`Expected Body=${messageBody}, got ${message.Body}`),
-        );
-      }
-
-      if (!message.ReceiptHandle) {
-        return yield* Effect.fail(
-          new Error("Expected ReceiptHandle to be returned"),
-        );
-      }
+      const message = receiveResult.Messages![0];
+      expect(message.Body).toEqual(messageBody);
+      expect(message.ReceiptHandle).toBeDefined();
 
       // Delete the message
       yield* deleteMessage({
         QueueUrl: queueUrl,
-        ReceiptHandle: message.ReceiptHandle,
+        ReceiptHandle: message.ReceiptHandle!,
       });
 
       // Verify message is deleted (receive should return empty)
@@ -308,14 +226,10 @@ test(
         WaitTimeSeconds: 1,
       });
 
-      if (
-        receiveAfterDelete.Messages &&
-        receiveAfterDelete.Messages.length > 0
-      ) {
-        return yield* Effect.fail(
-          new Error("Message should have been deleted"),
-        );
-      }
+      expect(
+        receiveAfterDelete.Messages === undefined ||
+          receiveAfterDelete.Messages.length === 0,
+      ).toBe(true);
     }),
   ),
 );
@@ -357,19 +271,9 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (!delayedReceive.Messages || delayedReceive.Messages.length === 0) {
-        return yield* Effect.fail(
-          new Error("Expected to receive the delayed message"),
-        );
-      }
-
-      if (delayedReceive.Messages[0].Body !== messageBody) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected Body=${messageBody}, got ${delayedReceive.Messages[0].Body}`,
-          ),
-        );
-      }
+      expect(delayedReceive.Messages).toBeDefined();
+      expect(delayedReceive.Messages!.length).toBeGreaterThan(0);
+      expect(delayedReceive.Messages![0].Body).toEqual(messageBody);
     }),
   ),
 );
@@ -404,28 +308,14 @@ test(
         MessageAttributeNames: ["All"],
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length === 0) {
-        return yield* Effect.fail(new Error("Expected to receive a message"));
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toBeGreaterThan(0);
 
-      const message = receiveResult.Messages[0];
+      const message = receiveResult.Messages![0];
       const attrs = message.MessageAttributes;
 
-      if (attrs?.StringAttr?.StringValue !== "Hello") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected StringAttr=Hello, got ${attrs?.StringAttr?.StringValue}`,
-          ),
-        );
-      }
-
-      if (attrs?.NumberAttr?.StringValue !== "42") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected NumberAttr=42, got ${attrs?.NumberAttr?.StringValue}`,
-          ),
-        );
-      }
+      expect(attrs?.StringAttr?.StringValue).toEqual("Hello");
+      expect(attrs?.NumberAttr?.StringValue).toEqual("42");
     }),
   ),
 );
@@ -454,11 +344,10 @@ test(
         VisibilityTimeout: 30, // Set initial visibility timeout
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length === 0) {
-        return yield* Effect.fail(new Error("Expected to receive a message"));
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toBeGreaterThan(0);
 
-      const message = receiveResult.Messages[0];
+      const message = receiveResult.Messages![0];
 
       // Change visibility timeout
       yield* changeMessageVisibility({
@@ -475,15 +364,12 @@ test(
       });
 
       // Should not receive the same message due to visibility timeout
-      if (
+      const sameMessageReceived = Boolean(
         immediateReceive.Messages &&
         immediateReceive.Messages.length > 0 &&
-        immediateReceive.Messages[0].MessageId === message.MessageId
-      ) {
-        return yield* Effect.fail(
-          new Error("Message should not be visible yet"),
-        );
-      }
+        immediateReceive.Messages[0].MessageId === message.MessageId,
+      );
+      expect(sameMessageReceived).toBe(false);
     }),
   ),
 );
@@ -529,25 +415,13 @@ test(
         attempts++;
       }
 
-      if (allMessages.length !== 3) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 3 messages, got ${allMessages.length} after ${attempts} attempts`,
-          ),
-        );
-      }
+      expect(allMessages.length).toEqual(3);
 
       // Verify message bodies
       const bodies = allMessages.map((m) => m.Body).sort();
-      if (
-        bodies[0] !== "Message 1" ||
-        bodies[1] !== "Message 2" ||
-        bodies[2] !== "Message 3"
-      ) {
-        return yield* Effect.fail(
-          new Error(`Unexpected message bodies: ${bodies.join(", ")}`),
-        );
-      }
+      expect(bodies[0]).toEqual("Message 1");
+      expect(bodies[1]).toEqual("Message 2");
+      expect(bodies[2]).toEqual("Message 3");
 
       // Delete messages individually
       for (const msg of allMessages) {
@@ -564,11 +438,10 @@ test(
         WaitTimeSeconds: 1,
       });
 
-      if (finalReceive.Messages && finalReceive.Messages.length > 0) {
-        return yield* Effect.fail(
-          new Error("Queue should be empty after deleting messages"),
-        );
-      }
+      expect(
+        finalReceive.Messages === undefined ||
+          finalReceive.Messages.length === 0,
+      ).toBe(true);
     }),
   ),
 );
@@ -608,11 +481,10 @@ test(
         WaitTimeSeconds: 1,
       });
 
-      if (receiveResult.Messages && receiveResult.Messages.length > 0) {
-        return yield* Effect.fail(
-          new Error("Queue should be empty after purge"),
-        );
-      }
+      expect(
+        receiveResult.Messages === undefined ||
+          receiveResult.Messages.length === 0,
+      ).toBe(true);
     }),
   ),
 );
@@ -651,13 +523,7 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (receiveResult1.Messages?.[0]?.Body !== "FIFO Message 1") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected first message to be 'FIFO Message 1', got ${receiveResult1.Messages?.[0]?.Body}`,
-          ),
-        );
-      }
+      expect(receiveResult1.Messages?.[0]?.Body).toEqual("FIFO Message 1");
 
       // Delete first message before receiving next
       yield* deleteMessage({
@@ -671,13 +537,7 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (receiveResult2.Messages?.[0]?.Body !== "FIFO Message 2") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected second message to be 'FIFO Message 2', got ${receiveResult2.Messages?.[0]?.Body}`,
-          ),
-        );
-      }
+      expect(receiveResult2.Messages?.[0]?.Body).toEqual("FIFO Message 2");
 
       // Verify sequence numbers are present for FIFO
       if (!receiveResult1.Messages?.[0]?.Attributes?.SequenceNumber) {
@@ -718,35 +578,19 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length !== 3) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 3 messages, got ${receiveResult.Messages?.length ?? 0}`,
-          ),
-        );
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toEqual(3);
 
       // Messages from same group should maintain relative order
-      const groupAMessages = receiveResult.Messages.filter((m) =>
+      const groupAMessages = receiveResult.Messages!.filter((m) =>
         m.Body?.startsWith("Group A"),
       );
-      const groupBMessages = receiveResult.Messages.filter((m) =>
+      const groupBMessages = receiveResult.Messages!.filter((m) =>
         m.Body?.startsWith("Group B"),
       );
 
-      if (groupAMessages.length !== 2) {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 2 Group A messages, got ${groupAMessages.length}`,
-          ),
-        );
-      }
-
-      if (groupBMessages.length !== 1) {
-        return yield* Effect.fail(
-          new Error(`Expected 1 Group B message, got ${groupBMessages.length}`),
-        );
-      }
+      expect(groupAMessages.length).toEqual(2);
+      expect(groupBMessages.length).toEqual(1);
     }),
   ),
 );
@@ -772,24 +616,14 @@ test(
         WaitTimeSeconds: 5,
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length === 0) {
-        return yield* Effect.fail(
-          new Error("Expected to receive message with long polling"),
-        );
-      }
-
-      if (receiveResult.Messages[0].Body !== "Long poll test") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected 'Long poll test', got ${receiveResult.Messages[0].Body}`,
-          ),
-        );
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toBeGreaterThan(0);
+      expect(receiveResult.Messages![0].Body).toEqual("Long poll test");
 
       // Now verify an empty queue returns no messages with short poll
       yield* deleteMessage({
         QueueUrl: queueUrl,
-        ReceiptHandle: receiveResult.Messages[0].ReceiptHandle!,
+        ReceiptHandle: receiveResult.Messages![0].ReceiptHandle!,
       });
 
       const emptyReceive = yield* receiveMessage({
@@ -799,11 +633,10 @@ test(
       });
 
       // Should return empty since no messages
-      if (emptyReceive.Messages && emptyReceive.Messages.length > 0) {
-        return yield* Effect.fail(
-          new Error("Expected no messages after delete"),
-        );
-      }
+      expect(
+        emptyReceive.Messages === undefined ||
+          emptyReceive.Messages.length === 0,
+      ).toBe(true);
     }),
   ),
 );
@@ -830,35 +663,20 @@ test(
         MessageSystemAttributeNames: ["All"],
       });
 
-      if (!receiveResult.Messages || receiveResult.Messages.length === 0) {
-        return yield* Effect.fail(new Error("Expected to receive a message"));
-      }
+      expect(receiveResult.Messages).toBeDefined();
+      expect(receiveResult.Messages!.length).toBeGreaterThan(0);
 
-      const message = receiveResult.Messages[0];
+      const message = receiveResult.Messages![0];
       const attrs = message.Attributes;
 
       // Should have SentTimestamp
-      if (!attrs?.SentTimestamp) {
-        return yield* Effect.fail(
-          new Error("Expected SentTimestamp attribute"),
-        );
-      }
+      expect(attrs?.SentTimestamp).toBeDefined();
 
       // Should have ApproximateReceiveCount
-      if (!attrs?.ApproximateReceiveCount) {
-        return yield* Effect.fail(
-          new Error("Expected ApproximateReceiveCount attribute"),
-        );
-      }
+      expect(attrs?.ApproximateReceiveCount).toBeDefined();
 
       // ApproximateReceiveCount should be "1" for first receive
-      if (attrs.ApproximateReceiveCount !== "1") {
-        return yield* Effect.fail(
-          new Error(
-            `Expected ApproximateReceiveCount=1, got ${attrs.ApproximateReceiveCount}`,
-          ),
-        );
-      }
+      expect(attrs!.ApproximateReceiveCount).toEqual("1");
     }),
   ),
 );

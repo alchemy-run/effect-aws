@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Console, Effect, Schedule } from "effect";
 import { afterAll, beforeAll } from "vitest";
 import {
@@ -98,43 +99,21 @@ test(
     // Describe table
     const describeResult = yield* describeTable({ TableName: tableName });
 
-    if (describeResult.Table?.TableName !== tableName) {
-      return yield* Effect.fail(
-        new Error(
-          `Table name mismatch: expected ${tableName}, got ${describeResult.Table?.TableName}`,
-        ),
-      );
-    }
-
-    if (describeResult.Table?.TableStatus !== "ACTIVE") {
-      return yield* Effect.fail(
-        new Error(
-          `Expected TableStatus=ACTIVE, got ${describeResult.Table?.TableStatus}`,
-        ),
-      );
-    }
+    expect(describeResult.Table?.TableName).toEqual(tableName);
+    expect(describeResult.Table?.TableStatus).toEqual("ACTIVE");
 
     // Verify key schema
     const keySchema = describeResult.Table?.KeySchema;
-    if (!keySchema || keySchema.length !== 2) {
-      return yield* Effect.fail(
-        new Error(`Expected 2 key attributes, got ${keySchema?.length}`),
-      );
-    }
+    expect(keySchema).toBeDefined();
+    expect(keySchema!.length).toEqual(2);
 
-    const hashKey = keySchema.find((k) => k.KeyType === "HASH");
-    if (hashKey?.AttributeName !== "pk") {
-      return yield* Effect.fail(
-        new Error(`Expected HASH key=pk, got ${hashKey?.AttributeName}`),
-      );
-    }
+    const hashKey = keySchema!.find((k) => k.KeyType === "HASH");
+    expect(hashKey?.AttributeName).toEqual("pk");
 
     // List tables and verify our table is in the list
     const listResult = yield* listTables({});
     const foundTable = listResult.TableNames?.find((t) => t === tableName);
-    if (!foundTable) {
-      return yield* Effect.fail(new Error("Table not found in list"));
-    }
+    expect(foundTable).toBeDefined();
   }),
 );
 
@@ -172,38 +151,18 @@ test(
       },
     });
 
-    if (!getResult.Item) {
-      return yield* Effect.fail(new Error("Item not found"));
-    }
+    expect(getResult.Item).toBeDefined();
 
     // Verify item attributes - DynamoDB returns AttributeValue tagged union
-    const resultPk = getResult.Item.pk as { S: string };
-    const resultSk = getResult.Item.sk as { S: string };
-    const resultName = getResult.Item.name as { S: string };
-    const resultEmail = getResult.Item.email as { S: string };
+    const resultPk = getResult.Item!.pk as { S: string };
+    const resultSk = getResult.Item!.sk as { S: string };
+    const resultName = getResult.Item!.name as { S: string };
+    const resultEmail = getResult.Item!.email as { S: string };
 
-    if (resultPk.S !== "user#123") {
-      return yield* Effect.fail(
-        new Error(`pk mismatch: expected user#123, got ${resultPk.S}`),
-      );
-    }
-    if (resultSk.S !== "profile") {
-      return yield* Effect.fail(
-        new Error(`sk mismatch: expected profile, got ${resultSk.S}`),
-      );
-    }
-    if (resultName.S !== "John Doe") {
-      return yield* Effect.fail(
-        new Error(`name mismatch: expected John Doe, got ${resultName.S}`),
-      );
-    }
-    if (resultEmail.S !== "john@example.com") {
-      return yield* Effect.fail(
-        new Error(
-          `email mismatch: expected john@example.com, got ${resultEmail.S}`,
-        ),
-      );
-    }
+    expect(resultPk.S).toEqual("user#123");
+    expect(resultSk.S).toEqual("profile");
+    expect(resultName.S).toEqual("John Doe");
+    expect(resultEmail.S).toEqual("john@example.com");
   }),
 );
 
@@ -238,11 +197,7 @@ test(
       Effect.catchAll(() => Effect.succeed("error" as const)),
     );
 
-    if (conditionalPutResult !== "error") {
-      return yield* Effect.fail(
-        new Error("Conditional put should have failed"),
-      );
-    }
+    expect(conditionalPutResult).toEqual("error");
 
     // Conditional put with correct condition should succeed
     yield* putItem({
@@ -258,11 +213,7 @@ test(
     });
 
     const version = getResult.Item?.version as { N: string } | undefined;
-    if (version?.N !== "2") {
-      return yield* Effect.fail(
-        new Error(`Expected version=2, got ${version?.N}`),
-      );
-    }
+    expect(version?.N).toEqual("2");
   }),
 );
 
@@ -306,17 +257,11 @@ test(
     });
 
     const name = getResult.Item?.name as { S: string } | undefined;
-    if (name?.S !== "Robert Smith") {
-      return yield* Effect.fail(
-        new Error(`Expected name=Robert Smith, got ${name?.S}`),
-      );
-    }
+    expect(name?.S).toEqual("Robert Smith");
 
     // DynamoDB returns numbers as strings in the N field
     const count = getResult.Item?.count as { N: string } | undefined;
-    if (count?.N !== "1") {
-      return yield* Effect.fail(new Error(`Expected count=1, got ${count?.N}`));
-    }
+    expect(count?.N).toEqual("1");
   }),
 );
 
@@ -343,9 +288,7 @@ test(
       Key: { pk: { S: "user#delete" }, sk: { S: "profile" } },
     });
 
-    if (!getBeforeDelete.Item) {
-      return yield* Effect.fail(new Error("Item should exist before delete"));
-    }
+    expect(getBeforeDelete.Item).toBeDefined();
 
     // Delete item
     yield* deleteItem({
@@ -359,11 +302,7 @@ test(
       Key: { pk: { S: "user#delete" }, sk: { S: "profile" } },
     });
 
-    if (getAfterDelete.Item) {
-      return yield* Effect.fail(
-        new Error("Item should not exist after delete"),
-      );
-    }
+    expect(getAfterDelete.Item).toBeUndefined();
   }),
 );
 
@@ -420,31 +359,17 @@ test(
       },
     });
 
-    if (queryResult.Count !== 3) {
-      return yield* Effect.fail(
-        new Error(`Expected Count=3, got ${queryResult.Count}`),
-      );
-    }
-
-    if (!queryResult.Items || queryResult.Items.length !== 3) {
-      return yield* Effect.fail(
-        new Error(`Expected 3 items, got ${queryResult.Items?.length ?? 0}`),
-      );
-    }
+    expect(queryResult.Count).toEqual(3);
+    expect(queryResult.Items).toBeDefined();
+    expect(queryResult.Items!.length).toEqual(3);
 
     // Verify items are sorted by sort key
-    const sortKeys = queryResult.Items.map(
+    const sortKeys = queryResult.Items!.map(
       (item) => (item.sk as { S: string }).S,
     );
     const expectedSortKeys = ["item#1", "item#2", "item#3"];
     for (let i = 0; i < expectedSortKeys.length; i++) {
-      if (sortKeys[i] !== expectedSortKeys[i]) {
-        return yield* Effect.fail(
-          new Error(
-            `Sort key mismatch at index ${i}: expected ${expectedSortKeys[i]}, got ${sortKeys[i]}`,
-          ),
-        );
-      }
+      expect(sortKeys[i]).toEqual(expectedSortKeys[i]);
     }
   }),
 );
@@ -491,11 +416,7 @@ test(
       },
     });
 
-    if (queryResult.Count !== 2) {
-      return yield* Effect.fail(
-        new Error(`Expected Count=2 for 2023 orders, got ${queryResult.Count}`),
-      );
-    }
+    expect(queryResult.Count).toEqual(2);
 
     // Query with ScanIndexForward = false (descending order)
     const queryDescResult = yield* query({
@@ -508,21 +429,12 @@ test(
       ScanIndexForward: false,
     });
 
-    if (!queryDescResult.Items || queryDescResult.Items.length !== 3) {
-      return yield* Effect.fail(
-        new Error(
-          `Expected 3 order items, got ${queryDescResult.Items?.length}`,
-        ),
-      );
-    }
+    expect(queryDescResult.Items).toBeDefined();
+    expect(queryDescResult.Items!.length).toEqual(3);
 
     // First item should be the latest order
-    const firstSk = (queryDescResult.Items[0].sk as { S: string }).S;
-    if (firstSk !== "order#2024-01-01") {
-      return yield* Effect.fail(
-        new Error(`Expected first item to be 2024 order, got ${firstSk}`),
-      );
-    }
+    const firstSk = (queryDescResult.Items![0].sk as { S: string }).S;
+    expect(firstSk).toEqual("order#2024-01-01");
   }),
 );
 
@@ -579,11 +491,7 @@ test(
       },
     });
 
-    if (scanAllResult.Count !== 4) {
-      return yield* Effect.fail(
-        new Error(`Expected 4 product items, got ${scanAllResult.Count}`),
-      );
-    }
+    expect(scanAllResult.Count).toEqual(4);
 
     // Scan with filter for inStock = true
     const scanFilteredResult = yield* scan({
@@ -594,11 +502,7 @@ test(
       },
     });
 
-    if (scanFilteredResult.Count !== 3) {
-      return yield* Effect.fail(
-        new Error(`Expected 3 in-stock items, got ${scanFilteredResult.Count}`),
-      );
-    }
+    expect(scanFilteredResult.Count).toEqual(3);
 
     // Scan with filter for price > 20
     const scanPriceResult = yield* scan({
@@ -609,13 +513,7 @@ test(
       },
     });
 
-    if (scanPriceResult.Count !== 2) {
-      return yield* Effect.fail(
-        new Error(
-          `Expected 2 items with price > 20, got ${scanPriceResult.Count}`,
-        ),
-      );
-    }
+    expect(scanPriceResult.Count).toEqual(2);
   }),
 );
 
@@ -652,25 +550,15 @@ test(
       },
     });
 
-    if (!getResult.Item) {
-      return yield* Effect.fail(new Error("Item not found"));
-    }
+    expect(getResult.Item).toBeDefined();
 
     // Should have name and email
-    const name = getResult.Item.name as { S: string } | undefined;
-    const email = getResult.Item.email as { S: string } | undefined;
-    if (name?.S !== "Projection Test") {
-      return yield* Effect.fail(new Error("name should be in projection"));
-    }
-    if (email?.S !== "proj@test.com") {
-      return yield* Effect.fail(new Error("email should be in projection"));
-    }
+    const name = getResult.Item!.name as { S: string } | undefined;
+    const email = getResult.Item!.email as { S: string } | undefined;
+    expect(name?.S).toEqual("Projection Test");
+    expect(email?.S).toEqual("proj@test.com");
 
     // Should NOT have password (not in projection)
-    if (getResult.Item.password !== undefined) {
-      return yield* Effect.fail(
-        new Error("password should NOT be in projection"),
-      );
-    }
+    expect(getResult.Item!.password).toBeUndefined();
   }),
 );

@@ -260,7 +260,7 @@ export class CreateAuthorizerRequest extends S.Class<CreateAuthorizerRequest>(
   "CreateAuthorizerRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     name: S.String,
     type: S.String,
     providerARNs: S.optional(ListOfARNs),
@@ -284,7 +284,7 @@ export class CreateBasePathMappingRequest extends S.Class<CreateBasePathMappingR
   "CreateBasePathMappingRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
     basePath: S.optional(S.String),
     restApiId: S.String,
@@ -306,7 +306,7 @@ export class CreateDocumentationVersionRequest extends S.Class<CreateDocumentati
   "CreateDocumentationVersionRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     documentationVersion: S.String,
     stageName: S.optional(S.String),
     description: S.optional(S.String),
@@ -346,7 +346,7 @@ export class CreateModelRequest extends S.Class<CreateModelRequest>(
   "CreateModelRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     name: S.String,
     description: S.optional(S.String),
     schema: S.optional(S.String),
@@ -365,7 +365,7 @@ export class CreateRequestValidatorRequest extends S.Class<CreateRequestValidato
   "CreateRequestValidatorRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     name: S.optional(S.String),
     validateRequestBody: S.optional(S.Boolean),
     validateRequestParameters: S.optional(S.Boolean),
@@ -383,8 +383,8 @@ export class CreateResourceRequest extends S.Class<CreateResourceRequest>(
   "CreateResourceRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    parentId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    parentId: S.String.pipe(T.HttpLabel("parentId")),
     pathPart: S.String,
   },
   T.all(
@@ -438,7 +438,7 @@ export class CreateUsagePlanKeyRequest extends S.Class<CreateUsagePlanKeyRequest
   "CreateUsagePlanKeyRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
     keyId: S.String,
     keyType: S.String,
   },
@@ -472,7 +472,7 @@ export class CreateVpcLinkRequest extends S.Class<CreateVpcLinkRequest>(
 export class DeleteApiKeyRequest extends S.Class<DeleteApiKeyRequest>(
   "DeleteApiKeyRequest",
 )(
-  { apiKey: S.String.pipe(T.HttpLabel()) },
+  { apiKey: S.String.pipe(T.HttpLabel("apiKey")) },
   T.all(
     T.Http({ method: "DELETE", uri: "/apikeys/{apiKey}" }),
     svc,
@@ -489,8 +489,8 @@ export class DeleteAuthorizerRequest extends S.Class<DeleteAuthorizerRequest>(
   "DeleteAuthorizerRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    authorizerId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    authorizerId: S.String.pipe(T.HttpLabel("authorizerId")),
   },
   T.all(
     T.Http({
@@ -511,9 +511,9 @@ export class DeleteBasePathMappingRequest extends S.Class<DeleteBasePathMappingR
   "DeleteBasePathMappingRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
-    basePath: S.String.pipe(T.HttpLabel()),
+    basePath: S.String.pipe(T.HttpLabel("basePath")),
   },
   T.all(
     T.Http({
@@ -533,7 +533,7 @@ export class DeleteBasePathMappingResponse extends S.Class<DeleteBasePathMapping
 export class DeleteClientCertificateRequest extends S.Class<DeleteClientCertificateRequest>(
   "DeleteClientCertificateRequest",
 )(
-  { clientCertificateId: S.String.pipe(T.HttpLabel()) },
+  { clientCertificateId: S.String.pipe(T.HttpLabel("clientCertificateId")) },
   T.all(
     T.Http({
       method: "DELETE",
@@ -553,8 +553,8 @@ export class DeleteDeploymentRequest extends S.Class<DeleteDeploymentRequest>(
   "DeleteDeploymentRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    deploymentId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    deploymentId: S.String.pipe(T.HttpLabel("deploymentId")),
   },
   T.all(
     T.Http({
@@ -575,8 +575,8 @@ export class DeleteDocumentationPartRequest extends S.Class<DeleteDocumentationP
   "DeleteDocumentationPartRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationPartId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationPartId: S.String.pipe(T.HttpLabel("documentationPartId")),
   },
   T.all(
     T.Http({
@@ -597,8 +597,8 @@ export class DeleteDocumentationVersionRequest extends S.Class<DeleteDocumentati
   "DeleteDocumentationVersionRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationVersion: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationVersion: S.String.pipe(T.HttpLabel("documentationVersion")),
   },
   T.all(
     T.Http({
@@ -619,7 +619,7 @@ export class DeleteDomainNameRequest extends S.Class<DeleteDomainNameRequest>(
   "DeleteDomainNameRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
   },
   T.all(
@@ -637,7 +637,11 @@ export class DeleteDomainNameResponse extends S.Class<DeleteDomainNameResponse>(
 export class DeleteDomainNameAccessAssociationRequest extends S.Class<DeleteDomainNameAccessAssociationRequest>(
   "DeleteDomainNameAccessAssociationRequest",
 )(
-  { domainNameAccessAssociationArn: S.String.pipe(T.HttpLabel()) },
+  {
+    domainNameAccessAssociationArn: S.String.pipe(
+      T.HttpLabel("domainNameAccessAssociationArn"),
+    ),
+  },
   T.all(
     T.Http({
       method: "DELETE",
@@ -657,8 +661,8 @@ export class DeleteGatewayResponseRequest extends S.Class<DeleteGatewayResponseR
   "DeleteGatewayResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    responseType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    responseType: S.String.pipe(T.HttpLabel("responseType")),
   },
   T.all(
     T.Http({
@@ -679,9 +683,9 @@ export class DeleteIntegrationRequest extends S.Class<DeleteIntegrationRequest>(
   "DeleteIntegrationRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
   },
   T.all(
     T.Http({
@@ -702,10 +706,10 @@ export class DeleteIntegrationResponseRequest extends S.Class<DeleteIntegrationR
   "DeleteIntegrationResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
   },
   T.all(
     T.Http({
@@ -726,9 +730,9 @@ export class DeleteMethodRequest extends S.Class<DeleteMethodRequest>(
   "DeleteMethodRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
   },
   T.all(
     T.Http({
@@ -749,10 +753,10 @@ export class DeleteMethodResponseRequest extends S.Class<DeleteMethodResponseReq
   "DeleteMethodResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
   },
   T.all(
     T.Http({
@@ -773,8 +777,8 @@ export class DeleteModelRequest extends S.Class<DeleteModelRequest>(
   "DeleteModelRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    modelName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    modelName: S.String.pipe(T.HttpLabel("modelName")),
   },
   T.all(
     T.Http({
@@ -795,8 +799,8 @@ export class DeleteRequestValidatorRequest extends S.Class<DeleteRequestValidato
   "DeleteRequestValidatorRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    requestValidatorId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    requestValidatorId: S.String.pipe(T.HttpLabel("requestValidatorId")),
   },
   T.all(
     T.Http({
@@ -817,8 +821,8 @@ export class DeleteResourceRequest extends S.Class<DeleteResourceRequest>(
   "DeleteResourceRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
   },
   T.all(
     T.Http({
@@ -838,7 +842,7 @@ export class DeleteResourceResponse extends S.Class<DeleteResourceResponse>(
 export class DeleteRestApiRequest extends S.Class<DeleteRestApiRequest>(
   "DeleteRestApiRequest",
 )(
-  { restApiId: S.String.pipe(T.HttpLabel()) },
+  { restApiId: S.String.pipe(T.HttpLabel("restApiId")) },
   T.all(
     T.Http({ method: "DELETE", uri: "/restapis/{restApiId}" }),
     svc,
@@ -855,8 +859,8 @@ export class DeleteStageRequest extends S.Class<DeleteStageRequest>(
   "DeleteStageRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
   },
   T.all(
     T.Http({
@@ -876,7 +880,7 @@ export class DeleteStageResponse extends S.Class<DeleteStageResponse>(
 export class DeleteUsagePlanRequest extends S.Class<DeleteUsagePlanRequest>(
   "DeleteUsagePlanRequest",
 )(
-  { usagePlanId: S.String.pipe(T.HttpLabel()) },
+  { usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")) },
   T.all(
     T.Http({ method: "DELETE", uri: "/usageplans/{usagePlanId}" }),
     svc,
@@ -893,8 +897,8 @@ export class DeleteUsagePlanKeyRequest extends S.Class<DeleteUsagePlanKeyRequest
   "DeleteUsagePlanKeyRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
-    keyId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
+    keyId: S.String.pipe(T.HttpLabel("keyId")),
   },
   T.all(
     T.Http({ method: "DELETE", uri: "/usageplans/{usagePlanId}/keys/{keyId}" }),
@@ -911,7 +915,7 @@ export class DeleteUsagePlanKeyResponse extends S.Class<DeleteUsagePlanKeyRespon
 export class DeleteVpcLinkRequest extends S.Class<DeleteVpcLinkRequest>(
   "DeleteVpcLinkRequest",
 )(
-  { vpcLinkId: S.String.pipe(T.HttpLabel()) },
+  { vpcLinkId: S.String.pipe(T.HttpLabel("vpcLinkId")) },
   T.all(
     T.Http({ method: "DELETE", uri: "/vpclinks/{vpcLinkId}" }),
     svc,
@@ -928,8 +932,8 @@ export class FlushStageAuthorizersCacheRequest extends S.Class<FlushStageAuthori
   "FlushStageAuthorizersCacheRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
   },
   T.all(
     T.Http({
@@ -950,8 +954,8 @@ export class FlushStageCacheRequest extends S.Class<FlushStageCacheRequest>(
   "FlushStageCacheRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
   },
   T.all(
     T.Http({
@@ -994,7 +998,7 @@ export class GetApiKeyRequest extends S.Class<GetApiKeyRequest>(
   "GetApiKeyRequest",
 )(
   {
-    apiKey: S.String.pipe(T.HttpLabel()),
+    apiKey: S.String.pipe(T.HttpLabel("apiKey")),
     includeValue: S.optional(S.Boolean).pipe(T.HttpQuery("includeValue")),
   },
   T.all(
@@ -1029,8 +1033,8 @@ export class GetAuthorizerRequest extends S.Class<GetAuthorizerRequest>(
   "GetAuthorizerRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    authorizerId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    authorizerId: S.String.pipe(T.HttpLabel("authorizerId")),
   },
   T.all(
     T.Http({
@@ -1048,7 +1052,7 @@ export class GetAuthorizersRequest extends S.Class<GetAuthorizersRequest>(
   "GetAuthorizersRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1065,9 +1069,9 @@ export class GetBasePathMappingRequest extends S.Class<GetBasePathMappingRequest
   "GetBasePathMappingRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
-    basePath: S.String.pipe(T.HttpLabel()),
+    basePath: S.String.pipe(T.HttpLabel("basePath")),
   },
   T.all(
     T.Http({
@@ -1085,7 +1089,7 @@ export class GetBasePathMappingsRequest extends S.Class<GetBasePathMappingsReque
   "GetBasePathMappingsRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
@@ -1105,7 +1109,7 @@ export class GetBasePathMappingsRequest extends S.Class<GetBasePathMappingsReque
 export class GetClientCertificateRequest extends S.Class<GetClientCertificateRequest>(
   "GetClientCertificateRequest",
 )(
-  { clientCertificateId: S.String.pipe(T.HttpLabel()) },
+  { clientCertificateId: S.String.pipe(T.HttpLabel("clientCertificateId")) },
   T.all(
     T.Http({ method: "GET", uri: "/clientcertificates/{clientCertificateId}" }),
     svc,
@@ -1135,8 +1139,8 @@ export class GetDeploymentRequest extends S.Class<GetDeploymentRequest>(
   "GetDeploymentRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    deploymentId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    deploymentId: S.String.pipe(T.HttpLabel("deploymentId")),
     embed: S.optional(ListOfString).pipe(T.HttpQuery("embed")),
   },
   T.all(
@@ -1155,7 +1159,7 @@ export class GetDeploymentsRequest extends S.Class<GetDeploymentsRequest>(
   "GetDeploymentsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1172,8 +1176,8 @@ export class GetDocumentationPartRequest extends S.Class<GetDocumentationPartReq
   "GetDocumentationPartRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationPartId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationPartId: S.String.pipe(T.HttpLabel("documentationPartId")),
   },
   T.all(
     T.Http({
@@ -1191,7 +1195,7 @@ export class GetDocumentationPartsRequest extends S.Class<GetDocumentationPartsR
   "GetDocumentationPartsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     type: S.optional(S.String).pipe(T.HttpQuery("type")),
     nameQuery: S.optional(S.String).pipe(T.HttpQuery("name")),
     path: S.optional(S.String).pipe(T.HttpQuery("path")),
@@ -1212,8 +1216,8 @@ export class GetDocumentationVersionRequest extends S.Class<GetDocumentationVers
   "GetDocumentationVersionRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationVersion: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationVersion: S.String.pipe(T.HttpLabel("documentationVersion")),
   },
   T.all(
     T.Http({
@@ -1231,7 +1235,7 @@ export class GetDocumentationVersionsRequest extends S.Class<GetDocumentationVer
   "GetDocumentationVersionsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1251,7 +1255,7 @@ export class GetDomainNameRequest extends S.Class<GetDomainNameRequest>(
   "GetDomainNameRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
   },
   T.all(
@@ -1301,9 +1305,9 @@ export class GetExportRequest extends S.Class<GetExportRequest>(
   "GetExportRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
-    exportType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
+    exportType: S.String.pipe(T.HttpLabel("exportType")),
     parameters: S.optional(MapOfStringToString).pipe(T.HttpQueryParams()),
     accepts: S.optional(S.String).pipe(T.HttpHeader("Accept")),
   },
@@ -1323,8 +1327,8 @@ export class GetGatewayResponseRequest extends S.Class<GetGatewayResponseRequest
   "GetGatewayResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    responseType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    responseType: S.String.pipe(T.HttpLabel("responseType")),
   },
   T.all(
     T.Http({
@@ -1342,7 +1346,7 @@ export class GetGatewayResponsesRequest extends S.Class<GetGatewayResponsesReque
   "GetGatewayResponsesRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1359,9 +1363,9 @@ export class GetIntegrationRequest extends S.Class<GetIntegrationRequest>(
   "GetIntegrationRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
   },
   T.all(
     T.Http({
@@ -1379,10 +1383,10 @@ export class GetIntegrationResponseRequest extends S.Class<GetIntegrationRespons
   "GetIntegrationResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
   },
   T.all(
     T.Http({
@@ -1400,9 +1404,9 @@ export class GetMethodRequest extends S.Class<GetMethodRequest>(
   "GetMethodRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
   },
   T.all(
     T.Http({
@@ -1420,10 +1424,10 @@ export class GetMethodResponseRequest extends S.Class<GetMethodResponseRequest>(
   "GetMethodResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
   },
   T.all(
     T.Http({
@@ -1441,8 +1445,8 @@ export class GetModelRequest extends S.Class<GetModelRequest>(
   "GetModelRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    modelName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    modelName: S.String.pipe(T.HttpLabel("modelName")),
     flatten: S.optional(S.Boolean).pipe(T.HttpQuery("flatten")),
   },
   T.all(
@@ -1458,7 +1462,7 @@ export class GetModelsRequest extends S.Class<GetModelsRequest>(
   "GetModelsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1475,8 +1479,8 @@ export class GetModelTemplateRequest extends S.Class<GetModelTemplateRequest>(
   "GetModelTemplateRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    modelName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    modelName: S.String.pipe(T.HttpLabel("modelName")),
   },
   T.all(
     T.Http({
@@ -1494,8 +1498,8 @@ export class GetRequestValidatorRequest extends S.Class<GetRequestValidatorReque
   "GetRequestValidatorRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    requestValidatorId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    requestValidatorId: S.String.pipe(T.HttpLabel("requestValidatorId")),
   },
   T.all(
     T.Http({
@@ -1513,7 +1517,7 @@ export class GetRequestValidatorsRequest extends S.Class<GetRequestValidatorsReq
   "GetRequestValidatorsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1530,8 +1534,8 @@ export class GetResourceRequest extends S.Class<GetResourceRequest>(
   "GetResourceRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
     embed: S.optional(ListOfString).pipe(T.HttpQuery("embed")),
   },
   T.all(
@@ -1550,7 +1554,7 @@ export class GetResourcesRequest extends S.Class<GetResourcesRequest>(
   "GetResourcesRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
     embed: S.optional(ListOfString).pipe(T.HttpQuery("embed")),
@@ -1567,7 +1571,7 @@ export class GetResourcesRequest extends S.Class<GetResourcesRequest>(
 export class GetRestApiRequest extends S.Class<GetRestApiRequest>(
   "GetRestApiRequest",
 )(
-  { restApiId: S.String.pipe(T.HttpLabel()) },
+  { restApiId: S.String.pipe(T.HttpLabel("restApiId")) },
   T.all(
     T.Http({ method: "GET", uri: "/restapis/{restApiId}" }),
     svc,
@@ -1595,9 +1599,9 @@ export class GetRestApisRequest extends S.Class<GetRestApisRequest>(
 ) {}
 export class GetSdkRequest extends S.Class<GetSdkRequest>("GetSdkRequest")(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
-    sdkType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
+    sdkType: S.String.pipe(T.HttpLabel("sdkType")),
     parameters: S.optional(MapOfStringToString).pipe(T.HttpQueryParams()),
   },
   T.all(
@@ -1615,7 +1619,7 @@ export class GetSdkRequest extends S.Class<GetSdkRequest>("GetSdkRequest")(
 export class GetSdkTypeRequest extends S.Class<GetSdkTypeRequest>(
   "GetSdkTypeRequest",
 )(
-  { id: S.String.pipe(T.HttpLabel()) },
+  { id: S.String.pipe(T.HttpLabel("id")) },
   T.all(
     T.Http({ method: "GET", uri: "/sdktypes/{id}" }),
     svc,
@@ -1645,8 +1649,8 @@ export class GetStageRequest extends S.Class<GetStageRequest>(
   "GetStageRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
   },
   T.all(
     T.Http({ method: "GET", uri: "/restapis/{restApiId}/stages/{stageName}" }),
@@ -1661,7 +1665,7 @@ export class GetStagesRequest extends S.Class<GetStagesRequest>(
   "GetStagesRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     deploymentId: S.optional(S.String).pipe(T.HttpQuery("deploymentId")),
   },
   T.all(
@@ -1675,7 +1679,7 @@ export class GetStagesRequest extends S.Class<GetStagesRequest>(
 ) {}
 export class GetTagsRequest extends S.Class<GetTagsRequest>("GetTagsRequest")(
   {
-    resourceArn: S.String.pipe(T.HttpLabel()),
+    resourceArn: S.String.pipe(T.HttpLabel("resourceArn")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
   },
@@ -1692,7 +1696,7 @@ export class GetUsageRequest extends S.Class<GetUsageRequest>(
   "GetUsageRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
     keyId: S.optional(S.String).pipe(T.HttpQuery("keyId")),
     startDate: S.String.pipe(T.HttpQuery("startDate")),
     endDate: S.String.pipe(T.HttpQuery("endDate")),
@@ -1711,7 +1715,7 @@ export class GetUsageRequest extends S.Class<GetUsageRequest>(
 export class GetUsagePlanRequest extends S.Class<GetUsagePlanRequest>(
   "GetUsagePlanRequest",
 )(
-  { usagePlanId: S.String.pipe(T.HttpLabel()) },
+  { usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")) },
   T.all(
     T.Http({ method: "GET", uri: "/usageplans/{usagePlanId}" }),
     svc,
@@ -1725,8 +1729,8 @@ export class GetUsagePlanKeyRequest extends S.Class<GetUsagePlanKeyRequest>(
   "GetUsagePlanKeyRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
-    keyId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
+    keyId: S.String.pipe(T.HttpLabel("keyId")),
   },
   T.all(
     T.Http({ method: "GET", uri: "/usageplans/{usagePlanId}/keys/{keyId}" }),
@@ -1741,7 +1745,7 @@ export class GetUsagePlanKeysRequest extends S.Class<GetUsagePlanKeysRequest>(
   "GetUsagePlanKeysRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
     position: S.optional(S.String).pipe(T.HttpQuery("position")),
     limit: S.optional(S.Number).pipe(T.HttpQuery("limit")),
     nameQuery: S.optional(S.String).pipe(T.HttpQuery("name")),
@@ -1775,7 +1779,7 @@ export class GetUsagePlansRequest extends S.Class<GetUsagePlansRequest>(
 export class GetVpcLinkRequest extends S.Class<GetVpcLinkRequest>(
   "GetVpcLinkRequest",
 )(
-  { vpcLinkId: S.String.pipe(T.HttpLabel()) },
+  { vpcLinkId: S.String.pipe(T.HttpLabel("vpcLinkId")) },
   T.all(
     T.Http({ method: "GET", uri: "/vpclinks/{vpcLinkId}" }),
     svc,
@@ -1822,7 +1826,7 @@ export class ImportDocumentationPartsRequest extends S.Class<ImportDocumentation
   "ImportDocumentationPartsRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     mode: S.optional(S.String).pipe(T.HttpQuery("mode")),
     failOnWarnings: S.optional(S.Boolean).pipe(T.HttpQuery("failonwarnings")),
     body: T.StreamingInput.pipe(T.HttpPayload()),
@@ -1857,8 +1861,8 @@ export class PutGatewayResponseRequest extends S.Class<PutGatewayResponseRequest
   "PutGatewayResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    responseType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    responseType: S.String.pipe(T.HttpLabel("responseType")),
     statusCode: S.optional(S.String),
     responseParameters: S.optional(MapOfStringToString),
     responseTemplates: S.optional(MapOfStringToString),
@@ -1879,10 +1883,10 @@ export class PutIntegrationResponseRequest extends S.Class<PutIntegrationRespons
   "PutIntegrationResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
     selectionPattern: S.optional(S.String),
     responseParameters: S.optional(MapOfStringToString),
     responseTemplates: S.optional(MapOfStringToString),
@@ -1908,10 +1912,10 @@ export class PutMethodResponseRequest extends S.Class<PutMethodResponseRequest>(
   "PutMethodResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
     responseParameters: S.optional(MapOfStringToBoolean),
     responseModels: S.optional(MapOfStringToString),
   },
@@ -1931,7 +1935,7 @@ export class PutRestApiRequest extends S.Class<PutRestApiRequest>(
   "PutRestApiRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     mode: S.optional(S.String).pipe(T.HttpQuery("mode")),
     failOnWarnings: S.optional(S.Boolean).pipe(T.HttpQuery("failonwarnings")),
     parameters: S.optional(MapOfStringToString).pipe(T.HttpQueryParams()),
@@ -1970,7 +1974,10 @@ export class RejectDomainNameAccessAssociationResponse extends S.Class<RejectDom
 export class TagResourceRequest extends S.Class<TagResourceRequest>(
   "TagResourceRequest",
 )(
-  { resourceArn: S.String.pipe(T.HttpLabel()), tags: MapOfStringToString },
+  {
+    resourceArn: S.String.pipe(T.HttpLabel("resourceArn")),
+    tags: MapOfStringToString,
+  },
   T.all(
     T.Http({ method: "PUT", uri: "/tags/{resourceArn}" }),
     svc,
@@ -1991,9 +1998,9 @@ export class TestInvokeMethodRequest extends S.Class<TestInvokeMethodRequest>(
   "TestInvokeMethodRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
     pathWithQueryString: S.optional(S.String),
     body: S.optional(S.String),
     headers: S.optional(MapOfStringToString),
@@ -2017,7 +2024,7 @@ export class UntagResourceRequest extends S.Class<UntagResourceRequest>(
   "UntagResourceRequest",
 )(
   {
-    resourceArn: S.String.pipe(T.HttpLabel()),
+    resourceArn: S.String.pipe(T.HttpLabel("resourceArn")),
     tagKeys: ListOfString.pipe(T.HttpQuery("tagKeys")),
   },
   T.all(
@@ -2043,7 +2050,7 @@ export class UpdateApiKeyRequest extends S.Class<UpdateApiKeyRequest>(
   "UpdateApiKeyRequest",
 )(
   {
-    apiKey: S.String.pipe(T.HttpLabel()),
+    apiKey: S.String.pipe(T.HttpLabel("apiKey")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2059,8 +2066,8 @@ export class UpdateAuthorizerRequest extends S.Class<UpdateAuthorizerRequest>(
   "UpdateAuthorizerRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    authorizerId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    authorizerId: S.String.pipe(T.HttpLabel("authorizerId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2079,9 +2086,9 @@ export class UpdateBasePathMappingRequest extends S.Class<UpdateBasePathMappingR
   "UpdateBasePathMappingRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
-    basePath: S.String.pipe(T.HttpLabel()),
+    basePath: S.String.pipe(T.HttpLabel("basePath")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2100,7 +2107,7 @@ export class UpdateClientCertificateRequest extends S.Class<UpdateClientCertific
   "UpdateClientCertificateRequest",
 )(
   {
-    clientCertificateId: S.String.pipe(T.HttpLabel()),
+    clientCertificateId: S.String.pipe(T.HttpLabel("clientCertificateId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2119,8 +2126,8 @@ export class UpdateDeploymentRequest extends S.Class<UpdateDeploymentRequest>(
   "UpdateDeploymentRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    deploymentId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    deploymentId: S.String.pipe(T.HttpLabel("deploymentId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2139,8 +2146,8 @@ export class UpdateDocumentationPartRequest extends S.Class<UpdateDocumentationP
   "UpdateDocumentationPartRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationPartId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationPartId: S.String.pipe(T.HttpLabel("documentationPartId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2159,8 +2166,8 @@ export class UpdateDocumentationVersionRequest extends S.Class<UpdateDocumentati
   "UpdateDocumentationVersionRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    documentationVersion: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    documentationVersion: S.String.pipe(T.HttpLabel("documentationVersion")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2179,7 +2186,7 @@ export class UpdateDomainNameRequest extends S.Class<UpdateDomainNameRequest>(
   "UpdateDomainNameRequest",
 )(
   {
-    domainName: S.String.pipe(T.HttpLabel()),
+    domainName: S.String.pipe(T.HttpLabel("domainName")),
     domainNameId: S.optional(S.String).pipe(T.HttpQuery("domainNameId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
@@ -2196,8 +2203,8 @@ export class UpdateGatewayResponseRequest extends S.Class<UpdateGatewayResponseR
   "UpdateGatewayResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    responseType: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    responseType: S.String.pipe(T.HttpLabel("responseType")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2216,9 +2223,9 @@ export class UpdateIntegrationRequest extends S.Class<UpdateIntegrationRequest>(
   "UpdateIntegrationRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2237,10 +2244,10 @@ export class UpdateIntegrationResponseRequest extends S.Class<UpdateIntegrationR
   "UpdateIntegrationResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2259,9 +2266,9 @@ export class UpdateMethodRequest extends S.Class<UpdateMethodRequest>(
   "UpdateMethodRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2280,10 +2287,10 @@ export class UpdateMethodResponseRequest extends S.Class<UpdateMethodResponseReq
   "UpdateMethodResponseRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
-    statusCode: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
+    statusCode: S.String.pipe(T.HttpLabel("statusCode")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2302,8 +2309,8 @@ export class UpdateModelRequest extends S.Class<UpdateModelRequest>(
   "UpdateModelRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    modelName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    modelName: S.String.pipe(T.HttpLabel("modelName")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2322,8 +2329,8 @@ export class UpdateRequestValidatorRequest extends S.Class<UpdateRequestValidato
   "UpdateRequestValidatorRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    requestValidatorId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    requestValidatorId: S.String.pipe(T.HttpLabel("requestValidatorId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2342,8 +2349,8 @@ export class UpdateResourceRequest extends S.Class<UpdateResourceRequest>(
   "UpdateResourceRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2362,7 +2369,7 @@ export class UpdateRestApiRequest extends S.Class<UpdateRestApiRequest>(
   "UpdateRestApiRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2378,8 +2385,8 @@ export class UpdateStageRequest extends S.Class<UpdateStageRequest>(
   "UpdateStageRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    stageName: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    stageName: S.String.pipe(T.HttpLabel("stageName")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2398,8 +2405,8 @@ export class UpdateUsageRequest extends S.Class<UpdateUsageRequest>(
   "UpdateUsageRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
-    keyId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
+    keyId: S.String.pipe(T.HttpLabel("keyId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2418,7 +2425,7 @@ export class UpdateUsagePlanRequest extends S.Class<UpdateUsagePlanRequest>(
   "UpdateUsagePlanRequest",
 )(
   {
-    usagePlanId: S.String.pipe(T.HttpLabel()),
+    usagePlanId: S.String.pipe(T.HttpLabel("usagePlanId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2434,7 +2441,7 @@ export class UpdateVpcLinkRequest extends S.Class<UpdateVpcLinkRequest>(
   "UpdateVpcLinkRequest",
 )(
   {
-    vpcLinkId: S.String.pipe(T.HttpLabel()),
+    vpcLinkId: S.String.pipe(T.HttpLabel("vpcLinkId")),
     patchOperations: S.optional(ListOfPatchOperation),
   },
   T.all(
@@ -2845,7 +2852,7 @@ export class CreateDeploymentRequest extends S.Class<CreateDeploymentRequest>(
   "CreateDeploymentRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     stageName: S.optional(S.String),
     stageDescription: S.optional(S.String),
     description: S.optional(S.String),
@@ -2868,7 +2875,7 @@ export class CreateDocumentationPartRequest extends S.Class<CreateDocumentationP
   "CreateDocumentationPartRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     location: DocumentationPartLocation,
     properties: S.String,
   },
@@ -2918,7 +2925,7 @@ export class CreateStageRequest extends S.Class<CreateStageRequest>(
   "CreateStageRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
     stageName: S.String,
     deploymentId: S.String,
     description: S.optional(S.String),
@@ -3059,9 +3066,12 @@ export class PutIntegrationRequest extends S.Class<PutIntegrationRequest>(
   "PutIntegrationRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel(), T.JsonName("requestHttpMethod")),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(
+      T.HttpLabel("httpMethod"),
+      T.JsonName("requestHttpMethod"),
+    ),
     type: S.String,
     integrationHttpMethod: S.optional(S.String).pipe(T.JsonName("httpMethod")),
     uri: S.optional(S.String),
@@ -3095,9 +3105,9 @@ export class PutMethodRequest extends S.Class<PutMethodRequest>(
   "PutMethodRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    resourceId: S.String.pipe(T.HttpLabel()),
-    httpMethod: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    resourceId: S.String.pipe(T.HttpLabel("resourceId")),
+    httpMethod: S.String.pipe(T.HttpLabel("httpMethod")),
     authorizationType: S.String,
     authorizerId: S.optional(S.String),
     apiKeyRequired: S.optional(S.Boolean),
@@ -3123,8 +3133,8 @@ export class TestInvokeAuthorizerRequest extends S.Class<TestInvokeAuthorizerReq
   "TestInvokeAuthorizerRequest",
 )(
   {
-    restApiId: S.String.pipe(T.HttpLabel()),
-    authorizerId: S.String.pipe(T.HttpLabel()),
+    restApiId: S.String.pipe(T.HttpLabel("restApiId")),
+    authorizerId: S.String.pipe(T.HttpLabel("authorizerId")),
     headers: S.optional(MapOfStringToString),
     multiValueHeaders: S.optional(MapOfStringToList),
     pathWithQueryString: S.optional(S.String),

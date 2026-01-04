@@ -12,6 +12,7 @@
  * or if running in LocalStack (which doesn't support Lex streaming).
  */
 
+import { expect } from "@effect/vitest";
 import { Effect, Stream } from "effect";
 import {
   ConfigurationEvent,
@@ -58,9 +59,7 @@ test(
     yield* Effect.logInfo("RecognizeText response:", response);
 
     // The response should have session state
-    if (!response.sessionState) {
-      return yield* Effect.fail(new Error("Expected sessionState in response"));
-    }
+    expect(response.sessionState).toBeDefined();
   }),
 );
 
@@ -141,11 +140,7 @@ if (!isLocalStack && BOT_ID) {
       );
 
       // We should have received at least one event
-      if (responseEvents.length === 0) {
-        return yield* Effect.fail(
-          new Error("Expected at least one response event"),
-        );
-      }
+      expect(responseEvents.length).toBeGreaterThan(0);
     }),
   );
 

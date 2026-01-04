@@ -124,9 +124,17 @@ type SmithyTraits = Record<string, unknown> | undefined;
  * - List members
  * - Map key/value
  *
+ * @param traits - The Smithy traits object
+ * @param memberName - Optional. The original Smithy member name. Used for @httpLabel
+ *                     to ensure path substitution uses the correct placeholder name
+ *                     (URI templates use member names, not encoded property keys).
+ *
  * Returns an array of annotation strings like 'T.XmlName("foo")'
  */
-function collectSerializationTraits(traits: SmithyTraits): string[] {
+function collectSerializationTraits(
+  traits: SmithyTraits,
+  memberName?: string,
+): string[] {
   if (!traits) return [];
 
   const pipes: string[] = [];
@@ -142,8 +150,17 @@ function collectSerializationTraits(traits: SmithyTraits): string[] {
   }
 
   // smithy.api#httpLabel
+  // Always store the original member name for path substitution.
+  // The URI template uses the Smithy member name (e.g., {httpMethod}), but after
+  // Schema.encode(), the property key may be different (e.g., if JsonName is applied).
+  // By always storing the member name, path substitution works correctly regardless
+  // of any key transformations.
   if (traits["smithy.api#httpLabel"] != null) {
-    pipes.push(`T.HttpLabel()`);
+    if (memberName) {
+      pipes.push(`T.HttpLabel("${memberName}")`);
+    } else {
+      pipes.push(`T.HttpLabel()`);
+    }
   }
 
   // smithy.api#httpQuery
@@ -226,9 +243,18 @@ function collectSerializationTraits(traits: SmithyTraits): string[] {
 /**
  * Apply collected traits to a schema expression.
  * Returns the schema with .pipe(...traits) appended if there are any traits.
+ *
+ * @param schema - The schema expression to annotate
+ * @param traits - The Smithy traits object
+ * @param memberName - Optional. The original Smithy member name. Passed through to
+ *                     collectSerializationTraits for httpLabel+jsonName handling.
  */
-function applyTraitsToSchema(schema: string, traits: SmithyTraits): string {
-  const pipes = collectSerializationTraits(traits);
+function applyTraitsToSchema(
+  schema: string,
+  traits: SmithyTraits,
+  memberName?: string,
+): string {
+  const pipes = collectSerializationTraits(traits, memberName);
   if (pipes.length > 0) {
     return `${schema}.pipe(${pipes.join(", ")})`;
   }
@@ -1040,7 +1066,12 @@ const convertShapeToSchema: (
                     }
 
                     // Apply serialization traits using unified function
-                    schema = applyTraitsToSchema(schema, member.traits);
+                    // Pass memberName so httpLabel can use it for path substitution when jsonName differs
+                    schema = applyTraitsToSchema(
+                      schema,
+                      member.traits,
+                      memberName,
+                    );
 
                     return `${memberName}: ${schema}`;
                   }),

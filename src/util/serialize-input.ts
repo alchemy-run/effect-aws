@@ -9,6 +9,7 @@ import type * as AST from "effect/SchemaAST";
 import type { Request } from "../request.ts";
 import {
   getHttpHeader,
+  getHttpLabelName,
   getHttpPrefixHeaders,
   getHttpQuery,
   getHttpTrait,
@@ -69,8 +70,10 @@ export function bindInputToRequest(
       // Value should already be encoded (dates as formatted strings, etc.)
       request.headers[header] = String(value);
     } else if (label) {
+      // Use explicit label name if provided (needed when JsonName differs from URI template placeholder)
+      const labelName = getHttpLabelName(prop) ?? name;
       request.path = request.path.replace(
-        new RegExp(`\\{${name}\\+?\\}`),
+        new RegExp(`\\{${labelName}\\+?\\}`),
         encodeURIComponent(String(value)),
       );
     } else if (queryParam !== undefined) {
