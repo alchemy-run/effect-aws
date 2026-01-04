@@ -2,6 +2,7 @@ import { AwsV4Signer } from "aws4fetch";
 import * as Effect from "effect/Effect";
 import * as Option from "effect/Option";
 import type * as ParseResult from "effect/ParseResult";
+import * as Redacted from "effect/Redacted";
 import { Credentials } from "./aws/credentials.ts";
 import { Endpoint } from "./aws/endpoint.ts";
 import { UnknownAwsError, type CommonAwsError } from "./aws/errors.ts";
@@ -66,7 +67,6 @@ export const make = <Op extends Operation>(
     // Sign the request
     const credentials = yield* Credentials;
     const region = yield* Region;
-    const creds = yield* credentials.getCredentials();
     const serviceName = sigv4?.name ?? "s3";
 
     // Resolve endpoint and adjust request path if needed
@@ -130,9 +130,11 @@ export const make = <Op extends Operation>(
         : resolvedRequest.body instanceof Uint8Array
           ? Buffer.from(resolvedRequest.body)
           : resolvedRequest.body,
-      accessKeyId: creds.accessKeyId,
-      secretAccessKey: creds.secretAccessKey,
-      sessionToken: creds.sessionToken,
+      accessKeyId: Redacted.value(credentials.accessKeyId),
+      secretAccessKey: Redacted.value(credentials.secretAccessKey),
+      sessionToken: credentials.sessionToken
+        ? Redacted.value(credentials.sessionToken)
+        : undefined,
       service: serviceName,
       region,
     });

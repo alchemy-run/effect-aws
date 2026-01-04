@@ -11,12 +11,10 @@ import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 import * as Logger from "effect/Logger";
 import * as S from "effect/Schema";
+import * as Credentials from "../aws/credentials.ts";
 import {
   COMMON_ERRORS,
-  Credentials,
   Endpoint,
-  LocalstackCredentialsLive,
-  NodeProviderChainCredentialsLive,
   Region,
   UnknownAwsError,
 } from "../aws/index.ts";
@@ -96,7 +94,12 @@ export const callApi = Tool.make("CallApi", {
     "Call a given AWS API. You can optionally specify a region to test region-specific behavior.",
   success: S.String,
   failure: S.Any,
-  dependencies: [Credentials, FileSystem.FileSystem, Path.Path, Locks],
+  dependencies: [
+    Credentials.Credentials,
+    FileSystem.FileSystem,
+    Path.Path,
+    Locks,
+  ],
   parameters: {
     service: S.String.annotations({
       description: "The AWS service to call the API for",
@@ -420,7 +423,7 @@ const resolveOperationName = Effect.fn(function* (
 
 const getOperation = Effect.fn(function* (service: string, operation: string) {
   type Op = Operation & {
-    (input: any): Effect.Effect<any, any, Region | Credentials>;
+    (input: any): Effect.Effect<any, any, Region | Credentials.Credentials>;
   };
   const svc = yield* getService(service);
   if (!svc) {
@@ -653,28 +656,19 @@ const eff = Effect.gen(function* () {
   ),
   Effect.scoped,
   Effect.provide(locks),
-  Effect.provide(NodeContext.layer),
-  Effect.provide(NodeHttpClient.layer),
-  Effect.provide(
-    process.env.LIVE
-      ? LocalstackCredentialsLive
-      : NodeProviderChainCredentialsLive,
-  ),
+  Effect.provide(process.env.LIVE ? Credentials.mock : Credentials.fromSSO()),
   Effect.provideService(Region, "us-west-2"),
   Effect.provide(Persistence.layerMemory),
 );
 
+const nodePlatform = Layer.mergeAll(NodeContext.layer, NodeHttpClient.layer);
+
 if (process.env.LIVE) {
   eff.pipe(
     Effect.provideService(Endpoint, "http://localhost:4566"),
-    Effect.provide(LocalstackCredentialsLive),
+    Effect.provide(nodePlatform),
     NodeRuntime.runMain,
   );
 } else {
-  eff.pipe(
-    Effect.provide(NodeProviderChainCredentialsLive),
-    NodeRuntime.runMain,
-  );
+  eff.pipe(Effect.provide(nodePlatform), NodeRuntime.runMain);
 }
-
-// Prepare and run the CLI application

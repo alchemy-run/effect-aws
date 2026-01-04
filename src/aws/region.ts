@@ -1,5 +1,10 @@
 import * as Context from "effect/Context";
 
+export class Region extends Context.Tag("effect-aws/Region")<
+  Region,
+  AWSRegion
+>() {}
+
 export type AWSRegion =
   | "us-east-1"
   | "us-east-2"
@@ -34,6 +39,5 @@ export type AWSRegion =
   | "mx-central-1"
   | "me-south-1"
   | "me-central-1"
-  | "sa-east-1";
-
-export class Region extends Context.Tag("Region")<Region, AWSRegion>() {}
+  | "sa-east-1"
+  | (string & {});

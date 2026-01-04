@@ -8,11 +8,7 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import * as Logger from "effect/Logger";
 import * as Scope from "effect/Scope";
-import {
-  Credentials,
-  LocalstackCredentialsLive,
-  NodeProviderChainCredentialsLive,
-} from "../src/aws/credentials.ts";
+import * as Credentials from "../src/aws/credentials.ts";
 import { Endpoint } from "../src/aws/endpoint.ts";
 import { Region } from "../src/aws/region.ts";
 
@@ -22,7 +18,7 @@ type Provided =
   | FileSystem.FileSystem
   | Path.Path
   | Region
-  | Credentials;
+  | Credentials.Credentials;
 
 const platform = Layer.mergeAll(
   NodeContext.layer,
@@ -108,9 +104,9 @@ function provideTestEnv<A, E, R extends Provided>(
         Endpoint,
         process.env.LOCALSTACK_HOST ?? "http://localhost:4566",
       ),
-      Effect.provide(LocalstackCredentialsLive),
+      Effect.provide(Credentials.mock),
     );
   } else {
-    return eff.pipe(Effect.provide(NodeProviderChainCredentialsLive));
+    return eff.pipe(Effect.provide(Credentials.fromChain()));
   }
 }
