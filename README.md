@@ -1,4 +1,4 @@
-# distilled-aws
+# effect-aws
 
 An **Effect-native AWS SDK** generated directly from [Smithy](https://smithy.io) specifications. Built with [Effect Schema](https://effect.website/docs/schema/introduction) and [Effect Platform](https://effect.website/docs/platform/introduction), this SDK brings full type-safety, composability, and streaming support to AWS API operations.
 
@@ -15,15 +15,15 @@ An **Effect-native AWS SDK** generated directly from [Smithy](https://smithy.io)
 ## Installation
 
 ```bash
-bun add distilled-aws-sdk effect
+bun add effect-aws effect
 ```
 
 ## Quick Start
 
 ```typescript
 import * as Effect from "effect/Effect";
-import { S3 } from "distilled-aws-sdk/s3";
-import { Credentials, NodeProviderChainCredentialsLive, Region } from "distilled-aws-sdk";
+import { S3 } from "effect-aws/s3";
+import { Credentials, NodeProviderChainCredentialsLive, Region } from "effect-aws";
 
 // Call the operation
 const program = S3.getObject({
@@ -300,7 +300,7 @@ The SDK provides first-class streaming support for large payloads:
 
 ```typescript
 import * as Stream from "effect/Stream";
-import { S3 } from "distilled-aws-sdk/s3";
+import { S3 } from "effect-aws/s3";
 
 // Stream from a file
 const fileStream = Stream.fromReadableStream(
@@ -345,7 +345,7 @@ All operations return typed errors that can be pattern-matched:
 
 ```typescript
 import { Effect, Match } from "effect";
-import { S3 } from "distilled-aws-sdk/s3";
+import { S3 } from "effect-aws/s3";
 
 const program = S3.getObject({
   Bucket: "my-bucket",
