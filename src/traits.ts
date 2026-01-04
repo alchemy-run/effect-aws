@@ -686,7 +686,7 @@ export const EventPayload = () => makeAnnotation(eventPayloadSymbol, true);
 
 /**
  * Event stream schema helper - wraps a union schema into a Stream type.
- * Used for @streaming unions in generated code.
+ * Used for @streaming unions in generated code (output event streams).
  *
  * This creates a schema where the TypeScript type is Stream<EventType>
  * but at runtime it validates that the value is an Effect Stream.
@@ -701,6 +701,103 @@ export const EventStream = <A, I, R>(
     identifier: "EventStream",
     eventSchema,
   });
+
+/** Symbol to identify input event streams (request direction) */
+export const inputEventStreamSymbol = Symbol.for("itty-aws/input-event-stream");
+
+/**
+ * Input event stream schema helper - wraps a union schema into a Stream type for request bodies.
+ * Used for @streaming unions in input structures (bi-directional streaming).
+ *
+ * This is different from EventStream (output) because:
+ * - The user provides a Stream of typed events
+ * - We need to serialize them to event stream wire format
+ *
+ * @param eventSchema - The underlying union schema for the event types
+ * @param eventPayloadMap - Optional map of event type names to their @eventPayload member names
+ */
+export const InputEventStream = <A, I, R>(
+  eventSchema: S.Schema<A, I, R>,
+  eventPayloadMap?: Record<string, string>,
+): S.Schema<Stream.Stream<A, Error, never>> =>
+  S.declare((u): u is Stream.Stream<A, Error, never> =>
+    isEffectStream(u),
+  ).annotations({
+    [streamingSymbol]: true,
+    [inputEventStreamSymbol]: true,
+    identifier: "InputEventStream",
+    eventSchema,
+    eventPayloadMap,
+  });
+
+/**
+ * Check if an AST represents an input event stream (streaming union for requests).
+ */
+export const isInputEventStream = (ast: AST.AST): boolean => {
+  if (ast.annotations?.[inputEventStreamSymbol]) return true;
+  return false;
+};
+
+/**
+ * Check if an AST represents an output event stream (streaming union for responses).
+ * An output event stream has the "EventStream" identifier but NOT the inputEventStreamSymbol.
+ * Also handles S.optional() wrapping (Union with UndefinedKeyword).
+ */
+export const isOutputEventStream = (ast: AST.AST): boolean => {
+  // Direct check
+  if (ast.annotations?.identifier === "EventStream") return true;
+  if (ast.annotations?.identifier === "InputEventStream") return false;
+
+  // Check if it's a streaming type with an eventSchema annotation
+  if (
+    ast.annotations?.[streamingSymbol] &&
+    ast.annotations?.eventSchema &&
+    !ast.annotations?.[inputEventStreamSymbol]
+  ) {
+    return true;
+  }
+
+  // Handle S.optional() wrapping - check union members
+  if (ast._tag === "Union") {
+    for (const member of ast.types) {
+      if (member._tag === "UndefinedKeyword") continue;
+      if (isOutputEventStream(member)) return true;
+    }
+  }
+
+  return false;
+};
+
+/**
+ * Get the event schema from an event stream AST (input or output).
+ * Also handles S.optional() wrapping (Union with UndefinedKeyword).
+ */
+export const getEventSchema = (ast: AST.AST): S.Schema<unknown> | undefined => {
+  // Direct check
+  if (ast.annotations?.eventSchema) {
+    return ast.annotations.eventSchema as S.Schema<unknown>;
+  }
+
+  // Handle S.optional() wrapping - check union members
+  if (ast._tag === "Union") {
+    for (const member of ast.types) {
+      if (member._tag === "UndefinedKeyword") continue;
+      const schema = getEventSchema(member);
+      if (schema) return schema;
+    }
+  }
+
+  return undefined;
+};
+
+/**
+ * Get the event payload map from an input event stream AST.
+ */
+export const getEventPayloadMap = (
+  ast: AST.AST,
+): Record<string, string> | undefined => {
+  return ast.annotations?.eventPayloadMap as Record<string, string> | undefined;
+};
 
 // =============================================================================
 // Annotation Retrieval Helpers

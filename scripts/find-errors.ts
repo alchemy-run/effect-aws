@@ -3,7 +3,7 @@ import { withLocalStack } from "./localstack.ts";
 const run = () =>
   Bun.spawn(
     [
-      "node",
+      "bun",
       "--env-file",
       ".env",
       "src/patch/discover-errors.ts",

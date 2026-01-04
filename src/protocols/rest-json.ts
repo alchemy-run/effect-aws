@@ -12,6 +12,7 @@
 import * as Effect from "effect/Effect";
 import * as Schema from "effect/Schema";
 import * as AST from "effect/SchemaAST";
+import * as Stream from "effect/Stream";
 import {
   applyApiGatewayCustomizations,
   isApiGateway,
@@ -21,20 +22,34 @@ import {
   isGlacier,
 } from "../customizations/glacier.ts";
 import { ParseError } from "../error-parser.ts";
+import { parseEventStream } from "../eventstream/parser.ts";
+import {
+  serializeInputEventStream,
+  serializeInputEventStreamWithPayloads,
+  type InputEvent,
+} from "../eventstream/serializer.ts";
 import type { Operation } from "../operation.ts";
 import type { Protocol, ProtocolHandler } from "../protocol.ts";
 import type { Request } from "../request.ts";
 import type { Response } from "../response.ts";
 import {
   getAwsApiService,
+  getEventPayloadMap,
+  getEventSchema,
   getHttpHeader,
   getHttpPrefixHeaders,
   getServiceVersion,
   hasHttpPayload,
+  isInputEventStream,
+  isOutputEventStream,
   isStreamingType,
   type StreamingInputBody,
 } from "../traits.ts";
-import { getEncodedPropertySignatures } from "../util/ast.ts";
+import {
+  getEncodedPropertySignatures,
+  isBooleanAST,
+  isNumberAST,
+} from "../util/ast.ts";
 import {
   extractJsonErrorCode,
   extractJsonErrorData,
@@ -44,6 +59,7 @@ import { extractStaticQueryParams } from "../util/query-params.ts";
 import { applyHttpTrait, bindInputToRequest } from "../util/serialize-input.ts";
 import {
   convertStreamingInput,
+  isEffectStream,
   readableToEffectStream,
   readStreamAsText,
 } from "../util/stream.ts";
@@ -66,9 +82,21 @@ export const restJson1Protocol: Protocol = (
   const serviceVersion = getServiceVersion(inputAst);
 
   // Pre-classify output properties by their HTTP binding (done once at init)
-  type HeaderProp = { name: string; header: string; headerLower: string };
+  type HeaderProp = {
+    name: string;
+    header: string;
+    headerLower: string;
+    isNumber: boolean;
+    isBoolean: boolean;
+  };
   type PrefixHeaderProp = { name: string; prefix: string };
-  type PayloadProp = { name: string; isStreaming: boolean; isRaw: boolean };
+  type PayloadProp = {
+    name: string;
+    isStreaming: boolean;
+    isRaw: boolean;
+    isEventStream: boolean;
+    eventSchema?: Schema.Schema<unknown>;
+  };
 
   const headerProps: HeaderProp[] = [];
   const prefixHeaderProps: PrefixHeaderProp[] = [];
@@ -80,21 +108,33 @@ export const restJson1Protocol: Protocol = (
     const prefix = getHttpPrefixHeaders(prop);
 
     if (header) {
-      headerProps.push({ name, header, headerLower: header.toLowerCase() });
+      headerProps.push({
+        name,
+        header,
+        headerLower: header.toLowerCase(),
+        isNumber: isNumberAST(prop.type),
+        isBoolean: isBooleanAST(prop.type),
+      });
     } else if (prefix) {
       prefixHeaderProps.push({ name, prefix: prefix.toLowerCase() });
     } else if (hasHttpPayload(prop)) {
+      const isEventStream = isOutputEventStream(prop.type);
       outputPayloadProp = {
         name,
         isStreaming: isStreamingType(prop.type),
         isRaw: isRawPayload(prop.type),
+        isEventStream,
+        eventSchema: isEventStream ? getEventSchema(prop.type) : undefined,
       };
     } else if (isStreamingType(prop.type)) {
       // Streaming members (including event streams) implicitly become the payload
+      const isEventStream = isOutputEventStream(prop.type);
       outputPayloadProp = {
         name,
         isStreaming: true,
         isRaw: false,
+        isEventStream,
+        eventSchema: isEventStream ? getEventSchema(prop.type) : undefined,
       };
     }
   }
@@ -121,7 +161,29 @@ export const restJson1Protocol: Protocol = (
 
       // Serialize body
       if (payloadValue !== undefined && payloadAst !== undefined) {
-        if (isStreamingType(payloadAst)) {
+        // Check for input event stream - a streaming type where the user provided an Effect Stream
+        // This happens when a streaming union (T.EventStream) is used in an input context
+        const isInputEventStreamPayload =
+          (isInputEventStream(payloadAst) || isStreamingType(payloadAst)) &&
+          isEffectStream(payloadValue);
+
+        if (isInputEventStreamPayload) {
+          // Input event stream - serialize each event to wire format
+          const eventPayloadMap = getEventPayloadMap(payloadAst);
+          if (eventPayloadMap && Object.keys(eventPayloadMap).length > 0) {
+            request.body = serializeInputEventStreamWithPayloads(
+              payloadValue as Stream.Stream<InputEvent, unknown>,
+              eventPayloadMap,
+            );
+          } else {
+            request.body = serializeInputEventStream(
+              payloadValue as Stream.Stream<InputEvent, unknown>,
+            );
+          }
+          // Set content type for event streams
+          request.headers["Content-Type"] =
+            "application/vnd.amazon.eventstream";
+        } else if (isStreamingType(payloadAst)) {
           request.body = convertStreamingInput(
             payloadValue as StreamingInputBody,
           );
@@ -154,7 +216,14 @@ export const restJson1Protocol: Protocol = (
       for (const hp of headerProps) {
         const v =
           response.headers[hp.headerLower] ?? response.headers[hp.header];
-        if (v !== undefined) result[hp.name] = v;
+        if (v !== undefined) {
+          // Convert string header values to appropriate types
+          result[hp.name] = hp.isNumber
+            ? Number(v)
+            : hp.isBoolean
+              ? v === "true"
+              : v;
+        }
       }
 
       // Extract prefix header properties
@@ -170,7 +239,57 @@ export const restJson1Protocol: Protocol = (
 
       // Handle streaming output payload - return early
       if (outputPayloadProp?.isStreaming) {
-        result[outputPayloadProp.name] = readableToEffectStream(response.body);
+        if (outputPayloadProp.isEventStream && response.body) {
+          // Parse event stream - converts raw bytes to typed events
+          const eventStream = parseEventStream(
+            response.body as ReadableStream<Uint8Array>,
+          ).pipe(
+            // Convert StreamEvent to the expected union type structure
+            Stream.map((streamEvent) => {
+              if (streamEvent._tag === "MessageEvent") {
+                // Parse JSON payload to create union member
+                const eventType = streamEvent.eventType;
+                const payloadText = new TextDecoder().decode(
+                  streamEvent.payload,
+                );
+                try {
+                  const payload = payloadText ? JSON.parse(payloadText) : {};
+                  // Create tagged union member: { EventType: payload }
+                  return { [eventType]: payload };
+                } catch {
+                  // If payload isn't JSON, pass through raw
+                  return { [eventType]: { payload: payloadText } };
+                }
+              } else if (streamEvent._tag === "ExceptionEvent") {
+                // Handle exception events
+                const errorType = streamEvent.exceptionType;
+                const payloadText = new TextDecoder().decode(
+                  streamEvent.payload,
+                );
+                try {
+                  const payload = payloadText ? JSON.parse(payloadText) : {};
+                  return { [errorType]: payload };
+                } catch {
+                  return { [errorType]: { message: payloadText } };
+                }
+              } else {
+                // ErrorEvent - unmodeled error
+                return {
+                  UnmodeledError: {
+                    errorCode: streamEvent.errorCode,
+                    errorMessage: streamEvent.errorMessage,
+                  },
+                };
+              }
+            }),
+          );
+          result[outputPayloadProp.name] = eventStream;
+        } else {
+          // Raw streaming output (blob)
+          result[outputPayloadProp.name] = readableToEffectStream(
+            response.body,
+          );
+        }
         return result;
       }
 

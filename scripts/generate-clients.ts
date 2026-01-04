@@ -62,6 +62,8 @@ class SdkFile extends Context.Tag("SdkFile")<
       version: string;
       protocol: string;
     };
+    // Set of shape IDs that are input event streams (vs output event streams)
+    inputEventStreamShapeIds: Set<string>;
     // Endpoint rule set for dynamic endpoint resolution
     endpointRuleSet: unknown | undefined;
     // Client context parameters for endpoint resolution
@@ -204,6 +206,16 @@ function collectSerializationTraits(traits: SmithyTraits): string[] {
   // aws.protocols#ec2QueryName
   if (traits["aws.protocols#ec2QueryName"] != null) {
     pipes.push(`T.Ec2QueryName("${traits["aws.protocols#ec2QueryName"]}")`);
+  }
+
+  // smithy.api#eventPayload - marks member as the event payload
+  if (traits["smithy.api#eventPayload"] != null) {
+    pipes.push(`T.EventPayload()`);
+  }
+
+  // smithy.api#eventHeader - marks member as an event header
+  if (traits["smithy.api#eventHeader"] != null) {
+    pipes.push(`T.EventHeader()`);
   }
 
   return pipes;
@@ -603,6 +615,34 @@ function collectOperationOutputTraits(
   }
 
   return outputTraits;
+}
+
+// Collect event stream shape IDs that are used as input vs output
+// This traverses operation input/output shapes to find streaming union members
+function collectInputEventStreamShapeIds(model: SmithyModel): Set<string> {
+  const inputEventStreams = new Set<string>();
+
+  for (const [_shapeId, shape] of Object.entries(model.shapes)) {
+    if (shape.type === "operation" && shape.input) {
+      // Get the input shape
+      const inputShape = model.shapes[shape.input.target];
+      if (inputShape?.type === "structure" && inputShape.members) {
+        // Look for streaming union members in the input
+        for (const member of Object.values(inputShape.members)) {
+          const memberTarget = member.target;
+          const memberShape = model.shapes[memberTarget];
+          if (
+            memberShape?.type === "union" &&
+            memberShape.traits?.["smithy.api#streaming"]
+          ) {
+            inputEventStreams.add(memberTarget);
+          }
+        }
+      }
+    }
+  }
+
+  return inputEventStreams;
 }
 
 const convertShapeToSchema: (
@@ -1142,31 +1182,40 @@ const convertShapeToSchema: (
                   }),
                   { concurrency: "unbounded" },
                 ).pipe(
-                  Effect.map((members) => {
-                    const wrappedMembers = members.map((m) => m.wrapped);
+                  Effect.flatMap((members) =>
+                    Effect.gen(function* () {
+                      const sdkFile = yield* SdkFile;
+                      const wrappedMembers = members.map((m) => m.wrapped);
 
-                    // Event stream unions use T.EventStream() to get Stream<EventType> type
-                    if (isEventStream) {
-                      return `export const ${schemaName} = T.EventStream(S.Union(${wrappedMembers.join(", ")}));`;
-                    }
+                      // Event stream unions use T.EventStream() or T.InputEventStream() based on direction
+                      if (isEventStream) {
+                        // Check if this is an input event stream by checking the original shape target
+                        const isInputEventStream =
+                          sdkFile.inputEventStreamShapeIds.has(target);
+                        if (isInputEventStream) {
+                          return `export const ${schemaName} = T.InputEventStream(S.Union(${wrappedMembers.join(", ")}));`;
+                        }
+                        return `export const ${schemaName} = T.EventStream(S.Union(${wrappedMembers.join(", ")}));`;
+                      }
 
-                    if (isCurrentCyclic) {
-                      // For cyclic unions, generate explicit type alias to help TypeScript inference
-                      // Each member is now a struct { memberName: type }, so the TS types need to reflect that
-                      const memberTsTypes = members.map((m) => {
-                        const innerType = schemaExprToTsType(
-                          m.raw,
-                          sdkFile.allStructNames,
-                          sdkFile.cyclicSchemas,
-                        );
-                        return `{ ${m.name}: ${innerType} }`;
-                      });
-                      const typeAlias = `export type ${schemaName} = ${memberTsTypes.join(" | ")};`;
-                      return `${typeAlias}\nexport const ${schemaName} = S.Union(${wrappedMembers.join(", ")}) as any as S.Schema<${schemaName}>;`;
-                    }
+                      if (isCurrentCyclic) {
+                        // For cyclic unions, generate explicit type alias to help TypeScript inference
+                        // Each member is now a struct { memberName: type }, so the TS types need to reflect that
+                        const memberTsTypes = members.map((m) => {
+                          const innerType = schemaExprToTsType(
+                            m.raw,
+                            sdkFile.allStructNames,
+                            sdkFile.cyclicSchemas,
+                          );
+                          return `{ ${m.name}: ${innerType} }`;
+                        });
+                        const typeAlias = `export type ${schemaName} = ${memberTsTypes.join(" | ")};`;
+                        return `${typeAlias}\nexport const ${schemaName} = S.Union(${wrappedMembers.join(", ")}) as any as S.Schema<${schemaName}>;`;
+                      }
 
-                    return `export const ${schemaName} = S.Union(${wrappedMembers.join(", ")});`;
-                  }),
+                      return `export const ${schemaName} = S.Union(${wrappedMembers.join(", ")});`;
+                    }),
+                  ),
                 ),
                 memberTargets,
               );
@@ -1566,6 +1615,7 @@ const generateClient = Effect.fn(function* (
   // Pre-collect operation input traits and output traits
   const operationInputTraits = collectOperationInputTraits(model);
   const operationOutputTraits = collectOperationOutputTraits(model);
+  const inputEventStreamShapeIds = collectInputEventStreamShapeIds(model);
 
   // Extract service-level information
   const serviceShape = Object.values(model.shapes).find(
@@ -1630,6 +1680,7 @@ const generateClient = Effect.fn(function* (
       endpointRuleSet,
       clientContextParams,
       serviceSpec,
+      inputEventStreamShapeIds,
     }),
     Effect.provideService(ModelService, model),
   );

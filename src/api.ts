@@ -102,12 +102,21 @@ export const make = <Op extends Operation>(
       ? `${request.path}?${queryString}`
       : request.path;
 
+    // For streaming bodies (ReadableStream), we can't compute a hash
+    // so we use UNSIGNED-PAYLOAD and don't pass the body to the signer
+    const isStreamingBody = request.body instanceof ReadableStream;
+    const signingHeaders = isStreamingBody
+      ? { ...request.headers, "X-Amz-Content-Sha256": "UNSIGNED-PAYLOAD" }
+      : request.headers;
+
     const signer = new AwsV4Signer({
       method: request.method,
       url: `${endpoint}${fullPath}`,
-      headers: request.headers,
-      body:
-        request.body instanceof Uint8Array
+      headers: signingHeaders,
+      // Don't pass streaming body to signer - it can't be hashed
+      body: isStreamingBody
+        ? undefined
+        : request.body instanceof Uint8Array
           ? Buffer.from(request.body)
           : request.body,
       accessKeyId: creds.accessKeyId,
@@ -121,10 +130,13 @@ export const make = <Op extends Operation>(
     yield* Effect.logDebug("Signed Request", signedRequest);
 
     // Determine the body for fetch
-    const isStreaming = signedRequest.body instanceof ReadableStream;
+    // For streaming bodies, use the original request.body (not from signedRequest)
     let fetchBody: BodyInit | undefined;
 
-    if (signedRequest.body) {
+    if (isStreamingBody) {
+      // Streaming body was not passed to signer, use original
+      fetchBody = request.body as ReadableStream;
+    } else if (signedRequest.body) {
       if (typeof signedRequest.body === "string") {
         fetchBody = signedRequest.body;
       } else if (
@@ -132,7 +144,7 @@ export const make = <Op extends Operation>(
         signedRequest.body instanceof ArrayBuffer
       ) {
         fetchBody = signedRequest.body;
-      } else if (isStreaming) {
+      } else if (signedRequest.body instanceof ReadableStream) {
         fetchBody = signedRequest.body;
       }
     }
@@ -153,7 +165,7 @@ export const make = <Op extends Operation>(
           body: fetchBody,
           signal, // Propagate abort signal for Effect interruption
           // Enable streaming uploads - required for ReadableStream bodies
-          ...(isStreaming ? { duplex: "half" as const } : {}),
+          ...(isStreamingBody ? { duplex: "half" as const } : {}),
         } as RequestInit),
       catch: (error) => new Error(`Fetch error: ${error}`),
     });
