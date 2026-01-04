@@ -610,6 +610,26 @@ export const isStreamingType = (ast: AST.AST): boolean => {
   return false;
 };
 
+// =============================================================================
+// Requires Length Trait (smithy.api#requiresLength)
+// =============================================================================
+
+/**
+ * smithy.api#requiresLength - Indicates that the streaming blob MUST be finite
+ * and have a known size when sending data from a client to a server.
+ *
+ * In HTTP-based protocols, this means Content-Length header MUST be sent.
+ * Note: While Smithy suggests chunked encoding is possible without this trait,
+ * many AWS services (including S3) don't support it. We buffer all streaming
+ * bodies when Content-Length is not provided.
+ */
+export const requiresLengthSymbol = Symbol.for("itty-aws/requires-length");
+export const RequiresLength = () => makeAnnotation(requiresLengthSymbol, true);
+
+/** Check if an AST has the requiresLength trait */
+export const hasRequiresLength = (ast: AST.AST): boolean =>
+  hasAnnotation(ast, requiresLengthSymbol);
+
 /**
  * Streaming input body - accepts multiple source types.
  * The protocol converts these to the appropriate format for fetch.

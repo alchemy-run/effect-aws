@@ -777,6 +777,12 @@ const convertShapeToSchema: (
                 // Streaming blob - used for large payloads like S3 objects
                 // NOTE: Context-specific types (StreamingInput/StreamingOutput) are
                 // handled at the member level. This fallback is for direct references.
+                // Check for @requiresLength trait - indicates Content-Length is required
+                if (s.traits?.["smithy.api#requiresLength"] != null) {
+                  return Effect.succeed(
+                    "T.StreamBody().pipe(T.RequiresLength())",
+                  );
+                }
                 return Effect.succeed("T.StreamBody()");
               }
               // Non-streaming blob - base64 encoded in body
@@ -941,6 +947,11 @@ const convertShapeToSchema: (
                       isBlob &&
                       memberTargetShape?.traits?.["smithy.api#streaming"] !=
                         null;
+                    // Check for @requiresLength trait - indicates Content-Length is required
+                    const hasRequiresLength =
+                      memberTargetShape?.traits?.[
+                        "smithy.api#requiresLength"
+                      ] != null;
                     // Non-streaming blob with httpPayload should also use raw bytes (not base64)
                     const isBlobPayload =
                       isBlob && hasHttpPayload && !isStreamingBlob;
@@ -957,10 +968,15 @@ const convertShapeToSchema: (
                       if (isOperationOutput) {
                         baseSchema = "T.StreamingOutput";
                       } else if (isOperationInput) {
-                        baseSchema = "T.StreamingInput";
+                        // Add RequiresLength trait if present on the target shape
+                        baseSchema = hasRequiresLength
+                          ? "T.StreamingInput.pipe(T.RequiresLength())"
+                          : "T.StreamingInput";
                       } else {
                         // Nested structure - fallback to general StreamBody
-                        baseSchema = "T.StreamBody()";
+                        baseSchema = hasRequiresLength
+                          ? "T.StreamBody().pipe(T.RequiresLength())"
+                          : "T.StreamBody()";
                       }
                     } else if (isEventStream) {
                       // Event stream member - get the union schema and note it's a stream

@@ -306,20 +306,21 @@ const upload = s3.putObject({
 ### Streaming Downloads
 
 ```typescript
-import { Effect, Stream, Sink } from "effect";
+import { Effect, Stream, Console } from "effect";
 import * as s3 from "effect-aws/s3";
 
 const download = Effect.gen(function* () {
   const result = yield* s3.getObject({
     Bucket: "my-bucket",
-    Key: "large-file.zip",
+    Key: "document.txt",
   });
 
-  // Body is Stream<Uint8Array>
-  yield* Stream.run(
-    result.Body!,
-    Sink.forEach((chunk) => Effect.sync(() => process.stdout.write(chunk)))
+  // Body is Stream<Uint8Array> - decode and collect as string
+  const content = yield* result.Body!.pipe(
+    Stream.decodeText(),
+    Stream.mkString,
   );
+  yield* Console.log(content);
 });
 ```
 

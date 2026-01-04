@@ -38,3 +38,9 @@ Prefer const arrow functions over function declarations. Avoid return statements
 
 Commits:
 Use conventional commits (e.g. `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:`)
+
+# External References
+
+1. [Smithy Docs](./smithy/docs/source-2.0/)
+2. [AWS Smithy Models](./aws-models/models/)
+3. [AWS SDK JS V3](./aws-sdk-js-v3/)

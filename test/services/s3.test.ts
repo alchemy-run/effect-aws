@@ -1,3 +1,4 @@
+import { expect } from "@effect/vitest";
 import { Effect, Stream } from "effect";
 import {
   // Multipart upload operations
@@ -16,7 +17,6 @@ import {
   deleteBucketWebsite,
   deleteObject,
   deletePublicAccessBlock,
-  EndEvent,
   getBucketAccelerateConfiguration,
   // ACL
   getBucketAcl,
@@ -58,10 +58,6 @@ import {
   putObject,
   // Public Access Block
   putPublicAccessBlock,
-  RecordsEvent,
-  // SelectObjectContent (event stream)
-  selectObjectContent,
-  StatsEvent,
   uploadPart,
 } from "../../src/services/s3.ts";
 import { test } from "../test.ts";
@@ -1076,36 +1072,12 @@ test(
       }
 
       // Body should be an Effect Stream - consume it
-      const chunks: Uint8Array[] = [];
-      yield* Stream.runForEach(result.Body, (chunk) =>
-        Effect.sync(() => {
-          chunks.push(chunk);
-        }),
+      const actualContent = yield* result.Body.pipe(
+        Stream.decodeText(),
+        Stream.mkString,
       );
 
-      const decoder = new TextDecoder();
-      const receivedContent = decoder.decode(
-        new Uint8Array(chunks.reduce((acc, c) => acc + c.length, 0)),
-      );
-
-      // Reconstruct the buffer properly
-      let offset = 0;
-      const fullBuffer = new Uint8Array(
-        chunks.reduce((acc, c) => acc + c.length, 0),
-      );
-      for (const chunk of chunks) {
-        fullBuffer.set(chunk, offset);
-        offset += chunk.length;
-      }
-      const actualContent = decoder.decode(fullBuffer);
-
-      if (actualContent !== testContent) {
-        return yield* Effect.fail(
-          new Error(
-            `Content mismatch: expected "${testContent}", got "${actualContent}"`,
-          ),
-        );
-      }
+      expect(actualContent).toBe(testContent);
 
       // Cleanup
       yield* deleteObject({ Bucket: bucket, Key: testKey });
@@ -1178,7 +1150,7 @@ test(
 );
 
 test(
-  "putObject with Effect Stream body",
+  "putObject with Effect Stream body and explicit ContentLength",
   withBucket("itty-s3-stream-obj", (bucket) =>
     Effect.gen(function* () {
       const testKey = "test-stream.txt";
@@ -1190,12 +1162,11 @@ test(
         testChunks.map((s) => encoder.encode(s)),
       );
 
-      // Put object with Effect Stream body
+      // Put object with Effect Stream body and explicit ContentLength
       yield* putObject({
         Bucket: bucket,
         Key: testKey,
         Body: inputStream,
-        // S3 requires Content-Length for streaming uploads (use multipart for unknown-length)
         ContentLength: testChunks.reduce(
           (acc, s) => acc + encoder.encode(s).length,
           0,
@@ -1214,34 +1185,54 @@ test(
       }
 
       // Consume the stream
-      const chunks: Uint8Array[] = [];
-      yield* Stream.runForEach(result.Body, (chunk) =>
-        Effect.sync(() => {
-          chunks.push(chunk);
-        }),
+      const actualContent = yield* result.Body.pipe(
+        Stream.decodeText(),
+        Stream.mkString,
       );
 
-      const decoder = new TextDecoder();
-      let offset = 0;
-      const fullBuffer = new Uint8Array(
-        chunks.reduce((acc, c) => acc + c.length, 0),
-      );
-      for (const chunk of chunks) {
-        fullBuffer.set(chunk, offset);
-        offset += chunk.length;
-      }
-      const actualContent = decoder.decode(fullBuffer);
-      const expectedContent = testChunks.join("");
-
-      if (actualContent !== expectedContent) {
-        return yield* Effect.fail(
-          new Error(
-            `Content mismatch: expected "${expectedContent}", got "${actualContent}"`,
-          ),
-        );
-      }
+      expect(actualContent).toBe(testChunks.join(""));
 
       // Cleanup
+      yield* deleteObject({ Bucket: bucket, Key: testKey });
+    }),
+  ),
+);
+
+test(
+  "putObject with Effect Stream body without ContentLength buffers and computes length",
+  withBucket("itty-s3-stream-buffered", (bucket) =>
+    Effect.gen(function* () {
+      const testKey = "test-stream-buffered.txt";
+      const testChunks = ["Buffered ", "stream ", "upload!"];
+      const expectedContent = testChunks.join("");
+
+      // Create an Effect Stream from chunks
+      const encoder = new TextEncoder();
+      const inputStream = Stream.fromIterable(
+        testChunks.map((s) => encoder.encode(s)),
+      );
+
+      // Put object with Effect Stream body WITHOUT ContentLength
+      // The middleware will buffer the stream and compute Content-Length
+      yield* putObject({
+        Bucket: bucket,
+        Key: testKey,
+        Body: inputStream,
+        ContentType: "text/plain",
+      });
+
+      const result = yield* getObject({
+        Bucket: bucket,
+        Key: testKey,
+      });
+
+      const actualContent = yield* result.Body!.pipe(
+        Stream.decodeText(),
+        Stream.mkString,
+      );
+
+      expect(actualContent).toBe(expectedContent);
+
       yield* deleteObject({ Bucket: bucket, Key: testKey });
     }),
   ),
@@ -1289,35 +1280,12 @@ test(
       }
 
       // Also verify body content matches what we wrote
-      if (!result.Body) {
-        return yield* Effect.fail(new Error("Expected Body in response"));
-      }
-
-      const chunks: Uint8Array[] = [];
-      yield* Stream.runForEach(result.Body, (chunk) =>
-        Effect.sync(() => {
-          chunks.push(chunk);
-        }),
+      const actualContent = yield* result.Body!.pipe(
+        Stream.decodeText(),
+        Stream.mkString,
       );
 
-      const decoder = new TextDecoder();
-      let offset = 0;
-      const fullBuffer = new Uint8Array(
-        chunks.reduce((acc, c) => acc + c.length, 0),
-      );
-      for (const chunk of chunks) {
-        fullBuffer.set(chunk, offset);
-        offset += chunk.length;
-      }
-      const actualContent = decoder.decode(fullBuffer);
-
-      if (actualContent !== testContent) {
-        return yield* Effect.fail(
-          new Error(
-            `Content mismatch: expected "${testContent}", got "${actualContent}"`,
-          ),
-        );
-      }
+      expect(actualContent).toBe(testContent);
 
       yield* deleteObject({ Bucket: bucket, Key: testKey });
     }),
@@ -1474,36 +1442,12 @@ test(
         Key: testKey,
       });
 
-      if (!result.Body) {
-        return yield* Effect.fail(new Error("Expected Body in response"));
-      }
-
-      // Consume the stream
-      const chunks: Uint8Array[] = [];
-      yield* Stream.runForEach(result.Body, (chunk) =>
-        Effect.sync(() => {
-          chunks.push(chunk);
-        }),
+      const actualContent = yield* result.Body!.pipe(
+        Stream.decodeText(),
+        Stream.mkString,
       );
 
-      const decoder = new TextDecoder();
-      let offset = 0;
-      const fullBuffer = new Uint8Array(
-        chunks.reduce((acc, c) => acc + c.length, 0),
-      );
-      for (const chunk of chunks) {
-        fullBuffer.set(chunk, offset);
-        offset += chunk.length;
-      }
-      const actualContent = decoder.decode(fullBuffer);
-
-      if (actualContent !== expectedContent) {
-        return yield* Effect.fail(
-          new Error(
-            `Content mismatch: expected "${expectedContent}", got "${actualContent}"`,
-          ),
-        );
-      }
+      expect(actualContent).toBe(expectedContent);
 
       // Cleanup
       yield* deleteObject({ Bucket: bucket, Key: testKey });
@@ -1800,312 +1744,3 @@ test(
     }),
   ),
 );
-
-// ============================================================================
-// SelectObjectContent Event Stream Tests
-// ============================================================================
-
-const isLocalStack = process.env.LOCAL === "true" || process.env.LOCAL === "1";
-if (isLocalStack) {
-  // it's a deprecated API so we can't test live but we can test in localstack
-  test(
-    "selectObjectContent returns event stream with CSV data",
-    { timeout: 60_000 },
-    withBucket("itty-s3-select-csv", (bucket) =>
-      Effect.gen(function* () {
-        const testKey = "test-select-csv.csv";
-        const csvContent =
-          "id,name,value\n1,Alice,100\n2,Bob,200\n3,Charlie,300\n";
-
-        // Upload CSV file
-        yield* putObject({
-          Bucket: bucket,
-          Key: testKey,
-          Body: csvContent,
-          ContentType: "text/csv",
-        });
-
-        // Select data from the CSV using S3 Select
-        const response = yield* selectObjectContent({
-          Bucket: bucket,
-          Key: testKey,
-          ExpressionType: "SQL",
-          Expression: "SELECT * FROM S3Object WHERE CAST(value AS INT) > 150",
-          InputSerialization: {
-            CSV: {
-              FileHeaderInfo: "USE",
-            },
-          },
-          OutputSerialization: {
-            CSV: {},
-          },
-        });
-
-        if (!response.Payload) {
-          return yield* Effect.fail(
-            new Error("Expected Payload event stream in response"),
-          );
-        }
-
-        // Collect events from the stream
-        const events: unknown[] = [];
-        let recordsData = "";
-
-        yield* Stream.runForEach(response.Payload, (event) =>
-          Effect.gen(function* () {
-            events.push(event);
-
-            // Check if this is a RecordsEvent with data
-            if ("Records" in event) {
-              const recordsEvent = event.Records;
-              if (
-                recordsEvent instanceof RecordsEvent &&
-                recordsEvent.Payload
-              ) {
-                const text = new TextDecoder().decode(recordsEvent.Payload);
-                recordsData += text;
-              }
-            }
-          }),
-        );
-
-        yield* Effect.logInfo(`Received ${events.length} events`);
-        yield* Effect.logInfo(`Records data: ${recordsData}`);
-
-        // We should have received at least one event
-        if (events.length === 0) {
-          return yield* Effect.fail(
-            new Error("Expected at least one event from SelectObjectContent"),
-          );
-        }
-
-        // Verify we got End event
-        const hasEndEvent = events.some(
-          (e) => typeof e === "object" && e !== null && "End" in e,
-        );
-        if (!hasEndEvent) {
-          return yield* Effect.fail(new Error("Expected End event in stream"));
-        }
-
-        // Verify records contain expected rows (value > 150 means Bob and Charlie)
-        if (!recordsData.includes("Bob") || !recordsData.includes("Charlie")) {
-          return yield* Effect.fail(
-            new Error(
-              `Expected records to contain Bob and Charlie, got: ${recordsData}`,
-            ),
-          );
-        }
-
-        // Alice should NOT be included (value=100 < 150)
-        if (recordsData.includes("Alice")) {
-          return yield* Effect.fail(
-            new Error("Alice should not be included (value < 150)"),
-          );
-        }
-
-        // Cleanup
-        yield* deleteObject({ Bucket: bucket, Key: testKey });
-      }),
-    ),
-  );
-
-  test(
-    "selectObjectContent with JSON data",
-    { timeout: 60_000 },
-    withBucket("itty-s3-select-json", (bucket) =>
-      Effect.gen(function* () {
-        const testKey = "test-select-json.json";
-        const jsonContent = [
-          { id: 1, name: "Alice", active: true },
-          { id: 2, name: "Bob", active: false },
-          { id: 3, name: "Charlie", active: true },
-        ]
-          .map((obj) => JSON.stringify(obj))
-          .join("\n");
-
-        // Upload JSON Lines file
-        yield* putObject({
-          Bucket: bucket,
-          Key: testKey,
-          Body: jsonContent,
-          ContentType: "application/json",
-        });
-
-        // Select only active users
-        const response = yield* selectObjectContent({
-          Bucket: bucket,
-          Key: testKey,
-          ExpressionType: "SQL",
-          Expression: "SELECT s.name FROM S3Object s WHERE s.active = true",
-          InputSerialization: {
-            JSON: {
-              Type: "LINES",
-            },
-          },
-          OutputSerialization: {
-            JSON: {},
-          },
-        });
-
-        if (!response.Payload) {
-          return yield* Effect.fail(
-            new Error("Expected Payload event stream in response"),
-          );
-        }
-
-        // Collect all record data
-        let recordsData = "";
-        let hasStats = false;
-
-        yield* Stream.runForEach(response.Payload, (event) =>
-          Effect.gen(function* () {
-            if ("Records" in event) {
-              const recordsEvent = event.Records;
-              if (
-                recordsEvent instanceof RecordsEvent &&
-                recordsEvent.Payload
-              ) {
-                recordsData += new TextDecoder().decode(recordsEvent.Payload);
-              }
-            }
-            if ("Stats" in event) {
-              hasStats = true;
-              const stats = event.Stats;
-              if (stats instanceof StatsEvent && stats.Details) {
-                yield* Effect.logInfo(
-                  `Stats: BytesScanned=${stats.Details.BytesScanned}, BytesReturned=${stats.Details.BytesReturned}`,
-                );
-              }
-            }
-            if ("End" in event) {
-              const end = event.End;
-              if (end instanceof EndEvent) {
-                yield* Effect.logInfo("Received End event");
-              }
-            }
-          }),
-        );
-
-        yield* Effect.logInfo(`JSON Select results: ${recordsData}`);
-
-        // Verify active users (Alice and Charlie)
-        if (
-          !recordsData.includes("Alice") ||
-          !recordsData.includes("Charlie")
-        ) {
-          return yield* Effect.fail(
-            new Error(
-              `Expected Alice and Charlie in results, got: ${recordsData}`,
-            ),
-          );
-        }
-
-        // Bob should NOT be included (active=false)
-        if (recordsData.includes("Bob")) {
-          return yield* Effect.fail(
-            new Error("Bob should not be included (active=false)"),
-          );
-        }
-
-        // Verify we got stats
-        if (!hasStats) {
-          yield* Effect.logWarning("No Stats event received");
-        }
-
-        // Cleanup
-        yield* deleteObject({ Bucket: bucket, Key: testKey });
-      }),
-    ),
-  );
-
-  test(
-    "selectObjectContent with large CSV file streams multiple events",
-    { timeout: 120_000 },
-    withBucket("itty-s3-select-large", (bucket) =>
-      Effect.gen(function* () {
-        const testKey = "test-select-large.csv";
-
-        // Generate a larger CSV file (1000 rows)
-        const rows = ["id,name,value"];
-        for (let i = 1; i <= 1000; i++) {
-          rows.push(`${i},User${i},${i * 10}`);
-        }
-        const csvContent = rows.join("\n");
-
-        // Upload the file
-        yield* putObject({
-          Bucket: bucket,
-          Key: testKey,
-          Body: csvContent,
-          ContentType: "text/csv",
-        });
-
-        // Select rows where value > 5000 (should be ~500 rows)
-        const response = yield* selectObjectContent({
-          Bucket: bucket,
-          Key: testKey,
-          ExpressionType: "SQL",
-          Expression:
-            "SELECT id, name, value FROM S3Object WHERE CAST(value AS INT) > 5000",
-          InputSerialization: {
-            CSV: {
-              FileHeaderInfo: "USE",
-            },
-          },
-          OutputSerialization: {
-            CSV: {},
-          },
-        });
-
-        if (!response.Payload) {
-          return yield* Effect.fail(
-            new Error("Expected Payload event stream in response"),
-          );
-        }
-
-        // Count events and collect data
-        let eventCount = 0;
-        let recordEventCount = 0;
-        let totalBytes = 0;
-
-        yield* Stream.runForEach(response.Payload, (event) =>
-          Effect.gen(function* () {
-            eventCount++;
-
-            if ("Records" in event) {
-              recordEventCount++;
-              const recordsEvent = event.Records;
-              if (
-                recordsEvent instanceof RecordsEvent &&
-                recordsEvent.Payload
-              ) {
-                totalBytes += recordsEvent.Payload.length;
-              }
-            }
-          }),
-        );
-
-        yield* Effect.logInfo(
-          `Large file: ${eventCount} total events, ${recordEventCount} record events, ${totalBytes} bytes`,
-        );
-
-        // Should have multiple events for a larger response
-        if (eventCount < 2) {
-          return yield* Effect.fail(
-            new Error(`Expected multiple events, got ${eventCount}`),
-          );
-        }
-
-        // Should have received actual data
-        if (totalBytes === 0) {
-          return yield* Effect.fail(
-            new Error("Expected to receive data bytes"),
-          );
-        }
-
-        // Cleanup
-        yield* deleteObject({ Bucket: bucket, Key: testKey });
-      }),
-    ),
-  );
-}

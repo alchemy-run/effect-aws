@@ -3,13 +3,14 @@
  *
  * This layer:
  * 1. Uses the Protocol to serialize the input into a Request
- * 2. Applies middleware (e.g., checksum computation)
+ * 2. Applies middleware (e.g., checksum computation, streaming body handling)
  * 3. Adds common headers
  *
  * This is independently testable without making HTTP requests.
  */
 
 import * as Effect from "effect/Effect";
+import { makeStreamingBodyMiddleware } from "./middleware/streaming-body.ts";
 import type { Operation } from "./operation.ts";
 import type { Protocol, ProtocolHandler } from "./protocol.ts";
 import { getMiddleware, getProtocol } from "./traits.ts";
@@ -47,15 +48,22 @@ export const makeRequestBuilder = (
   // Discover middleware from annotations (done once)
   const middleware = getMiddleware(inputAst);
 
+  // Create streaming body middleware (schema analysis done once)
+  const applyStreamingBody = makeStreamingBodyMiddleware(inputSchema);
+
   // Return a function that builds requests
   return Effect.fn(function* (input: unknown) {
     // Serialize request using the protocol handler
     let request = yield* protocol.serializeRequest(input);
 
-    // Apply middleware
+    // Apply annotation-based middleware (e.g., checksum)
     for (const mw of middleware) {
       request = yield* mw(inputSchema, request);
     }
+
+    // Apply streaming body middleware
+    // Buffers streaming bodies without Content-Length to compute the length
+    request = yield* applyStreamingBody(request);
 
     // Add common headers
     request = {
