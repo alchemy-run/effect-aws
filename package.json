@@ -26,7 +26,8 @@
     "format": "bun oxfmt ./scripts ./src ./test",
     "find:errors": "bun run scripts/find-errors.ts",
     "symlink": "bun run scripts/symlink.ts",
-    "bundle:report": "bun run scripts/bundle-size-report.ts"
+    "bundle:report": "bun run scripts/bundle-size-report.ts",
+    "localstack:clean": "bun run scripts/localstack-clean.ts"
   },
   "exports": {
     "./*": {

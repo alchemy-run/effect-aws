@@ -1,18 +1,50 @@
 import { $ } from "bun";
+import * as crypto from "crypto";
 import * as net from "net";
 
-export const withLocalStack = async <T>(fn: () => Promise<T>): Promise<T> => {
-  // Start localstack in detached mode (quiet - no stdout/stderr)
-  await $`pkill localstack || true`.quiet();
-  await $`localstack start -d`.quiet();
+export interface LocalStackOptions {
+  port?: number;
+  containerName?: string;
+}
 
-  // Wait for localstack port 4566 to be open before proceeding
+const hashWorkspace = (path: string): string => {
+  return crypto.createHash("md5").update(path).digest("hex").slice(0, 8);
+};
+
+export const withLocalStack = async <T>(
+  fn: () => Promise<T>,
+  options: LocalStackOptions = {},
+): Promise<T> => {
+  const port = options.port ?? parseInt(process.env.LOCALSTACK_PORT ?? "4566");
+  const containerName =
+    options.containerName ??
+    `localstack-${hashWorkspace(process.cwd())}-${port}`;
+
+  // Calculate non-overlapping external service port range based on main port
+  // Each port gets a unique 50-port block offset by 100 from the previous
+  // Port 4566 (offset 0) -> 4510-4559, Port 4567 (offset 1) -> 4610-4659, etc.
+  const portOffset = port - 4566;
+  const externalPortStart = 4510 + portOffset * 100;
+  const externalPortEnd = externalPortStart + 49;
+
+  // Stop any existing container with this name (ignore errors if not running)
+  await $`docker stop ${containerName} 2>/dev/null || true`.quiet();
+  await $`docker rm ${containerName} 2>/dev/null || true`.quiet();
+
+  // Start localstack using docker run directly for proper port control
+  await $`docker run -d \
+    --name ${containerName} \
+    -p ${port}:4566 \
+    -p ${externalPortStart}-${externalPortEnd}:4510-4559 \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -e GATEWAY_LISTEN=0.0.0.0:4566 \
+    localstack/localstack`.quiet();
+
+  // Wait for localstack port to be open before proceeding
   while (true) {
-    // INSERT_YOUR_CODE
-    // Try to connect with node to 127.0.0.1:$1 until successful.
     try {
       await new Promise((resolve, reject) => {
-        const socket = net.connect({ port: 4566, host: "127.0.0.1" }, () => {
+        const socket = net.connect({ port, host: "127.0.0.1" }, () => {
           socket.end();
           resolve(true);
         });
@@ -28,7 +60,8 @@ export const withLocalStack = async <T>(fn: () => Promise<T>): Promise<T> => {
   try {
     return await fn();
   } finally {
-    // Stop localstack as cleanup
-    await $`localstack stop`.quiet();
+    // Stop only this specific container
+    await $`docker stop ${containerName}`.quiet();
+    await $`docker rm ${containerName} 2>/dev/null || true`.quiet();
   }
 };
