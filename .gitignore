@@ -35,6 +35,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 aws-models
 lib/
-src/services/*
 /smithy/
 /aws-sdk-js-v3/

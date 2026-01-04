@@ -14,7 +14,10 @@
   "scripts": {
     "setup": "bun run scripts/setup.ts",
     "generate": "bun run scripts/generate-clients.ts",
-    "build": "bun generate && bun oxfmt ./src/services/* && tsc -b",
+    "clean": "git clean -fqdx -e .env",
+    "clean:install": "bun run clean && bun install",
+    "clean:build": "bun run clean:install && bun run build",
+    "build": "bun generate && bun oxfmt ./src/services/* && tsgo -b",
     "test:local": "LOCAL=1 bun run scripts/test.ts",
     "test:live": "bun run scripts/test.ts",
     "test:protocols": "bun vitest run ./test/protocols/",

@@ -1,0 +1,357 @@
+import * as S from "effect/Schema";
+import * as API from "../api.ts";
+import * as T from "../traits.ts";
+const svc = T.AwsApiService({
+  sdkId: "AppConfigData",
+  serviceShapeName: "AppConfigData",
+});
+const auth = T.AwsAuthSigv4({ name: "appconfig" });
+const ver = T.ServiceVersion("2021-11-11");
+const proto = T.AwsProtocolsRestJson1();
+const rules = T.EndpointRuleSet({
+  version: "1.0",
+  parameters: {
+    Region: {
+      builtIn: "AWS::Region",
+      required: false,
+      documentation: "The AWS region used to dispatch the request.",
+      type: "string",
+    },
+    UseDualStack: {
+      builtIn: "AWS::UseDualStack",
+      required: true,
+      default: false,
+      documentation:
+        "When true, use the dual-stack endpoint. If the configured endpoint does not support dual-stack, dispatching the request MAY return an error.",
+      type: "boolean",
+    },
+    UseFIPS: {
+      builtIn: "AWS::UseFIPS",
+      required: true,
+      default: false,
+      documentation:
+        "When true, send this request to the FIPS-compliant regional endpoint. If the configured endpoint does not have a FIPS compliant endpoint, dispatching the request will return an error.",
+      type: "boolean",
+    },
+    Endpoint: {
+      builtIn: "SDK::Endpoint",
+      required: false,
+      documentation: "Override the endpoint used to send this request",
+      type: "string",
+    },
+  },
+  rules: [
+    {
+      conditions: [{ fn: "isSet", argv: [{ ref: "Endpoint" }] }],
+      rules: [
+        {
+          conditions: [
+            { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
+          ],
+          error:
+            "Invalid Configuration: FIPS and custom endpoint are not supported",
+          type: "error",
+        },
+        {
+          conditions: [
+            { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
+          ],
+          error:
+            "Invalid Configuration: Dualstack and custom endpoint are not supported",
+          type: "error",
+        },
+        {
+          conditions: [],
+          endpoint: { url: { ref: "Endpoint" }, properties: {}, headers: {} },
+          type: "endpoint",
+        },
+      ],
+      type: "tree",
+    },
+    {
+      conditions: [{ fn: "isSet", argv: [{ ref: "Region" }] }],
+      rules: [
+        {
+          conditions: [
+            {
+              fn: "aws.partition",
+              argv: [{ ref: "Region" }],
+              assign: "PartitionResult",
+            },
+          ],
+          rules: [
+            {
+              conditions: [
+                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
+                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
+              ],
+              rules: [
+                {
+                  conditions: [
+                    {
+                      fn: "booleanEquals",
+                      argv: [
+                        true,
+                        {
+                          fn: "getAttr",
+                          argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
+                        },
+                      ],
+                    },
+                    {
+                      fn: "booleanEquals",
+                      argv: [
+                        true,
+                        {
+                          fn: "getAttr",
+                          argv: [
+                            { ref: "PartitionResult" },
+                            "supportsDualStack",
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                  rules: [
+                    {
+                      conditions: [],
+                      endpoint: {
+                        url: "https://appconfigdata-fips.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                        properties: {},
+                        headers: {},
+                      },
+                      type: "endpoint",
+                    },
+                  ],
+                  type: "tree",
+                },
+                {
+                  conditions: [],
+                  error:
+                    "FIPS and DualStack are enabled, but this partition does not support one or both",
+                  type: "error",
+                },
+              ],
+              type: "tree",
+            },
+            {
+              conditions: [
+                { fn: "booleanEquals", argv: [{ ref: "UseFIPS" }, true] },
+              ],
+              rules: [
+                {
+                  conditions: [
+                    {
+                      fn: "booleanEquals",
+                      argv: [
+                        {
+                          fn: "getAttr",
+                          argv: [{ ref: "PartitionResult" }, "supportsFIPS"],
+                        },
+                        true,
+                      ],
+                    },
+                  ],
+                  rules: [
+                    {
+                      conditions: [
+                        {
+                          fn: "stringEquals",
+                          argv: [
+                            {
+                              fn: "getAttr",
+                              argv: [{ ref: "PartitionResult" }, "name"],
+                            },
+                            "aws-us-gov",
+                          ],
+                        },
+                      ],
+                      endpoint: {
+                        url: "https://appconfigdata.{Region}.amazonaws.com",
+                        properties: {},
+                        headers: {},
+                      },
+                      type: "endpoint",
+                    },
+                    {
+                      conditions: [],
+                      endpoint: {
+                        url: "https://appconfigdata-fips.{Region}.{PartitionResult#dnsSuffix}",
+                        properties: {},
+                        headers: {},
+                      },
+                      type: "endpoint",
+                    },
+                  ],
+                  type: "tree",
+                },
+                {
+                  conditions: [],
+                  error:
+                    "FIPS is enabled but this partition does not support FIPS",
+                  type: "error",
+                },
+              ],
+              type: "tree",
+            },
+            {
+              conditions: [
+                { fn: "booleanEquals", argv: [{ ref: "UseDualStack" }, true] },
+              ],
+              rules: [
+                {
+                  conditions: [
+                    {
+                      fn: "booleanEquals",
+                      argv: [
+                        true,
+                        {
+                          fn: "getAttr",
+                          argv: [
+                            { ref: "PartitionResult" },
+                            "supportsDualStack",
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                  rules: [
+                    {
+                      conditions: [],
+                      endpoint: {
+                        url: "https://appconfigdata.{Region}.{PartitionResult#dualStackDnsSuffix}",
+                        properties: {},
+                        headers: {},
+                      },
+                      type: "endpoint",
+                    },
+                  ],
+                  type: "tree",
+                },
+                {
+                  conditions: [],
+                  error:
+                    "DualStack is enabled but this partition does not support DualStack",
+                  type: "error",
+                },
+              ],
+              type: "tree",
+            },
+            {
+              conditions: [],
+              endpoint: {
+                url: "https://appconfigdata.{Region}.{PartitionResult#dnsSuffix}",
+                properties: {},
+                headers: {},
+              },
+              type: "endpoint",
+            },
+          ],
+          type: "tree",
+        },
+      ],
+      type: "tree",
+    },
+    {
+      conditions: [],
+      error: "Invalid Configuration: Missing Region",
+      type: "error",
+    },
+  ],
+});
+
+//# Schemas
+export class GetLatestConfigurationRequest extends S.Class<GetLatestConfigurationRequest>(
+  "GetLatestConfigurationRequest",
+)(
+  { ConfigurationToken: S.String.pipe(T.HttpQuery("configuration_token")) },
+  T.all(
+    T.Http({ method: "GET", uri: "/configuration" }),
+    svc,
+    auth,
+    proto,
+    ver,
+    rules,
+  ),
+) {}
+export class GetLatestConfigurationResponse extends S.Class<GetLatestConfigurationResponse>(
+  "GetLatestConfigurationResponse",
+)({
+  NextPollConfigurationToken: S.optional(S.String).pipe(
+    T.HttpHeader("Next-Poll-Configuration-Token"),
+  ),
+  NextPollIntervalInSeconds: S.optional(S.Number).pipe(
+    T.HttpHeader("Next-Poll-Interval-In-Seconds"),
+  ),
+  ContentType: S.optional(S.String).pipe(T.HttpHeader("Content-Type")),
+  Configuration: S.optional(T.StreamingOutput).pipe(T.HttpPayload()),
+  VersionLabel: S.optional(S.String).pipe(T.HttpHeader("Version-Label")),
+}) {}
+export class InvalidParameterDetail extends S.Class<InvalidParameterDetail>(
+  "InvalidParameterDetail",
+)({ Problem: S.optional(S.String) }) {}
+export const InvalidParameterMap = S.Record({
+  key: S.String,
+  value: InvalidParameterDetail,
+});
+export const BadRequestDetails = S.Union(
+  S.Struct({ InvalidParameters: InvalidParameterMap }),
+);
+export const StringMap = S.Record({ key: S.String, value: S.String });
+
+//# Errors
+export class BadRequestException extends S.TaggedError<BadRequestException>()(
+  "BadRequestException",
+  {
+    Message: S.optional(S.String),
+    Reason: S.optional(S.String),
+    Details: S.optional(BadRequestDetails),
+  },
+) {}
+export class InternalServerException extends S.TaggedError<InternalServerException>()(
+  "InternalServerException",
+  { Message: S.optional(S.String) },
+) {}
+export class ResourceNotFoundException extends S.TaggedError<ResourceNotFoundException>()(
+  "ResourceNotFoundException",
+  {
+    Message: S.optional(S.String),
+    ResourceType: S.optional(S.String),
+    ReferencedBy: S.optional(StringMap),
+  },
+) {}
+export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
+  "ThrottlingException",
+  { Message: S.optional(S.String) },
+) {}
+
+//# Operations
+/**
+ * Retrieves the latest deployed configuration. This API may return empty configuration
+ * data if the client already has the latest version. For more information about this API
+ * action and to view example CLI commands that show how to use it with the StartConfigurationSession API action, see Retrieving the
+ * configuration in the *AppConfig User Guide*.
+ *
+ * Note the following important information.
+ *
+ * - Each configuration token is only valid for one call to
+ * `GetLatestConfiguration`. The `GetLatestConfiguration`
+ * response includes a `NextPollConfigurationToken` that should always
+ * replace the token used for the just-completed call in preparation for the next
+ * one.
+ *
+ * - `GetLatestConfiguration` is a priced call. For more information, see
+ * Pricing.
+ */
+export const getLatestConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
+  () => ({
+    input: GetLatestConfigurationRequest,
+    output: GetLatestConfigurationResponse,
+    errors: [
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+  }),
+);
