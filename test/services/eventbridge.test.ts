@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Schedule } from "effect";
 import {
   // Event Bus operations
   createEventBus,
@@ -24,22 +24,82 @@ import {
   tagResource,
   untagResource,
 } from "../../src/services/eventbridge.ts";
+import {
+  createQueue,
+  deleteQueue,
+  getQueueAttributes,
+} from "../../src/services/sqs.ts";
 import { test } from "../test.ts";
 
-// Helper to ensure cleanup happens even on failure
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
+
+// Clean up rule by removing all targets first
+const cleanupRule = (ruleName: string, eventBusName?: string) =>
+  Effect.gen(function* () {
+    // Try to get and remove all targets
+    const targets = yield* listTargetsByRule({
+      Rule: ruleName,
+      EventBusName: eventBusName,
+    }).pipe(Effect.orElseSucceed(() => ({ Targets: [] })));
+
+    if (targets.Targets && targets.Targets.length > 0) {
+      yield* removeTargets({
+        Rule: ruleName,
+        EventBusName: eventBusName,
+        Ids: targets.Targets.map((t) => t.Id!),
+      }).pipe(Effect.ignore);
+    }
+
+    // Now delete the rule
+    yield* deleteRule({
+      Name: ruleName,
+      EventBusName: eventBusName,
+    }).pipe(Effect.ignore);
+  });
+
+// Clean up event bus by removing all rules first
+const cleanupEventBus = (eventBusName: string) =>
+  Effect.gen(function* () {
+    // List and delete all rules on this event bus
+    const rules = yield* listRules({ EventBusName: eventBusName }).pipe(
+      Effect.orElseSucceed(() => ({ Rules: [] })),
+    );
+
+    for (const rule of rules.Rules ?? []) {
+      yield* cleanupRule(rule.Name!, eventBusName);
+    }
+
+    // Now delete the event bus
+    yield* deleteEventBus({ Name: eventBusName }).pipe(Effect.ignore);
+  });
+
+// Clean up SQS queue
+const cleanupQueue = (queueUrl: string) =>
+  deleteQueue({ QueueUrl: queueUrl }).pipe(Effect.ignore);
+
+// ============================================================================
+// Idempotent Test Helpers
+// ============================================================================
+
+// Helper to ensure cleanup happens even on failure - cleans up before AND after
 const withEventBus = <A, E, R>(
   name: string,
   testFn: (eventBusArn: string, eventBusName: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupEventBus(name);
+
     const result = yield* createEventBus({ Name: name });
     const eventBusArn = result.EventBusArn!;
     return yield* testFn(eventBusArn, name).pipe(
-      Effect.ensuring(deleteEventBus({ Name: name }).pipe(Effect.ignore)),
+      Effect.ensuring(cleanupEventBus(name)),
     );
   });
 
-// Helper for rules with cleanup
+// Helper for rules with cleanup - cleans up before AND after
 const withRule = <A, E, R>(
   ruleName: string,
   eventBusName: string | undefined,
@@ -47,6 +107,9 @@ const withRule = <A, E, R>(
   testFn: (ruleArn: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupRule(ruleName, eventBusName);
+
     const result = yield* putRule({
       Name: ruleName,
       EventPattern: eventPattern,
@@ -55,26 +118,34 @@ const withRule = <A, E, R>(
     });
     const ruleArn = result.RuleArn!;
     return yield* testFn(ruleArn).pipe(
-      Effect.ensuring(
-        Effect.gen(function* () {
-          // Must remove targets before deleting rule
-          const targets = yield* listTargetsByRule({
-            Rule: ruleName,
-            EventBusName: eventBusName,
-          }).pipe(Effect.ignore);
-          if (targets && targets.Targets && targets.Targets.length > 0) {
-            yield* removeTargets({
-              Rule: ruleName,
-              EventBusName: eventBusName,
-              Ids: targets.Targets.map((t) => t.Id),
-            }).pipe(Effect.ignore);
-          }
-          yield* deleteRule({
-            Name: ruleName,
-            EventBusName: eventBusName,
-          }).pipe(Effect.ignore);
-        }),
-      ),
+      Effect.ensuring(cleanupRule(ruleName, eventBusName)),
+    );
+  });
+
+// Helper for SQS queue with cleanup
+const withQueue = <A, E, R>(
+  queueName: string,
+  testFn: (queueUrl: string, queueArn: string) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Try to create the queue, retry if recently deleted
+    const createResult = yield* createQueue({ QueueName: queueName }).pipe(
+      Effect.retry({
+        while: (err) => err._tag === "QueueDeletedRecently",
+        schedule: Schedule.spaced("5 seconds"),
+      }),
+    );
+    const queueUrl = createResult.QueueUrl!;
+
+    // Get the queue ARN for use as EventBridge target
+    const attrs = yield* getQueueAttributes({
+      QueueUrl: queueUrl,
+      AttributeNames: ["QueueArn"],
+    });
+    const queueArn = attrs.Attributes!.QueueArn!;
+
+    return yield* testFn(queueUrl, queueArn).pipe(
+      Effect.ensuring(cleanupQueue(queueUrl)),
     );
   });
 
@@ -114,60 +185,44 @@ test(
 
 test(
   "create rule, describe, list, and delete on default event bus",
-  Effect.gen(function* () {
-    const ruleName = "itty-eventbridge-rule-lifecycle";
-    const eventPattern = JSON.stringify({
-      source: ["itty-aws.test"],
-    });
-
-    // Create rule
-    const createResult = yield* putRule({
-      Name: ruleName,
-      EventPattern: eventPattern,
-      Description: "Test rule for itty-aws",
-      State: "ENABLED",
-    });
-
-    expect(createResult.RuleArn).toBeDefined();
-    const ruleArn = createResult.RuleArn!;
-
-    yield* Effect.ensuring(
+  withRule(
+    "itty-eventbridge-rule-lifecycle",
+    undefined,
+    JSON.stringify({ source: ["itty-aws.test"] }),
+    (ruleArn) =>
       Effect.gen(function* () {
+        expect(ruleArn).toBeDefined();
+
         // Describe the rule
-        const describeResult = yield* describeRule({ Name: ruleName });
-        expect(describeResult.Name).toEqual(ruleName);
+        const describeResult = yield* describeRule({
+          Name: "itty-eventbridge-rule-lifecycle",
+        });
+        expect(describeResult.Name).toEqual("itty-eventbridge-rule-lifecycle");
         expect(describeResult.Arn).toEqual(ruleArn);
         expect(describeResult.State).toEqual("ENABLED");
         expect(describeResult.EventPattern).toBeDefined();
 
         // List rules and verify our rule is present
         const listResult = yield* listRules({ NamePrefix: "itty-eventbridge" });
-        const foundRule = listResult.Rules?.find((r) => r.Name === ruleName);
+        const foundRule = listResult.Rules?.find(
+          (r) => r.Name === "itty-eventbridge-rule-lifecycle",
+        );
         expect(foundRule).toBeDefined();
         expect(foundRule?.Arn).toEqual(ruleArn);
       }),
-      deleteRule({ Name: ruleName }).pipe(Effect.ignore),
-    );
-  }),
+  ),
 );
 
 test(
   "enable and disable rule",
-  Effect.gen(function* () {
-    const ruleName = "itty-eventbridge-rule-toggle";
-    const eventPattern = JSON.stringify({
-      source: ["itty-aws.test"],
-    });
-
-    // Create rule in enabled state
-    yield* putRule({
-      Name: ruleName,
-      EventPattern: eventPattern,
-      State: "ENABLED",
-    });
-
-    yield* Effect.ensuring(
+  withRule(
+    "itty-eventbridge-rule-toggle",
+    undefined,
+    JSON.stringify({ source: ["itty-aws.test"] }),
+    (_ruleArn) =>
       Effect.gen(function* () {
+        const ruleName = "itty-eventbridge-rule-toggle";
+
         // Verify initially enabled
         const initialState = yield* describeRule({ Name: ruleName });
         expect(initialState.State).toEqual("ENABLED");
@@ -186,51 +241,36 @@ test(
         const enabledState = yield* describeRule({ Name: ruleName });
         expect(enabledState.State).toEqual("ENABLED");
       }),
-      deleteRule({ Name: ruleName }).pipe(Effect.ignore),
-    );
-  }),
+  ),
 );
 
 test(
   "create rule on custom event bus",
-  withEventBus("itty-eventbridge-custom-bus", (eventBusArn, eventBusName) =>
-    Effect.gen(function* () {
-      const ruleName = "itty-eventbridge-custom-rule";
-      const eventPattern = JSON.stringify({
-        source: ["itty-aws.custom"],
-      });
-
-      // Create rule on custom event bus
-      const createResult = yield* putRule({
-        Name: ruleName,
-        EventPattern: eventPattern,
-        EventBusName: eventBusName,
-        State: "ENABLED",
-      });
-
-      expect(createResult.RuleArn).toBeDefined();
-
-      yield* Effect.ensuring(
+  withEventBus("itty-eventbridge-custom-bus", (_eventBusArn, eventBusName) =>
+    withRule(
+      "itty-eventbridge-custom-rule",
+      eventBusName,
+      JSON.stringify({ source: ["itty-aws.custom"] }),
+      (ruleArn) =>
         Effect.gen(function* () {
+          expect(ruleArn).toBeDefined();
+
           // Describe rule on custom bus
           const describeResult = yield* describeRule({
-            Name: ruleName,
+            Name: "itty-eventbridge-custom-rule",
             EventBusName: eventBusName,
           });
-          expect(describeResult.Name).toEqual(ruleName);
+          expect(describeResult.Name).toEqual("itty-eventbridge-custom-rule");
           expect(describeResult.EventBusName).toEqual(eventBusName);
 
           // List rules on custom bus
           const listResult = yield* listRules({ EventBusName: eventBusName });
-          const foundRule = listResult.Rules?.find((r) => r.Name === ruleName);
+          const foundRule = listResult.Rules?.find(
+            (r) => r.Name === "itty-eventbridge-custom-rule",
+          );
           expect(foundRule).toBeDefined();
         }),
-        deleteRule({
-          Name: ruleName,
-          EventBusName: eventBusName,
-        }).pipe(Effect.ignore),
-      );
-    }),
+    ),
   ),
 );
 
@@ -240,77 +280,62 @@ test(
 
 test(
   "put targets, list targets, and remove targets",
-  Effect.gen(function* () {
-    const ruleName = "itty-eventbridge-targets";
-    const eventPattern = JSON.stringify({
-      source: ["itty-aws.test"],
-    });
+  withQueue("itty-eventbridge-target-queue", (queueUrl, queueArn) =>
+    withRule(
+      "itty-eventbridge-targets",
+      undefined,
+      JSON.stringify({ source: ["itty-aws.test"] }),
+      (_ruleArn) =>
+        Effect.gen(function* () {
+          const ruleName = "itty-eventbridge-targets";
 
-    // Create rule first
-    yield* putRule({
-      Name: ruleName,
-      EventPattern: eventPattern,
-      State: "ENABLED",
-    });
+          // Put targets using SQS queue
+          const putResult = yield* putTargets({
+            Rule: ruleName,
+            Targets: [
+              {
+                Id: "target-1",
+                Arn: queueArn,
+              },
+            ],
+          });
 
-    yield* Effect.ensuring(
-      Effect.gen(function* () {
-        // Put targets - using a CloudWatch Logs group ARN as target
-        // In real scenarios, this would be a Lambda, SNS, SQS, etc.
-        const putResult = yield* putTargets({
-          Rule: ruleName,
-          Targets: [
-            {
-              Id: "target-1",
-              Arn: "arn:aws:logs:us-east-1:000000000000:log-group:/aws/events/itty-test",
-            },
-            {
-              Id: "target-2",
-              Arn: "arn:aws:logs:us-east-1:000000000000:log-group:/aws/events/itty-test-2",
-            },
-          ],
-        });
+          // Check for successful entries
+          expect(
+            putResult.FailedEntryCount === undefined ||
+              putResult.FailedEntryCount === 0,
+          ).toBe(true);
 
-        // Check for successful entries
-        expect(
-          putResult.FailedEntryCount === undefined ||
-            putResult.FailedEntryCount === 0,
-        ).toBe(true);
+          // List targets
+          const listResult = yield* listTargetsByRule({ Rule: ruleName });
+          expect(listResult.Targets).toBeDefined();
+          expect(listResult.Targets!.length).toEqual(1);
+          expect(listResult.Targets![0].Id).toEqual("target-1");
+          expect(listResult.Targets![0].Arn).toEqual(queueArn);
 
-        // List targets
-        const listResult = yield* listTargetsByRule({ Rule: ruleName });
-        expect(listResult.Targets).toBeDefined();
-        expect(listResult.Targets!.length).toEqual(2);
+          // Remove target
+          const removeResult = yield* removeTargets({
+            Rule: ruleName,
+            Ids: ["target-1"],
+          });
 
-        const targetIds = listResult.Targets!.map((t) => t.Id);
-        expect(targetIds).toContain("target-1");
-        expect(targetIds).toContain("target-2");
+          expect(
+            removeResult.FailedEntryCount === undefined ||
+              removeResult.FailedEntryCount === 0,
+          ).toBe(true);
 
-        // Remove one target
-        const removeResult = yield* removeTargets({
-          Rule: ruleName,
-          Ids: ["target-1"],
-        });
+          // Verify target is removed
+          const listAfterRemove = yield* listTargetsByRule({ Rule: ruleName });
+          expect(
+            listAfterRemove.Targets === undefined ||
+              listAfterRemove.Targets.length === 0,
+          ).toBe(true);
 
-        expect(
-          removeResult.FailedEntryCount === undefined ||
-            removeResult.FailedEntryCount === 0,
-        ).toBe(true);
-
-        // Verify only one target remains
-        const listAfterRemove = yield* listTargetsByRule({ Rule: ruleName });
-        expect(listAfterRemove.Targets!.length).toEqual(1);
-        expect(listAfterRemove.Targets![0].Id).toEqual("target-2");
-
-        // Remove remaining target for cleanup
-        yield* removeTargets({
-          Rule: ruleName,
-          Ids: ["target-2"],
-        });
-      }),
-      deleteRule({ Name: ruleName }).pipe(Effect.ignore),
-    );
-  }),
+          // Keep queueUrl reference to avoid unused variable warning
+          void queueUrl;
+        }),
+    ),
+  ),
 );
 
 // ============================================================================
@@ -382,7 +407,7 @@ test(
 
 test(
   "put events to custom event bus",
-  withEventBus("itty-eventbridge-events", (eventBusArn, eventBusName) =>
+  withEventBus("itty-eventbridge-events", (_eventBusArn, eventBusName) =>
     Effect.gen(function* () {
       // Send event to custom event bus
       const result = yield* putEvents({
@@ -493,22 +518,11 @@ test(
 
 test(
   "tag rule, list tags, and untag",
-  Effect.gen(function* () {
-    const ruleName = "itty-eventbridge-rule-tagging";
-    const eventPattern = JSON.stringify({
-      source: ["itty-aws.test"],
-    });
-
-    // Create rule
-    const ruleResult = yield* putRule({
-      Name: ruleName,
-      EventPattern: eventPattern,
-      State: "ENABLED",
-    });
-
-    const ruleArn = ruleResult.RuleArn!;
-
-    yield* Effect.ensuring(
+  withRule(
+    "itty-eventbridge-rule-tagging",
+    undefined,
+    JSON.stringify({ source: ["itty-aws.test"] }),
+    (ruleArn) =>
       Effect.gen(function* () {
         // Add tags to rule
         yield* tagResource({
@@ -536,9 +550,7 @@ test(
           finalTags.Tags === undefined || finalTags.Tags.length === 0,
         ).toBe(true);
       }),
-      deleteRule({ Name: ruleName }).pipe(Effect.ignore),
-    );
-  }),
+  ),
 );
 
 // ============================================================================
@@ -549,6 +561,9 @@ test(
   "create rule with schedule expression",
   Effect.gen(function* () {
     const ruleName = "itty-eventbridge-scheduled";
+
+    // Clean up any leftover from previous runs
+    yield* cleanupRule(ruleName, undefined);
 
     // Create rule with schedule (runs every 5 minutes)
     const result = yield* putRule({
@@ -578,7 +593,7 @@ test(
         const updatedResult = yield* describeRule({ Name: ruleName });
         expect(updatedResult.ScheduleExpression).toEqual("cron(0 12 * * ? *)");
       }),
-      deleteRule({ Name: ruleName }).pipe(Effect.ignore),
+      cleanupRule(ruleName, undefined),
     );
   }),
 );
@@ -589,96 +604,103 @@ test(
 
 test(
   "complete eventbridge workflow: bus, rule, targets, events",
-  withEventBus("itty-eventbridge-workflow", (eventBusArn, eventBusName) =>
-    Effect.gen(function* () {
-      const ruleName = "itty-workflow-rule";
-      const eventPattern = JSON.stringify({
-        source: ["itty-aws.workflow"],
-        "detail-type": ["WorkflowEvent"],
-      });
+  withQueue("itty-eventbridge-workflow-queue", (queueUrl, queueArn) =>
+    withEventBus("itty-eventbridge-workflow", (eventBusArn, eventBusName) =>
+      Effect.gen(function* () {
+        const ruleName = "itty-workflow-rule";
+        const eventPattern = JSON.stringify({
+          source: ["itty-aws.workflow"],
+          "detail-type": ["WorkflowEvent"],
+        });
 
-      // 1. Tag the event bus
-      yield* tagResource({
-        ResourceARN: eventBusArn,
-        Tags: [{ Key: "Workflow", Value: "Complete" }],
-      });
+        // 1. Tag the event bus
+        yield* tagResource({
+          ResourceARN: eventBusArn,
+          Tags: [{ Key: "Workflow", Value: "Complete" }],
+        });
 
-      // 2. Create a rule on the custom bus
-      const ruleResult = yield* putRule({
-        Name: ruleName,
-        EventPattern: eventPattern,
-        EventBusName: eventBusName,
-        Description: "Workflow test rule",
-        State: "ENABLED",
-      });
-
-      const ruleArn = ruleResult.RuleArn!;
-
-      yield* Effect.ensuring(
-        Effect.gen(function* () {
-          // 3. Add a target to the rule
-          yield* putTargets({
-            Rule: ruleName,
-            EventBusName: eventBusName,
-            Targets: [
-              {
-                Id: "workflow-target",
-                Arn: "arn:aws:logs:us-east-1:000000000000:log-group:/aws/events/workflow",
-              },
-            ],
-          });
-
-          // 4. Tag the rule
-          yield* tagResource({
-            ResourceARN: ruleArn,
-            Tags: [{ Key: "Type", Value: "Workflow" }],
-          });
-
-          // 5. Send an event to the custom bus
-          const putResult = yield* putEvents({
-            Entries: [
-              {
-                Source: "itty-aws.workflow",
-                DetailType: "WorkflowEvent",
-                Detail: JSON.stringify({
-                  step: "complete",
-                  timestamp: new Date().toISOString(),
-                }),
-                EventBusName: eventBusName,
-              },
-            ],
-          });
-
-          expect(putResult.Entries![0].EventId).toBeDefined();
-
-          // 6. Verify everything is set up correctly
-          const [busDesc, ruleDesc, targets, busTags, ruleTags] =
-            yield* Effect.all([
-              describeEventBus({ Name: eventBusName }),
-              describeRule({ Name: ruleName, EventBusName: eventBusName }),
-              listTargetsByRule({ Rule: ruleName, EventBusName: eventBusName }),
-              listTagsForResource({ ResourceARN: eventBusArn }),
-              listTagsForResource({ ResourceARN: ruleArn }),
-            ]);
-
-          expect(busDesc.Name).toEqual(eventBusName);
-          expect(ruleDesc.Name).toEqual(ruleName);
-          expect(targets.Targets!.length).toEqual(1);
-          expect(busTags.Tags!.find((t) => t.Key === "Workflow")).toBeDefined();
-          expect(ruleTags.Tags!.find((t) => t.Key === "Type")).toBeDefined();
-
-          // Cleanup targets
-          yield* removeTargets({
-            Rule: ruleName,
-            EventBusName: eventBusName,
-            Ids: ["workflow-target"],
-          });
-        }),
-        deleteRule({
+        // 2. Create a rule on the custom bus
+        const ruleResult = yield* putRule({
           Name: ruleName,
+          EventPattern: eventPattern,
           EventBusName: eventBusName,
-        }).pipe(Effect.ignore),
-      );
-    }),
+          Description: "Workflow test rule",
+          State: "ENABLED",
+        });
+
+        const ruleArn = ruleResult.RuleArn!;
+
+        yield* Effect.ensuring(
+          Effect.gen(function* () {
+            // 3. Add a target to the rule using SQS queue
+            yield* putTargets({
+              Rule: ruleName,
+              EventBusName: eventBusName,
+              Targets: [
+                {
+                  Id: "workflow-target",
+                  Arn: queueArn,
+                },
+              ],
+            });
+
+            // 4. Tag the rule
+            yield* tagResource({
+              ResourceARN: ruleArn,
+              Tags: [{ Key: "Type", Value: "Workflow" }],
+            });
+
+            // 5. Send an event to the custom bus
+            const putResult = yield* putEvents({
+              Entries: [
+                {
+                  Source: "itty-aws.workflow",
+                  DetailType: "WorkflowEvent",
+                  Detail: JSON.stringify({
+                    step: "complete",
+                    timestamp: new Date().toISOString(),
+                  }),
+                  EventBusName: eventBusName,
+                },
+              ],
+            });
+
+            expect(putResult.Entries![0].EventId).toBeDefined();
+
+            // 6. Verify everything is set up correctly
+            const [busDesc, ruleDesc, targets, busTags, ruleTags] =
+              yield* Effect.all([
+                describeEventBus({ Name: eventBusName }),
+                describeRule({ Name: ruleName, EventBusName: eventBusName }),
+                listTargetsByRule({
+                  Rule: ruleName,
+                  EventBusName: eventBusName,
+                }),
+                listTagsForResource({ ResourceARN: eventBusArn }),
+                listTagsForResource({ ResourceARN: ruleArn }),
+              ]);
+
+            expect(busDesc.Name).toEqual(eventBusName);
+            expect(ruleDesc.Name).toEqual(ruleName);
+            expect(targets.Targets!.length).toEqual(1);
+            expect(
+              busTags.Tags!.find((t) => t.Key === "Workflow"),
+            ).toBeDefined();
+            expect(ruleTags.Tags!.find((t) => t.Key === "Type")).toBeDefined();
+
+            // Cleanup targets before rule deletion
+            yield* removeTargets({
+              Rule: ruleName,
+              EventBusName: eventBusName,
+              Ids: ["workflow-target"],
+            });
+          }),
+          cleanupRule(ruleName, eventBusName),
+        );
+
+        // Keep queueUrl reference to avoid unused variable warning
+        void queueUrl;
+      }),
+    ),
   ),
 );

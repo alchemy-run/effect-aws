@@ -1,4 +1,4 @@
-import { expect } from "@effect/vitest";
+import { describe, expect } from "@effect/vitest";
 import { Effect } from "effect";
 import {
   createApiKey,
@@ -8,6 +8,8 @@ import {
   createStage,
   deleteApiKey,
   deleteDeployment,
+  deleteMethod,
+  deleteResource,
   deleteRestApi,
   deleteStage,
   getApiKey,
@@ -20,64 +22,109 @@ import {
   getRestApis,
   getStage,
   getStages,
+  NotFoundException,
   putIntegration,
   putIntegrationResponse,
   putMethod,
   putMethodResponse,
 } from "../../src/services/api-gateway.ts";
-import { test } from "../test.ts";
+import { afterAll, beforeAll, test } from "../test.ts";
 
-// Helper to ensure cleanup happens even on failure
-const withRestApi = <A, E, R>(
-  apiName: string,
-  testFn: (restApiId: string) => Effect.Effect<A, E, R>,
-) =>
+// ============================================================================
+// Pagination Helpers
+// ============================================================================
+
+// Find a REST API by ID, paginating through all pages
+const findRestApiById = (id: string) =>
   Effect.gen(function* () {
-    const api = yield* createRestApi({ name: apiName });
-    const restApiId = api.id!;
-    return yield* testFn(restApiId).pipe(
-      Effect.ensuring(deleteRestApi({ restApiId }).pipe(Effect.ignore)),
-    );
+    let position: string | undefined;
+    do {
+      const response = yield* getRestApis({ position });
+      const found = response.items?.find((a) => a.id === id);
+      if (found) return found;
+      position = response.position;
+    } while (position);
+    return yield* Effect.fail(new NotFoundException());
   });
+
+// Find and delete any existing REST API with the given name
+// API Gateway names are NOT unique, so we need to clean up duplicates
+const deleteExistingApiByName = (name: string) =>
+  Effect.gen(function* () {
+    // First collect all matching APIs (pagination completes before deletions)
+    const toDelete: string[] = [];
+    let position: string | undefined;
+
+    do {
+      const response = yield* getRestApis({ position });
+      for (const api of response.items ?? []) {
+        if (api.name === name && api.id) {
+          toDelete.push(api.id);
+        }
+      }
+      position = response.position;
+    } while (position);
+
+    // Then delete them
+    for (const id of toDelete) {
+      yield* deleteRestApi({ restApiId: id }).pipe(Effect.ignore);
+    }
+  });
+
+// Shared REST API for all tests
+let sharedRestApiId: string;
+let rootResourceId: string;
+
+beforeAll(
+  Effect.gen(function* () {
+    // API Gateway names aren't unique - delete any existing API with the same name
+    // to prevent accumulation from failed test runs
+    yield* deleteExistingApiByName("itty-apigw-shared");
+
+    const api = yield* createRestApi({ name: "itty-apigw-shared" });
+    sharedRestApiId = api.id!;
+
+    // Get root resource
+    const resources = yield* getResources({ restApiId: sharedRestApiId });
+    const rootResource = resources.items?.find((r) => r.path === "/");
+    rootResourceId = rootResource!.id!;
+  }),
+);
+
+afterAll(deleteRestApi({ restApiId: sharedRestApiId! }).pipe(Effect.ignore));
 
 // ============================================================================
 // REST API Lifecycle Tests
 // ============================================================================
 
-test(
-  "create REST API, get, list, and delete",
-  withRestApi("itty-apigw-lifecycle", (restApiId) =>
+// API Gateway has terrible rate limiting issues, so we need to run tests sequentially
+describe.sequential("API Gateway", () => {
+  test(
+    "get and list REST API",
     Effect.gen(function* () {
       // Get REST API
-      const api = yield* getRestApi({ restApiId });
+      const api = yield* getRestApi({ restApiId: sharedRestApiId });
       expect(api.id).toBeDefined();
-      expect(api.name).toEqual("itty-apigw-lifecycle");
+      expect(api.name).toEqual("itty-apigw-shared");
 
-      // List REST APIs
-      const apis = yield* getRestApis({});
-      const foundApi = apis.items?.find((a) => a.id === restApiId);
+      // List REST APIs (with pagination)
+      const foundApi = yield* findRestApiById(sharedRestApiId);
       expect(foundApi).toBeDefined();
+      expect(foundApi.id).toEqual(sharedRestApiId);
     }),
-  ),
-);
+  );
 
-// ============================================================================
-// Resource Management Tests
-// ============================================================================
+  // ============================================================================
+  // Resource Management Tests
+  // ============================================================================
 
-test(
-  "create and manage resources",
-  withRestApi("itty-apigw-resources", (restApiId) =>
+  test(
+    "create and manage resources",
     Effect.gen(function* () {
-      // Get root resource
-      const resources = yield* getResources({ restApiId });
-      const rootResource = resources.items?.find((r) => r.path === "/");
-      expect(rootResource).toBeDefined();
-
       // Create child resource
       const childResource = yield* createResource({
-        restApiId,
-        parentId: rootResource!.id!,
+        restApiId: sharedRestApiId,
+        parentId: rootResourceId,
         pathPart: "users",
       });
 
@@ -85,265 +132,260 @@ test(
       expect(childResource.pathPart).toEqual("users");
       expect(childResource.path).toEqual("/users");
 
-      // Get the resource
-      const fetchedResource = yield* getResource({
-        restApiId,
-        resourceId: childResource.id!,
-      });
-      expect(fetchedResource.pathPart).toEqual("users");
-
-      // Create nested resource
-      const nestedResource = yield* createResource({
-        restApiId,
-        parentId: childResource.id!,
-        pathPart: "{userId}",
-      });
-
-      expect(nestedResource.path).toEqual("/users/{userId}");
-
-      // List all resources
-      const allResources = yield* getResources({ restApiId });
-      expect(allResources.items).toBeDefined();
-      expect(allResources.items!.length >= 3).toBe(true);
-    }),
-  ),
-);
-
-// ============================================================================
-// Method Tests
-// ============================================================================
-
-test(
-  "create methods on resources",
-  withRestApi("itty-apigw-methods", (restApiId) =>
-    Effect.gen(function* () {
-      // Get root resource
-      const resources = yield* getResources({ restApiId });
-      const rootResource = resources.items?.find((r) => r.path === "/");
-      const resourceId = rootResource!.id!;
-
-      // Create GET method
-      const method = yield* putMethod({
-        restApiId,
-        resourceId,
-        httpMethod: "GET",
-        authorizationType: "NONE",
-      });
-
-      expect(method.httpMethod).toEqual("GET");
-      expect(method.authorizationType).toEqual("NONE");
-
-      // Create POST method
-      const postMethod = yield* putMethod({
-        restApiId,
-        resourceId,
-        httpMethod: "POST",
-        authorizationType: "NONE",
-      });
-
-      expect(postMethod.httpMethod).toEqual("POST");
-    }),
-  ),
-);
-
-// ============================================================================
-// Deployment and Stage Tests
-// ============================================================================
-
-test(
-  "create methods with integrations, deploy, and manage stages",
-  withRestApi("itty-apigw-deploy", (restApiId) =>
-    Effect.gen(function* () {
-      // Get root resource
-      const resources = yield* getResources({ restApiId });
-      const rootResource = resources.items?.find((r) => r.path === "/");
-      const resourceId = rootResource!.id!;
-
-      // Create GET method
-      yield* putMethod({
-        restApiId,
-        resourceId,
-        httpMethod: "GET",
-        authorizationType: "NONE",
-      });
-
-      // Add MOCK integration (required for deployment)
-      yield* putIntegration({
-        restApiId,
-        resourceId,
-        httpMethod: "GET",
-        type: "MOCK",
-        requestTemplates: { "application/json": '{"statusCode": 200}' },
-      });
-
-      // Add method response
-      yield* putMethodResponse({
-        restApiId,
-        resourceId,
-        httpMethod: "GET",
-        statusCode: "200",
-      });
-
-      // Add integration response
-      yield* putIntegrationResponse({
-        restApiId,
-        resourceId,
-        httpMethod: "GET",
-        statusCode: "200",
-        responseTemplates: { "application/json": '{"message": "Hello!"}' },
-      });
-
-      // Create deployment
-      const deployment = yield* createDeployment({
-        restApiId,
-        description: "Test deployment",
-      });
-
-      expect(deployment.id).toBeDefined();
-
-      // Get deployment
-      const fetchedDeployment = yield* getDeployment({
-        restApiId,
-        deploymentId: deployment.id!,
-      });
-
-      expect(fetchedDeployment.id).toEqual(deployment.id);
-
-      // List deployments
-      const deployments = yield* getDeployments({ restApiId });
-      const foundDeployment = deployments.items?.find(
-        (d) => d.id === deployment.id,
-      );
-      expect(foundDeployment).toBeDefined();
-
-      // Create stage
-      const stage = yield* createStage({
-        restApiId,
-        stageName: "dev",
-        deploymentId: deployment.id!,
-        description: "Development stage",
-      });
-
-      expect(stage.stageName).toEqual("dev");
-
       return yield* Effect.gen(function* () {
-        // Get stage
-        const fetchedStage = yield* getStage({
-          restApiId,
-          stageName: "dev",
+        // Get the resource
+        const fetchedResource = yield* getResource({
+          restApiId: sharedRestApiId,
+          resourceId: childResource.id!,
+        });
+        expect(fetchedResource.pathPart).toEqual("users");
+
+        // Create nested resource
+        const nestedResource = yield* createResource({
+          restApiId: sharedRestApiId,
+          parentId: childResource.id!,
+          pathPart: "{userId}",
         });
 
-        expect(fetchedStage.stageName).toEqual("dev");
+        expect(nestedResource.path).toEqual("/users/{userId}");
 
-        // List stages
-        const stages = yield* getStages({ restApiId });
-        const foundStage = stages.item?.find((s) => s.stageName === "dev");
-        expect(foundStage).toBeDefined();
+        // List all resources
+        const allResources = yield* getResources({
+          restApiId: sharedRestApiId,
+        });
+        expect(allResources.items).toBeDefined();
+        expect(allResources.items!.length >= 3).toBe(true);
+
+        // Clean up nested resource first (must delete children before parent)
+        yield* deleteResource({
+          restApiId: sharedRestApiId,
+          resourceId: nestedResource.id!,
+        }).pipe(Effect.ignore);
       }).pipe(
-        // Clean up stage and deployment
         Effect.ensuring(
-          Effect.gen(function* () {
-            yield* deleteStage({ restApiId, stageName: "dev" }).pipe(
-              Effect.ignore,
-            );
-            yield* deleteDeployment({
-              restApiId,
-              deploymentId: deployment.id!,
-            }).pipe(Effect.ignore);
-          }),
+          deleteResource({
+            restApiId: sharedRestApiId,
+            resourceId: childResource.id!,
+          }).pipe(Effect.ignore),
         ),
       );
     }),
-  ),
-);
+  );
 
-// ============================================================================
-// API Key Tests
-// ============================================================================
+  // ============================================================================
+  // Method Tests
+  // ============================================================================
 
-test(
-  "create, get, list, and delete API key",
-  Effect.gen(function* () {
-    // Create API key
-    const apiKey = yield* createApiKey({
-      name: "itty-apigw-apikey",
-      description: "Test API key",
-      enabled: true,
-    });
-
-    expect(apiKey.id).toBeDefined();
-
-    return yield* Effect.gen(function* () {
-      // Get API key
-      const fetchedKey = yield* getApiKey({ apiKey: apiKey.id! });
-      expect(fetchedKey.name).toEqual("itty-apigw-apikey");
-      expect(fetchedKey.enabled).toBe(true);
-
-      // List API keys
-      const apiKeys = yield* getApiKeys({});
-      const foundKey = apiKeys.items?.find((k) => k.id === apiKey.id);
-      expect(foundKey).toBeDefined();
-    }).pipe(
-      Effect.ensuring(deleteApiKey({ apiKey: apiKey.id! }).pipe(Effect.ignore)),
-    );
-  }),
-);
-
-// ============================================================================
-// Full API Lifecycle Test
-// ============================================================================
-
-test(
-  "full API lifecycle: create API with resources and methods",
-  withRestApi("itty-apigw-full-lifecycle", (restApiId) =>
+  test(
+    "create methods on resources",
     Effect.gen(function* () {
-      // Get root resource
-      const resources = yield* getResources({ restApiId });
-      const rootResource = resources.items?.find((r) => r.path === "/");
-      const rootResourceId = rootResource!.id!;
-
-      // Create /hello resource
-      const helloResource = yield* createResource({
-        restApiId,
+      // Create a dedicated resource for method tests
+      const methodResource = yield* createResource({
+        restApiId: sharedRestApiId,
         parentId: rootResourceId,
-        pathPart: "hello",
+        pathPart: "method-test",
       });
+      const resourceId = methodResource.id!;
 
-      // Add GET method to /hello
-      yield* putMethod({
-        restApiId,
-        resourceId: helloResource.id!,
-        httpMethod: "GET",
-        authorizationType: "NONE",
-      });
+      return yield* Effect.gen(function* () {
+        // Create GET method
+        const method = yield* putMethod({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+          authorizationType: "NONE",
+        });
 
-      // Create /hello/{name} resource
-      const nameResource = yield* createResource({
-        restApiId,
-        parentId: helloResource.id!,
-        pathPart: "{name}",
-      });
+        expect(method.httpMethod).toEqual("GET");
+        expect(method.authorizationType).toEqual("NONE");
 
-      // Add GET method to /hello/{name}
-      yield* putMethod({
-        restApiId,
-        resourceId: nameResource.id!,
-        httpMethod: "GET",
-        authorizationType: "NONE",
-      });
+        // Create POST method
+        const postMethod = yield* putMethod({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "POST",
+          authorizationType: "NONE",
+        });
 
-      // Verify all resources are set up correctly
-      const allResources = yield* getResources({ restApiId });
-      expect(allResources.items).toBeDefined();
-      expect(allResources.items!.length >= 3).toBe(true);
+        expect(postMethod.httpMethod).toEqual("POST");
 
-      const helloPath = allResources.items?.find((r) => r.path === "/hello");
-      expect(helloPath).toBeDefined();
-
-      const namePath = allResources.items?.find(
-        (r) => r.path === "/hello/{name}",
+        // Clean up methods
+        yield* deleteMethod({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+        }).pipe(Effect.ignore);
+        yield* deleteMethod({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "POST",
+        }).pipe(Effect.ignore);
+      }).pipe(
+        Effect.ensuring(
+          deleteResource({
+            restApiId: sharedRestApiId,
+            resourceId: methodResource.id!,
+          }).pipe(Effect.ignore),
+        ),
       );
-      expect(namePath).toBeDefined();
     }),
-  ),
-);
+  );
+
+  // ============================================================================
+  // Deployment and Stage Tests
+  // ============================================================================
+
+  test(
+    "create methods with integrations, deploy, and manage stages",
+    Effect.gen(function* () {
+      // Create a resource for this test
+      const testResource = yield* createResource({
+        restApiId: sharedRestApiId,
+        parentId: rootResourceId,
+        pathPart: "deploy-test",
+      });
+      const resourceId = testResource.id!;
+
+      return yield* Effect.gen(function* () {
+        // Create GET method
+        yield* putMethod({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+          authorizationType: "NONE",
+        });
+
+        // Add MOCK integration (required for deployment)
+        yield* putIntegration({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+          type: "MOCK",
+          requestTemplates: { "application/json": '{"statusCode": 200}' },
+        });
+
+        // Add method response
+        yield* putMethodResponse({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+          statusCode: "200",
+        });
+
+        // Add integration response
+        yield* putIntegrationResponse({
+          restApiId: sharedRestApiId,
+          resourceId,
+          httpMethod: "GET",
+          statusCode: "200",
+          responseTemplates: { "application/json": '{"message": "Hello!"}' },
+        });
+
+        // Create deployment
+        const deployment = yield* createDeployment({
+          restApiId: sharedRestApiId,
+          description: "Test deployment",
+        });
+
+        expect(deployment.id).toBeDefined();
+
+        // Get deployment
+        const fetchedDeployment = yield* getDeployment({
+          restApiId: sharedRestApiId,
+          deploymentId: deployment.id!,
+        });
+
+        expect(fetchedDeployment.id).toEqual(deployment.id);
+
+        // List deployments
+        const deployments = yield* getDeployments({
+          restApiId: sharedRestApiId,
+        });
+        const foundDeployment = deployments.items?.find(
+          (d) => d.id === deployment.id,
+        );
+        expect(foundDeployment).toBeDefined();
+
+        // Create stage
+        const stage = yield* createStage({
+          restApiId: sharedRestApiId,
+          stageName: "dev",
+          deploymentId: deployment.id!,
+          description: "Development stage",
+        });
+
+        expect(stage.stageName).toEqual("dev");
+
+        return yield* Effect.gen(function* () {
+          // Get stage
+          const fetchedStage = yield* getStage({
+            restApiId: sharedRestApiId,
+            stageName: "dev",
+          });
+
+          expect(fetchedStage.stageName).toEqual("dev");
+
+          // List stages
+          const stages = yield* getStages({ restApiId: sharedRestApiId });
+          const foundStage = stages.item?.find((s) => s.stageName === "dev");
+          expect(foundStage).toBeDefined();
+        }).pipe(
+          // Clean up stage and deployment
+          Effect.ensuring(
+            Effect.gen(function* () {
+              yield* deleteStage({
+                restApiId: sharedRestApiId,
+                stageName: "dev",
+              }).pipe(Effect.ignore);
+              yield* deleteDeployment({
+                restApiId: sharedRestApiId,
+                deploymentId: deployment.id!,
+              }).pipe(Effect.ignore);
+            }),
+          ),
+        );
+      }).pipe(
+        Effect.ensuring(
+          deleteResource({
+            restApiId: sharedRestApiId,
+            resourceId: testResource.id!,
+          }).pipe(Effect.ignore),
+        ),
+      );
+    }),
+  );
+
+  // ============================================================================
+  // API Key Tests
+  // ============================================================================
+
+  test(
+    "create, get, list, and delete API key",
+    Effect.gen(function* () {
+      // Create API key
+      const apiKey = yield* createApiKey({
+        name: "itty-apigw-apikey",
+        description: "Test API key",
+        enabled: true,
+      });
+
+      expect(apiKey.id).toBeDefined();
+
+      return yield* Effect.gen(function* () {
+        // Get API key
+        const fetchedKey = yield* getApiKey({ apiKey: apiKey.id! });
+        expect(fetchedKey.name).toEqual("itty-apigw-apikey");
+        expect(fetchedKey.enabled).toBe(true);
+
+        // List API keys
+        const apiKeys = yield* getApiKeys({});
+        const foundKey = apiKeys.items?.find((k) => k.id === apiKey.id);
+        expect(foundKey).toBeDefined();
+      }).pipe(
+        Effect.ensuring(
+          deleteApiKey({ apiKey: apiKey.id! }).pipe(Effect.ignore),
+        ),
+      );
+    }),
+  );
+});

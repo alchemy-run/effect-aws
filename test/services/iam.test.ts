@@ -101,16 +101,207 @@ const policyDocument = JSON.stringify({
   ],
 });
 
-// Helper to ensure cleanup happens even on failure
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
+
+// Clean up a user by first removing all dependencies
+const cleanupUser = (userName: string) =>
+  Effect.gen(function* () {
+    // Delete all access keys
+    const keys = yield* listAccessKeys({ UserName: userName }).pipe(
+      Effect.orElseSucceed(() => ({ AccessKeyMetadata: [] })),
+    );
+    for (const key of keys.AccessKeyMetadata ?? []) {
+      yield* deleteAccessKey({
+        UserName: userName,
+        AccessKeyId: key.AccessKeyId!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Delete inline policies
+    const inlinePolicies = yield* listUserPolicies({ UserName: userName }).pipe(
+      Effect.orElseSucceed(() => ({ PolicyNames: [] })),
+    );
+    for (const policyName of inlinePolicies.PolicyNames ?? []) {
+      yield* deleteUserPolicy({
+        UserName: userName,
+        PolicyName: policyName,
+      }).pipe(Effect.ignore);
+    }
+
+    // Detach managed policies
+    const attachedPolicies = yield* listAttachedUserPolicies({
+      UserName: userName,
+    }).pipe(Effect.orElseSucceed(() => ({ AttachedPolicies: [] })));
+    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+      yield* detachUserPolicy({
+        UserName: userName,
+        PolicyArn: policy.PolicyArn!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Remove from all groups
+    const groups = yield* listGroupsForUser({ UserName: userName }).pipe(
+      Effect.orElseSucceed(() => ({ Groups: [] })),
+    );
+    for (const group of groups.Groups ?? []) {
+      yield* removeUserFromGroup({
+        UserName: userName,
+        GroupName: group.GroupName!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Now delete the user
+    yield* deleteUser({ UserName: userName }).pipe(Effect.ignore);
+  });
+
+// Clean up a group by first removing all dependencies
+const cleanupGroup = (groupName: string) =>
+  Effect.gen(function* () {
+    // Remove all users from group
+    const group = yield* getGroup({ GroupName: groupName }).pipe(
+      Effect.orElseSucceed(() => ({ Users: [] })),
+    );
+    for (const user of (group as { Users?: Array<{ UserName?: string }> })
+      .Users ?? []) {
+      yield* removeUserFromGroup({
+        UserName: user.UserName!,
+        GroupName: groupName,
+      }).pipe(Effect.ignore);
+    }
+
+    // Delete inline policies
+    const inlinePolicies = yield* listGroupPolicies({
+      GroupName: groupName,
+    }).pipe(Effect.orElseSucceed(() => ({ PolicyNames: [] })));
+    for (const policyName of inlinePolicies.PolicyNames ?? []) {
+      yield* deleteGroupPolicy({
+        GroupName: groupName,
+        PolicyName: policyName,
+      }).pipe(Effect.ignore);
+    }
+
+    // Detach managed policies
+    const attachedPolicies = yield* listAttachedGroupPolicies({
+      GroupName: groupName,
+    }).pipe(Effect.orElseSucceed(() => ({ AttachedPolicies: [] })));
+    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+      yield* detachGroupPolicy({
+        GroupName: groupName,
+        PolicyArn: policy.PolicyArn!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Now delete the group
+    yield* deleteGroup({ GroupName: groupName }).pipe(Effect.ignore);
+  });
+
+// Clean up a role by first removing all dependencies
+const cleanupRole = (roleName: string) =>
+  Effect.gen(function* () {
+    // Remove role from all instance profiles
+    const instanceProfiles = yield* listInstanceProfilesForRole({
+      RoleName: roleName,
+    }).pipe(Effect.orElseSucceed(() => ({ InstanceProfiles: [] })));
+    for (const profile of instanceProfiles.InstanceProfiles ?? []) {
+      yield* removeRoleFromInstanceProfile({
+        InstanceProfileName: profile.InstanceProfileName!,
+        RoleName: roleName,
+      }).pipe(Effect.ignore);
+    }
+
+    // Delete inline policies
+    const inlinePolicies = yield* listRolePolicies({ RoleName: roleName }).pipe(
+      Effect.orElseSucceed(() => ({ PolicyNames: [] })),
+    );
+    for (const policyName of inlinePolicies.PolicyNames ?? []) {
+      yield* deleteRolePolicy({
+        RoleName: roleName,
+        PolicyName: policyName,
+      }).pipe(Effect.ignore);
+    }
+
+    // Detach managed policies
+    const attachedPolicies = yield* listAttachedRolePolicies({
+      RoleName: roleName,
+    }).pipe(Effect.orElseSucceed(() => ({ AttachedPolicies: [] })));
+    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+      yield* detachRolePolicy({
+        RoleName: roleName,
+        PolicyArn: policy.PolicyArn!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Now delete the role
+    yield* deleteRole({ RoleName: roleName }).pipe(Effect.ignore);
+  });
+
+// Clean up a policy by first detaching from all entities and deleting non-default versions
+const cleanupPolicy = (policyArn: string) =>
+  Effect.gen(function* () {
+    // Get policy to check if it exists
+    const policyResult = yield* getPolicy({ PolicyArn: policyArn }).pipe(
+      Effect.option,
+    );
+    if (policyResult._tag === "None") return;
+
+    // Delete all non-default versions
+    const versions = yield* listPolicyVersions({ PolicyArn: policyArn }).pipe(
+      Effect.orElseSucceed(() => ({ Versions: [] })),
+    );
+    for (const version of versions.Versions ?? []) {
+      if (!version.IsDefaultVersion) {
+        yield* deletePolicyVersion({
+          PolicyArn: policyArn,
+          VersionId: version.VersionId!,
+        }).pipe(Effect.ignore);
+      }
+    }
+
+    // Note: AWS doesn't provide a direct way to list all entities a policy is attached to
+    // The cleanup helpers for users/groups/roles will handle detaching
+
+    // Now delete the policy
+    yield* deletePolicy({ PolicyArn: policyArn }).pipe(Effect.ignore);
+  });
+
+// Clean up an instance profile by first removing all roles
+const cleanupInstanceProfile = (profileName: string) =>
+  Effect.gen(function* () {
+    const profile = yield* getInstanceProfile({
+      InstanceProfileName: profileName,
+    }).pipe(Effect.option);
+    if (profile._tag === "None") return;
+
+    // Remove all roles
+    for (const role of profile.value.InstanceProfile?.Roles ?? []) {
+      yield* removeRoleFromInstanceProfile({
+        InstanceProfileName: profileName,
+        RoleName: role.RoleName!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Delete the instance profile
+    yield* deleteInstanceProfile({ InstanceProfileName: profileName }).pipe(
+      Effect.ignore,
+    );
+  });
+
+// ============================================================================
+// Idempotent Test Helpers
+// ============================================================================
+
+// Helper to ensure cleanup happens even on failure - cleans up before AND after
 const withUser = <A, E, R>(
   userName: string,
   testFn: (userName: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupUser(userName);
     yield* createUser({ UserName: userName });
-    return yield* testFn(userName).pipe(
-      Effect.ensuring(deleteUser({ UserName: userName }).pipe(Effect.ignore)),
-    );
+    return yield* testFn(userName).pipe(Effect.ensuring(cleanupUser(userName)));
   });
 
 const withGroup = <A, E, R>(
@@ -118,11 +309,11 @@ const withGroup = <A, E, R>(
   testFn: (groupName: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupGroup(groupName);
     yield* createGroup({ GroupName: groupName });
     return yield* testFn(groupName).pipe(
-      Effect.ensuring(
-        deleteGroup({ GroupName: groupName }).pipe(Effect.ignore),
-      ),
+      Effect.ensuring(cleanupGroup(groupName)),
     );
   });
 
@@ -131,13 +322,13 @@ const withRole = <A, E, R>(
   testFn: (roleName: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupRole(roleName);
     yield* createRole({
       RoleName: roleName,
       AssumeRolePolicyDocument: trustPolicy,
     });
-    return yield* testFn(roleName).pipe(
-      Effect.ensuring(deleteRole({ RoleName: roleName }).pipe(Effect.ignore)),
-    );
+    return yield* testFn(roleName).pipe(Effect.ensuring(cleanupRole(roleName)));
   });
 
 const withPolicy = <A, E, R>(
@@ -145,15 +336,37 @@ const withPolicy = <A, E, R>(
   testFn: (policyArn: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs - need to find the policy ARN first
+    const existingPolicies = yield* listPolicies({ Scope: "Local" }).pipe(
+      Effect.orElseSucceed(() => ({ Policies: [] })),
+    );
+    const existingPolicy = existingPolicies.Policies?.find(
+      (p) => p.PolicyName === policyName,
+    );
+    if (existingPolicy?.Arn) {
+      yield* cleanupPolicy(existingPolicy.Arn);
+    }
+
     const result = yield* createPolicy({
       PolicyName: policyName,
       PolicyDocument: policyDocument,
     });
     const policyArn = result.Policy!.Arn!;
     return yield* testFn(policyArn).pipe(
-      Effect.ensuring(
-        deletePolicy({ PolicyArn: policyArn }).pipe(Effect.ignore),
-      ),
+      Effect.ensuring(cleanupPolicy(policyArn)),
+    );
+  });
+
+const withInstanceProfile = <A, E, R>(
+  profileName: string,
+  testFn: (profileName: string) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupInstanceProfile(profileName);
+    yield* createInstanceProfile({ InstanceProfileName: profileName });
+    return yield* testFn(profileName).pipe(
+      Effect.ensuring(cleanupInstanceProfile(profileName)),
     );
   });
 
@@ -224,26 +437,32 @@ test(
 
 test(
   "update group name and path",
-  withGroup("itty-iam-group-update", (groupName) =>
-    Effect.gen(function* () {
-      const newGroupName = "itty-iam-group-updated";
+  Effect.gen(function* () {
+    const groupName = "itty-iam-group-update";
+    const newGroupName = "itty-iam-group-updated";
 
-      // Update group
-      yield* updateGroup({
-        GroupName: groupName,
-        NewGroupName: newGroupName,
-        NewPath: "/teams/",
-      });
+    // Clean up both possible names from previous runs
+    yield* cleanupGroup(groupName);
+    yield* cleanupGroup(newGroupName);
 
-      // Get group with new name and verify
-      const group = yield* getGroup({ GroupName: newGroupName });
-      expect(group.Group?.GroupName).toEqual(newGroupName);
-      expect(group.Group?.Path).toEqual("/teams/");
+    // Create the group
+    yield* createGroup({ GroupName: groupName });
 
-      // Clean up with the new name
-      yield* deleteGroup({ GroupName: newGroupName });
-    }),
-  ),
+    // Update group
+    yield* updateGroup({
+      GroupName: groupName,
+      NewGroupName: newGroupName,
+      NewPath: "/teams/",
+    });
+
+    // Get group with new name and verify
+    const group = yield* getGroup({ GroupName: newGroupName });
+    expect(group.Group?.GroupName).toEqual(newGroupName);
+    expect(group.Group?.Path).toEqual("/teams/");
+
+    // Clean up with the new name
+    yield* cleanupGroup(newGroupName);
+  }),
 );
 
 // ============================================================================
@@ -705,23 +924,9 @@ test(
 
 test(
   "create instance profile, add/remove role, and delete",
-  Effect.gen(function* () {
-    const profileName = "itty-iam-instance-profile";
-    const roleName = "itty-iam-profile-role";
-
-    // Create role first
-    yield* createRole({
-      RoleName: roleName,
-      AssumeRolePolicyDocument: trustPolicy,
-    });
-
-    try {
-      // Create instance profile
-      yield* createInstanceProfile({
-        InstanceProfileName: profileName,
-      });
-
-      try {
+  withRole("itty-iam-profile-role", (roleName) =>
+    withInstanceProfile("itty-iam-instance-profile", (profileName) =>
+      Effect.gen(function* () {
         // Get instance profile
         const profile = yield* getInstanceProfile({
           InstanceProfileName: profileName,
@@ -776,17 +981,9 @@ test(
             (r) => r.RoleName === roleName,
           );
         expect(roleStillInProfile).toBeUndefined();
-      } finally {
-        // Clean up instance profile
-        yield* Effect.ignore(
-          deleteInstanceProfile({ InstanceProfileName: profileName }),
-        );
-      }
-    } finally {
-      // Clean up role
-      yield* Effect.ignore(deleteRole({ RoleName: roleName }));
-    }
-  }),
+      }),
+    ),
+  ),
 );
 
 // ============================================================================
@@ -884,93 +1081,67 @@ test(
 
 test(
   "create full IAM structure: user in group with role and policies",
-  Effect.gen(function* () {
-    const userName = "itty-iam-full-test-user";
-    const groupName = "itty-iam-full-test-group";
-    const roleName = "itty-iam-full-test-role";
-    const policyName = "itty-iam-full-test-policy";
+  withUser("itty-iam-full-test-user", (userName) =>
+    withGroup("itty-iam-full-test-group", (groupName) =>
+      withRole("itty-iam-full-test-role", (roleName) =>
+        withPolicy("itty-iam-full-test-policy", (policyArn) =>
+          Effect.gen(function* () {
+            // Set up relationships
+            yield* addUserToGroup({
+              UserName: userName,
+              GroupName: groupName,
+            });
 
-    // Create resources
-    yield* createUser({ UserName: userName });
-    yield* createGroup({ GroupName: groupName });
-    yield* createRole({
-      RoleName: roleName,
-      AssumeRolePolicyDocument: trustPolicy,
-      Description: "Full test role",
-    });
-    const policyResult = yield* createPolicy({
-      PolicyName: policyName,
-      PolicyDocument: policyDocument,
-      Description: "Full test policy",
-    });
-    const policyArn = policyResult.Policy!.Arn!;
+            yield* attachUserPolicy({
+              UserName: userName,
+              PolicyArn: policyArn,
+            });
 
-    try {
-      // Set up relationships
-      yield* addUserToGroup({
-        UserName: userName,
-        GroupName: groupName,
-      });
+            yield* attachGroupPolicy({
+              GroupName: groupName,
+              PolicyArn: policyArn,
+            });
 
-      yield* attachUserPolicy({
-        UserName: userName,
-        PolicyArn: policyArn,
-      });
+            yield* attachRolePolicy({
+              RoleName: roleName,
+              PolicyArn: policyArn,
+            });
 
-      yield* attachGroupPolicy({
-        GroupName: groupName,
-        PolicyArn: policyArn,
-      });
+            // Verify setup
+            const userGroups = yield* listGroupsForUser({ UserName: userName });
+            expect(
+              userGroups.Groups?.find((g) => g.GroupName === groupName),
+            ).toBeDefined();
 
-      yield* attachRolePolicy({
-        RoleName: roleName,
-        PolicyArn: policyArn,
-      });
+            const userPolicies = yield* listAttachedUserPolicies({
+              UserName: userName,
+            });
+            expect(
+              userPolicies.AttachedPolicies?.find(
+                (p) => p.PolicyArn === policyArn,
+              ),
+            ).toBeDefined();
 
-      // Verify setup
-      const userGroups = yield* listGroupsForUser({ UserName: userName });
-      expect(
-        userGroups.Groups?.find((g) => g.GroupName === groupName),
-      ).toBeDefined();
+            const groupPolicies = yield* listAttachedGroupPolicies({
+              GroupName: groupName,
+            });
+            expect(
+              groupPolicies.AttachedPolicies?.find(
+                (p) => p.PolicyArn === policyArn,
+              ),
+            ).toBeDefined();
 
-      const userPolicies = yield* listAttachedUserPolicies({
-        UserName: userName,
-      });
-      expect(
-        userPolicies.AttachedPolicies?.find((p) => p.PolicyArn === policyArn),
-      ).toBeDefined();
-
-      const groupPolicies = yield* listAttachedGroupPolicies({
-        GroupName: groupName,
-      });
-      expect(
-        groupPolicies.AttachedPolicies?.find((p) => p.PolicyArn === policyArn),
-      ).toBeDefined();
-
-      const rolePolicies = yield* listAttachedRolePolicies({
-        RoleName: roleName,
-      });
-      expect(
-        rolePolicies.AttachedPolicies?.find((p) => p.PolicyArn === policyArn),
-      ).toBeDefined();
-    } finally {
-      // Clean up in reverse order of dependencies
-      yield* Effect.ignore(
-        detachUserPolicy({ UserName: userName, PolicyArn: policyArn }),
-      );
-      yield* Effect.ignore(
-        detachGroupPolicy({ GroupName: groupName, PolicyArn: policyArn }),
-      );
-      yield* Effect.ignore(
-        detachRolePolicy({ RoleName: roleName, PolicyArn: policyArn }),
-      );
-      yield* Effect.ignore(
-        removeUserFromGroup({ UserName: userName, GroupName: groupName }),
-      );
-      yield* Effect.ignore(deletePolicy({ PolicyArn: policyArn }));
-      yield* Effect.ignore(deleteRole({ RoleName: roleName }));
-      yield* Effect.ignore(deleteGroup({ GroupName: groupName }));
-      yield* Effect.ignore(deleteUser({ UserName: userName }));
-    }
-  }),
+            const rolePolicies = yield* listAttachedRolePolicies({
+              RoleName: roleName,
+            });
+            expect(
+              rolePolicies.AttachedPolicies?.find(
+                (p) => p.PolicyArn === policyArn,
+              ),
+            ).toBeDefined();
+          }),
+        ),
+      ),
+    ),
+  ),
 );

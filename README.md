@@ -326,6 +326,87 @@ program.pipe(
 );
 ```
 
+### Retry Policy
+
+By default, effect-aws automatically retries transient errors, throttling errors, and errors with the `@retryable` trait using exponential backoff with jitter (up to 5 attempts).
+
+You can customize or disable this behavior using the `Retry` module:
+
+```typescript
+import { Retry } from "effect-aws";
+// or
+import * as Retry from "effect-aws/Retry";
+```
+
+#### Disable Retries
+
+```typescript
+import { Retry } from "effect-aws";
+
+myEffect.pipe(Retry.none)
+```
+
+#### Retry Throttling Errors Indefinitely
+
+```typescript
+import { Retry } from "effect-aws";
+
+// Retries all throttling errors with exponential backoff (capped at 5s)
+myEffect.pipe(Retry.throttling)
+```
+
+#### Retry All Transient Errors Indefinitely
+
+```typescript
+import { Retry } from "effect-aws";
+
+// Retries throttling, server errors, and @retryable errors indefinitely
+myEffect.pipe(Retry.transient)
+```
+
+#### Custom Retry Policy
+
+```typescript
+import { Retry } from "effect-aws";
+import * as Schedule from "effect/Schedule";
+
+myEffect.pipe(
+  Retry.policy({
+    while: (error) => isThrottlingError(error),
+    schedule: Schedule.exponential(1000),
+  })
+)
+```
+
+#### Dynamic Retry Policy with Error Inspection
+
+For advanced use cases like respecting `Retry-After` headers, you can access the last error via a `Ref`:
+
+```typescript
+import { Retry } from "effect-aws";
+import * as Duration from "effect/Duration";
+import * as Effect from "effect/Effect";
+import * as Schedule from "effect/Schedule";
+
+myEffect.pipe(
+  Retry.policy((lastError) => ({
+    while: (error) => isThrottlingError(error),
+    schedule: Schedule.exponential(1000).pipe(
+      Schedule.modifyDelayEffect(
+        Effect.gen(function* (duration) {
+          const error = yield* lastError;
+          // Respect retry-after header if present
+          if (error?.retryAfterSeconds) {
+            return Duration.seconds(error.retryAfterSeconds);
+          }
+          return duration;
+        })
+      )
+    ),
+  }))
+)
+```
+
 ## Error Handling
 
 All operations return typed errors that can be pattern-matched:

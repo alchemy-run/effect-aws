@@ -96,16 +96,40 @@ export * as ErrorCategory from "./error-category.ts";
  *
  * @example
  * ```ts
- * import { RetryPolicy } from "effect-aws"
- * import { Layer } from "effect"
+ * import { Retry } from "effect-aws"
+ * import * as Schedule from "effect/Schedule"
  *
- * // Use custom retry policy
- * const customRetry = Layer.succeed(RetryPolicy.RetryPolicy, {
- *   shouldRetry: (error) => true,
- *   getSchedule: () => Schedule.exponential("1 second"),
- * })
+ * // Custom policy
+ * myEffect.pipe(
+ *   Retry.policy({
+ *     while: isThrottlingError,
+ *     schedule: Schedule.exponential(1000),
+ *   })
+ * )
+ *
+ * // Dynamic policy with access to last error ref
+ * myEffect.pipe(
+ *   Retry.policy((lastError) => ({
+ *     while: isThrottlingError,
+ *     schedule: Schedule.exponential(1000).pipe(
+ *       Schedule.modifyDelayEffect(Effect.gen(function* () {
+ *         const error = yield* lastError;
+ *         // inspect error for retry-after headers, etc.
+ *       }))
+ *     ),
+ *   }))
+ * )
+ *
+ * // Disable retries
+ * myEffect.pipe(Retry.none)
+ *
+ * // Retry throttling errors indefinitely
+ * myEffect.pipe(Retry.throttling)
+ *
+ * // Retry all transient errors indefinitely
+ * myEffect.pipe(Retry.transient)
  * ```
  *
  * @since 1.0.0
  */
-export * as RetryPolicy from "./retry-policy.ts";
+export * as Retry from "./retry-policy.ts";

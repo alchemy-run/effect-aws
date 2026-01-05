@@ -13,12 +13,12 @@ export default defineConfig({
       "smithy",
     ],
     // Run test files in parallel
-    fileParallelism: true,
-    // Run tests within a file concurrently
+    // fileParallelism: true,
+    // // Run tests within a file concurrently
     sequence: {
       concurrent: true,
     },
     // Use forks pool for better isolation with concurrent tests
-    pool: "forks",
+    pool: "threads",
   },
 });

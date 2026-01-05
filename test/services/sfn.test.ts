@@ -1,7 +1,12 @@
 import { expect } from "@effect/vitest";
-import { Console, Effect, Schedule } from "effect";
-import { afterAll, beforeAll } from "vitest";
-import { createRole, deleteRole } from "../../src/services/iam.ts";
+import { Effect, Schedule } from "effect";
+import {
+  attachRolePolicy,
+  createRole,
+  deleteRole,
+  detachRolePolicy,
+  listAttachedRolePolicies,
+} from "../../src/services/iam.ts";
 import {
   createActivity,
   createStateMachine,
@@ -16,14 +21,7 @@ import {
   startExecution,
   stopExecution,
 } from "../../src/services/sfn.ts";
-import { run, test } from "../test.ts";
-
-const TEST_ACTIVITY_NAME = "itty-aws-test-activity";
-const TEST_STATE_MACHINE_NAME = "itty-aws-test-state-machine";
-const TEST_EXEC_STATE_MACHINE_NAME = "itty-aws-test-exec-sm";
-const TEST_STOP_STATE_MACHINE_NAME = "itty-aws-test-stop-sm";
-const TEST_MULTI_STATE_MACHINE_NAME = "itty-aws-test-multi-sm";
-const TEST_ROLE_NAME = "itty-aws-test-stepfunctions-role";
+import { test } from "../test.ts";
 
 // Simple pass state machine definition
 const PASS_STATE_MACHINE_DEFINITION = JSON.stringify({
@@ -64,39 +62,169 @@ const STEP_FUNCTIONS_TRUST_POLICY = JSON.stringify({
   ],
 });
 
-// Role ARN will be set by beforeAll
-let TEST_ROLE_ARN = "";
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
 
-// Create the IAM role before tests
-beforeAll(async () => {
-  await run(
+// Clean up a role by detaching all policies first
+const cleanupRole = (roleName: string) =>
+  Effect.gen(function* () {
+    // Detach all managed policies
+    const attachedPolicies = yield* listAttachedRolePolicies({
+      RoleName: roleName,
+    }).pipe(Effect.orElseSucceed(() => ({ AttachedPolicies: [] })));
+
+    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+      yield* detachRolePolicy({
+        RoleName: roleName,
+        PolicyArn: policy.PolicyArn!,
+      }).pipe(Effect.ignore);
+    }
+
+    // Delete the role
+    yield* deleteRole({ RoleName: roleName }).pipe(Effect.ignore);
+  });
+
+// Clean up an activity
+const cleanupActivity = (activityArn: string) =>
+  deleteActivity({ activityArn }).pipe(Effect.ignore);
+
+// Clean up a state machine - must wait for it to be fully deleted
+const cleanupStateMachine = (stateMachineArn: string) =>
+  Effect.gen(function* () {
+    // Try to delete the state machine
+    yield* deleteStateMachine({ stateMachineArn }).pipe(Effect.ignore);
+
+    // Wait for it to be fully deleted (not in DELETING state)
+    yield* describeStateMachine({ stateMachineArn }).pipe(
+      Effect.flatMap((result) =>
+        result.status === "DELETING"
+          ? Effect.fail("still deleting" as const)
+          : Effect.fail("still exists" as const),
+      ),
+      Effect.catchTag("StateMachineDoesNotExist", () => Effect.void),
+      Effect.retry({
+        while: (err) => err === "still deleting" || err === "still exists",
+        schedule: Schedule.spaced("1 second").pipe(
+          Schedule.intersect(Schedule.recurs(30)),
+        ),
+      }),
+      Effect.ignore,
+    );
+  });
+
+// Wait for a state machine to become available (not in DELETING state from previous run)
+const waitForStateMachineAvailable = (stateMachineName: string) =>
+  Effect.gen(function* () {
+    // List state machines to find if one with this name exists
+    const list = yield* listStateMachines({});
+    const existing = list.stateMachines?.find(
+      (sm) => sm.name === stateMachineName,
+    );
+
+    if (existing) {
+      // Clean it up and wait
+      yield* cleanupStateMachine(existing.stateMachineArn!);
+    }
+  });
+
+// ============================================================================
+// Idempotent Test Helpers
+// ============================================================================
+
+// Helper for IAM role with cleanup - cleans up before AND after
+const withRole = <A, E, R>(
+  roleName: string,
+  testFn: (roleArn: string) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupRole(roleName);
+
+    // Create the role
+    const result = yield* createRole({
+      RoleName: roleName,
+      AssumeRolePolicyDocument: STEP_FUNCTIONS_TRUST_POLICY,
+      Description: "Test role for itty-aws Step Functions tests",
+    });
+
+    const roleArn = result.Role!.Arn!;
+
+    // Attach the basic execution policy for Step Functions
+    yield* attachRolePolicy({
+      RoleName: roleName,
+      PolicyArn:
+        "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+    }).pipe(Effect.ignore);
+
+    // Wait for IAM to propagate
+    yield* Effect.sleep("2 seconds");
+
+    return yield* testFn(roleArn).pipe(Effect.ensuring(cleanupRole(roleName)));
+  });
+
+// Helper for activity with cleanup
+const withActivity = <A, E, R>(
+  activityName: string,
+  testFn: (activityArn: string) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Check if activity exists and clean up
+    const existing = yield* listActivities({}).pipe(
+      Effect.map(
+        (result) =>
+          result.activities?.find((a) => a.name === activityName)?.activityArn,
+      ),
+      Effect.orElseSucceed(() => undefined),
+    );
+
+    if (existing) {
+      yield* cleanupActivity(existing);
+    }
+
+    // Create the activity
+    const result = yield* createActivity({ name: activityName });
+    const activityArn = result.activityArn!;
+
+    return yield* testFn(activityArn).pipe(
+      Effect.ensuring(cleanupActivity(activityArn)),
+    );
+  });
+
+// Helper for state machine with cleanup - includes role creation
+const withStateMachine = <A, E, R>(
+  stateMachineName: string,
+  roleName: string,
+  definition: string,
+  testFn: (stateMachineArn: string) => Effect.Effect<A, E, R>,
+) =>
+  withRole(roleName, (roleArn) =>
     Effect.gen(function* () {
-      // Delete existing role if it exists (cleanup from previous runs)
-      yield* deleteRole({ RoleName: TEST_ROLE_NAME }).pipe(Effect.ignore);
+      // Wait for any existing state machine with this name to be fully deleted
+      yield* waitForStateMachineAvailable(stateMachineName);
 
-      // Create the role
-      const result = yield* createRole({
-        RoleName: TEST_ROLE_NAME,
-        AssumeRolePolicyDocument: STEP_FUNCTIONS_TRUST_POLICY,
-        Description: "Test role for itty-aws Step Functions tests",
-      });
+      // Create the state machine, retrying if still being deleted
+      const result = yield* createStateMachine({
+        name: stateMachineName,
+        definition,
+        roleArn,
+        type: "STANDARD",
+      }).pipe(
+        Effect.retry({
+          while: (err) => err._tag === "StateMachineDeleting",
+          schedule: Schedule.spaced("2 seconds").pipe(
+            Schedule.intersect(Schedule.recurs(30)),
+          ),
+        }),
+      );
 
-      TEST_ROLE_ARN = result.Role?.Arn ?? "";
+      const stateMachineArn = result.stateMachineArn!;
 
-      // Wait a bit for IAM to propagate (AWS eventually consistent)
-      yield* Effect.sleep("2 seconds");
+      return yield* testFn(stateMachineArn).pipe(
+        Effect.ensuring(cleanupStateMachine(stateMachineArn)),
+      );
     }),
   );
-});
-
-// Delete the IAM role after tests
-afterAll(async () => {
-  await run(
-    Effect.gen(function* () {
-      yield* deleteRole({ RoleName: TEST_ROLE_NAME }).pipe(Effect.ignore);
-    }),
-  );
-});
 
 // ============================================================================
 // Activity Tests
@@ -104,50 +232,34 @@ afterAll(async () => {
 
 test(
   "create activity, describe activity, list activities, and delete activity",
-  Effect.gen(function* () {
-    const activityName = TEST_ACTIVITY_NAME;
+  withActivity("itty-sfn-activity-lifecycle", (activityArn) =>
+    Effect.gen(function* () {
+      expect(activityArn).toBeDefined();
 
-    // Create activity
-    const createResult = yield* createActivity({
-      name: activityName,
-    });
-
-    const activityArn = createResult.activityArn;
-    expect(activityArn).toBeDefined();
-
-    try {
       // Describe activity
-      const describeResult = yield* describeActivity({
-        activityArn: activityArn!,
-      });
-
-      expect(describeResult.name).toEqual(activityName);
+      const describeResult = yield* describeActivity({ activityArn });
+      expect(describeResult.name).toEqual("itty-sfn-activity-lifecycle");
       expect(describeResult.creationDate).toBeDefined();
 
-      // List activities and verify our activity is in the list
-      const listResult = yield* listActivities({});
-      const foundActivity = listResult.activities?.find(
-        (a) => a.activityArn === activityArn,
-      );
-      expect(foundActivity).toBeDefined();
-
-      // Delete activity
-      yield* deleteActivity({ activityArn: activityArn! });
-
-      // Verify activity is gone by trying to describe (should fail)
-      const describeAfterDelete = yield* describeActivity({
-        activityArn: activityArn!,
+      // List activities with retry for eventual consistency
+      yield* Effect.gen(function* () {
+        const listResult = yield* listActivities({});
+        const foundActivity = listResult.activities?.find(
+          (a) => a.activityArn === activityArn,
+        );
+        if (!foundActivity) {
+          return yield* Effect.fail("not found yet" as const);
+        }
       }).pipe(
-        Effect.map(() => "success" as const),
-        Effect.catchAll(() => Effect.succeed("error" as const)),
+        Effect.retry({
+          while: (err) => err === "not found yet",
+          schedule: Schedule.spaced("1 second").pipe(
+            Schedule.intersect(Schedule.recurs(10)),
+          ),
+        }),
       );
-
-      expect(describeAfterDelete).toEqual("error");
-    } finally {
-      // Clean up if not already deleted
-      yield* deleteActivity({ activityArn: activityArn! }).pipe(Effect.ignore);
-    }
-  }),
+    }),
+  ),
 );
 
 // ============================================================================
@@ -156,67 +268,43 @@ test(
 
 test(
   "create state machine, describe, list, and delete",
-  Effect.gen(function* () {
-    const stateMachineName = TEST_STATE_MACHINE_NAME;
+  withStateMachine(
+    "itty-sfn-sm-lifecycle",
+    "itty-sfn-role-lifecycle",
+    PASS_STATE_MACHINE_DEFINITION,
+    (stateMachineArn) =>
+      Effect.gen(function* () {
+        expect(stateMachineArn).toBeDefined();
 
-    // Create state machine
-    const createResult = yield* createStateMachine({
-      name: stateMachineName,
-      definition: PASS_STATE_MACHINE_DEFINITION,
-      roleArn: TEST_ROLE_ARN,
-      type: "STANDARD",
-    });
+        // Describe state machine
+        const describeResult = yield* describeStateMachine({ stateMachineArn });
+        expect(describeResult.name).toEqual("itty-sfn-sm-lifecycle");
+        expect(describeResult.status).toEqual("ACTIVE");
 
-    const stateMachineArn = createResult.stateMachineArn;
-    expect(stateMachineArn).toBeDefined();
+        // Verify definition matches
+        const returnedDef = JSON.parse(describeResult.definition || "{}");
+        const expectedDef = JSON.parse(PASS_STATE_MACHINE_DEFINITION);
+        expect(returnedDef.StartAt).toEqual(expectedDef.StartAt);
 
-    try {
-      // Describe state machine
-      const describeResult = yield* describeStateMachine({
-        stateMachineArn: stateMachineArn!,
-      });
-
-      expect(describeResult.name).toEqual(stateMachineName);
-      expect(describeResult.status).toEqual("ACTIVE");
-
-      // Verify definition matches
-      const returnedDef = JSON.parse(describeResult.definition || "{}");
-      const expectedDef = JSON.parse(PASS_STATE_MACHINE_DEFINITION);
-      expect(returnedDef.StartAt).toEqual(expectedDef.StartAt);
-
-      // List state machines and verify ours is in the list
-      const listResult = yield* listStateMachines({});
-      const foundSm = listResult.stateMachines?.find(
-        (sm) => sm.stateMachineArn === stateMachineArn,
-      );
-      expect(foundSm).toBeDefined();
-
-      // Delete state machine
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! });
-
-      // Verify state machine is gone or in DELETING status
-      yield* describeStateMachine({
-        stateMachineArn: stateMachineArn!,
-      }).pipe(
-        Effect.flatMap((result) =>
-          result.status === "DELETING"
-            ? Effect.void
-            : Effect.fail("still exists" as const),
-        ),
-        Effect.catchTag("StateMachineDoesNotExist", () => Effect.void),
-        Effect.tapError(Console.log),
-        Effect.retry({
-          while: (err) => err === "still exists",
-          schedule: Schedule.spaced("1 second"),
-        }),
-      );
-    } finally {
-      // Clean up if not already deleted
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
-        Effect.ignore,
-      );
-    }
-  }),
+        // List state machines with retry for eventual consistency
+        yield* Effect.gen(function* () {
+          const listResult = yield* listStateMachines({});
+          const foundSm = listResult.stateMachines?.find(
+            (sm) => sm.stateMachineArn === stateMachineArn,
+          );
+          if (!foundSm) {
+            return yield* Effect.fail("not found yet" as const);
+          }
+        }).pipe(
+          Effect.retry({
+            while: (err) => err === "not found yet",
+            schedule: Schedule.spaced("1 second").pipe(
+              Schedule.intersect(Schedule.recurs(10)),
+            ),
+          }),
+        );
+      }),
+  ),
 );
 
 // ============================================================================
@@ -225,129 +313,88 @@ test(
 
 test(
   "start execution, describe execution, and list executions",
-  Effect.gen(function* () {
-    const stateMachineName = TEST_EXEC_STATE_MACHINE_NAME;
+  withStateMachine(
+    "itty-sfn-exec-sm",
+    "itty-sfn-role-exec",
+    PASS_STATE_MACHINE_DEFINITION,
+    (stateMachineArn) =>
+      Effect.gen(function* () {
+        const inputData = JSON.stringify({ message: "Hello from itty-aws" });
 
-    // Create state machine
-    const createSmResult = yield* createStateMachine({
-      name: stateMachineName,
-      definition: PASS_STATE_MACHINE_DEFINITION,
-      roleArn: TEST_ROLE_ARN,
-      type: "STANDARD",
-    });
+        // Start execution (let AWS generate a unique name)
+        const startResult = yield* startExecution({
+          stateMachineArn,
+          input: inputData,
+        });
 
-    const stateMachineArn = createSmResult.stateMachineArn;
-    expect(stateMachineArn).toBeDefined();
+        const executionArn = startResult.executionArn!;
+        expect(executionArn).toBeDefined();
 
-    try {
-      const inputData = JSON.stringify({ message: "Hello from itty-aws" });
+        // Describe execution
+        const describeResult = yield* describeExecution({ executionArn });
+        expect(describeResult.name).toBeDefined();
+        expect(describeResult.input).toEqual(inputData);
 
-      // Start execution (let AWS generate a unique name)
-      const startResult = yield* startExecution({
-        stateMachineArn: stateMachineArn!,
-        input: inputData,
-      });
+        // Status should be RUNNING or SUCCEEDED (pass state is fast)
+        const status = describeResult.status;
+        expect(["RUNNING", "SUCCEEDED"]).toContain(status);
 
-      const executionArn = startResult.executionArn;
-      expect(executionArn).toBeDefined();
+        // List executions
+        const listResult = yield* listExecutions({ stateMachineArn });
+        const foundExec = listResult.executions?.find(
+          (e) => e.executionArn === executionArn,
+        );
+        expect(foundExec).toBeDefined();
 
-      // Describe execution
-      const describeResult = yield* describeExecution({
-        executionArn: executionArn!,
-      });
+        // Wait for execution to complete (pass state is fast)
+        yield* Effect.sleep("2 seconds");
 
-      expect(describeResult.name).toBeDefined();
-      expect(describeResult.input).toEqual(inputData);
+        // Verify execution succeeded
+        const finalDescribe = yield* describeExecution({ executionArn });
+        expect(finalDescribe.status).toEqual("SUCCEEDED");
 
-      // Status should be RUNNING or SUCCEEDED (pass state is fast)
-      const status = describeResult.status;
-      expect(["RUNNING", "SUCCEEDED"]).toContain(status);
-
-      // List executions
-      const listResult = yield* listExecutions({
-        stateMachineArn: stateMachineArn!,
-      });
-
-      const foundExec = listResult.executions?.find(
-        (e) => e.executionArn === executionArn,
-      );
-      expect(foundExec).toBeDefined();
-
-      // Wait for execution to complete (pass state is fast)
-      yield* Effect.sleep("2 seconds");
-
-      // Verify execution succeeded
-      const finalDescribe = yield* describeExecution({
-        executionArn: executionArn!,
-      });
-
-      expect(finalDescribe.status).toEqual("SUCCEEDED");
-
-      // Output should match input for pass state
-      expect(finalDescribe.output).toEqual(inputData);
-    } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
-        Effect.ignore,
-      );
-    }
-  }),
+        // Output should match input for pass state
+        expect(finalDescribe.output).toEqual(inputData);
+      }),
+  ),
 );
 
 test(
   "start execution and stop execution",
-  Effect.gen(function* () {
-    const stateMachineName = TEST_STOP_STATE_MACHINE_NAME;
+  withStateMachine(
+    "itty-sfn-stop-sm",
+    "itty-sfn-role-stop",
+    WAIT_STATE_MACHINE_DEFINITION,
+    (stateMachineArn) =>
+      Effect.gen(function* () {
+        // Start execution
+        const startResult = yield* startExecution({
+          stateMachineArn,
+          input: JSON.stringify({}),
+        });
 
-    // Create state machine with wait state
-    const createSmResult = yield* createStateMachine({
-      name: stateMachineName,
-      definition: WAIT_STATE_MACHINE_DEFINITION,
-      roleArn: TEST_ROLE_ARN,
-      type: "STANDARD",
-    });
+        const executionArn = startResult.executionArn!;
+        expect(executionArn).toBeDefined();
 
-    const stateMachineArn = createSmResult.stateMachineArn;
-    expect(stateMachineArn).toBeDefined();
+        // Verify execution is running
+        const runningDescribe = yield* describeExecution({ executionArn });
+        expect(runningDescribe.status).toEqual("RUNNING");
 
-    try {
-      // Start execution
-      const startResult = yield* startExecution({
-        stateMachineArn: stateMachineArn!,
-        input: JSON.stringify({}),
-      });
+        // Stop execution
+        yield* stopExecution({
+          executionArn,
+          error: "TestError",
+          cause: "Stopped by itty-aws test",
+        });
 
-      const executionArn = startResult.executionArn;
-      expect(executionArn).toBeDefined();
+        // Give it a moment to stop
+        yield* Effect.sleep("1 second");
 
-      // Verify execution is running
-      const runningDescribe = yield* describeExecution({
-        executionArn: executionArn!,
-      });
-
-      expect(runningDescribe.status).toEqual("RUNNING");
-
-      // Stop execution
-      yield* stopExecution({
-        executionArn: executionArn!,
-        error: "TestError",
-        cause: "Stopped by itty-aws test",
-      });
-
-      // Give it a moment to stop
-      yield* Effect.sleep("1 second");
-
-      // Verify execution is stopped (ABORTED)
-      const stoppedDescribe = yield* describeExecution({
-        executionArn: executionArn!,
-      });
-
-      expect(stoppedDescribe.status).toEqual("ABORTED");
-    } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
-        Effect.ignore,
-      );
-    }
-  }),
+        // Verify execution is stopped (ABORTED)
+        const stoppedDescribe = yield* describeExecution({ executionArn });
+        expect(stoppedDescribe.status).toEqual("ABORTED");
+      }),
+  ),
 );
 
 // ============================================================================
@@ -356,67 +403,51 @@ test(
 
 test(
   "run multiple executions of the same state machine",
-  Effect.gen(function* () {
-    const stateMachineName = TEST_MULTI_STATE_MACHINE_NAME;
+  withStateMachine(
+    "itty-sfn-multi-sm",
+    "itty-sfn-role-multi",
+    PASS_STATE_MACHINE_DEFINITION,
+    (stateMachineArn) =>
+      Effect.gen(function* () {
+        // Start 3 executions in parallel (let AWS generate unique names)
+        const executions = yield* Effect.all(
+          [
+            startExecution({
+              stateMachineArn,
+              input: JSON.stringify({ id: 1 }),
+            }),
+            startExecution({
+              stateMachineArn,
+              input: JSON.stringify({ id: 2 }),
+            }),
+            startExecution({
+              stateMachineArn,
+              input: JSON.stringify({ id: 3 }),
+            }),
+          ],
+          { concurrency: 3 },
+        );
 
-    // Create state machine
-    const createSmResult = yield* createStateMachine({
-      name: stateMachineName,
-      definition: PASS_STATE_MACHINE_DEFINITION,
-      roleArn: TEST_ROLE_ARN,
-      type: "STANDARD",
-    });
+        // Verify all have execution ARNs
+        for (const exec of executions) {
+          expect(exec.executionArn).toBeDefined();
+        }
 
-    const stateMachineArn = createSmResult.stateMachineArn;
-    expect(stateMachineArn).toBeDefined();
+        // Wait for executions to complete
+        yield* Effect.sleep("3 seconds");
 
-    try {
-      // Start 3 executions in parallel (let AWS generate unique names)
-      const executions = yield* Effect.all(
-        [
-          startExecution({
-            stateMachineArn: stateMachineArn!,
-            input: JSON.stringify({ id: 1 }),
-          }),
-          startExecution({
-            stateMachineArn: stateMachineArn!,
-            input: JSON.stringify({ id: 2 }),
-          }),
-          startExecution({
-            stateMachineArn: stateMachineArn!,
-            input: JSON.stringify({ id: 3 }),
-          }),
-        ],
-        { concurrency: 3 },
-      );
+        // Verify all succeeded
+        for (const exec of executions) {
+          const describe = yield* describeExecution({
+            executionArn: exec.executionArn!,
+          });
+          expect(describe.status).toEqual("SUCCEEDED");
+        }
 
-      // Verify all have execution ARNs
-      for (let i = 0; i < executions.length; i++) {
-        expect(executions[i].executionArn).toBeDefined();
-      }
-
-      // Wait for executions to complete
-      yield* Effect.sleep("3 seconds");
-
-      // Verify all succeeded
-      for (let i = 0; i < executions.length; i++) {
-        const describe = yield* describeExecution({
-          executionArn: executions[i].executionArn!,
-        });
-        expect(describe.status).toEqual("SUCCEEDED");
-      }
-
-      // List executions and verify count
-      const listResult = yield* listExecutions({
-        stateMachineArn: stateMachineArn!,
-      });
-
-      expect(listResult.executions).toBeDefined();
-      expect(listResult.executions!.length >= 3).toBe(true);
-    } finally {
-      yield* deleteStateMachine({ stateMachineArn: stateMachineArn! }).pipe(
-        Effect.ignore,
-      );
-    }
-  }),
+        // List executions and verify count
+        const listResult = yield* listExecutions({ stateMachineArn });
+        expect(listResult.executions).toBeDefined();
+        expect(listResult.executions!.length >= 3).toBe(true);
+      }),
+  ),
 );

@@ -437,7 +437,10 @@ function serializeObject(
           .join(""),
       );
     } else {
-      const itemTag = elementAST && getIdentifier(elementAST);
+      // Use xmlName trait first, then fall back to class identifier
+      const itemTag =
+        elementAST &&
+        (getXmlNameFromAST(elementAST) ?? getIdentifier(elementAST));
       elems.push(
         `<${xmlName}>${v.map((item) => serializeValue(elementAST ?? prop.type, item, itemTag)).join("")}</${xmlName}>`,
       );
@@ -465,7 +468,8 @@ function deserializeValue(ast: AST.AST, value: unknown): unknown {
     if (!elAST) return Array.isArray(value) ? value : [value];
 
     // Handle wrapped arrays: { Item: [...] }
-    const elTag = getIdentifier(elAST);
+    // Use xmlName trait first, then fall back to class identifier
+    const elTag = getXmlNameFromAST(elAST) ?? getIdentifier(elAST);
     const unwrapped = unwrapArrayValue(value, elTag);
 
     const items = Array.isArray(unwrapped) ? unwrapped : [unwrapped];

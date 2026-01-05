@@ -40,6 +40,30 @@ export const OperationPatch = S.Struct({
 export type OperationPatch = typeof OperationPatch.Type;
 
 /**
+ * Member override - specifies that a structure member should be treated differently
+ * than what the Smithy model says (e.g., making a required field optional)
+ */
+export const MemberOverride = S.Struct({
+  /**
+   * Whether the field should be optional (true) or required (false).
+   * If specified, overrides the Smithy model's required trait.
+   */
+  optional: S.optional(S.Boolean),
+});
+export type MemberOverride = typeof MemberOverride.Type;
+
+/**
+ * Structure override - specifies member overrides for a specific structure
+ */
+export const StructureOverride = S.Struct({
+  /**
+   * Map of member names to their overrides
+   */
+  members: S.Record({ key: S.String, value: MemberOverride }),
+});
+export type StructureOverride = typeof StructureOverride.Type;
+
+/**
  * All patches for a service
  */
 export const ServiceSpec = S.Struct({
@@ -47,6 +71,12 @@ export const ServiceSpec = S.Struct({
    * Map of operation names to their patches
    */
   operations: S.Record({ key: S.String, value: OperationPatch }),
+  /**
+   * Map of structure names to their member overrides.
+   * Use this to fix discrepancies between AWS Smithy models and actual API behavior.
+   * For example, when AWS returns undefined for a field marked as required.
+   */
+  structures: S.optional(S.Record({ key: S.String, value: StructureOverride })),
 });
 export type ServiceSpec = typeof ServiceSpec.Type;
 

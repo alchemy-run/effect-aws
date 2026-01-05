@@ -9,6 +9,8 @@
  * - SQS queues
  * - SNS topics
  * - DynamoDB tables
+ * - API Gateway REST APIs
+ * - AppSync GraphQL APIs (with resolvers and data sources)
  * - VPCs (with dependencies: subnets, internet gateways, NAT gateways, route tables, security groups)
  * - IAM roles (optionally, with --iam flag)
  *
@@ -27,8 +29,19 @@ import { Console, Effect, Layer, Logger, LogLevel, Option, Ref } from "effect";
 import * as Credentials from "../src/aws/credentials.ts";
 import { Endpoint } from "../src/aws/endpoint.ts";
 import { Region } from "../src/aws/region.ts";
+import * as Retry from "../src/retry-policy.ts";
 
 // Service imports
+import { deleteRestApi, getRestApis } from "../src/services/api-gateway.ts";
+import {
+  deleteDataSource,
+  deleteGraphqlApi,
+  deleteResolver,
+  listDataSources,
+  listGraphqlApis,
+  listResolvers,
+  listTypes,
+} from "../src/services/appsync.ts";
 import { deleteTable, listTables } from "../src/services/dynamodb.ts";
 import {
   deleteInternetGateway,
@@ -49,8 +62,10 @@ import {
 import {
   deleteCluster,
   deleteService,
+  deregisterTaskDefinition,
   listClusters,
   listServices,
+  listTaskDefinitions,
   listTasks,
   stopTask,
   updateService,
@@ -144,16 +159,7 @@ const emptyBucket = (bucket: string) =>
         Bucket: bucket,
         KeyMarker: versionKeyMarker,
         VersionIdMarker: versionIdMarker,
-      }).pipe(
-        Effect.catchAll(() =>
-          Effect.succeed({
-            Versions: [],
-            DeleteMarkers: [],
-            NextKeyMarker: undefined,
-            NextVersionIdMarker: undefined,
-          }),
-        ),
-      );
+      });
 
       const toDelete = [
         ...(versions.Versions ?? []).map((v) => ({
@@ -170,7 +176,7 @@ const emptyBucket = (bucket: string) =>
         yield* deleteObjects({
           Bucket: bucket,
           Delete: { Objects: toDelete },
-        }).pipe(Effect.ignore);
+        });
         yield* log("  🗑️", `Deleted ${toDelete.length} object versions`);
       }
 
@@ -184,17 +190,11 @@ const emptyBucket = (bucket: string) =>
       const objects = yield* listObjectsV2({
         Bucket: bucket,
         ContinuationToken: continuationToken,
-      }).pipe(
-        Effect.catchAll(() =>
-          Effect.succeed({ Contents: [], NextContinuationToken: undefined }),
-        ),
-      );
+      });
 
       for (const obj of objects.Contents ?? []) {
         if (obj.Key) {
-          yield* deleteObject({ Bucket: bucket, Key: obj.Key }).pipe(
-            Effect.ignore,
-          );
+          yield* deleteObject({ Bucket: bucket, Key: obj.Key });
         }
       }
 
@@ -228,11 +228,133 @@ const cleanS3 = Effect.gen(function* () {
     } else {
       yield* log("  🗑️", `Deleting bucket: ${bucket.Name}`);
       yield* emptyBucket(bucket.Name);
-      yield* deleteBucket({ Bucket: bucket.Name }).pipe(Effect.ignore);
+      yield* deleteBucket({ Bucket: bucket.Name });
     }
   }
 
   yield* log("  ✓", `Processed ${toDelete.length} S3 buckets`);
+});
+
+// ============================================================================
+// API Gateway Cleanup
+// ============================================================================
+
+const cleanAPIGateway = Effect.gen(function* () {
+  const { dryRun, prefix } = yield* getConfig;
+  yield* log("🌐", "Cleaning API Gateway REST APIs...");
+
+  // First, collect all APIs to delete (pagination completes before any deletions)
+  const toDelete: Array<{ id: string; name: string }> = [];
+  let position: string | undefined;
+
+  do {
+    const apis = yield* getRestApis({ position });
+
+    for (const api of apis.items ?? []) {
+      if (!api.id || !api.name) continue;
+      if (!matchesPrefix(prefix, api.name)) continue;
+      toDelete.push({ id: api.id, name: api.name });
+    }
+
+    position = apis.position;
+  } while (position);
+
+  if (toDelete.length === 0) {
+    yield* log("  ✓", "No API Gateway REST APIs to delete");
+    return;
+  }
+
+  // Now delete all collected APIs
+  for (const api of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete REST API: ${api.name} (${api.id})`);
+    } else {
+      yield* log("  🗑️", `Deleting REST API: ${api.name} (${api.id})`);
+      yield* deleteRestApi({ restApiId: api.id });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} API Gateway REST APIs`);
+});
+
+// ============================================================================
+// AppSync Cleanup
+// ============================================================================
+
+const cleanAppSync = Effect.gen(function* () {
+  const { dryRun, prefix } = yield* getConfig;
+  yield* log("📊", "Cleaning AppSync GraphQL APIs...");
+
+  // First collect all APIs to delete
+  const toDelete: Array<{ apiId: string; name: string }> = [];
+  let nextToken: string | undefined;
+
+  do {
+    const apis = yield* listGraphqlApis({ nextToken });
+
+    for (const api of apis.graphqlApis ?? []) {
+      if (!api.apiId || !api.name) continue;
+      if (!matchesPrefix(prefix, api.name)) continue;
+      toDelete.push({ apiId: api.apiId, name: api.name });
+    }
+
+    nextToken = apis.nextToken;
+  } while (nextToken);
+
+  if (toDelete.length === 0) {
+    yield* log("  ✓", "No AppSync GraphQL APIs to delete");
+    return;
+  }
+
+  // Now delete all collected APIs
+  for (const api of toDelete) {
+    if (dryRun) {
+      yield* log(
+        "  📋",
+        `Would delete GraphQL API: ${api.name} (${api.apiId})`,
+      );
+      continue;
+    }
+
+    yield* log("  🗑️", `Deleting GraphQL API: ${api.name} (${api.apiId})`);
+
+    // 1. Delete resolvers for each type
+    const types = yield* listTypes({ apiId: api.apiId, format: "SDL" });
+
+    for (const type of types.types ?? []) {
+      if (!type.name) continue;
+
+      const resolvers = yield* listResolvers({
+        apiId: api.apiId,
+        typeName: type.name,
+      });
+
+      for (const resolver of resolvers.resolvers ?? []) {
+        if (resolver.fieldName) {
+          yield* deleteResolver({
+            apiId: api.apiId,
+            typeName: type.name,
+            fieldName: resolver.fieldName,
+          });
+        }
+      }
+    }
+
+    // 2. Delete all data sources
+    const dataSources = yield* listDataSources({ apiId: api.apiId });
+
+    for (const ds of dataSources.dataSources ?? []) {
+      if (ds.name) {
+        yield* log("    🗑️", `Deleting data source: ${ds.name}`);
+        yield* deleteDataSource({ apiId: api.apiId, name: ds.name });
+      }
+    }
+
+    // 3. Delete the GraphQL API
+    yield* deleteGraphqlApi({ apiId: api.apiId });
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} AppSync GraphQL APIs`);
 });
 
 // ============================================================================
@@ -243,50 +365,95 @@ const cleanLambda = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("λ", "Cleaning Lambda functions...");
 
+  // First collect all functions to delete
+  const toDelete: string[] = [];
   let marker: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const functions = yield* listFunctions({ Marker: marker });
 
-    const toDelete = (functions.Functions ?? []).filter((f) =>
-      matchesPrefix(prefix, f.FunctionName),
-    );
-
-    for (const fn of toDelete) {
+    for (const fn of functions.Functions ?? []) {
       if (!fn.FunctionName) continue;
-
-      if (dryRun) {
-        yield* log("  📋", `Would delete function: ${fn.FunctionName}`);
-      } else {
-        yield* log("  🗑️", `Deleting function: ${fn.FunctionName}`);
-        yield* deleteFunction({ FunctionName: fn.FunctionName }).pipe(
-          Effect.ignore,
-        );
-      }
-      totalDeleted++;
+      if (!matchesPrefix(prefix, fn.FunctionName)) continue;
+      toDelete.push(fn.FunctionName);
     }
 
     marker = functions.NextMarker;
   } while (marker);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No Lambda functions to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} Lambda functions`);
+    return;
   }
+
+  // Now delete all collected functions
+  for (const functionName of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete function: ${functionName}`);
+    } else {
+      yield* log("  🗑️", `Deleting function: ${functionName}`);
+      yield* deleteFunction({ FunctionName: functionName });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} Lambda functions`);
 });
 
 // ============================================================================
 // ECS Cleanup
 // ============================================================================
 
-const cleanECS = Effect.gen(function* () {
+const cleanECSTaskDefinitions = Effect.gen(function* () {
+  const { dryRun, prefix } = yield* getConfig;
+  yield* log("📋", "Cleaning ECS task definitions...");
+
+  // First collect all task definitions to delete
+  const toDelete: Array<{ arn: string; display: string }> = [];
+  let nextToken: string | undefined;
+
+  do {
+    const taskDefs = yield* listTaskDefinitions({ nextToken });
+
+    for (const taskDefArn of taskDefs.taskDefinitionArns ?? []) {
+      // Extract family name from ARN: arn:aws:ecs:region:account:task-definition/family:revision
+      const familyWithRevision = taskDefArn.split("/").pop() ?? "";
+      const family = familyWithRevision.split(":")[0];
+
+      if (!matchesPrefix(prefix, family)) continue;
+      toDelete.push({ arn: taskDefArn, display: familyWithRevision });
+    }
+
+    nextToken = taskDefs.nextToken;
+  } while (nextToken);
+
+  if (toDelete.length === 0) {
+    yield* log("  ✓", "No ECS task definitions to delete");
+    return;
+  }
+
+  // Now delete all collected task definitions
+  for (const taskDef of toDelete) {
+    if (dryRun) {
+      yield* log(
+        "  📋",
+        `Would deregister task definition: ${taskDef.display}`,
+      );
+    } else {
+      yield* log("  🗑️", `Deregistering task definition: ${taskDef.display}`);
+      yield* deregisterTaskDefinition({ taskDefinition: taskDef.arn });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} ECS task definitions`);
+});
+
+const cleanECSClusters = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🐳", "Cleaning ECS clusters...");
 
+  // First collect all clusters to delete
+  const toDelete: Array<{ arn: string; name: string }> = [];
   let nextToken: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const clusters = yield* listClusters({ nextToken });
@@ -294,81 +461,81 @@ const cleanECS = Effect.gen(function* () {
     for (const clusterArn of clusters.clusterArns ?? []) {
       const clusterName = clusterArn.split("/").pop() ?? "";
       if (!matchesPrefix(prefix, clusterName)) continue;
-
-      if (dryRun) {
-        yield* log("  📋", `Would delete cluster: ${clusterName}`);
-        totalDeleted++;
-        continue;
-      }
-
-      yield* log("  🗑️", `Deleting cluster: ${clusterName}`);
-
-      // Stop all running tasks
-      let tasksNextToken: string | undefined;
-      do {
-        const tasks = yield* listTasks({
-          cluster: clusterArn,
-          nextToken: tasksNextToken,
-        }).pipe(
-          Effect.catchAll(() =>
-            Effect.succeed({ taskArns: [], nextToken: undefined }),
-          ),
-        );
-
-        for (const taskArn of tasks.taskArns ?? []) {
-          yield* stopTask({
-            cluster: clusterArn,
-            task: taskArn,
-            reason: "Cleanup script",
-          }).pipe(Effect.ignore);
-        }
-
-        tasksNextToken = tasks.nextToken;
-      } while (tasksNextToken);
-
-      // Delete all services
-      let servicesNextToken: string | undefined;
-      do {
-        const services = yield* listServices({
-          cluster: clusterArn,
-          nextToken: servicesNextToken,
-        }).pipe(
-          Effect.catchAll(() =>
-            Effect.succeed({ serviceArns: [], nextToken: undefined }),
-          ),
-        );
-
-        for (const serviceArn of services.serviceArns ?? []) {
-          // Scale down to 0 first
-          yield* updateService({
-            cluster: clusterArn,
-            service: serviceArn,
-            desiredCount: 0,
-          }).pipe(Effect.ignore);
-
-          yield* deleteService({
-            cluster: clusterArn,
-            service: serviceArn,
-            force: true,
-          }).pipe(Effect.ignore);
-        }
-
-        servicesNextToken = services.nextToken;
-      } while (servicesNextToken);
-
-      // Delete the cluster
-      yield* deleteCluster({ cluster: clusterArn }).pipe(Effect.ignore);
-      totalDeleted++;
+      toDelete.push({ arn: clusterArn, name: clusterName });
     }
 
     nextToken = clusters.nextToken;
   } while (nextToken);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No ECS clusters to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} ECS clusters`);
+    return;
   }
+
+  // Now delete all collected clusters
+  for (const cluster of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete cluster: ${cluster.name}`);
+      continue;
+    }
+
+    yield* log("  🗑️", `Deleting cluster: ${cluster.name}`);
+
+    // Stop all running tasks
+    let tasksNextToken: string | undefined;
+    do {
+      const tasks = yield* listTasks({
+        cluster: cluster.arn,
+        nextToken: tasksNextToken,
+      });
+
+      for (const taskArn of tasks.taskArns ?? []) {
+        yield* stopTask({
+          cluster: cluster.arn,
+          task: taskArn,
+          reason: "Cleanup script",
+        });
+      }
+
+      tasksNextToken = tasks.nextToken;
+    } while (tasksNextToken);
+
+    // Delete all services
+    let servicesNextToken: string | undefined;
+    do {
+      const services = yield* listServices({
+        cluster: cluster.arn,
+        nextToken: servicesNextToken,
+      });
+
+      for (const serviceArn of services.serviceArns ?? []) {
+        // Scale down to 0 first
+        yield* updateService({
+          cluster: cluster.arn,
+          service: serviceArn,
+          desiredCount: 0,
+        });
+
+        yield* deleteService({
+          cluster: cluster.arn,
+          service: serviceArn,
+          force: true,
+        });
+      }
+
+      servicesNextToken = services.nextToken;
+    } while (servicesNextToken);
+
+    // Delete the cluster
+    yield* deleteCluster({ cluster: cluster.arn });
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} ECS clusters`);
+});
+
+const cleanECS = Effect.gen(function* () {
+  yield* cleanECSClusters;
+  yield* cleanECSTaskDefinitions;
 });
 
 // ============================================================================
@@ -379,8 +546,9 @@ const cleanSQS = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📨", "Cleaning SQS queues...");
 
+  // First collect all queues to delete
+  const toDelete: Array<{ url: string; name: string }> = [];
   let nextToken: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const queues = yield* listQueues({
@@ -390,24 +558,28 @@ const cleanSQS = Effect.gen(function* () {
 
     for (const queueUrl of queues.QueueUrls ?? []) {
       const queueName = queueUrl.split("/").pop() ?? "";
-
-      if (dryRun) {
-        yield* log("  📋", `Would delete queue: ${queueName}`);
-      } else {
-        yield* log("  🗑️", `Deleting queue: ${queueName}`);
-        yield* deleteQueue({ QueueUrl: queueUrl }).pipe(Effect.ignore);
-      }
-      totalDeleted++;
+      toDelete.push({ url: queueUrl, name: queueName });
     }
 
     nextToken = queues.NextToken;
   } while (nextToken);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No SQS queues to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} SQS queues`);
+    return;
   }
+
+  // Now delete all collected queues
+  for (const queue of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete queue: ${queue.name}`);
+    } else {
+      yield* log("  🗑️", `Deleting queue: ${queue.name}`);
+      yield* deleteQueue({ QueueUrl: queue.url });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} SQS queues`);
 });
 
 // ============================================================================
@@ -418,8 +590,9 @@ const cleanSNS = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📢", "Cleaning SNS topics...");
 
+  // First collect all topics to delete
+  const toDelete: Array<{ arn: string; name: string }> = [];
   let nextToken: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const topics = yield* listTopics({ NextToken: nextToken });
@@ -429,24 +602,28 @@ const cleanSNS = Effect.gen(function* () {
 
       const topicName = topic.TopicArn.split(":").pop() ?? "";
       if (!matchesPrefix(prefix, topicName)) continue;
-
-      if (dryRun) {
-        yield* log("  📋", `Would delete topic: ${topicName}`);
-      } else {
-        yield* log("  🗑️", `Deleting topic: ${topicName}`);
-        yield* deleteTopic({ TopicArn: topic.TopicArn }).pipe(Effect.ignore);
-      }
-      totalDeleted++;
+      toDelete.push({ arn: topic.TopicArn, name: topicName });
     }
 
     nextToken = topics.NextToken;
   } while (nextToken);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No SNS topics to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} SNS topics`);
+    return;
   }
+
+  // Now delete all collected topics
+  for (const topic of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete topic: ${topic.name}`);
+    } else {
+      yield* log("  🗑️", `Deleting topic: ${topic.name}`);
+      yield* deleteTopic({ TopicArn: topic.arn });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} SNS topics`);
 });
 
 // ============================================================================
@@ -457,8 +634,9 @@ const cleanDynamoDB = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🗃️", "Cleaning DynamoDB tables...");
 
+  // First collect all tables to delete
+  const toDelete: string[] = [];
   let lastEvaluatedTableName: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const tables = yield* listTables({
@@ -467,24 +645,28 @@ const cleanDynamoDB = Effect.gen(function* () {
 
     for (const tableName of tables.TableNames ?? []) {
       if (!matchesPrefix(prefix, tableName)) continue;
-
-      if (dryRun) {
-        yield* log("  📋", `Would delete table: ${tableName}`);
-      } else {
-        yield* log("  🗑️", `Deleting table: ${tableName}`);
-        yield* deleteTable({ TableName: tableName }).pipe(Effect.ignore);
-      }
-      totalDeleted++;
+      toDelete.push(tableName);
     }
 
     lastEvaluatedTableName = tables.LastEvaluatedTableName;
   } while (lastEvaluatedTableName);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No DynamoDB tables to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} DynamoDB tables`);
+    return;
   }
+
+  // Now delete all collected tables
+  for (const tableName of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete table: ${tableName}`);
+    } else {
+      yield* log("  🗑️", `Deleting table: ${tableName}`);
+      yield* deleteTable({ TableName: tableName });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} DynamoDB tables`);
 });
 
 // ============================================================================
@@ -495,8 +677,9 @@ const cleanVPC = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🌐", "Cleaning VPCs...");
 
+  // First collect all VPCs to delete
+  const toDelete: Array<{ vpcId: string; nameTag: string }> = [];
   let nextToken: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const vpcs = yield* describeVpcs({ NextToken: nextToken });
@@ -512,112 +695,110 @@ const cleanVPC = Effect.gen(function* () {
       if (!matchesPrefix(prefix, nameTag) && !matchesPrefix(prefix, vpc.VpcId))
         continue;
 
-      if (dryRun) {
-        yield* log("  📋", `Would delete VPC: ${vpc.VpcId} (${nameTag})`);
-        totalDeleted++;
-        continue;
-      }
-
-      yield* log("  🗑️", `Deleting VPC: ${vpc.VpcId} (${nameTag})`);
-
-      // 1. Delete NAT Gateways
-      const natGateways = yield* describeNatGateways({
-        Filter: [{ Name: "vpc-id", Values: [vpc.VpcId] }],
-      }).pipe(Effect.catchAll(() => Effect.succeed({ NatGateways: [] })));
-
-      for (const nat of natGateways.NatGateways ?? []) {
-        if (nat.NatGatewayId && nat.State !== "deleted") {
-          yield* log("    🗑️", `Deleting NAT Gateway: ${nat.NatGatewayId}`);
-          yield* deleteNatGateway({ NatGatewayId: nat.NatGatewayId }).pipe(
-            Effect.ignore,
-          );
-        }
-      }
-
-      // 2. Detach and delete Internet Gateways
-      const igws = yield* describeInternetGateways({
-        Filters: [{ Name: "attachment.vpc-id", Values: [vpc.VpcId] }],
-      }).pipe(Effect.catchAll(() => Effect.succeed({ InternetGateways: [] })));
-
-      for (const igw of igws.InternetGateways ?? []) {
-        if (igw.InternetGatewayId) {
-          yield* log("    🗑️", `Detaching IGW: ${igw.InternetGatewayId}`);
-          yield* detachInternetGateway({
-            InternetGatewayId: igw.InternetGatewayId,
-            VpcId: vpc.VpcId,
-          }).pipe(Effect.ignore);
-          yield* deleteInternetGateway({
-            InternetGatewayId: igw.InternetGatewayId,
-          }).pipe(Effect.ignore);
-        }
-      }
-
-      // 3. Delete Subnets
-      const subnets = yield* describeSubnets({
-        Filters: [{ Name: "vpc-id", Values: [vpc.VpcId] }],
-      }).pipe(Effect.catchAll(() => Effect.succeed({ Subnets: [] })));
-
-      for (const subnet of subnets.Subnets ?? []) {
-        if (subnet.SubnetId) {
-          yield* log("    🗑️", `Deleting Subnet: ${subnet.SubnetId}`);
-          yield* deleteSubnet({ SubnetId: subnet.SubnetId }).pipe(
-            Effect.ignore,
-          );
-        }
-      }
-
-      // 4. Delete Route Tables (except main)
-      const routeTables = yield* describeRouteTables({
-        Filters: [{ Name: "vpc-id", Values: [vpc.VpcId] }],
-      }).pipe(Effect.catchAll(() => Effect.succeed({ RouteTables: [] })));
-
-      for (const rt of routeTables.RouteTables ?? []) {
-        if (!rt.RouteTableId) continue;
-
-        // Skip main route table
-        const isMain = rt.Associations?.some((a) => a.Main);
-        if (isMain) continue;
-
-        // Disassociate from subnets first
-        for (const assoc of rt.Associations ?? []) {
-          if (assoc.RouteTableAssociationId && !assoc.Main) {
-            yield* disassociateRouteTable({
-              AssociationId: assoc.RouteTableAssociationId,
-            }).pipe(Effect.ignore);
-          }
-        }
-
-        yield* log("    🗑️", `Deleting Route Table: ${rt.RouteTableId}`);
-        yield* deleteRouteTable({ RouteTableId: rt.RouteTableId }).pipe(
-          Effect.ignore,
-        );
-      }
-
-      // 5. Delete Security Groups (except default)
-      const securityGroups = yield* describeSecurityGroups({
-        Filters: [{ Name: "vpc-id", Values: [vpc.VpcId] }],
-      }).pipe(Effect.catchAll(() => Effect.succeed({ SecurityGroups: [] })));
-
-      for (const sg of securityGroups.SecurityGroups ?? []) {
-        if (!sg.GroupId || sg.GroupName === "default") continue;
-
-        yield* log("    🗑️", `Deleting Security Group: ${sg.GroupId}`);
-        yield* deleteSecurityGroup({ GroupId: sg.GroupId }).pipe(Effect.ignore);
-      }
-
-      // 6. Finally delete the VPC
-      yield* deleteVpc({ VpcId: vpc.VpcId }).pipe(Effect.ignore);
-      totalDeleted++;
+      toDelete.push({ vpcId: vpc.VpcId, nameTag });
     }
 
     nextToken = vpcs.NextToken;
   } while (nextToken);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No VPCs to delete (excluding default VPC)");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} VPCs`);
+    return;
   }
+
+  // Now delete all collected VPCs
+  for (const vpc of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete VPC: ${vpc.vpcId} (${vpc.nameTag})`);
+      continue;
+    }
+
+    yield* log("  🗑️", `Deleting VPC: ${vpc.vpcId} (${vpc.nameTag})`);
+
+    // 1. Delete NAT Gateways
+    const natGateways = yield* describeNatGateways({
+      Filter: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
+    });
+
+    for (const nat of natGateways.NatGateways ?? []) {
+      if (nat.NatGatewayId && nat.State !== "deleted") {
+        yield* log("    🗑️", `Deleting NAT Gateway: ${nat.NatGatewayId}`);
+        yield* deleteNatGateway({ NatGatewayId: nat.NatGatewayId });
+      }
+    }
+
+    // 2. Detach and delete Internet Gateways
+    const igws = yield* describeInternetGateways({
+      Filters: [{ Name: "attachment.vpc-id", Values: [vpc.vpcId] }],
+    });
+
+    for (const igw of igws.InternetGateways ?? []) {
+      if (igw.InternetGatewayId) {
+        yield* log("    🗑️", `Detaching IGW: ${igw.InternetGatewayId}`);
+        yield* detachInternetGateway({
+          InternetGatewayId: igw.InternetGatewayId,
+          VpcId: vpc.vpcId,
+        });
+        yield* deleteInternetGateway({
+          InternetGatewayId: igw.InternetGatewayId,
+        });
+      }
+    }
+
+    // 3. Delete Subnets
+    const subnets = yield* describeSubnets({
+      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
+    });
+
+    for (const subnet of subnets.Subnets ?? []) {
+      if (subnet.SubnetId) {
+        yield* log("    🗑️", `Deleting Subnet: ${subnet.SubnetId}`);
+        yield* deleteSubnet({ SubnetId: subnet.SubnetId });
+      }
+    }
+
+    // 4. Delete Route Tables (except main)
+    const routeTables = yield* describeRouteTables({
+      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
+    });
+
+    for (const rt of routeTables.RouteTables ?? []) {
+      if (!rt.RouteTableId) continue;
+
+      // Skip main route table
+      const isMain = rt.Associations?.some((a) => a.Main);
+      if (isMain) continue;
+
+      // Disassociate from subnets first
+      for (const assoc of rt.Associations ?? []) {
+        if (assoc.RouteTableAssociationId && !assoc.Main) {
+          yield* disassociateRouteTable({
+            AssociationId: assoc.RouteTableAssociationId,
+          });
+        }
+      }
+
+      yield* log("    🗑️", `Deleting Route Table: ${rt.RouteTableId}`);
+      yield* deleteRouteTable({ RouteTableId: rt.RouteTableId });
+    }
+
+    // 5. Delete Security Groups (except default)
+    const securityGroups = yield* describeSecurityGroups({
+      Filters: [{ Name: "vpc-id", Values: [vpc.vpcId] }],
+    });
+
+    for (const sg of securityGroups.SecurityGroups ?? []) {
+      if (!sg.GroupId || sg.GroupName === "default") continue;
+
+      yield* log("    🗑️", `Deleting Security Group: ${sg.GroupId}`);
+      yield* deleteSecurityGroup({ GroupId: sg.GroupId });
+    }
+
+    // 6. Finally delete the VPC
+    yield* deleteVpc({ VpcId: vpc.vpcId });
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} VPCs`);
 });
 
 // ============================================================================
@@ -635,8 +816,9 @@ const cleanIAM = Effect.gen(function* () {
   yield* warn("Cleaning IAM roles - this is dangerous!");
   yield* log("🔐", "Cleaning IAM roles...");
 
+  // First collect all roles to delete
+  const toDelete: string[] = [];
   let marker: string | undefined;
-  let totalDeleted = 0;
 
   do {
     const roles = yield* listRoles({ Marker: marker });
@@ -648,53 +830,57 @@ const cleanIAM = Effect.gen(function* () {
       // Skip AWS service-linked roles
       if (role.Path?.startsWith("/aws-service-role/")) continue;
 
-      if (dryRun) {
-        yield* log("  📋", `Would delete role: ${role.RoleName}`);
-        totalDeleted++;
-        continue;
-      }
-
-      yield* log("  🗑️", `Deleting role: ${role.RoleName}`);
-
-      // Detach managed policies
-      const attachedPolicies = yield* listAttachedRolePolicies({
-        RoleName: role.RoleName,
-      }).pipe(Effect.catchAll(() => Effect.succeed({ AttachedPolicies: [] })));
-
-      for (const policy of attachedPolicies.AttachedPolicies ?? []) {
-        if (policy.PolicyArn) {
-          yield* detachRolePolicy({
-            RoleName: role.RoleName,
-            PolicyArn: policy.PolicyArn,
-          }).pipe(Effect.ignore);
-        }
-      }
-
-      // Delete inline policies
-      const inlinePolicies = yield* listRolePolicies({
-        RoleName: role.RoleName,
-      }).pipe(Effect.catchAll(() => Effect.succeed({ PolicyNames: [] })));
-
-      for (const policyName of inlinePolicies.PolicyNames ?? []) {
-        yield* deleteRolePolicy({
-          RoleName: role.RoleName,
-          PolicyName: policyName,
-        }).pipe(Effect.ignore);
-      }
-
-      // Delete the role
-      yield* deleteRole({ RoleName: role.RoleName }).pipe(Effect.ignore);
-      totalDeleted++;
+      toDelete.push(role.RoleName);
     }
 
     marker = roles.Marker;
   } while (marker);
 
-  if (totalDeleted === 0) {
+  if (toDelete.length === 0) {
     yield* log("  ✓", "No IAM roles to delete");
-  } else {
-    yield* log("  ✓", `Processed ${totalDeleted} IAM roles`);
+    return;
   }
+
+  // Now delete all collected roles
+  for (const roleName of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete role: ${roleName}`);
+      continue;
+    }
+
+    yield* log("  🗑️", `Deleting role: ${roleName}`);
+
+    // Detach managed policies
+    const attachedPolicies = yield* listAttachedRolePolicies({
+      RoleName: roleName,
+    });
+
+    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+      if (policy.PolicyArn) {
+        yield* detachRolePolicy({
+          RoleName: roleName,
+          PolicyArn: policy.PolicyArn,
+        });
+      }
+    }
+
+    // Delete inline policies
+    const inlinePolicies = yield* listRolePolicies({
+      RoleName: roleName,
+    });
+
+    for (const policyName of inlinePolicies.PolicyNames ?? []) {
+      yield* deleteRolePolicy({
+        RoleName: roleName,
+        PolicyName: policyName,
+      });
+    }
+
+    // Delete the role
+    yield* deleteRole({ RoleName: roleName });
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} IAM roles`);
 });
 
 // ============================================================================
@@ -735,30 +921,16 @@ const cleanCommand = Command.make(
       }
 
       // Run all cleanups
-      yield* cleanS3.pipe(
-        Effect.catchAll((e) => warn(`S3 cleanup failed: ${e}`)),
-      );
-      yield* cleanLambda.pipe(
-        Effect.catchAll((e) => warn(`Lambda cleanup failed: ${e}`)),
-      );
-      yield* cleanECS.pipe(
-        Effect.catchAll((e) => warn(`ECS cleanup failed: ${e}`)),
-      );
-      yield* cleanSQS.pipe(
-        Effect.catchAll((e) => warn(`SQS cleanup failed: ${e}`)),
-      );
-      yield* cleanSNS.pipe(
-        Effect.catchAll((e) => warn(`SNS cleanup failed: ${e}`)),
-      );
-      yield* cleanDynamoDB.pipe(
-        Effect.catchAll((e) => warn(`DynamoDB cleanup failed: ${e}`)),
-      );
-      yield* cleanVPC.pipe(
-        Effect.catchAll((e) => warn(`VPC cleanup failed: ${e}`)),
-      );
-      yield* cleanIAM.pipe(
-        Effect.catchAll((e) => warn(`IAM cleanup failed: ${e}`)),
-      );
+      yield* cleanS3;
+      yield* cleanLambda;
+      yield* cleanECS;
+      yield* cleanSQS;
+      yield* cleanSNS;
+      yield* cleanDynamoDB;
+      yield* cleanAPIGateway;
+      yield* cleanAppSync;
+      yield* cleanVPC;
+      yield* cleanIAM;
 
       yield* Console.log("\n✨ Cleanup complete!");
     }),
@@ -798,6 +970,7 @@ const awsLayer = process.env.LOCAL
 // ============================================================================
 
 cli(process.argv).pipe(
+  Retry.transient,
   Effect.provide(platform),
   Effect.provide(awsLayer),
   Effect.provideService(Region, "us-east-1"),

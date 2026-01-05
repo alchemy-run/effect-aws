@@ -3,6 +3,8 @@ import * as Data from "effect/Data";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 
+export * as AWSTypes from "@aws-sdk/types";
+
 export interface AwsCredentials {
   readonly accessKeyId: string;
   readonly secretAccessKey: string;
@@ -28,11 +30,9 @@ import {
   fromEnv as _fromEnv,
   fromHttp as _fromHttp,
   fromIni as _fromIni,
-  fromInstanceMetadata as _fromInstanceMetadata,
   fromNodeProviderChain as _fromNodeProviderChain,
   fromProcess as _fromProcess,
   fromTokenFile as _fromTokenFile,
-  fromWebToken as _fromWebToken,
 } from "@aws-sdk/credential-providers";
 
 import { FileSystem, HttpClient } from "@effect/platform";
@@ -99,16 +99,9 @@ export const fromContainerMetadata = () => createLayer(_fromContainerMetadata);
 
 export const fromHttp = () => createLayer(_fromHttp);
 
-export const fromInstanceMetadata = (
-  ...parameters: Parameters<typeof _fromInstanceMetadata>
-) => createLayer(() => _fromInstanceMetadata(...parameters));
-
 export const fromProcess = () => createLayer(_fromProcess);
 
 export const fromTokenFile = () => createLayer(_fromTokenFile);
-
-export const fromWebToken = (...parameters: Parameters<typeof _fromWebToken>) =>
-  createLayer(() => _fromWebToken(...parameters));
 
 export const ssoRegion = (region: string) => Layer.succeed(SsoRegion, region);
 

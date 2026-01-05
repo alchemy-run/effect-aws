@@ -16,6 +16,7 @@ import {
   deleteBucketTagging,
   deleteBucketWebsite,
   deleteObject,
+  deleteObjects,
   deletePublicAccessBlock,
   getBucketAccelerateConfiguration,
   // ACL
@@ -35,6 +36,8 @@ import {
   getPublicAccessBlock,
   headBucket,
   listBuckets,
+  listObjectsV2,
+  listObjectVersions,
   // Accelerate Configuration
   putBucketAccelerateConfiguration,
   // CORS
@@ -62,18 +65,106 @@ import {
 } from "../../src/services/s3.ts";
 import { test } from "../test.ts";
 
-// Helper to ensure cleanup happens even on failure
-function withBucket<A, E, R>(
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
+
+// Delete all objects (including versions) from a bucket
+const emptyBucket = (bucket: string) =>
+  Effect.gen(function* () {
+    // Delete all object versions (for versioned buckets)
+    let versionToken: string | undefined;
+    do {
+      const versions = yield* listObjectVersions({
+        Bucket: bucket,
+        KeyMarker: versionToken,
+      }).pipe(
+        Effect.orElseSucceed(
+          () =>
+            ({
+              Versions: [],
+              DeleteMarkers: [],
+              NextKeyMarker: undefined,
+            }) as const,
+        ),
+      );
+
+      const objectsToDelete = [
+        ...(versions.Versions ?? []).map((v) => ({
+          Key: v.Key!,
+          VersionId: v.VersionId,
+        })),
+        ...(versions.DeleteMarkers ?? []).map((d) => ({
+          Key: d.Key!,
+          VersionId: d.VersionId,
+        })),
+      ];
+
+      if (objectsToDelete.length > 0) {
+        yield* deleteObjects({
+          Bucket: bucket,
+          Delete: { Objects: objectsToDelete },
+        }).pipe(Effect.ignore);
+      }
+
+      versionToken = versions.NextKeyMarker;
+    } while (versionToken);
+
+    // Also delete any non-versioned objects
+    let token: string | undefined;
+    do {
+      const objects = yield* listObjectsV2({
+        Bucket: bucket,
+        ContinuationToken: token,
+      }).pipe(
+        Effect.orElseSucceed(
+          () => ({ Contents: [], NextContinuationToken: undefined }) as const,
+        ),
+      );
+
+      if (objects.Contents && objects.Contents.length > 0) {
+        yield* deleteObjects({
+          Bucket: bucket,
+          Delete: {
+            Objects: objects.Contents.map((o) => ({ Key: o.Key! })),
+          },
+        }).pipe(Effect.ignore);
+      }
+
+      token = objects.NextContinuationToken;
+    } while (token);
+  });
+
+// Clean up bucket completely - empty it first, then delete
+const cleanupBucket = (bucket: string) =>
+  Effect.gen(function* () {
+    // Check if bucket exists
+    const exists = yield* headBucket({ Bucket: bucket }).pipe(
+      Effect.map(() => true),
+      Effect.catchAll(() => Effect.succeed(false)),
+    );
+
+    if (!exists) return;
+
+    // Empty the bucket first
+    yield* emptyBucket(bucket);
+
+    // Delete the bucket
+    yield* deleteBucket({ Bucket: bucket }).pipe(Effect.ignore);
+  });
+
+// Helper to ensure cleanup happens even on failure - cleans up before AND after
+const withBucket = <A, E, R>(
   bucket: string,
   testFn: (bucket: string) => Effect.Effect<A, E, R>,
-) {
-  return Effect.gen(function* () {
+) =>
+  Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupBucket(bucket);
+
     yield* createBucket({ Bucket: bucket });
-    return yield* testFn(bucket).pipe(
-      Effect.ensuring(deleteBucket({ Bucket: bucket }).pipe(Effect.ignore)),
-    );
+    return yield* testFn(bucket).pipe(Effect.ensuring(cleanupBucket(bucket)));
   });
-}
 
 // ============================================================================
 // Bucket Lifecycle Tests
@@ -594,17 +685,19 @@ test(
         },
       });
 
-      // Retry to handle eventual consistency
+      // Retry to handle eventual consistency - use conditional check, not assertion
       yield* Effect.gen(function* () {
         const result = yield* getBucketLifecycleConfiguration({
           Bucket: bucket,
         });
         const rule = result.Rules?.[0];
-        expect(
-          rule?.AbortIncompleteMultipartUpload?.DaysAfterInitiation,
-        ).toEqual(1);
+        const days = rule?.AbortIncompleteMultipartUpload?.DaysAfterInitiation;
+        if (days !== 1) {
+          return yield* Effect.fail("not ready yet" as const);
+        }
       }).pipe(
         Effect.retry({
+          while: (err) => err === "not ready yet",
           schedule: Schedule.spaced("1 second").pipe(
             Schedule.intersect(Schedule.recurs(10)),
           ),

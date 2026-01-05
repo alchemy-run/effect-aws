@@ -122,10 +122,14 @@ export const hasCategory = (
   return false;
 };
 
+export interface RetryableError {
+  readonly retryAfterSeconds?: number;
+  readonly RetryAfterSeconds?: number;
+}
 /**
  * Check if an error has the retryable trait
  */
-export const isRetryable = (error: unknown): boolean => {
+export const isRetryable = <E>(error: E): error is E & RetryableError => {
   if (Predicate.isObject(error) && Predicate.hasProperty(retryableKey)(error)) {
     return true;
   }
@@ -144,13 +148,14 @@ export const isThrottlingError = (error: unknown): boolean => {
   return hasCategory(error, ERROR_CATEGORIES.THROTTLING_ERROR);
 };
 
+export interface TransientError {}
 /**
  * Check if an error is a transient error that should be automatically retried.
  * Checks for:
  * 1. Smithy's @retryable trait (via withRetryable)
  * 2. THROTTLING_ERROR or SERVER_ERROR categories (legacy)
  */
-export const isTransientError = (error: unknown): boolean => {
+export const isTransientError = <E>(error: E): error is E & TransientError => {
   // Check for retryable trait first (Smithy's @retryable)
   if (isRetryable(error)) {
     return true;

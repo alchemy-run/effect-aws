@@ -1,0 +1,89 @@
+{
+  "operations": {},
+  "structures": {
+    "DistributionList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "DistributionIdList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "InvalidationList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "RealtimeLogConfigs": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "AnycastIpListCollection": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "CloudFrontOriginAccessIdentityList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "DistributionIdOwnerList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "OriginAccessControlList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "StreamingDistributionList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "VpcOriginList": {
+      "members": {
+        "Marker": {
+          "optional": true
+        }
+      }
+    },
+    "DistributionSummary": {
+      "members": {
+        "WebACLId": {
+          "optional": true
+        }
+      }
+    },
+    "S3OriginConfig": {
+      "members": {
+        "OriginAccessIdentity": {
+          "optional": true
+        }
+      }
+    }
+  }
+}

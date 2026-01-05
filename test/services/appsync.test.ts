@@ -10,7 +10,7 @@
 
 import { expect } from "@effect/vitest";
 import { Effect, Schedule } from "effect";
-import { afterAll, beforeAll, describe } from "vitest";
+import { describe } from "vitest";
 import {
   createDataSource,
   createGraphqlApi,
@@ -33,7 +33,7 @@ import {
   tagResource,
   untagResource,
 } from "../../src/services/appsync.ts";
-import { run, test } from "../test.ts";
+import { test } from "../test.ts";
 
 // Skip all tests in LocalStack - AppSync is not supported in community edition
 const isLocalStack = process.env.LOCAL === "true" || process.env.LOCAL === "1";
@@ -42,13 +42,6 @@ const retrySchedule = Schedule.intersect(
   Schedule.recurs(10),
   Schedule.spaced("1 second"),
 );
-
-const TEST_API_NAME = "itty-aws-test-graphql-api";
-const TEST_DATA_SOURCE_NAME = "itty_aws_test_datasource";
-
-// API ID will be set by beforeAll
-let TEST_API_ID = "";
-let TEST_API_ARN = "";
 
 // Simple GraphQL schema for testing
 const TEST_SCHEMA = `
@@ -75,101 +68,208 @@ input CreateItemInput {
 }
 `;
 
-// Helper to wait for schema creation to complete
-const waitForSchemaCreation = (_apiId: string) =>
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
+
+// Clean up all resolvers for a type in an API
+const cleanupResolversForType = (apiId: string, typeName: string) =>
   Effect.gen(function* () {
-    // Schema creation is async - poll for completion
-    // Just wait a bit for the schema to be processed
-    yield* Effect.sleep("2 seconds");
+    const resolvers = yield* listResolvers({ apiId, typeName }).pipe(
+      Effect.orElseSucceed(() => ({ resolvers: [] })),
+    );
+
+    for (const resolver of resolvers.resolvers ?? []) {
+      if (resolver.fieldName) {
+        yield* deleteResolver({
+          apiId,
+          typeName,
+          fieldName: resolver.fieldName,
+        }).pipe(Effect.ignore);
+      }
+    }
+  });
+
+// Clean up all data sources for an API
+const cleanupDataSources = (apiId: string) =>
+  Effect.gen(function* () {
+    const dataSources = yield* listDataSources({ apiId }).pipe(
+      Effect.orElseSucceed(() => ({ dataSources: [] })),
+    );
+
+    for (const ds of dataSources.dataSources ?? []) {
+      if (ds.name) {
+        yield* deleteDataSource({ apiId, name: ds.name }).pipe(Effect.ignore);
+      }
+    }
+  });
+
+// Clean up all custom types for an API (not built-in types)
+const cleanupTypes = (apiId: string) =>
+  Effect.gen(function* () {
+    const types = yield* listTypes({ apiId, format: "SDL" }).pipe(
+      Effect.orElseSucceed(() => ({ types: [] })),
+    );
+
+    // Only delete custom types, not built-in ones
+    const builtInTypes = new Set([
+      "Query",
+      "Mutation",
+      "Subscription",
+      "Item",
+      "CreateItemInput",
+      "String",
+      "Int",
+      "Float",
+      "Boolean",
+      "ID",
+      "AWSDate",
+      "AWSTime",
+      "AWSDateTime",
+      "AWSTimestamp",
+      "AWSEmail",
+      "AWSJSON",
+      "AWSURL",
+      "AWSPhone",
+      "AWSIPAddress",
+    ]);
+
+    for (const type of types.types ?? []) {
+      if (type.name && !builtInTypes.has(type.name)) {
+        yield* deleteType({ apiId, typeName: type.name }).pipe(Effect.ignore);
+      }
+    }
+  });
+
+// Clean up a GraphQL API by ID - remove all dependencies first
+const cleanupGraphqlApiById = (apiId: string) =>
+  Effect.gen(function* () {
+    // First clean up resolvers for Query and Mutation types
+    yield* cleanupResolversForType(apiId, "Query");
+    yield* cleanupResolversForType(apiId, "Mutation");
+
+    // Clean up data sources
+    yield* cleanupDataSources(apiId);
+
+    // Clean up custom types
+    yield* cleanupTypes(apiId);
+
+    // Delete the API
+    yield* deleteGraphqlApi({ apiId }).pipe(Effect.ignore);
+  });
+
+// Clean up a GraphQL API by name - find it first, then delete
+const cleanupGraphqlApiByName = (apiName: string) =>
+  Effect.gen(function* () {
+    const apis = yield* listGraphqlApis({}).pipe(
+      Effect.orElseSucceed(() => ({ graphqlApis: [] })),
+    );
+
+    for (const api of apis.graphqlApis ?? []) {
+      if (api.name === apiName && api.apiId) {
+        yield* cleanupGraphqlApiById(api.apiId);
+      }
+    }
+  });
+
+// ============================================================================
+// Idempotent Test Helpers
+// ============================================================================
+
+// Helper to ensure cleanup happens even on failure - cleans up before AND after
+const withGraphqlApi = <A, E, R>(
+  apiName: string,
+  options: { withSchema?: boolean } = {},
+  testFn: (api: { apiId: string; arn: string }) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupGraphqlApiByName(apiName);
+
+    // Create the API
+    const createResult = yield* createGraphqlApi({
+      name: apiName,
+      authenticationType: "API_KEY",
+      tags: {
+        Environment: "test",
+        Project: "itty-aws",
+      },
+    }).pipe(Effect.retry(retrySchedule));
+
+    const apiId = createResult.graphqlApi?.apiId ?? "";
+    const arn = createResult.graphqlApi?.arn ?? "";
+
+    // Optionally create schema
+    if (options.withSchema) {
+      yield* startSchemaCreation({
+        apiId,
+        definition: new TextEncoder().encode(TEST_SCHEMA),
+      }).pipe(Effect.retry(retrySchedule));
+
+      // Wait for schema to be processed
+      yield* Effect.sleep("2 seconds");
+    }
+
+    return yield* testFn({ apiId, arn }).pipe(
+      Effect.ensuring(cleanupGraphqlApiById(apiId)),
+    );
+  });
+
+// Helper for tests that need an API with a data source
+const withDataSource = <A, E, R>(
+  apiId: string,
+  dataSourceName: string,
+  testFn: (dataSourceName: string) => Effect.Effect<A, E, R>,
+) =>
+  Effect.gen(function* () {
+    // Clean up any leftover data source
+    yield* deleteDataSource({ apiId, name: dataSourceName }).pipe(
+      Effect.ignore,
+    );
+
+    // Create the data source
+    yield* createDataSource({
+      apiId,
+      name: dataSourceName,
+      type: "NONE",
+      description: "Test NONE data source for itty-aws",
+    }).pipe(Effect.retry(retrySchedule));
+
+    return yield* testFn(dataSourceName).pipe(
+      Effect.ensuring(
+        deleteDataSource({ apiId, name: dataSourceName }).pipe(Effect.ignore),
+      ),
+    );
   });
 
 // Wrap all tests in describe block that skips in LocalStack
 (isLocalStack ? describe.skip : describe)("AppSync", () => {
-  // Create the GraphQL API before all tests
-  beforeAll(async () => {
-    await run(
-      Effect.gen(function* () {
-        // Delete existing API if it exists (cleanup from previous runs)
-        const existingApis = yield* listGraphqlApis({}).pipe(
-          Effect.catchAll(() => Effect.succeed({ graphqlApis: [] })),
-        );
-        for (const api of existingApis.graphqlApis ?? []) {
-          if (api.name === TEST_API_NAME) {
-            yield* deleteGraphqlApi({ apiId: api.apiId! }).pipe(Effect.ignore);
-          }
-        }
-
-        // Create a new GraphQL API with API_KEY authentication
-        const createResult = yield* createGraphqlApi({
-          name: TEST_API_NAME,
-          authenticationType: "API_KEY",
-          tags: {
-            Environment: "test",
-            Project: "itty-aws",
-          },
-        }).pipe(Effect.retry(retrySchedule));
-
-        TEST_API_ID = createResult.graphqlApi?.apiId ?? "";
-        TEST_API_ARN = createResult.graphqlApi?.arn ?? "";
-
-        yield* Effect.logInfo(`Created GraphQL API: ${TEST_API_ID}`);
-
-        // Start schema creation
-        yield* startSchemaCreation({
-          apiId: TEST_API_ID,
-          definition: new TextEncoder().encode(TEST_SCHEMA),
-        }).pipe(Effect.retry(retrySchedule));
-
-        // Wait for schema to be created
-        yield* waitForSchemaCreation(TEST_API_ID);
-      }),
-    );
-  }, 120_000);
-
-  // Delete the GraphQL API after all tests
-  afterAll(async () => {
-    await run(
-      Effect.gen(function* () {
-        if (TEST_API_ID) {
-          yield* deleteGraphqlApi({
-            apiId: TEST_API_ID,
-          }).pipe(Effect.ignore);
-          yield* Effect.logInfo(`Deleted GraphQL API: ${TEST_API_ID}`);
-        }
-      }),
-    );
-  });
-
   // ============================================================================
   // GraphQL API Management Tests
   // ============================================================================
 
   test(
-    "getGraphqlApi returns API details",
-    Effect.gen(function* () {
-      const result = yield* getGraphqlApi({
-        apiId: TEST_API_ID,
-      });
+    "create, get, list, and delete a GraphQL API",
+    withGraphqlApi("itty-appsync-lifecycle", {}, ({ apiId }) =>
+      Effect.gen(function* () {
+        // Get API details
+        const result = yield* getGraphqlApi({ apiId });
 
-      expect(result.graphqlApi).toBeDefined();
-      expect(result.graphqlApi?.name).toEqual(TEST_API_NAME);
-      expect(result.graphqlApi?.authenticationType).toEqual("API_KEY");
-    }),
-  );
+        expect(result.graphqlApi).toBeDefined();
+        expect(result.graphqlApi?.name).toEqual("itty-appsync-lifecycle");
+        expect(result.graphqlApi?.authenticationType).toEqual("API_KEY");
 
-  test(
-    "listGraphqlApis includes our test API",
-    Effect.gen(function* () {
-      const result = yield* listGraphqlApis({});
+        // List APIs and verify our API is included
+        const listResult = yield* listGraphqlApis({});
 
-      expect(result.graphqlApis).toBeDefined();
-
-      const found = result.graphqlApis?.find(
-        (api) => api.apiId === TEST_API_ID,
-      );
-      expect(found).toBeDefined();
-      expect(found?.name).toEqual(TEST_API_NAME);
-    }),
+        expect(listResult.graphqlApis).toBeDefined();
+        const found = listResult.graphqlApis?.find(
+          (api) => api.apiId === apiId,
+        );
+        expect(found).toBeDefined();
+        expect(found?.name).toEqual("itty-appsync-lifecycle");
+      }),
+    ),
   );
 
   // ============================================================================
@@ -178,60 +278,29 @@ const waitForSchemaCreation = (_apiId: string) =>
 
   test(
     "create, get, list, and delete a NONE data source",
-    Effect.gen(function* () {
-      const dataSourceName = TEST_DATA_SOURCE_NAME;
+    withGraphqlApi("itty-appsync-datasource", {}, ({ apiId }) =>
+      withDataSource(apiId, "itty_aws_test_datasource", (dataSourceName) =>
+        Effect.gen(function* () {
+          // Get the data source
+          const getResult = yield* getDataSource({
+            apiId,
+            name: dataSourceName,
+          });
 
-      // Create a NONE data source (doesn't need external resources)
-      const createResult = yield* createDataSource({
-        apiId: TEST_API_ID,
-        name: dataSourceName,
-        type: "NONE",
-        description: "Test NONE data source for itty-aws",
-      });
+          expect(getResult.dataSource?.name).toEqual(dataSourceName);
+          expect(getResult.dataSource?.type).toEqual("NONE");
 
-      expect(createResult.dataSource).toBeDefined();
-      expect(createResult.dataSource?.name).toEqual(dataSourceName);
-      expect(createResult.dataSource?.type).toEqual("NONE");
+          // List data sources
+          const listResult = yield* listDataSources({ apiId });
 
-      try {
-        // Get the data source
-        const getResult = yield* getDataSource({
-          apiId: TEST_API_ID,
-          name: dataSourceName,
-        });
-
-        expect(getResult.dataSource?.name).toEqual(dataSourceName);
-        expect(getResult.dataSource?.type).toEqual("NONE");
-
-        // List data sources
-        const listResult = yield* listDataSources({
-          apiId: TEST_API_ID,
-        });
-
-        expect(listResult.dataSources).toBeDefined();
-        const found = listResult.dataSources?.find(
-          (ds) => ds.name === dataSourceName,
-        );
-        expect(found).toBeDefined();
-      } finally {
-        // Delete the data source
-        yield* deleteDataSource({
-          apiId: TEST_API_ID,
-          name: dataSourceName,
-        }).pipe(Effect.ignore);
-      }
-
-      // Verify it's deleted
-      const exists = yield* getDataSource({
-        apiId: TEST_API_ID,
-        name: dataSourceName,
-      }).pipe(
-        Effect.map(() => true),
-        Effect.catchAll(() => Effect.succeed(false)),
-      );
-
-      expect(exists).toEqual(false);
-    }),
+          expect(listResult.dataSources).toBeDefined();
+          const found = listResult.dataSources?.find(
+            (ds) => ds.name === dataSourceName,
+          );
+          expect(found).toBeDefined();
+        }),
+      ),
+    ),
   );
 
   // ============================================================================
@@ -240,51 +309,53 @@ const waitForSchemaCreation = (_apiId: string) =>
 
   test(
     "create, get, list, and delete a type",
-    Effect.gen(function* () {
-      const typeName = "TestCustomType";
-      const typeDefinition = `
-      type ${typeName} {
-        id: ID!
-        value: String!
-      }
-    `;
+    withGraphqlApi("itty-appsync-types", { withSchema: true }, ({ apiId }) =>
+      Effect.gen(function* () {
+        const typeName = "TestCustomType";
+        const typeDefinition = `
+        type ${typeName} {
+          id: ID!
+          value: String!
+        }
+      `;
 
-      // Create a type
-      const createResult = yield* createType({
-        apiId: TEST_API_ID,
-        definition: typeDefinition,
-        format: "SDL",
-      }).pipe(Effect.retry(retrySchedule));
-
-      expect(createResult.type).toBeDefined();
-
-      try {
-        // Get the type
-        const getResult = yield* getType({
-          apiId: TEST_API_ID,
-          typeName,
+        // Create a type
+        const createResult = yield* createType({
+          apiId,
+          definition: typeDefinition,
           format: "SDL",
-        });
+        }).pipe(Effect.retry(retrySchedule));
 
-        expect(getResult.type?.name).toEqual(typeName);
+        expect(createResult.type).toBeDefined();
 
-        // List types
-        const listResult = yield* listTypes({
-          apiId: TEST_API_ID,
-          format: "SDL",
-        });
+        try {
+          // Get the type
+          const getResult = yield* getType({
+            apiId,
+            typeName,
+            format: "SDL",
+          });
 
-        expect(listResult.types).toBeDefined();
-        const found = listResult.types?.find((t) => t.name === typeName);
-        expect(found).toBeDefined();
-      } finally {
-        // Delete the type
-        yield* deleteType({
-          apiId: TEST_API_ID,
-          typeName,
-        }).pipe(Effect.ignore);
-      }
-    }),
+          expect(getResult.type?.name).toEqual(typeName);
+
+          // List types
+          const listResult = yield* listTypes({
+            apiId,
+            format: "SDL",
+          });
+
+          expect(listResult.types).toBeDefined();
+          const found = listResult.types?.find((t) => t.name === typeName);
+          expect(found).toBeDefined();
+        } finally {
+          // Delete the type
+          yield* deleteType({
+            apiId,
+            typeName,
+          }).pipe(Effect.ignore);
+        }
+      }),
+    ),
   );
 
   // ============================================================================
@@ -293,90 +364,82 @@ const waitForSchemaCreation = (_apiId: string) =>
 
   test(
     "create, get, list, and delete a resolver",
-    Effect.gen(function* () {
-      const dataSourceName = "itty_resolver_test_ds";
-      const typeName = "Query";
-      const fieldName = "getItem";
+    withGraphqlApi(
+      "itty-appsync-resolvers",
+      { withSchema: true },
+      ({ apiId }) =>
+        withDataSource(apiId, "itty_resolver_test_ds", (dataSourceName) =>
+          Effect.gen(function* () {
+            const typeName = "Query";
+            const fieldName = "getItem";
 
-      // First create a NONE data source for the resolver
-      yield* createDataSource({
-        apiId: TEST_API_ID,
-        name: dataSourceName,
-        type: "NONE",
-        description: "Data source for resolver test",
-      }).pipe(Effect.retry(retrySchedule));
+            // Create a resolver with VTL templates
+            const createResult = yield* createResolver({
+              apiId,
+              typeName,
+              fieldName,
+              dataSourceName,
+              requestMappingTemplate: `{
+            "version": "2017-02-28",
+            "payload": {
+              "id": $util.toJson($ctx.args.id)
+            }
+          }`,
+              responseMappingTemplate: "$util.toJson($ctx.result)",
+            }).pipe(Effect.retry(retrySchedule));
 
-      try {
-        // Create a resolver with VTL templates
-        const createResult = yield* createResolver({
-          apiId: TEST_API_ID,
-          typeName,
-          fieldName,
-          dataSourceName,
-          requestMappingTemplate: `{
-          "version": "2017-02-28",
-          "payload": {
-            "id": $util.toJson($ctx.args.id)
-          }
-        }`,
-          responseMappingTemplate: "$util.toJson($ctx.result)",
-        }).pipe(Effect.retry(retrySchedule));
+            expect(createResult.resolver).toBeDefined();
+            expect(createResult.resolver?.typeName).toEqual(typeName);
+            expect(createResult.resolver?.fieldName).toEqual(fieldName);
 
-        expect(createResult.resolver).toBeDefined();
-        expect(createResult.resolver?.typeName).toEqual(typeName);
-        expect(createResult.resolver?.fieldName).toEqual(fieldName);
+            try {
+              // Get the resolver
+              const getResult = yield* getResolver({
+                apiId,
+                typeName,
+                fieldName,
+              });
 
-        try {
-          // Get the resolver
-          const getResult = yield* getResolver({
-            apiId: TEST_API_ID,
-            typeName,
-            fieldName,
-          });
+              expect(getResult.resolver?.typeName).toEqual(typeName);
+              expect(getResult.resolver?.fieldName).toEqual(fieldName);
+              expect(getResult.resolver?.dataSourceName).toEqual(
+                dataSourceName,
+              );
 
-          expect(getResult.resolver?.typeName).toEqual(typeName);
-          expect(getResult.resolver?.fieldName).toEqual(fieldName);
-          expect(getResult.resolver?.dataSourceName).toEqual(dataSourceName);
+              // List resolvers
+              const listResult = yield* listResolvers({
+                apiId,
+                typeName,
+              });
 
-          // List resolvers
-          const listResult = yield* listResolvers({
-            apiId: TEST_API_ID,
-            typeName,
-          });
+              expect(listResult.resolvers).toBeDefined();
+              const found = listResult.resolvers?.find(
+                (r) => r.fieldName === fieldName,
+              );
+              expect(found).toBeDefined();
+            } finally {
+              // Delete the resolver
+              yield* deleteResolver({
+                apiId,
+                typeName,
+                fieldName,
+              }).pipe(Effect.ignore);
+            }
 
-          expect(listResult.resolvers).toBeDefined();
-          const found = listResult.resolvers?.find(
-            (r) => r.fieldName === fieldName,
-          );
-          expect(found).toBeDefined();
-        } finally {
-          // Delete the resolver
-          yield* deleteResolver({
-            apiId: TEST_API_ID,
-            typeName,
-            fieldName,
-          }).pipe(Effect.ignore);
-        }
+            // Verify resolver is deleted
+            const resolverExists = yield* getResolver({
+              apiId,
+              typeName,
+              fieldName,
+            }).pipe(
+              Effect.map(() => true),
+              Effect.catchAll(() => Effect.succeed(false)),
+            );
 
-        // Verify resolver is deleted
-        const resolverExists = yield* getResolver({
-          apiId: TEST_API_ID,
-          typeName,
-          fieldName,
-        }).pipe(
-          Effect.map(() => true),
-          Effect.catchAll(() => Effect.succeed(false)),
-        );
-
-        expect(resolverExists).toEqual(false);
-      } finally {
-        // Clean up data source
-        yield* deleteDataSource({
-          apiId: TEST_API_ID,
-          name: dataSourceName,
-        }).pipe(Effect.ignore);
-      }
-    }),
+            expect(resolverExists).toEqual(false);
+          }),
+        ),
+    ),
   );
 
   // ============================================================================
@@ -385,100 +448,93 @@ const waitForSchemaCreation = (_apiId: string) =>
 
   test(
     "tag and untag GraphQL API",
-    Effect.gen(function* () {
-      // List current tags
-      const initialTags = yield* listTagsForResource({
-        resourceArn: TEST_API_ARN,
-      });
+    withGraphqlApi("itty-appsync-tagging", {}, ({ arn }) =>
+      Effect.gen(function* () {
+        // List current tags (should have the initial tags from creation)
+        const initialTags = yield* listTagsForResource({
+          resourceArn: arn,
+        });
 
-      expect(initialTags.tags).toBeDefined();
-      // Should have the tags we created with
-      expect(initialTags.tags?.["Environment"]).toEqual("test");
-      expect(initialTags.tags?.["Project"]).toEqual("itty-aws");
+        expect(initialTags.tags).toBeDefined();
+        expect(initialTags.tags?.["Environment"]).toEqual("test");
+        expect(initialTags.tags?.["Project"]).toEqual("itty-aws");
 
-      // Add a new tag
-      yield* tagResource({
-        resourceArn: TEST_API_ARN,
-        tags: {
-          Team: "Platform",
-          Version: "1.0",
-        },
-      });
+        // Add new tags
+        yield* tagResource({
+          resourceArn: arn,
+          tags: {
+            Team: "Platform",
+            Version: "1.0",
+          },
+        });
 
-      // Verify new tags
-      const updatedTags = yield* listTagsForResource({
-        resourceArn: TEST_API_ARN,
-      });
+        // Verify new tags
+        const updatedTags = yield* listTagsForResource({
+          resourceArn: arn,
+        });
 
-      expect(updatedTags.tags?.["Team"]).toEqual("Platform");
-      expect(updatedTags.tags?.["Version"]).toEqual("1.0");
-      expect(updatedTags.tags?.["Environment"]).toEqual("test");
+        expect(updatedTags.tags?.["Team"]).toEqual("Platform");
+        expect(updatedTags.tags?.["Version"]).toEqual("1.0");
+        expect(updatedTags.tags?.["Environment"]).toEqual("test");
 
-      // Remove a tag
-      yield* untagResource({
-        resourceArn: TEST_API_ARN,
-        tagKeys: ["Version"],
-      });
+        // Remove a tag
+        yield* untagResource({
+          resourceArn: arn,
+          tagKeys: ["Version"],
+        });
 
-      // Verify tag was removed
-      const finalTags = yield* listTagsForResource({
-        resourceArn: TEST_API_ARN,
-      });
+        // Verify tag was removed
+        const finalTags = yield* listTagsForResource({
+          resourceArn: arn,
+        });
 
-      expect(finalTags.tags?.["Version"]).toBeUndefined();
-      expect(finalTags.tags?.["Team"]).toEqual("Platform");
+        expect(finalTags.tags?.["Version"]).toBeUndefined();
+        expect(finalTags.tags?.["Team"]).toEqual("Platform");
 
-      // Clean up added tag
-      yield* untagResource({
-        resourceArn: TEST_API_ARN,
-        tagKeys: ["Team"],
-      }).pipe(Effect.ignore);
-    }),
+        // Clean up added tag
+        yield* untagResource({
+          resourceArn: arn,
+          tagKeys: ["Team"],
+        }).pipe(Effect.ignore);
+      }),
+    ),
   );
 
   // ============================================================================
-  // Create and Delete API Test
+  // Schema Tests
   // ============================================================================
 
   test(
-    "create and delete a GraphQL API",
-    Effect.gen(function* () {
-      const tempApiName = "itty-aws-temp-api";
+    "create schema for GraphQL API",
+    withGraphqlApi("itty-appsync-schema", {}, ({ apiId }) =>
+      Effect.gen(function* () {
+        // Start schema creation
+        const result = yield* startSchemaCreation({
+          apiId,
+          definition: new TextEncoder().encode(TEST_SCHEMA),
+        }).pipe(Effect.retry(retrySchedule));
 
-      // Create a temporary API
-      const created = yield* createGraphqlApi({
-        name: tempApiName,
-        authenticationType: "API_KEY",
-      });
+        expect(result.status).toBeDefined();
 
-      expect(created.graphqlApi).toBeDefined();
-      expect(created.graphqlApi?.name).toEqual(tempApiName);
+        // Wait for schema to be processed
+        yield* Effect.sleep("2 seconds");
 
-      const tempApiId = created.graphqlApi?.apiId!;
-
-      try {
-        // Verify it exists
-        const getResult = yield* getGraphqlApi({
-          apiId: tempApiId,
+        // Verify types were created by listing them
+        const types = yield* listTypes({
+          apiId,
+          format: "SDL",
         });
 
-        expect(getResult.graphqlApi?.name).toEqual(tempApiName);
-      } finally {
-        // Delete the API
-        yield* deleteGraphqlApi({
-          apiId: tempApiId,
-        });
-      }
+        expect(types.types).toBeDefined();
 
-      // Verify it's gone
-      const exists = yield* getGraphqlApi({
-        apiId: tempApiId,
-      }).pipe(
-        Effect.map(() => true),
-        Effect.catchAll(() => Effect.succeed(false)),
-      );
+        // Should have Query type
+        const queryType = types.types?.find((t) => t.name === "Query");
+        expect(queryType).toBeDefined();
 
-      expect(exists).toEqual(false);
-    }),
+        // Should have Item type
+        const itemType = types.types?.find((t) => t.name === "Item");
+        expect(itemType).toBeDefined();
+      }),
+    ),
   );
 });

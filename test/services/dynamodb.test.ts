@@ -1,6 +1,5 @@
 import { expect } from "@effect/vitest";
 import { Console, Effect, Schedule } from "effect";
-import { afterAll, beforeAll } from "vitest";
 import {
   createTable,
   deleteItem,
@@ -13,7 +12,7 @@ import {
   scan,
   updateItem,
 } from "../../src/services/dynamodb.ts";
-import { run, test } from "../test.ts";
+import { afterAll, beforeAll, test } from "../test.ts";
 
 const TEST_TABLE_NAME = "itty-aws-test-table";
 
@@ -50,42 +49,38 @@ const waitForTableDeleted = (tableName: string) =>
   );
 
 // Create the table before all tests
-beforeAll(async () => {
-  await run(
-    Effect.gen(function* () {
-      // Delete existing table if it exists (cleanup from previous runs)
-      yield* deleteTable({ TableName: TEST_TABLE_NAME }).pipe(Effect.ignore);
-      yield* waitForTableDeleted(TEST_TABLE_NAME);
+beforeAll(
+  Effect.gen(function* () {
+    // Delete existing table if it exists (cleanup from previous runs)
+    yield* deleteTable({ TableName: TEST_TABLE_NAME }).pipe(Effect.ignore);
+    yield* waitForTableDeleted(TEST_TABLE_NAME);
 
-      // Create table with simple key schema
-      yield* createTable({
-        TableName: TEST_TABLE_NAME,
-        KeySchema: [
-          { AttributeName: "pk", KeyType: "HASH" },
-          { AttributeName: "sk", KeyType: "RANGE" },
-        ],
-        AttributeDefinitions: [
-          { AttributeName: "pk", AttributeType: "S" },
-          { AttributeName: "sk", AttributeType: "S" },
-        ],
-        BillingMode: "PAY_PER_REQUEST",
-      });
+    // Create table with simple key schema
+    yield* createTable({
+      TableName: TEST_TABLE_NAME,
+      KeySchema: [
+        { AttributeName: "pk", KeyType: "HASH" },
+        { AttributeName: "sk", KeyType: "RANGE" },
+      ],
+      AttributeDefinitions: [
+        { AttributeName: "pk", AttributeType: "S" },
+        { AttributeName: "sk", AttributeType: "S" },
+      ],
+      BillingMode: "PAY_PER_REQUEST",
+    });
 
-      // Wait for table to become active
-      yield* waitForTableActive(TEST_TABLE_NAME);
-    }),
-  );
-}, 60_000);
+    // Wait for table to become active
+    yield* waitForTableActive(TEST_TABLE_NAME);
+  }),
+);
 
 // Delete the table after all tests
-afterAll(async () => {
-  await run(
-    Effect.gen(function* () {
-      yield* deleteTable({ TableName: TEST_TABLE_NAME }).pipe(Effect.ignore);
-      yield* Console.log(`Deleted table ${TEST_TABLE_NAME}`);
-    }),
-  );
-});
+afterAll(
+  Effect.gen(function* () {
+    yield* deleteTable({ TableName: TEST_TABLE_NAME }).pipe(Effect.ignore);
+    yield* Console.log(`Deleted table ${TEST_TABLE_NAME}`);
+  }),
+);
 
 // ============================================================================
 // Table Management Tests

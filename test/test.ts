@@ -2,7 +2,11 @@ import { FetchHttpClient, FileSystem, HttpClient } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import * as Path from "@effect/platform/Path";
 import * as PlatformConfigProvider from "@effect/platform/PlatformConfigProvider";
-import { it } from "@effect/vitest";
+import {
+  afterAll as _afterAll,
+  beforeAll as _beforeAll,
+  it,
+} from "@effect/vitest";
 import { ConfigProvider, LogLevel } from "effect";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
@@ -11,6 +15,7 @@ import * as Scope from "effect/Scope";
 import * as Credentials from "../src/aws/credentials.ts";
 import { Endpoint } from "../src/aws/endpoint.ts";
 import { Region } from "../src/aws/region.ts";
+import * as Retry from "../src/retry-policy.ts";
 
 type Provided =
   | Scope.Scope
@@ -85,6 +90,16 @@ export async function run<E>(
   await Effect.runPromise(provideTestEnv(Effect.scoped(effect)));
 }
 
+export const beforeAll = (
+  effect: Effect.Effect<void, any, Provided>,
+  timeout?: number,
+) => _beforeAll(() => run(effect), timeout ?? 120_000);
+
+export const afterAll = (
+  effect: Effect.Effect<void, any, Provided>,
+  timeout?: number,
+) => _afterAll(() => run(effect), timeout ?? 120_000);
+
 /** Provide common layers and services to an effect */
 function provideTestEnv<A, E, R extends Provided>(
   effect: Effect.Effect<A, E, R>,
@@ -96,6 +111,7 @@ function provideTestEnv<A, E, R extends Provided>(
       process.env.DEBUG ? LogLevel.Debug : LogLevel.Info,
     ),
     Effect.provide(NodeContext.layer),
+    Retry.transient,
   );
 
   if (process.env.LOCAL) {

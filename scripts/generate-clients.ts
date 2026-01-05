@@ -1071,7 +1071,16 @@ const convertShapeToSchema: (
                     }
 
                     // Wrap in S.optional first (if not required)
-                    if (member.traits?.["smithy.api#required"] == null) {
+                    // Check for member override from spec patches first
+                    const structureOverride =
+                      sdkFile.serviceSpec.structures?.[currentSchemaName];
+                    const memberOverride =
+                      structureOverride?.members?.[memberName];
+                    // Override takes precedence, then fall back to Smithy model
+                    const isOptional =
+                      memberOverride?.optional ??
+                      member.traits?.["smithy.api#required"] == null;
+                    if (isOptional) {
                       schema = `S.optional(${schema})`;
                     }
 

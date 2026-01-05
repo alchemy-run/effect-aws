@@ -7,13 +7,14 @@
  */
 
 import { expect } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Option } from "effect";
 import {
   createDistribution,
   createInvalidation,
   createOriginAccessControl,
   deleteDistribution,
   deleteOriginAccessControl,
+  DistributionAlreadyExists,
   getDistribution,
   getDistributionConfig,
   getOriginAccessControl,
@@ -21,6 +22,7 @@ import {
   listInvalidations,
   listOriginAccessControls,
   listTagsForResource,
+  OriginAccessControlAlreadyExists,
   tagResource,
   untagResource,
   updateOriginAccessControl,
@@ -30,13 +32,50 @@ import { test } from "../test.ts";
 // Skip tests in LocalStack - CloudFront not available in Community edition
 const isLocalStack = process.env.LOCAL === "true" || process.env.LOCAL === "1";
 
-// Helper to ensure cleanup happens even on failure
+// ============================================================================
+// Idempotent Resource Helpers
+// ============================================================================
+
+/**
+ * Find an existing Origin Access Control by name
+ */
+const findOriginAccessControlByName = (name: string) =>
+  Effect.gen(function* () {
+    const list = yield* listOriginAccessControls({});
+    const existing = list.OriginAccessControlList?.Items?.find(
+      (oac) => oac.Name === name,
+    );
+    if (existing) {
+      const result = yield* getOriginAccessControl({ Id: existing.Id! });
+      return Option.some({
+        id: result.OriginAccessControl!.Id!,
+        etag: result.ETag!,
+      });
+    }
+    return Option.none();
+  });
+
+/**
+ * Delete an Origin Access Control by ID, fetching the latest ETag first
+ */
+const deleteOriginAccessControlById = (id: string) =>
+  getOriginAccessControl({ Id: id }).pipe(
+    Effect.flatMap((r) =>
+      deleteOriginAccessControl({ Id: id, IfMatch: r.ETag! }),
+    ),
+    Effect.ignore,
+  );
+
+/**
+ * Idempotent helper for Origin Access Control - creates or reuses existing
+ */
 const withOriginAccessControl = <A, E, R>(
   name: string,
   testFn: (id: string, etag: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
-    const result = yield* createOriginAccessControl({
+    // Try to create, or find existing if already exists
+    const { id, etag } = yield* createOriginAccessControl({
       OriginAccessControlConfig: {
         Name: name,
         Description: "Test OAC for itty-aws",
@@ -44,34 +83,73 @@ const withOriginAccessControl = <A, E, R>(
         SigningBehavior: "always",
         OriginAccessControlOriginType: "s3",
       },
-    });
-    const id = result.OriginAccessControl!.Id!;
-    const etag = result.ETag!;
-    return yield* testFn(id, etag).pipe(
-      Effect.ensuring(
-        deleteOriginAccessControl({ Id: id, IfMatch: etag }).pipe(
-          // Need to get latest ETag for deletion
-          Effect.catchAll(() =>
-            getOriginAccessControl({ Id: id }).pipe(
-              Effect.flatMap((r) =>
-                deleteOriginAccessControl({ Id: id, IfMatch: r.ETag! }),
-              ),
-              Effect.ignore,
-            ),
+    }).pipe(
+      Effect.map((result) => ({
+        id: result.OriginAccessControl!.Id!,
+        etag: result.ETag!,
+      })),
+      Effect.catchTag("OriginAccessControlAlreadyExists", () =>
+        findOriginAccessControlByName(name).pipe(
+          Effect.flatMap(
+            Option.match({
+              onNone: () =>
+                Effect.fail(
+                  new OriginAccessControlAlreadyExists({
+                    Message: `OAC "${name}" exists but could not be found`,
+                  }),
+                ),
+              onSome: Effect.succeed,
+            }),
           ),
         ),
       ),
     );
+
+    return yield* testFn(id, etag).pipe(
+      Effect.ensuring(deleteOriginAccessControlById(id)),
+    );
   });
 
-// Helper for distribution cleanup with proper ETag handling
+/**
+ * Find an existing Distribution by CallerReference
+ */
+const findDistributionByCallerReference = (callerReference: string) =>
+  Effect.gen(function* () {
+    const list = yield* listDistributions({});
+    // DistributionSummary doesn't include CallerReference, so we need to check each one
+    for (const dist of list.DistributionList?.Items ?? []) {
+      const config = yield* getDistributionConfig({ Id: dist.Id! });
+      if (config.DistributionConfig?.CallerReference === callerReference) {
+        const result = yield* getDistribution({ Id: dist.Id! });
+        return Option.some({
+          id: result.Distribution!.Id!,
+          etag: result.ETag!,
+          arn: result.Distribution!.ARN!,
+        });
+      }
+    }
+    return Option.none();
+  });
+
+/**
+ * Delete a Distribution by ID, fetching the latest ETag first
+ */
+const deleteDistributionById = (id: string) =>
+  getDistribution({ Id: id }).pipe(
+    Effect.flatMap((r) => deleteDistribution({ Id: id, IfMatch: r.ETag! })),
+    Effect.ignore,
+  );
+
+/**
+ * Idempotent helper for Distribution - creates or reuses existing
+ */
 const withDistribution = <A, E, R>(
   callerReference: string,
   testFn: (id: string, etag: string, arn: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
-    // Create a minimal distribution with a custom origin
-    const result = yield* createDistribution({
+    // Try to create, or find existing if already exists
+    const { id, etag, arn } = yield* createDistribution({
       DistributionConfig: {
         CallerReference: callerReference,
         Comment: "itty-aws test distribution",
@@ -96,22 +174,31 @@ const withDistribution = <A, E, R>(
           CachePolicyId: "658327ea-f89d-4fab-a63d-7e88639e58f6", // CachingOptimized managed policy
         },
       },
-    });
-
-    const id = result.Distribution!.Id!;
-    const etag = result.ETag!;
-    const arn = result.Distribution!.ARN!;
-
-    return yield* testFn(id, etag, arn).pipe(
-      Effect.ensuring(
-        // Get latest ETag before deletion
-        getDistribution({ Id: id }).pipe(
-          Effect.flatMap((r) =>
-            deleteDistribution({ Id: id, IfMatch: r.ETag! }),
+    }).pipe(
+      Effect.map((result) => ({
+        id: result.Distribution!.Id!,
+        etag: result.ETag!,
+        arn: result.Distribution!.ARN!,
+      })),
+      Effect.catchTag("DistributionAlreadyExists", () =>
+        findDistributionByCallerReference(callerReference).pipe(
+          Effect.flatMap(
+            Option.match({
+              onNone: () =>
+                Effect.fail(
+                  new DistributionAlreadyExists({
+                    Message: `Distribution "${callerReference}" exists but could not be found`,
+                  }),
+                ),
+              onSome: Effect.succeed,
+            }),
           ),
-          Effect.ignore,
         ),
       ),
+    );
+
+    return yield* testFn(id, etag, arn).pipe(
+      Effect.ensuring(deleteDistributionById(id)),
     );
   });
 
@@ -161,12 +248,12 @@ test(
 
     yield* withOriginAccessControl("itty-cf-oac-update", (id, etag) =>
       Effect.gen(function* () {
-        // Update the OAC
+        // Update the OAC - keep the same name to avoid conflicts with previous runs
         const updateResult = yield* updateOriginAccessControl({
           Id: id,
           IfMatch: etag,
           OriginAccessControlConfig: {
-            Name: "itty-cf-oac-updated",
+            Name: "itty-cf-oac-update", // Same name - only update description
             Description: "Updated description",
             SigningProtocol: "sigv4",
             SigningBehavior: "always",
@@ -176,7 +263,7 @@ test(
 
         expect(
           updateResult.OriginAccessControl?.OriginAccessControlConfig?.Name,
-        ).toEqual("itty-cf-oac-updated");
+        ).toEqual("itty-cf-oac-update");
         expect(
           updateResult.OriginAccessControl?.OriginAccessControlConfig
             ?.Description,
@@ -185,8 +272,8 @@ test(
         // Verify by getting it again
         const getResult = yield* getOriginAccessControl({ Id: id });
         expect(
-          getResult.OriginAccessControl?.OriginAccessControlConfig?.Name,
-        ).toEqual("itty-cf-oac-updated");
+          getResult.OriginAccessControl?.OriginAccessControlConfig?.Description,
+        ).toEqual("Updated description");
       }),
     );
   }),

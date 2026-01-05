@@ -18,25 +18,55 @@ import {
 } from "../../src/services/sqs.ts";
 import { test } from "../test.ts";
 
-// Helper to ensure cleanup happens even on failure
+// ============================================================================
+// Idempotent Cleanup Helpers
+// ============================================================================
+
+// Clean up a queue by URL
+const cleanupQueueByUrl = (queueUrl: string) =>
+  deleteQueue({ QueueUrl: queueUrl }).pipe(Effect.ignore);
+
+// Clean up a queue by name - find it first, then delete
+const cleanupQueueByName = (queueName: string) =>
+  Effect.gen(function* () {
+    const queueUrl = yield* getQueueUrl({ QueueName: queueName }).pipe(
+      Effect.map((r) => r.QueueUrl),
+      Effect.orElseSucceed(() => undefined),
+    );
+    if (queueUrl) {
+      yield* cleanupQueueByUrl(queueUrl);
+    }
+  });
+
+// ============================================================================
+// Idempotent Test Helpers
+// ============================================================================
+
+// Helper to ensure cleanup happens even on failure - cleans up before AND after
 const withQueue = <A, E, R>(
   queueName: string,
   testFn: (queueUrl: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any leftover from previous runs
+    yield* cleanupQueueByName(queueName);
+
+    // Create the queue, retrying if recently deleted
     const createResult = yield* createQueue({ QueueName: queueName }).pipe(
       Effect.retry({
         while: (err) => err._tag === "QueueDeletedRecently",
-        schedule: Schedule.spaced("5 seconds"),
+        schedule: Schedule.spaced("5 seconds").pipe(
+          Schedule.intersect(Schedule.recurs(12)), // Max 60 seconds
+        ),
       }),
     );
     const queueUrl = createResult.QueueUrl!;
     return yield* testFn(queueUrl).pipe(
-      Effect.ensuring(deleteQueue({ QueueUrl: queueUrl }).pipe(Effect.ignore)),
+      Effect.ensuring(cleanupQueueByUrl(queueUrl)),
     );
   });
 
-// Helper for FIFO queues
+// Helper for FIFO queues - cleans up before AND after
 const withFifoQueue = <A, E, R>(
   queueName: string,
   testFn: (queueUrl: string) => Effect.Effect<A, E, R>,
@@ -45,6 +75,11 @@ const withFifoQueue = <A, E, R>(
     const fifoQueueName = queueName.endsWith(".fifo")
       ? queueName
       : `${queueName}.fifo`;
+
+    // Clean up any leftover from previous runs
+    yield* cleanupQueueByName(fifoQueueName);
+
+    // Create the queue, retrying if recently deleted
     const createResult = yield* createQueue({
       QueueName: fifoQueueName,
       Attributes: {
@@ -54,12 +89,14 @@ const withFifoQueue = <A, E, R>(
     }).pipe(
       Effect.retry({
         while: (err) => err._tag === "QueueDeletedRecently",
-        schedule: Schedule.spaced("5 seconds"),
+        schedule: Schedule.spaced("5 seconds").pipe(
+          Schedule.intersect(Schedule.recurs(12)), // Max 60 seconds
+        ),
       }),
     );
     const queueUrl = createResult.QueueUrl!;
     return yield* testFn(queueUrl).pipe(
-      Effect.ensuring(deleteQueue({ QueueUrl: queueUrl }).pipe(Effect.ignore)),
+      Effect.ensuring(cleanupQueueByUrl(queueUrl)),
     );
   });
 
@@ -110,23 +147,35 @@ test(
         },
       });
 
-      // Get queue attributes
-      const attrs = yield* getQueueAttributes({
-        QueueUrl: queueUrl,
-        AttributeNames: [
-          "VisibilityTimeout",
-          "MessageRetentionPeriod",
-          "DelaySeconds",
-          "ApproximateNumberOfMessages",
-        ],
-      });
+      // Get queue attributes with retry for eventual consistency
+      yield* Effect.gen(function* () {
+        const attrs = yield* getQueueAttributes({
+          QueueUrl: queueUrl,
+          AttributeNames: [
+            "VisibilityTimeout",
+            "MessageRetentionPeriod",
+            "DelaySeconds",
+            "ApproximateNumberOfMessages",
+          ],
+        });
 
-      expect(attrs.Attributes?.VisibilityTimeout).toEqual("60");
-      expect(attrs.Attributes?.MessageRetentionPeriod).toEqual("86400");
-      expect(attrs.Attributes?.DelaySeconds).toEqual("5");
+        // Check if attributes are updated yet
+        if (attrs.Attributes?.VisibilityTimeout !== "60") {
+          return yield* Effect.fail("not ready yet" as const);
+        }
 
-      // ApproximateNumberOfMessages should be 0 for empty queue
-      expect(attrs.Attributes?.ApproximateNumberOfMessages).toEqual("0");
+        expect(attrs.Attributes?.VisibilityTimeout).toEqual("60");
+        expect(attrs.Attributes?.MessageRetentionPeriod).toEqual("86400");
+        expect(attrs.Attributes?.DelaySeconds).toEqual("5");
+        expect(attrs.Attributes?.ApproximateNumberOfMessages).toEqual("0");
+      }).pipe(
+        Effect.retry({
+          while: (err) => err === "not ready yet",
+          schedule: Schedule.spaced("1 second").pipe(
+            Schedule.intersect(Schedule.recurs(10)),
+          ),
+        }),
+      );
     }),
   ),
 );

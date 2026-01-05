@@ -8,6 +8,15 @@ import { makeRequestBuilder } from "../../src/request-builder.ts";
 import { makeResponseParser } from "../../src/response-parser.ts";
 import type { Response } from "../../src/response.ts";
 import {
+  CustomOriginConfig,
+  DistributionList,
+  GetDistributionResult,
+  InvalidationList,
+  ListDistributionsResult,
+  ListInvalidationsResult,
+  OriginSslProtocols,
+} from "../../src/services/cloudfront.ts";
+import {
   // Object operations (from original tests)
   AbortMultipartUploadRequest,
   // Basic bucket operations
@@ -1960,6 +1969,268 @@ describe("restXml protocol", () => {
         expect(result.ContentType).toBe("application/xml");
         expect(result.ETag).toBe('"abc123"');
       }),
+    );
+  });
+
+  // ==========================================================================
+  // CloudFront Edge Cases - Real Schemas from Generated Service
+  // ==========================================================================
+
+  describe("CloudFront edge cases", () => {
+    it.effect(
+      "should deserialize OriginSslProtocols with XmlName-annotated string array elements",
+      () =>
+        Effect.gen(function* () {
+          // This tests the fix for arrays where element type has XmlName annotation
+          // CloudFront's SslProtocolsList = S.Array(S.String.pipe(T.XmlName("SslProtocol")))
+          // The Items field is wrapped (not flattened), so XML has <Items><SslProtocol>...</SslProtocol></Items>
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<CustomOriginConfig>
+  <HTTPPort>80</HTTPPort>
+  <HTTPSPort>443</HTTPSPort>
+  <OriginProtocolPolicy>https-only</OriginProtocolPolicy>
+  <OriginSslProtocols>
+    <Quantity>2</Quantity>
+    <Items>
+      <SslProtocol>TLSv1.2</SslProtocol>
+      <SslProtocol>TLSv1.1</SslProtocol>
+    </Items>
+  </OriginSslProtocols>
+</CustomOriginConfig>`,
+          };
+
+          const result = yield* parseResponse(CustomOriginConfig, response);
+
+          expect(result.HTTPPort).toBe(80);
+          expect(result.HTTPSPort).toBe(443);
+          expect(result.OriginProtocolPolicy).toBe("https-only");
+          expect(result.OriginSslProtocols).toEqual({
+            Quantity: 2,
+            Items: ["TLSv1.2", "TLSv1.1"],
+          });
+        }),
+    );
+
+    it.effect("should deserialize OriginSslProtocols with single element", () =>
+      Effect.gen(function* () {
+        const response: Response = {
+          status: 200,
+          statusText: "OK",
+          headers: {},
+          body: `<?xml version="1.0" encoding="UTF-8"?>
+<OriginSslProtocols>
+  <Quantity>1</Quantity>
+  <Items>
+    <SslProtocol>TLSv1.2</SslProtocol>
+  </Items>
+</OriginSslProtocols>`,
+        };
+
+        const result = yield* parseResponse(OriginSslProtocols, response);
+
+        expect(result.Quantity).toBe(1);
+        expect(result.Items).toEqual(["TLSv1.2"]);
+      }),
+    );
+
+    it.effect(
+      "should deserialize DistributionList with optional Marker field (patched schema)",
+      () =>
+        Effect.gen(function* () {
+          // AWS returns Marker as empty when not paginating, but Smithy marks it required
+          // This tests our patch that makes Marker optional
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<DistributionList>
+  <MaxItems>100</MaxItems>
+  <IsTruncated>false</IsTruncated>
+  <Quantity>0</Quantity>
+</DistributionList>`,
+          };
+
+          const result = yield* parseResponse(DistributionList, response);
+
+          expect(result.MaxItems).toBe(100);
+          expect(result.IsTruncated).toBe(false);
+          expect(result.Quantity).toBe(0);
+          expect(result.Marker).toBeUndefined();
+        }),
+    );
+
+    it.effect(
+      "should deserialize InvalidationList with optional Marker field",
+      () =>
+        Effect.gen(function* () {
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<InvalidationList>
+  <MaxItems>100</MaxItems>
+  <IsTruncated>false</IsTruncated>
+  <Quantity>1</Quantity>
+  <Items>
+    <InvalidationSummary>
+      <Id>ABCD1234</Id>
+      <CreateTime>2024-01-15T12:00:00Z</CreateTime>
+      <Status>Completed</Status>
+    </InvalidationSummary>
+  </Items>
+</InvalidationList>`,
+          };
+
+          const result = yield* parseResponse(InvalidationList, response);
+
+          expect(result.MaxItems).toBe(100);
+          expect(result.IsTruncated).toBe(false);
+          expect(result.Quantity).toBe(1);
+          expect(result.Marker).toBeUndefined();
+          expect(result.Items?.[0]?.Id).toBe("ABCD1234");
+        }),
+    );
+
+    it.effect(
+      "should deserialize ListDistributionsResult with header-bound ETag and payload",
+      () =>
+        Effect.gen(function* () {
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {
+              etag: '"abc123"',
+            },
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<DistributionList>
+  <MaxItems>100</MaxItems>
+  <IsTruncated>false</IsTruncated>
+  <Quantity>0</Quantity>
+</DistributionList>`,
+          };
+
+          const result = yield* parseResponse(
+            ListDistributionsResult,
+            response,
+          );
+
+          expect(result.DistributionList?.MaxItems).toBe(100);
+          expect(result.DistributionList?.Quantity).toBe(0);
+        }),
+    );
+
+    it.effect(
+      "should deserialize ListInvalidationsResult with header-bound ETag",
+      () =>
+        Effect.gen(function* () {
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<InvalidationList>
+  <MaxItems>100</MaxItems>
+  <IsTruncated>false</IsTruncated>
+  <Quantity>0</Quantity>
+</InvalidationList>`,
+          };
+
+          const result = yield* parseResponse(
+            ListInvalidationsResult,
+            response,
+          );
+
+          expect(result.InvalidationList?.MaxItems).toBe(100);
+          expect(result.InvalidationList?.Quantity).toBe(0);
+        }),
+    );
+
+    it.effect(
+      "should deserialize GetDistributionResult with nested CustomOriginConfig containing OriginSslProtocols",
+      () =>
+        Effect.gen(function* () {
+          // This is the full integration test - Distribution contains Origins
+          // which contains CustomOriginConfig which contains OriginSslProtocols
+          const response: Response = {
+            status: 200,
+            statusText: "OK",
+            headers: {
+              etag: '"dist-etag"',
+            },
+            body: `<?xml version="1.0" encoding="UTF-8"?>
+<Distribution>
+  <Id>EDFDVBD6EXAMPLE</Id>
+  <ARN>arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE</ARN>
+  <Status>Deployed</Status>
+  <LastModifiedTime>2024-01-15T12:00:00Z</LastModifiedTime>
+  <InProgressInvalidationBatches>0</InProgressInvalidationBatches>
+  <DomainName>d111111abcdef8.cloudfront.net</DomainName>
+  <DistributionConfig>
+    <CallerReference>my-distribution-2024</CallerReference>
+    <Comment>Test distribution</Comment>
+    <Enabled>true</Enabled>
+    <Origins>
+      <Quantity>1</Quantity>
+      <Items>
+        <Origin>
+          <Id>my-origin</Id>
+          <DomainName>example.com</DomainName>
+          <OriginPath></OriginPath>
+          <CustomHeaders>
+            <Quantity>0</Quantity>
+          </CustomHeaders>
+          <CustomOriginConfig>
+            <HTTPPort>80</HTTPPort>
+            <HTTPSPort>443</HTTPSPort>
+            <OriginProtocolPolicy>https-only</OriginProtocolPolicy>
+            <OriginSslProtocols>
+              <Quantity>2</Quantity>
+              <Items>
+                <SslProtocol>TLSv1.2</SslProtocol>
+                <SslProtocol>TLSv1.1</SslProtocol>
+              </Items>
+            </OriginSslProtocols>
+          </CustomOriginConfig>
+          <ConnectionAttempts>3</ConnectionAttempts>
+          <ConnectionTimeout>10</ConnectionTimeout>
+        </Origin>
+      </Items>
+    </Origins>
+    <DefaultCacheBehavior>
+      <TargetOriginId>my-origin</TargetOriginId>
+      <ViewerProtocolPolicy>redirect-to-https</ViewerProtocolPolicy>
+      <Compress>true</Compress>
+      <CachePolicyId>658327ea-f89d-4fab-a63d-7e88639e58f6</CachePolicyId>
+    </DefaultCacheBehavior>
+    <PriceClass>PriceClass_All</PriceClass>
+    <HttpVersion>http2</HttpVersion>
+    <IsIPV6Enabled>true</IsIPV6Enabled>
+    <Staging>false</Staging>
+  </DistributionConfig>
+</Distribution>`,
+          };
+
+          const result = yield* parseResponse(GetDistributionResult, response);
+
+          expect(result.ETag).toBe('"dist-etag"');
+          expect(result.Distribution?.Id).toBe("EDFDVBD6EXAMPLE");
+          expect(result.Distribution?.Status).toBe("Deployed");
+
+          const origin =
+            result.Distribution?.DistributionConfig?.Origins?.Items?.[0];
+          expect(origin?.Id).toBe("my-origin");
+          expect(origin?.CustomOriginConfig?.HTTPPort).toBe(80);
+          expect(origin?.CustomOriginConfig?.OriginSslProtocols).toEqual({
+            Quantity: 2,
+            Items: ["TLSv1.2", "TLSv1.1"],
+          });
+        }),
     );
   });
 });

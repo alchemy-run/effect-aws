@@ -323,6 +323,7 @@ const recordError = Effect.fn(function* (
 
   if (!opErrors.includes(errorTag)) {
     yield* saveSpec(service, {
+      ...existingSpec,
       operations: {
         ...existingSpec.operations,
         [operation]: {

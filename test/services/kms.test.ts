@@ -1,6 +1,5 @@
 import { expect } from "@effect/vitest";
 import { Effect, Schedule } from "effect";
-import { beforeAll } from "vitest";
 import {
   cancelKeyDeletion,
   createAlias,
@@ -13,54 +12,52 @@ import {
   listKeys,
   scheduleKeyDeletion,
 } from "../../src/services/kms.ts";
-import { run, test } from "../test.ts";
+import { beforeAll, test } from "../test.ts";
 
 const TEST_ALIAS = "alias/itty-aws-test";
 
 // Clean up all keys before running tests
-beforeAll(async () => {
-  await run(
-    Effect.gen(function* () {
-      // Collect all keys first
-      const allKeys: string[] = [];
-      let marker: string | undefined;
-      do {
-        const result = yield* listKeys({ Marker: marker });
-        for (const key of result.Keys ?? []) {
-          if (key.KeyId) {
-            allKeys.push(key.KeyId);
-          }
+beforeAll(
+  Effect.gen(function* () {
+    // Collect all keys first
+    const allKeys: string[] = [];
+    let marker: string | undefined;
+    do {
+      const result = yield* listKeys({ Marker: marker });
+      for (const key of result.Keys ?? []) {
+        if (key.KeyId) {
+          allKeys.push(key.KeyId);
         }
-        marker = result.Truncated ? result.NextMarker : undefined;
-      } while (marker);
+      }
+      marker = result.Truncated ? result.NextMarker : undefined;
+    } while (marker);
 
-      // Schedule deletion for keys not already pending (in parallel)
-      yield* Effect.all(
-        allKeys.map((keyId) =>
-          Effect.gen(function* () {
-            const keyInfo = yield* describeKey({ KeyId: keyId }).pipe(
-              Effect.retry({
-                while: (err) => err._tag === "ThrottlingException",
-                schedule: Schedule.exponential("1 second"),
-              }),
-              Effect.catchAll(() => Effect.succeed(null)),
-            );
-            if (
-              keyInfo?.KeyMetadata?.KeyState === "Enabled" ||
-              keyInfo?.KeyMetadata?.KeyState === "Disabled"
-            ) {
-              yield* scheduleKeyDeletion({
-                KeyId: keyId,
-                PendingWindowInDays: 7,
-              }).pipe(Effect.ignore);
-            }
-          }),
-        ),
-        { concurrency: "unbounded" },
-      );
-    }),
-  );
-}, 300_000);
+    // Schedule deletion for keys not already pending (in parallel)
+    yield* Effect.all(
+      allKeys.map((keyId) =>
+        Effect.gen(function* () {
+          const keyInfo = yield* describeKey({ KeyId: keyId }).pipe(
+            Effect.retry({
+              while: (err) => err._tag === "ThrottlingException",
+              schedule: Schedule.exponential("1 second"),
+            }),
+            Effect.catchAll(() => Effect.succeed(null)),
+          );
+          if (
+            keyInfo?.KeyMetadata?.KeyState === "Enabled" ||
+            keyInfo?.KeyMetadata?.KeyState === "Disabled"
+          ) {
+            yield* scheduleKeyDeletion({
+              KeyId: keyId,
+              PendingWindowInDays: 7,
+            }).pipe(Effect.ignore);
+          }
+        }),
+      ),
+      { concurrency: "unbounded" },
+    );
+  }),
+);
 
 // ============================================================================
 // Key Management Tests

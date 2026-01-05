@@ -1,8 +1,10 @@
 import { AwsV4Signer } from "aws4fetch";
 import * as Effect from "effect/Effect";
+import { pipe } from "effect/Function";
 import * as Option from "effect/Option";
 import type * as ParseResult from "effect/ParseResult";
 import * as Redacted from "effect/Redacted";
+import * as Ref from "effect/Ref";
 import { Credentials } from "./aws/credentials.ts";
 import { Endpoint } from "./aws/endpoint.ts";
 import { UnknownAwsError, type CommonAwsError } from "./aws/errors.ts";
@@ -10,6 +12,7 @@ import { Region } from "./aws/region.ts";
 import type { Operation } from "./operation.ts";
 import { makeRequestBuilder } from "./request-builder.ts";
 import { makeResponseParser } from "./response-parser.ts";
+import { makeDefault, Retry } from "./retry-policy.ts";
 import type {
   EndpointError,
   NoMatchingRuleError,
@@ -220,5 +223,28 @@ export const make = <Op extends Operation>(
     return parsed;
   });
 
-  return Object.assign(fn, op);
+  return Object.assign(
+    Effect.fn(function* (payload: Operation.Input<Op>) {
+      const lastError = yield* Ref.make<unknown>(undefined);
+      const policy = (yield* Effect.serviceOption(Retry)).pipe(
+        Option.map((value) =>
+          typeof value === "function" ? value(lastError) : value,
+        ),
+        Option.getOrElse(() => makeDefault(lastError)),
+      );
+
+      return yield* pipe(
+        fn(payload),
+        Effect.tapError((error) => Ref.set(lastError, error)),
+        policy.while
+          ? (eff) =>
+              Effect.retry(eff, {
+                while: policy.while,
+                schedule: policy.schedule,
+              })
+          : (eff) => eff,
+      );
+    }),
+    op,
+  );
 };

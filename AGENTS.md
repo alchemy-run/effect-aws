@@ -2,10 +2,13 @@ Generate a new client with a script like
 bun generate --sdk s3
 
 To run the s3 tests:
-bun test:local ./test/services/s3.test.ts
+bun vitest run ./test/services/s3.test.ts
 
 To run all service tests:
-bun test:local ./test/services/
+bun vitest run ./test/services/
+
+Run tests with debug logs:
+DEBUG=1 bun vitest run ./test/services/{test}.test.ts
 
 To run the Protocol tests:
 bun test:protocols

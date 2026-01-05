@@ -18,8 +18,6 @@
     "clean:install": "bun run clean && bun install",
     "clean:build": "bun run clean:install && bun run build",
     "build": "bun generate && bun oxfmt ./src/services/* && tsgo -b",
-    "test:local": "LOCAL=1 bun run scripts/test.ts",
-    "test:live": "bun run scripts/test.ts",
     "test:protocols": "bun vitest run ./test/protocols/",
     "test:services": "bun test:local ./test/services/",
     "test:services:live": "bun test:live ./test/services/",
