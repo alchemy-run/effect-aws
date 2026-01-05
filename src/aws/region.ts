@@ -1,6 +1,6 @@
 import * as Context from "effect/Context";
 
-export class Region extends Context.Tag("effect-aws/Region")<
+export class Region extends Context.Tag("distilled-aws/Region")<
   Region,
   AWSRegion
 >() {}

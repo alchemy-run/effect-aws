@@ -28,7 +28,7 @@ Other providers: `fromEnv`, `fromSSO`, `fromIni`, `fromSTS`, `fromProcess`, `moc
 ## USAGE
 
 ```typescript
-import { Credentials, Region, Endpoint } from "effect-aws";
+import { Credentials, Region, Endpoint } from "distilled-aws";
 import * as Layer from "effect/Layer";
 
 // Default chain

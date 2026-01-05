@@ -1,4 +1,4 @@
-# effect-aws
+# distilled-aws
 
 A fully typed AWS SDK for [Effect](https://effect.website), generated from [Smithy](https://smithy.io) specifications.
 
@@ -13,9 +13,9 @@ A fully typed AWS SDK for [Effect](https://effect.website), generated from [Smit
 ## Installation
 
 ```bash
-npm install effect-aws effect @effect/platform
+npm install distilled-aws effect @effect/platform
 # or
-bun add effect-aws effect @effect/platform
+bun add distilled-aws effect @effect/platform
 ```
 
 ## Quick Start
@@ -23,8 +23,8 @@ bun add effect-aws effect @effect/platform
 ```typescript
 import { Effect } from "effect";
 import { FetchHttpClient } from "@effect/platform";
-import * as s3 from "effect-aws/s3";
-import { Credentials, Region } from "effect-aws";
+import * as s3 from "distilled-aws/s3";
+import { Credentials, Region } from "distilled-aws";
 
 const program = Effect.gen(function* () {
   // Upload a file
@@ -58,11 +58,11 @@ program.pipe(
 Import service modules as namespaces:
 
 ```typescript
-import * as s3 from "effect-aws/s3";
-import * as dynamodb from "effect-aws/dynamodb";
-import * as lambda from "effect-aws/lambda";
-import * as kms from "effect-aws/kms";
-import * as sfn from "effect-aws/sfn";
+import * as s3 from "distilled-aws/s3";
+import * as dynamodb from "distilled-aws/dynamodb";
+import * as lambda from "distilled-aws/lambda";
+import * as kms from "distilled-aws/kms";
+import * as sfn from "distilled-aws/sfn";
 
 // Then use operations via the namespace
 s3.getObject({ Bucket: "my-bucket", Key: "file.txt" });
@@ -79,7 +79,7 @@ All operations require three context services: `Region`, `Credentials`, and `Htt
 The AWS region to use for API calls:
 
 ```typescript
-import { Region } from "effect-aws";
+import { Region } from "distilled-aws";
 
 Effect.provideService(Region, "us-east-1")
 ```
@@ -89,7 +89,7 @@ Effect.provideService(Region, "us-east-1")
 AWS credentials for signing requests. Multiple providers are available:
 
 ```typescript
-import { Credentials } from "effect-aws";
+import { Credentials } from "distilled-aws";
 
 // AWS credential provider chain (recommended for production)
 // Checks: env vars → SSO → shared credentials → EC2/ECS metadata
@@ -136,7 +136,7 @@ Effect.provide(NodeHttpClient.layer)
 For LocalStack or other custom endpoints:
 
 ```typescript
-import { Endpoint } from "effect-aws";
+import { Endpoint } from "distilled-aws";
 
 Effect.provideService(Endpoint, "http://localhost:4566")
 ```
@@ -148,8 +148,8 @@ Effect.provideService(Endpoint, "http://localhost:4566")
 ```typescript
 import { Console, Effect, Stream } from "effect";
 import { FetchHttpClient } from "@effect/platform";
-import * as s3 from "effect-aws/s3";
-import { Credentials, Region } from "effect-aws";
+import * as s3 from "distilled-aws/s3";
+import { Credentials, Region } from "distilled-aws";
 
 const program = Effect.gen(function* () {
   const bucket = "my-test-bucket";
@@ -161,7 +161,7 @@ const program = Effect.gen(function* () {
   yield* s3.putObject({
     Bucket: bucket,
     Key: "message.txt",
-    Body: "Hello from effect-aws!",
+    Body: "Hello from distilled-aws!",
     ContentType: "text/plain",
   });
 
@@ -173,7 +173,7 @@ const program = Effect.gen(function* () {
     Stream.decodeText(),
     Stream.mkString,
   );
-  yield* Console.log(content); // "Hello from effect-aws!"
+  yield* Console.log(content); // "Hello from distilled-aws!"
 
   // Cleanup
   yield* s3.deleteBucket({ Bucket: bucket });
@@ -194,8 +194,8 @@ DynamoDB uses `AttributeValue` tagged unions for item data:
 ```typescript
 import { Console, Effect } from "effect";
 import { FetchHttpClient } from "@effect/platform";
-import * as dynamodb from "effect-aws/dynamodb";
-import { Credentials, Region } from "effect-aws";
+import * as dynamodb from "distilled-aws/dynamodb";
+import { Credentials, Region } from "distilled-aws";
 
 const program = Effect.gen(function* () {
   // Put item - values use AttributeValue format: { S: string }, { N: string }, { BOOL: boolean }
@@ -247,8 +247,8 @@ program.pipe(
 ```typescript
 import { Console, Effect, Stream } from "effect";
 import { FetchHttpClient } from "@effect/platform";
-import * as lambda from "effect-aws/lambda";
-import { Credentials, Region } from "effect-aws";
+import * as lambda from "distilled-aws/lambda";
+import { Credentials, Region } from "distilled-aws";
 
 const program = Effect.gen(function* () {
   const functionName = "my-hello-function";
@@ -313,8 +313,8 @@ program.pipe(
 ```typescript
 import { Effect } from "effect";
 import { FetchHttpClient } from "@effect/platform";
-import * as s3 from "effect-aws/s3";
-import { Credentials, Endpoint, Region } from "effect-aws";
+import * as s3 from "distilled-aws/s3";
+import { Credentials, Endpoint, Region } from "distilled-aws";
 
 const program = s3.listBuckets({});
 
@@ -329,20 +329,20 @@ program.pipe(
 
 ### Retry Policy
 
-By default, effect-aws automatically retries transient errors, throttling errors, and errors with the `@retryable` trait using exponential backoff with jitter (up to 5 attempts).
+By default, distilled-aws automatically retries transient errors, throttling errors, and errors with the `@retryable` trait using exponential backoff with jitter (up to 5 attempts).
 
 You can customize or disable this behavior using the `Retry` module:
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 // or
-import * as Retry from "effect-aws/Retry";
+import * as Retry from "distilled-aws/Retry";
 ```
 
 #### Disable Retries
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 
 myEffect.pipe(Retry.none)
 ```
@@ -350,7 +350,7 @@ myEffect.pipe(Retry.none)
 #### Retry Throttling Errors Indefinitely
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 
 // Retries all throttling errors with exponential backoff (capped at 5s)
 myEffect.pipe(Retry.throttling)
@@ -359,7 +359,7 @@ myEffect.pipe(Retry.throttling)
 #### Retry All Transient Errors Indefinitely
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 
 // Retries throttling, server errors, and @retryable errors indefinitely
 myEffect.pipe(Retry.transient)
@@ -368,7 +368,7 @@ myEffect.pipe(Retry.transient)
 #### Custom Retry Policy
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 import * as Schedule from "effect/Schedule";
 
 myEffect.pipe(
@@ -384,7 +384,7 @@ myEffect.pipe(
 For advanced use cases like respecting `Retry-After` headers, you can access the last error via a `Ref`:
 
 ```typescript
-import { Retry } from "effect-aws";
+import { Retry } from "distilled-aws";
 import * as Duration from "effect/Duration";
 import * as Effect from "effect/Effect";
 import * as Schedule from "effect/Schedule";
@@ -414,7 +414,7 @@ All operations return typed errors that can be pattern-matched:
 
 ```typescript
 import { Effect } from "effect";
-import * as s3 from "effect-aws/s3";
+import * as s3 from "distilled-aws/s3";
 
 const program = s3.getObject({
   Bucket: "my-bucket",
@@ -433,7 +433,7 @@ Lambda error handling:
 
 ```typescript
 import { Effect } from "effect";
-import * as lambda from "effect-aws/lambda";
+import * as lambda from "distilled-aws/lambda";
 
 const program = lambda.invoke({
   FunctionName: "my-function",
@@ -456,7 +456,7 @@ const program = lambda.invoke({
 
 ```typescript
 import { Effect, Stream } from "effect";
-import * as s3 from "effect-aws/s3";
+import * as s3 from "distilled-aws/s3";
 
 // Create a stream from chunks
 const chunks = ["Hello, ", "streaming ", "world!"];
@@ -476,7 +476,7 @@ const upload = s3.putObject({
 
 ```typescript
 import { Effect, Stream, Console } from "effect";
-import * as s3 from "effect-aws/s3";
+import * as s3 from "distilled-aws/s3";
 
 const download = Effect.gen(function* () {
   const result = yield* s3.getObject({
@@ -503,7 +503,7 @@ Use `.pages()` to stream complete response objects. Each emission is a full API 
 
 ```typescript
 import { Effect, Stream } from "effect";
-import * as s3 from "effect-aws/s3";
+import * as s3 from "distilled-aws/s3";
 
 const program = Effect.gen(function* () {
   // Stream all pages of objects
@@ -525,7 +525,7 @@ Use `.items()` to stream individual items directly. Only available for operation
 
 ```typescript
 import { Effect, Stream } from "effect";
-import * as dynamodb from "effect-aws/dynamodb";
+import * as dynamodb from "distilled-aws/dynamodb";
 
 const program = Effect.gen(function* () {
   // Stream individual DynamoDB items across all pages

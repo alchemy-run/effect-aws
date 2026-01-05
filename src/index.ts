@@ -3,7 +3,7 @@
  *
  * @example
  * ```ts
- * import { Credentials } from "effect-aws"
+ * import { Credentials } from "distilled-aws"
  *
  * // Use the default credential chain
  * const layer = Credentials.fromChain()
@@ -21,7 +21,7 @@ export * as Credentials from "./aws/credentials.ts";
  *
  * @example
  * ```ts
- * import { Endpoint } from "effect-aws"
+ * import { Endpoint } from "distilled-aws"
  * import { Layer } from "effect"
  *
  * // Point to LocalStack
@@ -37,7 +37,7 @@ export * as Endpoint from "./aws/endpoint.ts";
  *
  * @example
  * ```ts
- * import { Region } from "effect-aws"
+ * import { Region } from "distilled-aws"
  * import { Layer } from "effect"
  *
  * const region = Layer.succeed(Region.Region, "us-east-1")
@@ -52,7 +52,7 @@ export * as Region from "./aws/region.ts";
  *
  * @example
  * ```ts
- * import { Errors } from "effect-aws"
+ * import { Errors } from "distilled-aws"
  *
  * // Handle common errors
  * Effect.catchTag("ThrottlingException", (e) => ...)
@@ -74,7 +74,7 @@ export * as Traits from "./traits.ts";
  *
  * @example
  * ```ts
- * import { ErrorCategory } from "effect-aws"
+ * import { ErrorCategory } from "distilled-aws"
  *
  * // Check if an error is transient
  * if (ErrorCategory.isTransientError(error)) {
@@ -96,7 +96,7 @@ export * as ErrorCategory from "./error-category.ts";
  *
  * @example
  * ```ts
- * import { Retry } from "effect-aws"
+ * import { Retry } from "distilled-aws"
  * import * as Schedule from "effect/Schedule"
  *
  * // Custom policy

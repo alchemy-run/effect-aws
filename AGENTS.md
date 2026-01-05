@@ -1,4 +1,4 @@
-# effect-aws
+# distilled-aws
 
 Effect-native AWS SDK. Generates typed clients from Smithy models with full protocol support.
 

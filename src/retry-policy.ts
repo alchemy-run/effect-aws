@@ -46,7 +46,7 @@ export class Retry extends Context.Tag("Retry")<Retry, Policy>() {}
  *
  * @example
  * ```ts
- * import { Retry } from "effect-aws"
+ * import { Retry } from "distilled-aws"
  * import * as Schedule from "effect/Schedule"
  *
  * // Static policy
@@ -95,7 +95,7 @@ export const policy: {
  *
  * @example
  * ```ts
- * import { Retry } from "effect-aws"
+ * import { Retry } from "distilled-aws"
  *
  * myEffect.pipe(Retry.none)
  * ```
@@ -107,7 +107,7 @@ export const none: <A, E, R>(
 );
 
 /**
- * Creates the default retry policy used by effect-aws.
+ * Creates the default retry policy used by distilled-aws.
  *
  * This policy:
  * - Retries transient errors, throttling errors, and errors with the @retryable trait
@@ -166,7 +166,7 @@ export const throttlingOptions: Options = {
  *
  * @example
  * ```ts
- * import { Retry } from "effect-aws"
+ * import { Retry } from "distilled-aws"
  *
  * myEffect.pipe(Retry.throttling)
  * ```
@@ -199,7 +199,7 @@ export const transientOptions: Options = {
  *
  * @example
  * ```ts
- * import { Retry } from "effect-aws"
+ * import { Retry } from "distilled-aws"
  *
  * myEffect.pipe(Retry.transient)
  * ```
