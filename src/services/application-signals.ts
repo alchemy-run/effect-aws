@@ -1073,31 +1073,49 @@ export const deleteGroupingConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of change events for a specific entity, such as deployments, configuration changes, or other state-changing activities. This operation helps track the history of changes that may have affected service performance.
  */
-export const listEntityEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntityEventsInput,
-  output: ListEntityEventsOutput,
-  errors: [ThrottlingException, ValidationException],
-}));
+export const listEntityEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntityEventsInput,
+    output: ListEntityEventsOutput,
+    errors: [ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ChangeEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the list of dependents that invoked the specified service during the provided time range. Dependents include other services, CloudWatch Synthetics canaries, and clients that are instrumented with CloudWatch RUM app monitors.
  */
-export const listServiceDependents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceDependents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceDependentsInput,
     output: ListServiceDependentsOutput,
     errors: [ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceDependents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the *operations* of this service that have been discovered by Application Signals. Only the operations that were invoked during the specified time range are returned.
  */
-export const listServiceOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceOperationsInput,
     output: ListServiceOperationsOutput,
     errors: [ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceOperations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about one SLO created in the account.
  */
@@ -1181,7 +1199,7 @@ export const deleteServiceLevelObjective = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves all exclusion windows configured for a specific SLO.
  */
 export const listServiceLevelObjectiveExclusionWindows =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceLevelObjectiveExclusionWindowsInput,
     output: ListServiceLevelObjectiveExclusionWindowsOutput,
     errors: [
@@ -1189,6 +1207,12 @@ export const listServiceLevelObjectiveExclusionWindows =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExclusionWindows",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Assigns one or more tags (key-value pairs) to the specified CloudWatch resource, such as a service level objective.
@@ -1221,19 +1245,35 @@ export const getService = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of services that have been discovered by Application Signals. A service represents a minimum logical and transactional unit that completes a business function. Services are discovered through Application Signals instrumentation.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesInput,
-  output: ListServicesOutput,
-  errors: [ThrottlingException, ValidationException],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesInput,
+    output: ListServicesOutput,
+    errors: [ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the last deployment and other change states of services. This API provides visibility into recent changes that may have affected service performance, helping with troubleshooting and change correlation.
  */
-export const listServiceStates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceStatesInput,
-  output: ListServiceStatesOutput,
-  errors: [ThrottlingException, ValidationException],
-}));
+export const listServiceStates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceStatesInput,
+    output: ListServiceStatesOutput,
+    errors: [ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceStates",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates or updates the grouping configuration for this account. This operation allows you to define custom grouping attributes that determine how services are logically grouped based on telemetry attributes, Amazon Web Services tags, or predefined mappings. These grouping attributes can then be used to organize and filter services in the Application Signals console and APIs.
  */
@@ -1247,13 +1287,18 @@ export const putGroupingConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of SLOs created in this account.
  */
-export const listServiceLevelObjectives = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceLevelObjectives =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceLevelObjectivesInput,
     output: ListServiceLevelObjectivesOutput,
     errors: [ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SloSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Use this operation to retrieve one or more *service level objective (SLO) budget reports*.
  *
@@ -1286,13 +1331,18 @@ export const batchUpdateExclusionWindows = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of service dependencies of the service that you specify. A dependency is an infrastructure component that an operation of this service connects with. Dependencies can include Amazon Web Services services, Amazon Web Services resources, and third-party services.
  */
-export const listServiceDependencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceDependencies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceDependenciesInput,
     output: ListServiceDependenciesOutput,
     errors: [ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceDependencies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of audit findings that provide automated analysis of service behavior and root cause analysis. These findings help identify the most significant observations about your services, including performance issues, anomalies, and potential problems. The findings are generated using heuristic algorithms based on established troubleshooting patterns.
  */

@@ -1918,25 +1918,33 @@ export const getRepositoryPermissionsPolicy =
  * PackageSummary
  * objects for packages in a repository that match the request parameters.
  */
-export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackagesRequest,
-  output: ListPackagesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPackagesRequest,
+    output: ListPackagesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packages",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of
  * RepositorySummary
  * objects. Each `RepositorySummary` contains information about a repository in the specified domain and that matches the input
  * parameters.
  */
-export const listRepositoriesInDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRepositoriesInDomain =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRepositoriesInDomainRequest,
     output: ListRepositoriesInDomainResult,
     errors: [
@@ -1946,8 +1954,13 @@ export const listRepositoriesInDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of direct children of the specified package group.
  *
@@ -1955,8 +1968,8 @@ export const listRepositoriesInDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Package group
  * definition syntax and matching behavior in the *CodeArtifact User Guide*.
  */
-export const listSubPackageGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubPackageGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubPackageGroupsRequest,
     output: ListSubPackageGroupsResult,
     errors: [
@@ -1966,8 +1979,13 @@ export const listSubPackageGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packageGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a
  * PackageDescription
@@ -1989,30 +2007,46 @@ export const describePackage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * this call. Each returned `DomainSummary` object contains information about a
  * domain.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "domains",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of package groups in the requested domain.
  */
-export const listPackageGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackageGroupsRequest,
-  output: ListPackageGroupsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPackageGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPackageGroupsRequest,
+    output: ListPackageGroupsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packageGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the direct dependencies for a package version. The dependencies are returned as
  * PackageDependency
@@ -2037,33 +2071,48 @@ export const listPackageVersionDependencies =
  * PackageVersionSummary
  * objects for package versions in a repository that match the request parameters. Package versions of all statuses will be returned by default when calling `list-package-versions` with no `--status` parameter.
  */
-export const listPackageVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackageVersionsRequest,
-  output: ListPackageVersionsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPackageVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPackageVersionsRequest,
+    output: ListPackageVersionsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "versions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of
  * RepositorySummary
  * objects. Each `RepositorySummary` contains information about a repository in the specified Amazon Web Services account and that matches the input
  * parameters.
  */
-export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRepositoriesRequest,
-  output: ListRepositoriesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRepositoriesRequest,
+    output: ListRepositoriesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Sets the package origin configuration for a package.
  *
@@ -2239,8 +2288,8 @@ export const deletePackageVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * AssetSummary
  * objects for assets in a package version.
  */
-export const listPackageVersionAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPackageVersionAssets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPackageVersionAssetsRequest,
     output: ListPackageVersionAssetsResult,
     errors: [
@@ -2250,8 +2299,13 @@ export const listPackageVersionAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assets",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds or updates tags for a resource in CodeArtifact.
  */
@@ -2271,8 +2325,8 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Package group
  * definition syntax and matching behavior in the *CodeArtifact User Guide*.
  */
-export const listAssociatedPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssociatedPackages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedPackagesRequest,
     output: ListAssociatedPackagesResult,
     errors: [
@@ -2281,8 +2335,13 @@ export const listAssociatedPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packages",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the status of one or more versions of a package. Using `UpdatePackageVersionsStatus`,
  * you can update the status of package versions to `Archived`, `Published`, or `Unlisted`.
@@ -2324,7 +2383,7 @@ export const updatePackageGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and added repository lists, see Package group origin controls in the *CodeArtifact User Guide*.
  */
 export const listAllowedRepositoriesForGroup =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAllowedRepositoriesForGroupRequest,
     output: ListAllowedRepositoriesForGroupResult,
     errors: [
@@ -2335,6 +2394,12 @@ export const listAllowedRepositoriesForGroup =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "allowedRepositories",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Update the properties of a repository.

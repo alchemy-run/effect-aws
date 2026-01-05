@@ -968,11 +968,17 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  *
  * objects.
  */
-export const listProfilingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfilingGroupsRequest,
-  output: ListProfilingGroupsResponse,
-  errors: [InternalServerException, ThrottlingException],
-}));
+export const listProfilingGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListProfilingGroupsRequest,
+    output: ListProfilingGroupsResponse,
+    errors: [InternalServerException, ThrottlingException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns the JSON-formatted resource-based policy on a profiling group.
  */
@@ -1047,16 +1053,24 @@ export const getNotificationConfiguration =
  * Lists the start times of the available aggregated profiles of a profiling group
  * for an aggregation period within the specified time range.
  */
-export const listProfileTimes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfileTimesRequest,
-  output: ListProfileTimesResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProfileTimes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfileTimesRequest,
+    output: ListProfileTimesResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "profileTimes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a profiling group.
  */
@@ -1128,16 +1142,22 @@ export const getProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the available reports for a given profiling group and time range.
  */
-export const listFindingsReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFindingsReportsRequest,
-  output: ListFindingsReportsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFindingsReports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFindingsReportsRequest,
+    output: ListFindingsReportsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds permissions to a profiling group's resource-based policy
  * that are provided using an action group. If a profiling group doesn't have
@@ -1287,10 +1307,15 @@ export const updateProfilingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * objects that contain analysis results for all profiling groups in your AWS account.
  */
 export const getFindingsReportAccountSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetFindingsReportAccountSummaryRequest,
     output: GetFindingsReportAccountSummaryResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Add up to 2 anomaly notifications channels for a profiling group.

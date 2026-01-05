@@ -1035,11 +1035,18 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Returns a list of App Runner VPC connectors in your Amazon Web Services account.
  */
-export const listVpcConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVpcConnectorsRequest,
-  output: ListVpcConnectorsResponse,
-  errors: [InternalServiceErrorException, InvalidRequestException],
-}));
+export const listVpcConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVpcConnectorsRequest,
+    output: ListVpcConnectorsResponse,
+    errors: [InternalServiceErrorException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of active App Runner automatic scaling configurations in your Amazon Web Services account. You can query the revisions for a specific
  * configuration name or the revisions for all active configurations in your account. You can optionally query only the latest revision of each requested
@@ -1049,19 +1056,31 @@ export const listVpcConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the ARNs returned by `ListAutoScalingConfigurations`.
  */
 export const listAutoScalingConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutoScalingConfigurationsRequest,
     output: ListAutoScalingConfigurationsResponse,
     errors: [InternalServiceErrorException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of App Runner connections that are associated with your Amazon Web Services account.
  */
-export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectionsRequest,
-  output: ListConnectionsResponse,
-  errors: [InternalServiceErrorException, InvalidRequestException],
-}));
+export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectionsRequest,
+    output: ListConnectionsResponse,
+    errors: [InternalServiceErrorException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of active App Runner observability configurations in your Amazon Web Services account. You can query the revisions for a specific
  * configuration name or the revisions for all active configurations in your account. You can optionally query only the latest revision of each requested
@@ -1071,29 +1090,45 @@ export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * of the ARNs returned by `ListObservabilityConfigurations`.
  */
 export const listObservabilityConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListObservabilityConfigurationsRequest,
     output: ListObservabilityConfigurationsResponse,
     errors: [InternalServiceErrorException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of running App Runner services in your Amazon Web Services account.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [InternalServiceErrorException, InvalidRequestException],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [InternalServiceErrorException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Return a list of App Runner VPC Ingress Connections in your Amazon Web Services account.
  */
-export const listVpcIngressConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVpcIngressConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVpcIngressConnectionsRequest,
     output: ListVpcIngressConnectionsResponse,
     errors: [InternalServiceErrorException, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Update an auto scaling configuration to be the default. The existing default auto scaling configuration will be set to non-default
  * automatically.
@@ -1368,8 +1403,8 @@ export const describeAutoScalingConfiguration =
 /**
  * Return a description of custom domain names that are associated with an App Runner service.
  */
-export const describeCustomDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCustomDomains =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCustomDomainsRequest,
     output: DescribeCustomDomainsResponse,
     errors: [
@@ -1377,8 +1412,12 @@ export const describeCustomDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Return a full description of an App Runner observability configuration resource.
  */
@@ -1435,7 +1474,7 @@ export const describeVpcIngressConnection =
  * Returns a list of the associated App Runner services using an auto scaling configuration.
  */
 export const listServicesForAutoScalingConfiguration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServicesForAutoScalingConfigurationRequest,
     output: ListServicesForAutoScalingConfigurationResponse,
     errors: [
@@ -1443,6 +1482,11 @@ export const listServicesForAutoScalingConfiguration =
       InvalidRequestException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Initiate a manual deployment of the latest commit in a source code repository or the latest image in a source image repository to an App Runner
@@ -1498,15 +1542,22 @@ export const deleteObservabilityConfiguration =
  * The resulting list of OperationSummary objects is sorted in reverse chronological order. The first object on the list represents the
  * last started operation.
  */
-export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOperationsRequest,
-  output: ListOperationsResponse,
-  errors: [
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOperationsRequest,
+    output: ListOperationsResponse,
+    errors: [
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Add tags to, or update the tag values of, an App Runner resource. A tag is a key-value pair.
  */

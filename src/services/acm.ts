@@ -789,11 +789,19 @@ export const describeCertificate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of certificate ARNs and domain names. You can request that only certificates that match a specific status be listed. You can also filter by specific attributes of the certificate. Default filtering returns only `RSA_2048` certificates. For more information, see Filters.
  */
-export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCertificatesRequest,
-  output: ListCertificatesResponse,
-  errors: [InvalidArgsException, ValidationException],
-}));
+export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCertificatesRequest,
+    output: ListCertificatesResponse,
+    errors: [InvalidArgsException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CertificateSummaryList",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Remove one or more tags from an ACM certificate. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this function, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value.
  *

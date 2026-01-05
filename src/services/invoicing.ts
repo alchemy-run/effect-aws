@@ -797,7 +797,7 @@ export const getInvoicePDF = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of procurement portal preferences associated with the Amazon Web Services account.
  */
 export const listProcurementPortalPreferences =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProcurementPortalPreferencesRequest,
     output: ListProcurementPortalPreferencesResponse,
     errors: [
@@ -808,20 +808,34 @@ export const listProcurementPortalPreferences =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProcurementPortalPreferences",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * This fetches a list of all invoice unit definitions for a given account, as of the provided `AsOf` date.
  */
-export const listInvoiceUnits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvoiceUnitsRequest,
-  output: ListInvoiceUnitsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInvoiceUnits = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvoiceUnitsRequest,
+    output: ListInvoiceUnitsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InvoiceUnits",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a procurement portal preference configuration for e-invoice delivery and purchase order retrieval. This preference defines how invoices are delivered to a procurement portal and how purchase orders are retrieved.
  */
@@ -923,8 +937,8 @@ export const getProcurementPortalPreference =
 /**
  * Retrieves your invoice details programmatically, without line item details.
  */
-export const listInvoiceSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInvoiceSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInvoiceSummariesRequest,
     output: ListInvoiceSummariesResponse,
     errors: [
@@ -934,5 +948,10 @@ export const listInvoiceSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InvoiceSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));

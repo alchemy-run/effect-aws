@@ -2978,8 +2978,8 @@ export const getVoiceToneAnalysisTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the specified voice profile domains in the administrator's AWS account.
  */
-export const listVoiceProfileDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVoiceProfileDomains =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVoiceProfileDomainsRequest,
     output: ListVoiceProfileDomainsResponse,
     errors: [
@@ -2991,24 +2991,35 @@ export const listVoiceProfileDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the voice profiles in a voice profile domain.
  */
-export const listVoiceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVoiceProfilesRequest,
-  output: ListVoiceProfilesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listVoiceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVoiceProfilesRequest,
+    output: ListVoiceProfilesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the Alexa Skill configuration for the SIP media application.
  *
@@ -3339,35 +3350,49 @@ export const getVoiceProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon Chime SDK user, Amazon Chime SDK Voice Connector, or Amazon Chime SDK Voice
  * Connector group.
  */
-export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPhoneNumbersRequest,
-  output: ListPhoneNumbersResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPhoneNumbersRequest,
+    output: ListPhoneNumbersResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the proxy sessions for the specified Amazon Chime SDK Voice Connector.
  */
-export const listProxySessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProxySessionsRequest,
-  output: ListProxySessionsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listProxySessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProxySessionsRequest,
+    output: ListProxySessionsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the SIP credentials for the specified Amazon Chime SDK Voice Connector.
  */
@@ -3948,8 +3973,8 @@ export const getGlobalSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the phone numbers for an administrator's Amazon Chime SDK account.
  */
-export const listPhoneNumberOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPhoneNumberOrders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPhoneNumberOrdersRequest,
     output: ListPhoneNumberOrdersResponse,
     errors: [
@@ -3960,13 +3985,17 @@ export const listPhoneNumberOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the SIP media applications under the administrator's AWS account.
  */
-export const listSipMediaApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSipMediaApplications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSipMediaApplicationsRequest,
     output: ListSipMediaApplicationsResponse,
     errors: [
@@ -3977,29 +4006,42 @@ export const listSipMediaApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SipMediaApplications",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the SIP rules under the administrator's AWS account.
  */
-export const listSipRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSipRulesRequest,
-  output: ListSipRulesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listSipRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSipRulesRequest,
+    output: ListSipRulesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SipRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon Chime SDK Voice Connector groups in the administrator's AWS
  * account.
  */
-export const listVoiceConnectorGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVoiceConnectorGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVoiceConnectorGroupsRequest,
     output: ListVoiceConnectorGroupsResponse,
     errors: [
@@ -4010,29 +4052,39 @@ export const listVoiceConnectorGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the Amazon Chime SDK Voice Connectors in the administrators
  * AWS account.
  */
-export const listVoiceConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVoiceConnectorsRequest,
-  output: ListVoiceConnectorsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listVoiceConnectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVoiceConnectorsRequest,
+    output: ListVoiceConnectorsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches the provisioned phone numbers in an organization.
  */
-export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchAvailablePhoneNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchAvailablePhoneNumbersRequest,
     output: SearchAvailablePhoneNumbersResponse,
     errors: [
@@ -4044,8 +4096,12 @@ export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the phone number settings for the administrator's AWS account,
  * such as the default outbound calling name.

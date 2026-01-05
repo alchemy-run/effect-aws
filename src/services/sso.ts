@@ -407,31 +407,47 @@ export const logout = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all roles that are assigned to the user for a given AWS account.
  */
-export const listAccountRoles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountRolesRequest,
-  output: ListAccountRolesResponse,
-  errors: [
-    InvalidRequestException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listAccountRoles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountRolesRequest,
+    output: ListAccountRolesResponse,
+    errors: [
+      InvalidRequestException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "roleList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all AWS accounts assigned to the user. These AWS accounts are assigned by the
  * administrator of the account. For more information, see Assign User Access in the *IAM Identity Center User Guide*. This operation
  * returns a paginated response.
  */
-export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountsRequest,
-  output: ListAccountsResponse,
-  errors: [
-    InvalidRequestException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountsRequest,
+    output: ListAccountsResponse,
+    errors: [
+      InvalidRequestException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accountList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the STS short-term credentials for a given role name that is assigned to the
  * user.

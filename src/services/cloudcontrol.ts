@@ -544,13 +544,18 @@ export class UnsupportedActionException extends S.TaggedError<UnsupportedActionE
  *
  * Resource operation requests expire after 7 days.
  */
-export const listResourceRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceRequests =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceRequestsInput,
     output: ListResourceRequestsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceRequestStatusSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the current status of a resource operation request. For more information, see
  * Tracking the progress of resource operation requests in the
@@ -689,29 +694,37 @@ export const updateResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can use this action to return information about existing resources in your account and
  * Amazon Web Services Region, whether those resources were provisioned using Cloud Control API.
  */
-export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourcesInput,
-  output: ListResourcesOutput,
-  errors: [
-    AlreadyExistsException,
-    GeneralServiceException,
-    HandlerFailureException,
-    HandlerInternalFailureException,
-    InvalidCredentialsException,
-    InvalidRequestException,
-    NetworkFailureException,
-    NotStabilizedException,
-    NotUpdatableException,
-    PrivateTypeException,
-    ResourceConflictException,
-    ResourceNotFoundException,
-    ServiceInternalErrorException,
-    ServiceLimitExceededException,
-    ThrottlingException,
-    TypeNotFoundException,
-    UnsupportedActionException,
-  ],
-}));
+export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourcesInput,
+    output: ListResourcesOutput,
+    errors: [
+      AlreadyExistsException,
+      GeneralServiceException,
+      HandlerFailureException,
+      HandlerInternalFailureException,
+      InvalidCredentialsException,
+      InvalidRequestException,
+      NetworkFailureException,
+      NotStabilizedException,
+      NotUpdatableException,
+      PrivateTypeException,
+      ResourceConflictException,
+      ResourceNotFoundException,
+      ServiceInternalErrorException,
+      ServiceLimitExceededException,
+      ThrottlingException,
+      TypeNotFoundException,
+      UnsupportedActionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceDescriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates the specified resource. For more information, see Creating a
  * resource in the *Amazon Web Services Cloud Control API User Guide*.

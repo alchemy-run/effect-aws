@@ -1099,8 +1099,8 @@ export const createPlatformApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This action is throttled at 15 transactions per second (TPS).
  */
-export const listPlatformApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlatformApplications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlatformApplicationsInput,
     output: ListPlatformApplicationsResponse,
     errors: [
@@ -1108,8 +1108,12 @@ export const listPlatformApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalErrorException,
       InvalidParameterException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PlatformApplications",
+    } as const,
+  }));
 /**
  * Returns a list of the requester's subscriptions. Each call returns a limited list of
  * subscriptions, up to 100. If there are more subscriptions, a `NextToken` is
@@ -1118,15 +1122,22 @@ export const listPlatformApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubscriptionsInput,
-  output: ListSubscriptionsResponse,
-  errors: [
-    AuthorizationErrorException,
-    InternalErrorException,
-    InvalidParameterException,
-  ],
-}));
+export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSubscriptionsInput,
+    output: ListSubscriptionsResponse,
+    errors: [
+      AuthorizationErrorException,
+      InternalErrorException,
+      InvalidParameterException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscriptions",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the requester's topics. Each call returns a limited list of topics,
  * up to 100. If there are more topics, a `NextToken` is also returned. Use the
@@ -1135,7 +1146,7 @@ export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsInput,
   output: ListTopicsResponse,
   errors: [
@@ -1143,6 +1154,11 @@ export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalErrorException,
     InvalidParameterException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Topics",
+  } as const,
 }));
 /**
  * Accepts a phone number and indicates whether the phone holder has opted out of
@@ -1189,8 +1205,8 @@ export const getSMSAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `NextToken` string received from the previous call. When there are no
  * more records to return, `NextToken` will be null.
  */
-export const listPhoneNumbersOptedOut = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPhoneNumbersOptedOut =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPhoneNumbersOptedOutInput,
     output: ListPhoneNumbersOptedOutResponse,
     errors: [
@@ -1199,8 +1215,12 @@ export const listPhoneNumbersOptedOut = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ThrottledException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "phoneNumbers",
+    } as const,
+  }));
 /**
  * Deletes the endpoint for a device and mobile app from Amazon SNS. This action is
  * idempotent. For more information, see Using Amazon SNS Mobile Push
@@ -1297,8 +1317,8 @@ export const addPermission = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information about origination numbers, see Origination numbers in the Amazon SNS Developer
  * Guide.
  */
-export const listOriginationNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOriginationNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOriginationNumbersRequest,
     output: ListOriginationNumbersResult,
     errors: [
@@ -1308,8 +1328,13 @@ export const listOriginationNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PhoneNumbers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the calling Amazon Web Services account's current verified and pending destination phone
  * numbers in the SMS sandbox.
@@ -1323,8 +1348,8 @@ export const listOriginationNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * see SMS sandbox in
  * the *Amazon SNS Developer Guide*.
  */
-export const listSMSSandboxPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSMSSandboxPhoneNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSMSSandboxPhoneNumbersInput,
     output: ListSMSSandboxPhoneNumbersResult,
     errors: [
@@ -1334,8 +1359,13 @@ export const listSMSSandboxPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottledException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PhoneNumbers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the endpoints and endpoint attributes for devices in a supported push
  * notification service, such as GCM (Firebase Cloud Messaging) and APNS. The results for
@@ -1350,7 +1380,7 @@ export const listSMSSandboxPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This action is throttled at 30 transactions per second (TPS).
  */
 export const listEndpointsByPlatformApplication =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEndpointsByPlatformApplicationInput,
     output: ListEndpointsByPlatformApplicationResponse,
     errors: [
@@ -1359,6 +1389,11 @@ export const listEndpointsByPlatformApplication =
       InvalidParameterException,
       NotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Endpoints",
+    } as const,
   }));
 /**
  * Creates an endpoint for a device and mobile app on one of the supported push
@@ -1445,8 +1480,8 @@ export const getSubscriptionAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This action is throttled at 30 transactions per second (TPS).
  */
-export const listSubscriptionsByTopic = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubscriptionsByTopic =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubscriptionsByTopicInput,
     output: ListSubscriptionsByTopicResponse,
     errors: [
@@ -1455,8 +1490,12 @@ export const listSubscriptionsByTopic = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       NotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscriptions",
+    } as const,
+  }));
 /**
  * Removes a statement from a topic's access control policy.
  *

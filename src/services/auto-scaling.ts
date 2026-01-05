@@ -2999,19 +2999,37 @@ export const getPredictiveScalingForecast =
  * Gets information about the Auto Scaling instances in the account and Region.
  */
 export const describeAutoScalingInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAutoScalingInstancesType,
     output: AutoScalingInstancesType,
     errors: [InvalidNextToken, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AutoScalingInstances",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Gets information about the scaling policies in the account and Region.
  */
-export const describePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePoliciesType,
-  output: PoliciesType,
-  errors: [InvalidNextToken, ResourceContentionFault, ServiceLinkedRoleFailure],
-}));
+export const describePolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribePoliciesType,
+    output: PoliciesType,
+    errors: [
+      InvalidNextToken,
+      ResourceContentionFault,
+      ServiceLinkedRoleFailure,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScalingPolicies",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Launches a specified number of instances in an Auto Scaling group. Returns instance IDs and
  * other details if launch is successful or error details if launch is unsuccessful.
@@ -3101,10 +3119,16 @@ export const rollbackInstanceRefresh = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets information about the launch configurations in the account and Region.
  */
 export const describeLaunchConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: LaunchConfigurationNamesType,
     output: LaunchConfigurationsType,
     errors: [InvalidNextToken, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LaunchConfigurations",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * This API operation is superseded by DescribeTrafficSources,
@@ -3142,13 +3166,17 @@ export const describeLaunchConfigurations =
  * distribute traffic across the instances in your Auto Scaling group in the
  * *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeLoadBalancers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLoadBalancers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLoadBalancersRequest,
     output: DescribeLoadBalancersResponse,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * This API operation is superseded by DescribeTrafficSources,
  * which can describe multiple traffic sources types. We recommend using
@@ -3186,20 +3214,31 @@ export const describeLoadBalancers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * were attached by using AttachTrafficSources.
  */
 export const describeLoadBalancerTargetGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLoadBalancerTargetGroupsRequest,
     output: DescribeLoadBalancerTargetGroupsResponse,
     errors: [InvalidNextToken, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Gets information about the Amazon SNS notifications that are configured for one or more
  * Auto Scaling groups.
  */
 export const describeNotificationConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNotificationConfigurationsType,
     output: DescribeNotificationConfigurationsAnswer,
     errors: [InvalidNextToken, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NotificationConfigurations",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Gets information about the scaling activities in the account and Region.
@@ -3214,13 +3253,18 @@ export const describeNotificationConfigurations =
  * the `StatusMessage` element in the response indicates the cause of the
  * failure. For help interpreting the `StatusMessage`, see Troubleshooting Amazon EC2 Auto Scaling in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeScalingActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScalingActivities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScalingActivitiesType,
     output: ActivitiesType,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Activities",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Gets information about the scheduled actions that haven't run or that have not reached
  * their end time.
@@ -3228,13 +3272,18 @@ export const describeScalingActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To describe the scaling activities for scheduled actions that have already run, call
  * the DescribeScalingActivities API.
  */
-export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScheduledActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScheduledActionsType,
     output: ScheduledActionsType,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledUpdateGroupActions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes the specified tags.
  *
@@ -3249,11 +3298,19 @@ export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Tag Auto Scaling groups and
  * instances in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTagsType,
-  output: TagsType,
-  errors: [InvalidNextToken, ResourceContentionFault],
-}));
+export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTagsType,
+    output: TagsType,
+    errors: [InvalidNextToken, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Gets information about the traffic sources for the specified Auto Scaling group.
  *
@@ -3263,24 +3320,36 @@ export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you do not provide a traffic source type, then the results include all the traffic
  * sources for the specified Auto Scaling group.
  */
-export const describeTrafficSources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTrafficSources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrafficSourcesRequest,
     output: DescribeTrafficSourcesResponse,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Gets information about a warm pool and its instances.
  *
  * For more information, see Warm pools for
  * Amazon EC2 Auto Scaling in the *Amazon EC2 Auto Scaling User Guide*.
  */
-export const describeWarmPool = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeWarmPoolType,
-  output: DescribeWarmPoolAnswer,
-  errors: [InvalidNextToken, LimitExceededFault, ResourceContentionFault],
-}));
+export const describeWarmPool = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeWarmPoolType,
+    output: DescribeWarmPoolAnswer,
+    errors: [InvalidNextToken, LimitExceededFault, ResourceContentionFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Gets information about the Auto Scaling groups in the account and Region.
  *
@@ -3293,13 +3362,18 @@ export const describeWarmPool = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * information about the instances in a warm pool, you must call the
  * DescribeWarmPool API.
  */
-export const describeAutoScalingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAutoScalingGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: AutoScalingGroupNamesType,
     output: AutoScalingGroupsType,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AutoScalingGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Gets information about the instance refreshes for the specified Auto Scaling group from the
  * previous six weeks.
@@ -3315,13 +3389,17 @@ export const describeAutoScalingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * is initiated while an instance refresh is in progress, Amazon EC2 Auto Scaling also returns information
  * about the rollback of the instance refresh.
  */
-export const describeInstanceRefreshes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceRefreshes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceRefreshesType,
     output: DescribeInstanceRefreshesAnswer,
     errors: [InvalidNextToken, ResourceContentionFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Creates or updates a scaling policy for an Auto Scaling group. Scaling policies are used to
  * scale an Auto Scaling group based on configurable metrics. If no policies are defined, the

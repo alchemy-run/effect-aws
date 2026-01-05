@@ -1236,33 +1236,54 @@ export const deleteVirtualCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists job runs based on a set of parameters. A job run is a unit of work, such as a
  * Spark jar, PySpark script, or SparkSQL query, that you submit to Amazon EMR on EKS.
  */
-export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobRunsRequest,
-  output: ListJobRunsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobRunsRequest,
+    output: ListJobRunsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobRuns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists job templates based on a set of parameters. Job template stores values of
  * StartJobRun API request in a template and can be used to start a job run. Job template
  * allows two use cases: avoid repeating recurring StartJobRun API request values, enforcing
  * certain values in StartJobRun API request.
  */
-export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobTemplatesRequest,
-  output: ListJobTemplatesResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobTemplatesRequest,
+    output: ListJobTemplatesResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templates",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists managed endpoints based on a set of parameters. A managed endpoint is a gateway
  * that connects Amazon EMR Studio to Amazon EMR on EKS so that Amazon EMR Studio can communicate with your virtual cluster.
  */
-export const listManagedEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedEndpointsRequest,
     output: ListManagedEndpointsResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "endpoints",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists security configurations based on a set of parameters. Security configurations in
  * Amazon EMR on EKS are templates for different security setups. You can use security
@@ -1270,13 +1291,18 @@ export const listManagedEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * create a security configuration to re-use a security setup each time you create a virtual
  * cluster.
  */
-export const listSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityConfigurationsRequest,
     output: ListSecurityConfigurationsResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "securityConfigurations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists information about the specified virtual cluster. Virtual cluster is a managed
  * entity on Amazon EMR on EKS. You can create, describe, list and delete virtual
@@ -1285,11 +1311,18 @@ export const listSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * virtual clusters the same way you model Kubernetes namespaces to meet your
  * requirements.
  */
-export const listVirtualClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualClustersRequest,
-  output: ListVirtualClustersResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listVirtualClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVirtualClustersRequest,
+    output: ListVirtualClustersResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "virtualClusters",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Assigns tags to resources. A tag is a label that you assign to an Amazon Web Services
  * resource. Each tag consists of a key and an optional value, both of which you define. Tags

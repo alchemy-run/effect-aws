@@ -2093,10 +2093,16 @@ export const configureLogsForPlaybackConfiguration =
 /**
  * Lists the alerts that are associated with a MediaTailor channel assembly resource.
  */
-export const listAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAlerts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAlertsRequest,
   output: ListAlertsResponse,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Items",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Describes a channel. For information about MediaTailor channels, see Working with channels in the *MediaTailor User Guide*.
@@ -2109,11 +2115,19 @@ export const describeChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about the channels that are associated with the current AWS account.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * The live source configuration.
  */
@@ -2125,11 +2139,19 @@ export const createLiveSource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the live sources contained in a source location. A source represents a piece of content.
  */
-export const listLiveSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLiveSourcesRequest,
-  output: ListLiveSourcesResponse,
-  errors: [],
-}));
+export const listLiveSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLiveSourcesRequest,
+    output: ListLiveSourcesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a playback configuration. For information about MediaTailor configurations, see Working with configurations in AWS Elemental MediaTailor.
  */
@@ -2143,31 +2165,48 @@ export const getPlaybackConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves existing playback configurations. For information about MediaTailor configurations, see Working with Configurations in AWS Elemental MediaTailor.
  */
-export const listPlaybackConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlaybackConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlaybackConfigurationsRequest,
     output: ListPlaybackConfigurationsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the prefetch schedules for a playback configuration.
  */
-export const listPrefetchSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrefetchSchedules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrefetchSchedulesRequest,
     output: ListPrefetchSchedulesResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the source locations for a channel. A source location defines the host server URL, and contains a list of sources.
  */
-export const listSourceLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSourceLocationsRequest,
-  output: ListSourceLocationsResponse,
-  errors: [],
-}));
+export const listSourceLocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSourceLocationsRequest,
+    output: ListSourceLocationsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides details about a specific video on demand (VOD) source in a specific source location.
  */
@@ -2179,11 +2218,19 @@ export const describeVodSource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the VOD sources contained in a source location. A source represents a piece of content.
  */
-export const listVodSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVodSourcesRequest,
-  output: ListVodSourcesResponse,
-  errors: [],
-}));
+export const listVodSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVodSourcesRequest,
+    output: ListVodSourcesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a channel. For information about MediaTailor channels, see Working with channels in the *MediaTailor User Guide*.
  */
@@ -2195,11 +2242,19 @@ export const createChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about your channel's schedule.
  */
-export const getChannelSchedule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetChannelScheduleRequest,
-  output: GetChannelScheduleResponse,
-  errors: [],
-}));
+export const getChannelSchedule = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetChannelScheduleRequest,
+    output: GetChannelScheduleResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a program within a channel.
  */

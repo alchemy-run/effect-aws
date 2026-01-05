@@ -1499,11 +1499,17 @@ export const getEmailIdentity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * account. An identity can be either an email address or a domain. This operation returns
  * identities that are verified as well as those that aren't.
  */
-export const listEmailIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEmailIdentitiesRequest,
-  output: ListEmailIdentitiesResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listEmailIdentities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEmailIdentitiesRequest,
+    output: ListEmailIdentitiesResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Enable or disable the Deliverability dashboard for your Amazon Pinpoint account. When you enable the
  * Deliverability dashboard, you gain access to reputation, deliverability, and other metrics for
@@ -1666,24 +1672,32 @@ export const createEmailIdentity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * configuration set to an email, all of the rules in that configuration set are applied to
  * the email.
  */
-export const listConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationSetsRequest,
     output: ListConfigurationSetsResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List all of the dedicated IP pools that exist in your Amazon Pinpoint account in the current
  * AWS Region.
  */
-export const listDedicatedIpPools = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDedicatedIpPools =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDedicatedIpPoolsRequest,
     output: ListDedicatedIpPoolsResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Enable or disable the automatic warm-up feature for dedicated IP addresses.
  */
@@ -1707,21 +1721,33 @@ export const putAccountSendingAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * List the dedicated IP addresses that are associated with your Amazon Pinpoint
  * account.
  */
-export const getDedicatedIps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDedicatedIpsRequest,
-  output: GetDedicatedIpsResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const getDedicatedIps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDedicatedIpsRequest,
+    output: GetDedicatedIpsResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Show a list of the predictive inbox placement tests that you've performed, regardless of their statuses. For
  * predictive inbox placement tests that are complete, you can use the `GetDeliverabilityTestReport`
  * operation to view the results.
  */
 export const listDeliverabilityTestReports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeliverabilityTestReportsRequest,
     output: ListDeliverabilityTestReportsResponse,
     errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Retrieve deliverability data for all the campaigns that used a specific domain to send
@@ -1730,10 +1756,15 @@ export const listDeliverabilityTestReports =
  * for the domain.
  */
 export const listDomainDeliverabilityCampaigns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainDeliverabilityCampaignsRequest,
     output: ListDomainDeliverabilityCampaignsResponse,
     errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Retrieve a list of the tags (keys and values) that are associated with a specified

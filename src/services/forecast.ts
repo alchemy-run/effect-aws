@@ -2279,11 +2279,19 @@ export const describeDatasetImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * dataset group ARN with the DescribeDatasetGroup
  * operation.
  */
-export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetGroupsRequest,
-  output: ListDatasetGroupsResponse,
-  errors: [InvalidNextTokenException],
-}));
+export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetGroupsRequest,
+    output: ListDatasetGroupsResponse,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DatasetGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of dataset import jobs created using the CreateDatasetImportJob
  * operation. For each import job, this operation returns a summary of its properties, including
@@ -2291,13 +2299,18 @@ export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * ARN with the DescribeDatasetImportJob
  * operation. You can filter the list by providing an array of Filter objects.
  */
-export const listDatasetImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDatasetImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDatasetImportJobsRequest,
     output: ListDatasetImportJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DatasetImportJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the monitoring evaluation results and predictor events collected by
  * the monitor resource during different windows of time.
@@ -2305,8 +2318,8 @@ export const listDatasetImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For information about monitoring see predictor-monitoring. For
  * more information about retrieving monitoring results see Viewing Monitoring Results.
  */
-export const listMonitorEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMonitorEvaluations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMonitorEvaluationsRequest,
     output: ListMonitorEvaluationsResponse,
     errors: [
@@ -2314,18 +2327,31 @@ export const listMonitorEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PredictorMonitorEvaluations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of datasets created using the CreateDataset operation. For each
  * dataset, a summary of its properties, including its Amazon Resource Name (ARN), is returned.
  * To retrieve the complete set of properties, use the ARN with the DescribeDataset operation.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [InvalidNextTokenException],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Datasets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Explainability resources created using the CreateExplainability operation. This operation returns a summary for
  * each Explainability. You can filter the list using an array of Filter
@@ -2334,13 +2360,18 @@ export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * To retrieve the complete set of properties for a particular Explainability resource,
  * use the ARN with the DescribeExplainability operation.
  */
-export const listExplainabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExplainabilities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExplainabilitiesRequest,
     output: ListExplainabilitiesResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Explainabilities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of Explainability exports created using the CreateExplainabilityExport operation. This operation returns a summary
  * for each Explainability export. You can filter the list using an array of Filter objects.
@@ -2348,26 +2379,36 @@ export const listExplainabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To retrieve the complete set of properties for a particular Explainability export, use
  * the ARN with the DescribeExplainability operation.
  */
-export const listExplainabilityExports = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExplainabilityExports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExplainabilityExportsRequest,
     output: ListExplainabilityExportsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExplainabilityExports",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of forecast export jobs created using the CreateForecastExportJob operation. For each forecast export job, this operation
  * returns a summary of its properties, including its Amazon Resource Name (ARN). To retrieve the
  * complete set of properties, use the ARN with the DescribeForecastExportJob
  * operation. You can filter the list using an array of Filter objects.
  */
-export const listForecastExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listForecastExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListForecastExportJobsRequest,
     output: ListForecastExportJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ForecastExportJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of forecasts created using the CreateForecast operation.
  * For each forecast, this operation returns a summary of its properties, including its Amazon
@@ -2375,20 +2416,36 @@ export const listForecastExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * DescribeForecast operation. You can filter the list using an array of
  * Filter objects.
  */
-export const listForecasts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListForecastsRequest,
-  output: ListForecastsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listForecasts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListForecastsRequest,
+    output: ListForecastsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Forecasts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of monitors created with the CreateMonitor operation and CreateAutoPredictor operation. For each monitor resource, this operation returns of a summary of its properties, including its Amazon Resource Name (ARN). You
  * can retrieve a complete set of properties of a monitor resource by specify the monitor's ARN in the DescribeMonitor operation.
  */
-export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMonitorsRequest,
-  output: ListMonitorsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMonitorsRequest,
+    output: ListMonitorsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Monitors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of predictor backtest export jobs created using the CreatePredictorBacktestExportJob operation. This operation returns a
  * summary for each backtest export job. You can filter the list using an array of Filter objects.
@@ -2397,10 +2454,16 @@ export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the ARN with the DescribePredictorBacktestExportJob operation.
  */
 export const listPredictorBacktestExportJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPredictorBacktestExportJobsRequest,
     output: ListPredictorBacktestExportJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PredictorBacktestExportJobs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of predictors created using the CreateAutoPredictor or
@@ -2410,37 +2473,65 @@ export const listPredictorBacktestExportJobs =
  * You can retrieve the complete set of properties by using the ARN with the DescribeAutoPredictor and DescribePredictor operations. You
  * can filter the list using an array of Filter objects.
  */
-export const listPredictors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPredictorsRequest,
-  output: ListPredictorsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
-/**
- * Returns a list of what-if analyses created using the CreateWhatIfAnalysis operation. For each what-if analysis, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if analysis ARN with the DescribeWhatIfAnalysis operation.
- */
-export const listWhatIfAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWhatIfAnalysesRequest,
-  output: ListWhatIfAnalysesResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
-/**
- * Returns a list of what-if forecast exports created using the CreateWhatIfForecastExport operation. For each what-if forecast export, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if forecast export ARN with the DescribeWhatIfForecastExport operation.
- */
-export const listWhatIfForecastExports = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listPredictors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListWhatIfForecastExportsRequest,
-    output: ListWhatIfForecastExportsResponse,
+    input: ListPredictorsRequest,
+    output: ListPredictorsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Predictors",
+      pageSize: "MaxResults",
+    } as const,
   }),
 );
 /**
+ * Returns a list of what-if analyses created using the CreateWhatIfAnalysis operation. For each what-if analysis, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if analysis ARN with the DescribeWhatIfAnalysis operation.
+ */
+export const listWhatIfAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWhatIfAnalysesRequest,
+    output: ListWhatIfAnalysesResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WhatIfAnalyses",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
+/**
+ * Returns a list of what-if forecast exports created using the CreateWhatIfForecastExport operation. For each what-if forecast export, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if forecast export ARN with the DescribeWhatIfForecastExport operation.
+ */
+export const listWhatIfForecastExports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListWhatIfForecastExportsRequest,
+    output: ListWhatIfForecastExportsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WhatIfForecastExports",
+      pageSize: "MaxResults",
+    } as const,
+  }));
+/**
  * Returns a list of what-if forecasts created using the CreateWhatIfForecast operation. For each what-if forecast, this operation returns a summary of its properties, including its Amazon Resource Name (ARN). You can retrieve the complete set of properties by using the what-if forecast ARN with the DescribeWhatIfForecast operation.
  */
-export const listWhatIfForecasts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWhatIfForecastsRequest,
-  output: ListWhatIfForecastsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listWhatIfForecasts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListWhatIfForecastsRequest,
+    output: ListWhatIfForecastsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WhatIfForecasts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a dataset group, which holds a collection of related datasets. You can add
  * datasets to the dataset group when you create the dataset group, or later by using the UpdateDatasetGroup operation.

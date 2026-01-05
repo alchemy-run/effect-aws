@@ -800,17 +800,24 @@ export const deleteBackup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Cross-account use:** No. You cannot perform this operation on CloudHSM clusters in a different Amazon Web Services account.
  */
-export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeClustersRequest,
-  output: DescribeClustersResponse,
-  errors: [
-    CloudHsmAccessDeniedException,
-    CloudHsmInternalFailureException,
-    CloudHsmInvalidRequestException,
-    CloudHsmServiceException,
-    CloudHsmTagException,
-  ],
-}));
+export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeClustersRequest,
+    output: DescribeClustersResponse,
+    errors: [
+      CloudHsmAccessDeniedException,
+      CloudHsmInternalFailureException,
+      CloudHsmInvalidRequestException,
+      CloudHsmServiceException,
+      CloudHsmTagException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of tags for the specified CloudHSM cluster.
  *
@@ -822,7 +829,7 @@ export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Cross-account use:** No. You cannot perform this operation on an CloudHSM resource in a different Amazon Web Services account.
  */
-export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
   errors: [
@@ -833,6 +840,11 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     CloudHsmServiceException,
     CloudHsmTagException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a new CloudHSM cluster.
@@ -863,18 +875,25 @@ export const createCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Cross-account use:** Yes. Customers can describe backups in other Amazon Web Services accounts that are shared with them.
  */
-export const describeBackups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeBackupsRequest,
-  output: DescribeBackupsResponse,
-  errors: [
-    CloudHsmAccessDeniedException,
-    CloudHsmInternalFailureException,
-    CloudHsmInvalidRequestException,
-    CloudHsmResourceNotFoundException,
-    CloudHsmServiceException,
-    CloudHsmTagException,
-  ],
-}));
+export const describeBackups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeBackupsRequest,
+    output: DescribeBackupsResponse,
+    errors: [
+      CloudHsmAccessDeniedException,
+      CloudHsmInternalFailureException,
+      CloudHsmInvalidRequestException,
+      CloudHsmResourceNotFoundException,
+      CloudHsmServiceException,
+      CloudHsmTagException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Copy an CloudHSM cluster backup to a different region.
  *

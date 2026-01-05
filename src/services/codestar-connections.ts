@@ -780,11 +780,18 @@ export const deleteConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the connections associated with your account.
  */
-export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectionsInput,
-  output: ListConnectionsOutput,
-  errors: [ResourceNotFoundException],
-}));
+export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectionsInput,
+    output: ListConnectionsOutput,
+    errors: [ResourceNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the set of key-value pairs (metadata) that are used to manage the resource.
  */
@@ -836,10 +843,15 @@ export const getHost = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the hosts associated with your account.
  */
-export const listHosts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listHosts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHostsInput,
   output: ListHostsOutput,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * The host to be deleted. Before you delete a host, all connections associated to the host must be deleted.
@@ -954,18 +966,24 @@ export const getRepositoryLink = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the repository links created for connections in your account.
  */
-export const listRepositoryLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRepositoryLinksInput,
-  output: ListRepositoryLinksOutput,
-  errors: [
-    AccessDeniedException,
-    ConcurrentModificationException,
-    InternalServerException,
-    InvalidInputException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listRepositoryLinks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRepositoryLinksInput,
+    output: ListRepositoryLinksOutput,
+    errors: [
+      AccessDeniedException,
+      ConcurrentModificationException,
+      InternalServerException,
+      InvalidInputException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes the sync configuration for a specified repository and connection.
  */
@@ -986,8 +1004,8 @@ export const deleteSyncConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of sync configurations for a specified repository.
  */
-export const listSyncConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSyncConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSyncConfigurationsInput,
     output: ListSyncConfigurationsOutput,
     errors: [
@@ -997,8 +1015,12 @@ export const listSyncConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the most recent sync blockers.
  */

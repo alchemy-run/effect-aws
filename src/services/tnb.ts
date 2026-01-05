@@ -1453,8 +1453,8 @@ export const getSolNetworkPackage = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * A network function instance is a function in a function package .
  */
-export const listSolFunctionInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolFunctionInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolFunctionInstancesInput,
     output: ListSolFunctionInstancesOutput,
     errors: [
@@ -1463,15 +1463,20 @@ export const listSolFunctionInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "functionInstances",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists information about function packages.
  *
  * A function package is a .zip file in CSAR (Cloud Service Archive) format that contains a network function (an ETSI standard telecommunication application) and function package descriptor that uses the TOSCA standard to describe how the network functions should run on your network.
  */
-export const listSolFunctionPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolFunctionPackages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolFunctionPackagesInput,
     output: ListSolFunctionPackagesOutput,
     errors: [
@@ -1480,15 +1485,20 @@ export const listSolFunctionPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "functionPackages",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists your network instances.
  *
  * A network instance is a single network created in Amazon Web Services TNB that can be deployed and on which life-cycle operations (like terminate, update, and delete) can be performed.
  */
-export const listSolNetworkInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolNetworkInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolNetworkInstancesInput,
     output: ListSolNetworkInstancesOutput,
     errors: [
@@ -1497,16 +1507,21 @@ export const listSolNetworkInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "networkInstances",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists details for a network operation, including when the operation started and the
  * status of the operation.
  *
  * A network operation is any operation that is done to your network, such as network instance instantiation or termination.
  */
-export const listSolNetworkOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolNetworkOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolNetworkOperationsInput,
     output: ListSolNetworkOperationsOutput,
     errors: [
@@ -1515,15 +1530,20 @@ export const listSolNetworkOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "networkOperations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists network packages.
  *
  * A network package is a .zip file in CSAR (Cloud Service Archive) format defines the function packages you want to deploy and the Amazon Web Services infrastructure you want to deploy them on.
  */
-export const listSolNetworkPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolNetworkPackages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolNetworkPackagesInput,
     output: ListSolNetworkPackagesOutput,
     errors: [
@@ -1532,8 +1552,13 @@ export const listSolNetworkPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "networkPackages",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets the details of the network instance.
  *

@@ -2295,35 +2295,67 @@ export const createConnector = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List Connectors.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List exports.
  */
-export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportsRequest,
-  output: ListExportsResponse,
-  errors: [UninitializedAccountException],
-}));
+export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportsRequest,
+    output: ListExportsResponse,
+    errors: [UninitializedAccountException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List imports.
  */
-export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportsRequest,
-  output: ListImportsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportsRequest,
+    output: ListImportsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Jobs. Use the JobsID and fromDate and toData filters to limit which jobs are returned. The response is sorted by creationDataTime - latest date first. Jobs are normally created by the StartTest, StartCutover, and TerminateTargetInstances APIs. Jobs are also created by DiagnosticLaunch and TerminateDiagnosticInstances, which are APIs available only to *Support* and only used in response to relevant support tickets.
  */
-export const describeJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeJobsRequest,
-  output: DescribeJobsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const describeJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeJobsRequest,
+    output: DescribeJobsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new Launch Configuration Template.
  */
@@ -2353,28 +2385,38 @@ export const putTemplateAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all SourceServers or multiple SourceServers by ID.
  */
-export const describeSourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSourceServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSourceServersRequest,
     output: DescribeSourceServersResponse,
     errors: [UninitializedAccountException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List source server post migration custom actions.
  */
-export const listSourceServerActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSourceServerActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourceServerActionsRequest,
     output: ListSourceServerActionsResponse,
     errors: [ResourceNotFoundException, UninitializedAccountException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the installed vCenter clients.
  */
-export const describeVcenterClients = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeVcenterClients =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVcenterClientsRequest,
     output: DescribeVcenterClientsResponse,
     errors: [
@@ -2382,8 +2424,13 @@ export const describeVcenterClients = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UninitializedAccountException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Create wave.
  */
@@ -2399,10 +2446,16 @@ export const createWave = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all waves or multiple waves by ID.
  */
-export const listWaves = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listWaves = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListWavesRequest,
   output: ListWavesResponse,
   errors: [UninitializedAccountException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * List all tags for your Application Migration Service resources.
@@ -2839,7 +2892,7 @@ export const updateLaunchConfigurationTemplate =
  * Lists all Launch Configuration Templates, filtered by Launch Configuration Template IDs
  */
 export const describeLaunchConfigurationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLaunchConfigurationTemplatesRequest,
     output: DescribeLaunchConfigurationTemplatesResponse,
     errors: [
@@ -2847,6 +2900,12 @@ export const describeLaunchConfigurationTemplates =
       UninitializedAccountException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a new ReplicationConfigurationTemplate.
@@ -2865,7 +2924,7 @@ export const createReplicationConfigurationTemplate =
  * Lists all ReplicationConfigurationTemplates, filtered by Source Server IDs.
  */
 export const describeReplicationConfigurationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationConfigurationTemplatesRequest,
     output: DescribeReplicationConfigurationTemplatesResponse,
     errors: [
@@ -2873,6 +2932,12 @@ export const describeReplicationConfigurationTemplates =
       UninitializedAccountException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all LaunchConfigurations available, filtered by Source Server IDs.
@@ -2977,11 +3042,18 @@ export const deleteVcenterClient = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List Managed Accounts.
  */
-export const listManagedAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListManagedAccountsRequest,
-  output: ListManagedAccountsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const listManagedAccounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListManagedAccountsRequest,
+    output: ListManagedAccountsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Delete application.
  */
@@ -2997,11 +3069,19 @@ export const deleteApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all applications or multiple applications by ID.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [UninitializedAccountException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [UninitializedAccountException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Unarchive application.
  */
@@ -3059,35 +3139,65 @@ export const startExport = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List export errors.
  */
-export const listExportErrors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportErrorsRequest,
-  output: ListExportErrorsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const listExportErrors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportErrorsRequest,
+    output: ListExportErrorsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List import errors.
  */
-export const listImportErrors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportErrorsRequest,
-  output: ListImportErrorsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const listImportErrors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportErrorsRequest,
+    output: ListImportErrorsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves detailed job log items with paging.
  */
-export const describeJobLogItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeJobLogItemsRequest,
-  output: DescribeJobLogItemsResponse,
-  errors: [UninitializedAccountException, ValidationException],
-}));
+export const describeJobLogItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeJobLogItemsRequest,
+    output: DescribeJobLogItemsResponse,
+    errors: [UninitializedAccountException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List template post migration custom actions.
  */
-export const listTemplateActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplateActionsRequest,
-  output: ListTemplateActionsResponse,
-  errors: [ResourceNotFoundException, UninitializedAccountException],
-}));
+export const listTemplateActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTemplateActionsRequest,
+    output: ListTemplateActionsResponse,
+    errors: [ResourceNotFoundException, UninitializedAccountException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Disconnects specific Source Servers from Application Migration Service. Data replication is stopped immediately. All AWS resources created by Application Migration Service for enabling the replication of these source servers will be terminated / deleted within 90 minutes. Launched Test or Cutover instances will NOT be terminated. If the agent on the source server has not been prevented from communicating with the Application Migration Service service, then it will receive a command to uninstall itself (within approximately 10 minutes). The following properties of the SourceServer will be changed immediately: dataReplicationInfo.dataReplicationState will be set to DISCONNECTED; The totalStorageBytes property for each of dataReplicationInfo.replicatedDisks will be set to zero; dataReplicationInfo.lagDuration and dataReplicationInfo.lagDuration will be nullified.
  */

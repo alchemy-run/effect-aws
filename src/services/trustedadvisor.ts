@@ -814,7 +814,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * List a filterable set of Checks
  */
-export const listChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listChecks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListChecksRequest,
   output: ListChecksResponse,
   errors: [
@@ -823,13 +823,19 @@ export const listChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "checkSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists the accounts that own the resources for an organization aggregate recommendation. This API only
  * supports prioritized recommendations.
  */
 export const listOrganizationRecommendationAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationRecommendationAccountsRequest,
     output: ListOrganizationRecommendationAccountsResponse,
     errors: [
@@ -839,13 +845,19 @@ export const listOrganizationRecommendationAccounts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accountRecommendationLifecycleSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List Resources of a Recommendation within an Organization. This API only supports prioritized
  * recommendations.
  */
 export const listOrganizationRecommendationResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationRecommendationResourcesRequest,
     output: ListOrganizationRecommendationResourcesResponse,
     errors: [
@@ -855,12 +867,18 @@ export const listOrganizationRecommendationResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "organizationRecommendationResourceSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List Resources of a Recommendation
  */
-export const listRecommendationResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendationResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendationResourcesRequest,
     output: ListRecommendationResourcesResponse,
     errors: [
@@ -870,8 +888,13 @@ export const listRecommendationResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendationResourceSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Update the lifecycle of a Recommendation within an Organization. This API only supports prioritized
  * recommendations.
@@ -926,7 +949,7 @@ export const getOrganizationRecommendation =
  * recommendations.
  */
 export const listOrganizationRecommendations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationRecommendationsRequest,
     output: ListOrganizationRecommendationsResponse,
     errors: [
@@ -935,20 +958,33 @@ export const listOrganizationRecommendations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "organizationRecommendationSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List a filterable set of Recommendations
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsRequest,
-  output: ListRecommendationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsRequest,
+    output: ListRecommendationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Update one or more exclusion status for a list of recommendation resources
  */

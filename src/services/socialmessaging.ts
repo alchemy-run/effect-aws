@@ -1070,7 +1070,7 @@ export const deleteWhatsAppMessageTemplate =
  * Lists WhatsApp message templates for a specific WhatsApp Business Account.
  */
 export const listWhatsAppMessageTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWhatsAppMessageTemplatesInput,
     output: ListWhatsAppMessageTemplatesOutput,
     errors: [
@@ -1080,12 +1080,18 @@ export const listWhatsAppMessageTemplates =
       ResourceNotFoundException,
       ThrottledRequestException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templates",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List all WhatsApp Business Accounts linked to your Amazon Web Services account.
  */
 export const listLinkedWhatsAppBusinessAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLinkedWhatsAppBusinessAccountsInput,
     output: ListLinkedWhatsAppBusinessAccountsOutput,
     errors: [
@@ -1094,6 +1100,12 @@ export const listLinkedWhatsAppBusinessAccounts =
       ResourceNotFoundException,
       ThrottledRequestException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "linkedAccounts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Use your WhatsApp phone number id to get the WABA account id and phone number
@@ -1234,8 +1246,8 @@ export const createWhatsAppMessageTemplateFromLibrary =
 /**
  * Lists templates available in Meta's template library for WhatsApp messaging.
  */
-export const listWhatsAppTemplateLibrary = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWhatsAppTemplateLibrary =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWhatsAppTemplateLibraryInput,
     output: ListWhatsAppTemplateLibraryOutput,
     errors: [
@@ -1245,8 +1257,13 @@ export const listWhatsAppTemplateLibrary = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottledRequestException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metaLibraryTemplates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * This is only used through the Amazon Web Services console during sign-up to associate your WhatsApp Business Account to your Amazon Web Services account.
  */

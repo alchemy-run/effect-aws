@@ -345,16 +345,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists all email contacts created under the Account.
  */
-export const listEmailContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEmailContactsRequest,
-  output: ListEmailContactsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEmailContacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEmailContactsRequest,
+    output: ListEmailContactsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "emailContacts",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an email contact.
  */

@@ -1094,16 +1094,24 @@ export const resetLandingZone = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Returns one landing zone ARN.
  */
-export const listLandingZones = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLandingZonesInput,
-  output: ListLandingZonesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLandingZones = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLandingZonesInput,
+    output: ListLandingZonesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "landingZones",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve details about an existing `Baseline` resource by specifying its identifier. For usage examples, see *the Amazon Web Services Control Tower User Guide* .
  */
@@ -1191,21 +1199,29 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a summary list of all available baselines. For usage examples, see *the Amazon Web Services Control Tower User Guide* .
  */
-export const listBaselines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBaselinesInput,
-  output: ListBaselinesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBaselines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBaselinesInput,
+    output: ListBaselinesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "baselines",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of operations in progress or queued. For usage examples, see ListControlOperation examples.
  */
-export const listControlOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listControlOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListControlOperationsInput,
     output: ListControlOperationsOutput,
     errors: [
@@ -1214,13 +1230,18 @@ export const listControlOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "controlOperations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of summaries describing `EnabledBaseline` resources. You can filter the list by the corresponding `Baseline` or `Target` of the `EnabledBaseline` resources. For usage examples, see *the Amazon Web Services Control Tower User Guide* .
  */
-export const listEnabledBaselines = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnabledBaselines =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnabledBaselinesInput,
     output: ListEnabledBaselinesOutput,
     errors: [
@@ -1229,27 +1250,39 @@ export const listEnabledBaselines = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "enabledBaselines",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the controls enabled by Amazon Web Services Control Tower on the specified organizational unit and the accounts it contains. For usage examples, see the *Controls Reference Guide* .
  */
-export const listEnabledControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnabledControlsInput,
-  output: ListEnabledControlsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnabledControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEnabledControlsInput,
+    output: ListEnabledControlsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "enabledControls",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all landing zone operations from the past 90 days. Results are sorted by time, with the most recent operation first.
  */
-export const listLandingZoneOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLandingZoneOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLandingZoneOperationsInput,
     output: ListLandingZoneOperationsOutput,
     errors: [
@@ -1258,8 +1291,13 @@ export const listLandingZoneOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "landingZoneOperations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns details about the landing zone. Displays a message in case of error.
  */

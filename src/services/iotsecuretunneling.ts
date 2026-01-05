@@ -619,11 +619,18 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListTunnels action.
  */
-export const listTunnels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTunnelsRequest,
-  output: ListTunnelsResponse,
-  errors: [],
-}));
+export const listTunnels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTunnelsRequest,
+    output: ListTunnelsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about a tunnel identified by the unique tunnel id.
  *

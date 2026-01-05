@@ -2260,10 +2260,15 @@ export const executeProvisionedProductPlan =
  * This API takes either a `ProvisonedProductId` or a `ProvisionedProductName`, along with a list of one or more output keys, and responds with the key/value pairs of those outputs.
  */
 export const getProvisionedProductOutputs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetProvisionedProductOutputsInput,
     output: GetProvisionedProductOutputsOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Requests the import of a resource as an Service Catalog provisioned product
@@ -2310,33 +2315,45 @@ export const importAsProvisionedProduct = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * this account. By specifying the `PortfolioShareType`, you can list portfolios for which
  * organizational shares were accepted by this account.
  */
-export const listAcceptedPortfolioShares = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAcceptedPortfolioShares =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAcceptedPortfolioSharesInput,
     output: ListAcceptedPortfolioSharesOutput,
     errors: [InvalidParametersException, OperationNotSupportedException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists all the budgets associated to the specified resource.
  */
-export const listBudgetsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBudgetsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBudgetsForResourceInput,
     output: ListBudgetsForResourceOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists the constraints for the specified portfolio and product.
  */
-export const listConstraintsForPortfolio = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConstraintsForPortfolio =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConstraintsForPortfolioInput,
     output: ListConstraintsForPortfolioOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists the organization nodes that have access to the specified portfolio. This API can
  * only be called by the management account in the organization or by a delegated
@@ -2345,7 +2362,7 @@ export const listConstraintsForPortfolio = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If a delegated admin is de-registered, they can no longer perform this operation.
  */
 export const listOrganizationPortfolioAccess =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationPortfolioAccessInput,
     output: ListOrganizationPortfolioAccessOutput,
     errors: [
@@ -2353,35 +2370,57 @@ export const listOrganizationPortfolioAccess =
       OperationNotSupportedException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Lists the account IDs that have access to the specified portfolio.
  *
  * A delegated admin can list the accounts that have access to the shared portfolio. Note that if a delegated admin is de-registered, they can no longer perform this operation.
  */
-export const listPortfolioAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPortfolioAccessInput,
-  output: ListPortfolioAccessOutput,
-  errors: [InvalidParametersException, ResourceNotFoundException],
-}));
+export const listPortfolioAccess =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPortfolioAccessInput,
+    output: ListPortfolioAccessOutput,
+    errors: [InvalidParametersException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists all portfolios in the catalog.
  */
-export const listPortfolios = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPortfoliosInput,
-  output: ListPortfoliosOutput,
-  errors: [InvalidParametersException],
-}));
+export const listPortfolios = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPortfoliosInput,
+    output: ListPortfoliosOutput,
+    errors: [InvalidParametersException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Lists all portfolios that the specified product is associated with.
  */
-export const listPortfoliosForProduct = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPortfoliosForProduct =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPortfoliosForProductInput,
     output: ListPortfoliosForProductOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists all provisioning artifacts (also known as versions) for the specified product.
  */
@@ -2396,10 +2435,15 @@ export const listProvisioningArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a paginated list of self-service actions associated with the specified Product ID and Provisioning Artifact ID.
  */
 export const listServiceActionsForProvisioningArtifact =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceActionsForProvisioningArtifactInput,
     output: ListServiceActionsForProvisioningArtifactOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Lists the provisioned products that are available (not terminated).
@@ -2416,13 +2460,17 @@ export const scanProvisionedProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about the products for the specified portfolio or all products.
  */
-export const searchProductsAsAdmin = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchProductsAsAdmin =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchProductsAsAdminInput,
     output: SearchProductsAsAdminOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Terminates the specified provisioned product.
  *
@@ -2905,13 +2953,17 @@ export const describePortfolio = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * The `PortfolioId` and `Type` parameters are both required.
  */
-export const describePortfolioShares = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePortfolioShares =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePortfolioSharesInput,
     output: DescribePortfolioSharesOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Gets information about the specified product.
  *
@@ -3008,29 +3060,45 @@ export const executeProvisionedProductServiceAction =
  * see Granting users access
  * in the *Service Catalog User Guide*.
  */
-export const listLaunchPaths = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLaunchPathsInput,
-  output: ListLaunchPathsOutput,
-  errors: [InvalidParametersException, ResourceNotFoundException],
-}));
+export const listLaunchPaths = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLaunchPathsInput,
+    output: ListLaunchPathsOutput,
+    errors: [InvalidParametersException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Lists all `PrincipalARN`s and corresponding `PrincipalType`s associated with the specified portfolio.
  */
-export const listPrincipalsForPortfolio = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrincipalsForPortfolio =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrincipalsForPortfolioInput,
     output: ListPrincipalsForPortfolioOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists all provisioning artifacts (also known as versions) for the specified self-service action.
  */
 export const listProvisioningArtifactsForServiceAction =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisioningArtifactsForServiceActionInput,
     output: ListProvisioningArtifactsForServiceActionOutput,
     errors: [InvalidParametersException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Lists the specified requests or all performed requests.
@@ -3043,11 +3111,18 @@ export const listRecordHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all self-service actions.
  */
-export const listServiceActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceActionsInput,
-  output: ListServiceActionsOutput,
-  errors: [InvalidParametersException],
-}));
+export const listServiceActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceActionsInput,
+    output: ListServiceActionsOutput,
+    errors: [InvalidParametersException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Returns summary information about stack instances that are associated with the specified `CFN_STACKSET` type provisioned product. You can filter for stack instances that are associated with a specific Amazon Web Services account name or Region.
  */
@@ -3361,8 +3436,8 @@ export const createTagOption = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the resources associated with the specified TagOption.
  */
-export const listResourcesForTagOption = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourcesForTagOption =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourcesForTagOptionInput,
     output: ListResourcesForTagOptionOutput,
     errors: [
@@ -3370,16 +3445,27 @@ export const listResourcesForTagOption = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       TagOptionNotMigratedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "PageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists the specified TagOptions or all TagOptions.
  */
-export const listTagOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagOptionsInput,
-  output: ListTagOptionsOutput,
-  errors: [InvalidParametersException, TagOptionNotMigratedException],
-}));
+export const listTagOptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTagOptionsInput,
+    output: ListTagOptionsOutput,
+    errors: [InvalidParametersException, TagOptionNotMigratedException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "PageToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Gets the status of the specified portfolio share operation. This API can only be called
  * by the management account in the organization or by a delegated admin.
@@ -3431,13 +3517,17 @@ export const listProvisionedProductPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about the provisioned products that meet the specified criteria.
  */
-export const searchProvisionedProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchProvisionedProducts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchProvisionedProductsInput,
     output: SearchProvisionedProductsOutput,
     errors: [InvalidParametersException],
-  }),
-);
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Creates a product.
  *
@@ -3479,8 +3569,15 @@ export const describeProvisionedProductPlan =
 /**
  * Gets information about the products to which the caller has access.
  */
-export const searchProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchProductsInput,
-  output: SearchProductsOutput,
-  errors: [InvalidParametersException],
-}));
+export const searchProducts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchProductsInput,
+    output: SearchProductsOutput,
+    errors: [InvalidParametersException],
+    pagination: {
+      inputToken: "PageToken",
+      outputToken: "NextPageToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);

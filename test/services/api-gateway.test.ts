@@ -1,5 +1,5 @@
 import { describe, expect } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Stream } from "effect";
 import {
   createApiKey,
   createDeployment,
@@ -386,6 +386,43 @@ describe.sequential("API Gateway", () => {
           deleteApiKey({ apiKey: apiKey.id! }).pipe(Effect.ignore),
         ),
       );
+    }),
+  );
+});
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+describe("Pagination", () => {
+  test(
+    "getRestApis.pages() streams full response pages",
+    Effect.gen(function* () {
+      // Stream all pages of REST APIs
+      const pages = yield* getRestApis
+        .pages({ limit: 10 })
+        .pipe(Stream.runCollect);
+
+      const pagesArray = Array.from(pages);
+      expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+    }),
+  );
+
+  test(
+    "getRestApis.items() streams RestApi objects directly",
+    Effect.gen(function* () {
+      // Stream all REST APIs using .items()
+      const apis = yield* getRestApis
+        .items({ limit: 10 })
+        .pipe(Stream.runCollect);
+
+      const apisArray = Array.from(apis);
+
+      // Each item should be a RestApi with id and name
+      for (const api of apisArray) {
+        expect(api.id).toBeDefined();
+        expect(api.name).toBeDefined();
+      }
     }),
   );
 });

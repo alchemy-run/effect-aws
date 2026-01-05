@@ -883,8 +883,8 @@ export const deleteScalingPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can filter the results using `ResourceIds` and
  * `ScalableDimension`.
  */
-export const describeScalableTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScalableTargets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScalableTargetsRequest,
     output: DescribeScalableTargetsResponse,
     errors: [
@@ -893,8 +893,13 @@ export const describeScalableTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScalableTargets",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides descriptive information about the scaling activities in the specified namespace
  * from the previous six weeks.
@@ -904,8 +909,8 @@ export const describeScalableTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For information about viewing scaling activities using the Amazon Web Services CLI, see Scaling activities for Application Auto Scaling.
  */
-export const describeScalingActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScalingActivities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScalingActivitiesRequest,
     output: DescribeScalingActivitiesResponse,
     errors: [
@@ -914,8 +919,13 @@ export const describeScalingActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScalingActivities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Registers or updates a scalable target, which is the resource that you want to
  * scale.
@@ -1011,8 +1021,8 @@ export const deregisterScalableTarget = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information, see Scheduled scaling in the *Application Auto Scaling User Guide*.
  */
-export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScheduledActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScheduledActionsRequest,
     output: DescribeScheduledActionsResponse,
     errors: [
@@ -1021,8 +1031,13 @@ export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledActions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates or updates a scheduled action for an Application Auto Scaling scalable target.
  *
@@ -1062,8 +1077,8 @@ export const putScheduledAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information, see Target tracking scaling policies and Step scaling policies in the *Application Auto Scaling User Guide*.
  */
-export const describeScalingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScalingPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScalingPoliciesRequest,
     output: DescribeScalingPoliciesResponse,
     errors: [
@@ -1073,8 +1088,13 @@ export const describeScalingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScalingPolicies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates or updates a scaling policy for an Application Auto Scaling scalable target.
  *

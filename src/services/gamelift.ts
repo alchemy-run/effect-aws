@@ -2902,7 +2902,7 @@ export const getInstanceAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Setting up FlexMatch matchmakers
  */
 export const describeMatchmakingConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMatchmakingConfigurationsInput,
     output: DescribeMatchmakingConfigurationsOutput,
     errors: [
@@ -2910,6 +2910,12 @@ export const describeMatchmakingConfigurations =
       InvalidRequestException,
       UnsupportedRegionException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Configurations",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * **This API works with the following fleet types:** EC2 (FleetIQ)
@@ -3028,8 +3034,8 @@ export const describeBuild = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Setting up Amazon GameLift Servers
  * fleets
  */
-export const describeFleetAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFleetAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAttributesInput,
     output: DescribeFleetAttributesOutput,
     errors: [
@@ -3038,8 +3044,13 @@ export const describeFleetAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FleetAttributes",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -3058,17 +3069,24 @@ export const describeFleetAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Setting up Amazon GameLift Servers
  * fleets
  */
-export const describeFleetEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFleetEventsInput,
-  output: DescribeFleetEventsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    NotFoundException,
-    UnauthorizedException,
-    UnsupportedRegionException,
-  ],
-}));
+export const describeFleetEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeFleetEventsInput,
+    output: DescribeFleetEventsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      NotFoundException,
+      UnauthorizedException,
+      UnsupportedRegionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Container
  *
@@ -3099,7 +3117,7 @@ export const describeFleetEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon GameLift Servers service locations for managed hosting
  */
 export const describeFleetLocationAttributes =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetLocationAttributesInput,
     output: DescribeFleetLocationAttributesOutput,
     errors: [
@@ -3109,6 +3127,11 @@ export const describeFleetLocationAttributes =
       UnauthorizedException,
       UnsupportedRegionException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
@@ -3194,8 +3217,8 @@ export const describeGameServer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon GameLift Servers FleetIQ
  * Guide
  */
-export const describeGameServerInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGameServerInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGameServerInstancesInput,
     output: DescribeGameServerInstancesOutput,
     errors: [
@@ -3204,8 +3227,13 @@ export const describeGameServerInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameServerInstances",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -3218,8 +3246,8 @@ export const describeGameServerInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * View Your Queues
  */
-export const describeGameSessionQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGameSessionQueues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGameSessionQueuesInput,
     output: DescribeGameSessionQueuesOutput,
     errors: [
@@ -3228,8 +3256,13 @@ export const describeGameSessionQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameSessionQueues",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2
  *
@@ -3268,17 +3301,25 @@ export const describeGameSessionQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * All APIs by task
  */
-export const describeInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeInstancesInput,
-  output: DescribeInstancesOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    NotFoundException,
-    UnauthorizedException,
-    UnsupportedRegionException,
-  ],
-}));
+export const describeInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeInstancesInput,
+    output: DescribeInstancesOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      NotFoundException,
+      UnauthorizedException,
+      UnsupportedRegionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** EC2
  *
@@ -3292,8 +3333,8 @@ export const describeInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * A fleet may have all of its scaling policies suspended. This operation does not affect
  * the status of the scaling policies, which remains ACTIVE.
  */
-export const describeScalingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScalingPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScalingPoliciesInput,
     output: DescribeScalingPoliciesOutput,
     errors: [
@@ -3303,8 +3344,13 @@ export const describeScalingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScalingPolicies",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Container
  *
@@ -3706,8 +3752,8 @@ export const describeFleetPortSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * GameLift Metrics for Fleets
  */
-export const describeFleetUtilization = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFleetUtilization =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetUtilizationInput,
     output: DescribeFleetUtilizationOutput,
     errors: [
@@ -3716,8 +3762,13 @@ export const describeFleetUtilization = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FleetUtilization",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2 (FleetIQ)
  *
@@ -3760,8 +3811,8 @@ export const describeGameServerGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - Build a rule
  * set
  */
-export const describeMatchmakingRuleSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMatchmakingRuleSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMatchmakingRuleSetsInput,
     output: DescribeMatchmakingRuleSetsOutput,
     errors: [
@@ -3770,8 +3821,13 @@ export const describeMatchmakingRuleSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RuleSets",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -3800,8 +3856,8 @@ export const describeMatchmakingRuleSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * All APIs by task
  */
-export const describePlayerSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePlayerSessions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePlayerSessionsInput,
     output: DescribePlayerSessionsOutput,
     errors: [
@@ -3810,8 +3866,13 @@ export const describePlayerSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PlayerSessions",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2
  *
@@ -3965,7 +4026,7 @@ export const getGameSessionLogUrl = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - Manage a container group definition
  */
 export const listContainerGroupDefinitionVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContainerGroupDefinitionVersionsInput,
     output: ListContainerGroupDefinitionVersionsOutput,
     errors: [
@@ -3975,6 +4036,12 @@ export const listContainerGroupDefinitionVersions =
       UnauthorizedException,
       UnsupportedRegionException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContainerGroupDefinitions",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * **This API works with the following fleet types:** Container
@@ -3996,8 +4063,8 @@ export const listContainerGroupDefinitionVersions =
  *
  * Deployments are returned starting with the latest.
  */
-export const listFleetDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFleetDeployments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFleetDeploymentsInput,
     output: ListFleetDeploymentsOutput,
     errors: [
@@ -4007,8 +4074,13 @@ export const listFleetDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FleetDeployments",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -4036,7 +4108,7 @@ export const listFleetDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Fleet IDs are returned in no particular order.
  */
-export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsInput,
   output: ListFleetsOutput,
   errors: [
@@ -4045,6 +4117,12 @@ export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "FleetIds",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * **This API works with the following fleet types:** EC2
@@ -5036,15 +5114,23 @@ export const describeVpcPeeringAuthorizations =
  *
  * All APIs by task
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesInput,
-  output: ListAliasesOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-  ],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesInput,
+    output: ListAliasesOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Aliases",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** EC2
  *
@@ -5061,7 +5147,7 @@ export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * All APIs by task
  */
-export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildsInput,
   output: ListBuildsOutput,
   errors: [
@@ -5069,6 +5155,12 @@ export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidRequestException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Builds",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
@@ -5098,16 +5190,24 @@ export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GameLiftServiceSdkEndpoint` or
  * `GameLiftAgentEndpoint`.
  */
-export const listCompute = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComputeInput,
-  output: ListComputeOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-    UnsupportedRegionException,
-  ],
-}));
+export const listCompute = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComputeInput,
+    output: ListComputeOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+      UnsupportedRegionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComputeList",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** Container
  *
@@ -5134,16 +5234,23 @@ export const listCompute = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Fleet IDs are returned in no particular order.
  */
-export const listContainerFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContainerFleetsInput,
-  output: ListContainerFleetsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-    UnsupportedRegionException,
-  ],
-}));
+export const listContainerFleets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListContainerFleetsInput,
+    output: ListContainerFleetsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+      UnsupportedRegionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContainerFleets",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** Container
  *
@@ -5168,7 +5275,7 @@ export const listContainerFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation returns the list of container group definitions in no particular order.
  */
 export const listContainerGroupDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContainerGroupDefinitionsInput,
     output: ListContainerGroupDefinitionsOutput,
     errors: [
@@ -5177,14 +5284,20 @@ export const listContainerGroupDefinitions =
       UnauthorizedException,
       UnsupportedRegionException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContainerGroupDefinitions",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * **This API works with the following fleet types:** EC2 (FleetIQ)
  *
  * Lists a game server groups.
  */
-export const listGameServerGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGameServerGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGameServerGroupsInput,
     output: ListGameServerGroupsOutput,
     errors: [
@@ -5192,8 +5305,13 @@ export const listGameServerGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameServerGroups",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2 (FleetIQ)
  *
@@ -5207,15 +5325,23 @@ export const listGameServerGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Amazon GameLift Servers FleetIQ
  * Guide
  */
-export const listGameServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGameServersInput,
-  output: ListGameServersOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-  ],
-}));
+export const listGameServers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGameServersInput,
+    output: ListGameServersOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameServers",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** Anywhere
  *
@@ -5233,15 +5359,23 @@ export const listGameServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Service locations
  */
-export const listLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLocationsInput,
-  output: ListLocationsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-  ],
-}));
+export const listLocations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLocationsInput,
+    output: ListLocationsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Locations",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** EC2
  *
@@ -5256,15 +5390,23 @@ export const listLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * All APIs by task
  */
-export const listScripts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScriptsInput,
-  output: ListScriptsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    UnauthorizedException,
-  ],
-}));
+export const listScripts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListScriptsInput,
+    output: ListScriptsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Scripts",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -5594,8 +5736,8 @@ export const describeEC2InstanceLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * GameLift metrics for fleets
  */
-export const describeFleetCapacity = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFleetCapacity =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetCapacityInput,
     output: DescribeFleetCapacityOutput,
     errors: [
@@ -5605,8 +5747,13 @@ export const describeFleetCapacity = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FleetCapacity",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** Container
  *
@@ -6672,8 +6819,8 @@ export const claimGameServer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * All APIs by task
  */
-export const describeGameSessionDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGameSessionDetails =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGameSessionDetailsInput,
     output: DescribeGameSessionDetailsOutput,
     errors: [
@@ -6684,8 +6831,13 @@ export const describeGameSessionDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameSessionDetails",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -6727,8 +6879,8 @@ export const describeGameSessionDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * All APIs by task
  */
-export const describeGameSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGameSessions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGameSessionsInput,
     output: DescribeGameSessionsOutput,
     errors: [
@@ -6739,8 +6891,13 @@ export const describeGameSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       UnsupportedRegionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameSessions",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *
@@ -6835,18 +6992,26 @@ export const resolveAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * All APIs by task
  */
-export const searchGameSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchGameSessionsInput,
-  output: SearchGameSessionsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    NotFoundException,
-    TerminalRoutingStrategyException,
-    UnauthorizedException,
-    UnsupportedRegionException,
-  ],
-}));
+export const searchGameSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchGameSessionsInput,
+    output: SearchGameSessionsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      NotFoundException,
+      TerminalRoutingStrategyException,
+      UnauthorizedException,
+      UnsupportedRegionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GameSessions",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * **This API works with the following fleet types:** EC2, Anywhere, Container
  *

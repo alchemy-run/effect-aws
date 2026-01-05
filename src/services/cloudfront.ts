@@ -7066,32 +7066,51 @@ export const listDistributionsByCachePolicyId =
 /**
  * Lists the distribution tenants in your Amazon Web Services account.
  */
-export const listDistributionTenants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDistributionTenants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionTenantsRequest,
     output: ListDistributionTenantsResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "DistributionTenantList",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists distribution tenants by the customization that you specify.
  *
  * You must specify either the `CertificateArn` parameter or `WebACLArn` parameter, but not both in the same request.
  */
 export const listDistributionTenantsByCustomization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionTenantsByCustomizationRequest,
     output: ListDistributionTenantsByCustomizationResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "DistributionTenantList",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Lists trust stores.
  */
-export const listTrustStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrustStoresRequest,
-  output: ListTrustStoresResult,
-  errors: [AccessDenied, EntityNotFound, InvalidArgument],
-}));
+export const listTrustStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrustStoresRequest,
+    output: ListTrustStoresResult,
+    errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "TrustStoreList",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Verify the DNS configuration for your domain names. This API operation checks whether your domain name points to the correct routing endpoint of the connection group, such as d111111abcdef8.cloudfront.net. You can use this API operation to troubleshoot and resolve DNS configuration issues.
  */
@@ -7132,28 +7151,46 @@ export const getDistributionTenantByDomain =
  * Lists distributions by connection function.
  */
 export const listDistributionsByConnectionFunction =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionsByConnectionFunctionRequest,
     output: ListDistributionsByConnectionFunctionResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "DistributionList.NextMarker",
+      items: "DistributionList.Items",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Lists distributions by trust store.
  */
 export const listDistributionsByTrustStore =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionsByTrustStoreRequest,
     output: ListDistributionsByTrustStoreResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "DistributionList.NextMarker",
+      items: "DistributionList.Items",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Lists the invalidations for a distribution tenant.
  */
 export const listInvalidationsForDistributionTenant =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInvalidationsForDistributionTenantRequest,
     output: ListInvalidationsForDistributionTenantResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "InvalidationList.NextMarker",
+      items: "InvalidationList.Items",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Gets a key group configuration.
@@ -7286,10 +7323,16 @@ export const getStreamingDistribution = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the distributions by the connection mode that you specify.
  */
 export const listDistributionsByConnectionMode =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionsByConnectionModeRequest,
     output: ListDistributionsByConnectionModeResult,
     errors: [AccessDenied, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "DistributionList.NextMarker",
+      items: "DistributionList.Items",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Gets a list of distribution IDs for distributions that have a cache behavior that references the specified key group.
@@ -7407,10 +7450,16 @@ export const listCachePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists origin access identities.
  */
 export const listCloudFrontOriginAccessIdentities =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCloudFrontOriginAccessIdentitiesRequest,
     output: ListCloudFrontOriginAccessIdentitiesResult,
     errors: [InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "CloudFrontOriginAccessIdentityList.NextMarker",
+      items: "CloudFrontOriginAccessIdentityList.Items",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * The `ListConflictingAliases` API operation only supports standard distributions. To list domain conflicts for both standard distributions and distribution tenants, we recommend that you use the ListDomainConflicts API operation instead.
@@ -7435,13 +7484,18 @@ export const listConflictingAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the connection groups in your Amazon Web Services account.
  */
-export const listConnectionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConnectionGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectionGroupsRequest,
     output: ListConnectionGroupsResult,
     errors: [AccessDenied, EntityNotFound, InvalidArgument],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "ConnectionGroups",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Gets a list of the continuous deployment policies in your Amazon Web Services account.
  *
@@ -7456,11 +7510,19 @@ export const listContinuousDeploymentPolicies =
 /**
  * List CloudFront distributions.
  */
-export const listDistributions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDistributionsRequest,
-  output: ListDistributionsResult,
-  errors: [InvalidArgument],
-}));
+export const listDistributions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDistributionsRequest,
+    output: ListDistributionsResult,
+    errors: [InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "DistributionList.NextMarker",
+      items: "DistributionList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the CloudFront distributions that are associated with the specified resource that you own.
  */
@@ -7494,11 +7556,18 @@ export const listDistributionsByOwnedResource =
  *
  * You can optionally specify the maximum number of items to receive in the response. If the total number of items in the list exceeds the maximum that you specify, or the default maximum, the response is paginated. To get the next page of items, send a subsequent request that specifies the `NextMarker` value from the current response as the `Marker` value in the subsequent request.
  */
-export const listDomainConflicts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainConflictsRequest,
-  output: ListDomainConflictsResult,
-  errors: [AccessDenied, EntityNotFound, InvalidArgument],
-}));
+export const listDomainConflicts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDomainConflictsRequest,
+    output: ListDomainConflictsResult,
+    errors: [AccessDenied, EntityNotFound, InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "DomainConflicts",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * List all field-level encryption configurations that have been created in CloudFront for this account.
  */
@@ -7520,11 +7589,19 @@ export const listFieldLevelEncryptionProfiles =
 /**
  * Lists invalidation batches.
  */
-export const listInvalidations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvalidationsRequest,
-  output: ListInvalidationsResult,
-  errors: [AccessDenied, InvalidArgument, NoSuchDistribution],
-}));
+export const listInvalidations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvalidationsRequest,
+    output: ListInvalidationsResult,
+    errors: [AccessDenied, InvalidArgument, NoSuchDistribution],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "InvalidationList.NextMarker",
+      items: "InvalidationList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Gets a list of key groups.
  *
@@ -7542,13 +7619,18 @@ export const listKeyGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If you're not using origin access controls for your Amazon Web Services account, the `ListOriginAccessControls` operation doesn't return the `Items` element in the response.
  */
-export const listOriginAccessControls = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOriginAccessControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOriginAccessControlsRequest,
     output: ListOriginAccessControlsResult,
     errors: [InvalidArgument],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "OriginAccessControlList.NextMarker",
+      items: "OriginAccessControlList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Gets a list of origin request policies.
  *
@@ -7566,11 +7648,19 @@ export const listOriginRequestPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List all public keys that have been added to CloudFront for this account.
  */
-export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPublicKeysRequest,
-  output: ListPublicKeysResult,
-  errors: [InvalidArgument],
-}));
+export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPublicKeysRequest,
+    output: ListPublicKeysResult,
+    errors: [InvalidArgument],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "PublicKeyList.NextMarker",
+      items: "PublicKeyList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Gets a list of real-time log configurations.
  *
@@ -7600,13 +7690,18 @@ export const listResponseHeadersPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List streaming distributions.
  */
-export const listStreamingDistributions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStreamingDistributions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStreamingDistributionsRequest,
     output: ListStreamingDistributionsResult,
     errors: [InvalidArgument],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "StreamingDistributionList.NextMarker",
+      items: "StreamingDistributionList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * List the CloudFront VPC origins in your account.
  */
@@ -8149,13 +8244,18 @@ export const deleteCachePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists connection functions.
  */
-export const listConnectionFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConnectionFunctions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectionFunctionsRequest,
     output: ListConnectionFunctionsResult,
     errors: [AccessDenied, InvalidArgument, UnsupportedOperation],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "ConnectionFunctions",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Gets a list of all CloudFront functions in your Amazon Web Services account.
  *
@@ -8171,11 +8271,19 @@ export const listFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Specifies the key value stores to list.
  */
-export const listKeyValueStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKeyValueStoresRequest,
-  output: ListKeyValueStoresResult,
-  errors: [AccessDenied, InvalidArgument, UnsupportedOperation],
-}));
+export const listKeyValueStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKeyValueStoresRequest,
+    output: ListKeyValueStoresResult,
+    errors: [AccessDenied, InvalidArgument, UnsupportedOperation],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "KeyValueStoreList.NextMarker",
+      items: "KeyValueStoreList.Items",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Gets a connection function.
  */

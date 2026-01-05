@@ -995,29 +995,45 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists all contacts and escalation plans in Incident Manager.
  */
-export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactsRequest,
-  output: ListContactsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContactsRequest,
+    output: ListContactsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Contacts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all engagements that have happened in an incident.
  */
-export const listEngagements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEngagementsRequest,
-  output: ListEngagementsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEngagements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEngagementsRequest,
+    output: ListEngagementsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Engagements",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * To remove a contact from Incident Manager, you can delete the contact. However, deleting a
  * contact does not remove it from escalation plans and related response plans. Deleting an
@@ -1056,32 +1072,47 @@ export const describeEngagement = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all contact channels for the specified contact.
  */
-export const listContactChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactChannelsRequest,
-  output: ListContactChannelsResult,
-  errors: [
-    AccessDeniedException,
-    DataEncryptionException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listContactChannels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListContactChannelsRequest,
+    output: ListContactChannelsResult,
+    errors: [
+      AccessDeniedException,
+      DataEncryptionException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactChannels",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all of the engagements to contact channels that have been acknowledged.
  */
-export const listPageReceipts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPageReceiptsRequest,
-  output: ListPageReceiptsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPageReceipts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPageReceiptsRequest,
+    output: ListPageReceiptsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Receipts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the resolution path of an engagement. For example, the escalation plan engaged
  * in an incident might target an on-call schedule that includes several contacts in a
@@ -1089,36 +1120,50 @@ export const listPageReceipts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * indicates the hierarchy of escalation plan > on-call schedule >
  * contact.
  */
-export const listPageResolutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPageResolutionsRequest,
-  output: ListPageResolutionsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPageResolutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPageResolutionsRequest,
+    output: ListPageResolutionsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PageResolutions",
+    } as const,
+  }));
 /**
  * Lists the engagements to a contact's contact channels.
  */
-export const listPagesByContact = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPagesByContactRequest,
-  output: ListPagesByContactResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPagesByContact = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPagesByContactRequest,
+    output: ListPagesByContactResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Pages",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of overrides currently specified for an on-call rotation.
  */
-export const listRotationOverrides = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRotationOverrides =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRotationOverridesRequest,
     output: ListRotationOverridesResult,
     errors: [
@@ -1128,22 +1173,35 @@ export const listRotationOverrides = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RotationOverrides",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of on-call rotations.
  */
-export const listRotations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRotationsRequest,
-  output: ListRotationsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRotations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRotationsRequest,
+    output: ListRotationsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Rotations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the resource policies attached to the specified contact or escalation
  * plan.
@@ -1190,8 +1248,8 @@ export const getRotationOverride = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the engagements to contact channels that occurred by engaging a contact.
  */
-export const listPagesByEngagement = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPagesByEngagement =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPagesByEngagementRequest,
     output: ListPagesByEngagementResult,
     errors: [
@@ -1201,8 +1259,13 @@ export const listPagesByEngagement = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Pages",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the tags of a contact, escalation plan, rotation, or on-call schedule.
  */
@@ -1382,8 +1445,8 @@ export const startEngagement = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * The Incident Manager primarily uses this operation to populate the **Preview** calendar. It is not typically run by end users.
  */
-export const listPreviewRotationShifts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPreviewRotationShifts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPreviewRotationShiftsRequest,
     output: ListPreviewRotationShiftsResult,
     errors: [
@@ -1392,8 +1455,13 @@ export const listPreviewRotationShifts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RotationShifts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Used to acknowledge an engagement to a contact channel during an incident.
  */
@@ -1494,18 +1562,26 @@ export const createContactChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of shifts generated by an existing rotation in the system.
  */
-export const listRotationShifts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRotationShiftsRequest,
-  output: ListRotationShiftsResult,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRotationShifts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRotationShiftsRequest,
+    output: ListRotationShiftsResult,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RotationShifts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an override for a rotation in an on-call schedule.
  */

@@ -1475,21 +1475,34 @@ export class Ipv6CidrBlockNotFoundException extends S.TaggedError<Ipv6CidrBlockN
 /**
  * Returns information about a list of specified managed workgroups in your account.
  */
-export const listManagedWorkgroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedWorkgroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedWorkgroupsRequest,
     output: ListManagedWorkgroupsResponse,
     errors: [AccessDeniedException, InternalServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedWorkgroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about a list of specified namespaces.
  */
-export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNamespacesRequest,
-  output: ListNamespacesResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNamespacesRequest,
+    output: ListNamespacesResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "namespaces",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a recovery point.
  */
@@ -1520,13 +1533,18 @@ export const restoreTableFromRecoveryPoint =
 /**
  * Returns the current reservation offerings in your account.
  */
-export const listReservationOfferings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReservationOfferings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReservationOfferingsRequest,
     output: ListReservationOfferingsResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reservationOfferingsList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes a scheduled action.
  */
@@ -1544,8 +1562,8 @@ export const deleteScheduledAction = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of scheduled actions. You can use the flags to filter the list of returned scheduled actions.
  */
-export const listScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listScheduledActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListScheduledActionsRequest,
     output: ListScheduledActionsResponse,
     errors: [
@@ -1554,8 +1572,13 @@ export const listScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scheduledActions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about a specific custom domain association.
  */
@@ -1620,16 +1643,24 @@ export const getEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns an array of `EndpointAccess` objects and relevant information.
  */
-export const listEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointAccessRequest,
-  output: ListEndpointAccessResponse,
-  errors: [
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEndpointAccessRequest,
+    output: ListEndpointAccessResponse,
+    errors: [
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "endpoints",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an Amazon Redshift Serverless managed endpoint.
  */
@@ -1734,7 +1765,7 @@ export const deleteSnapshotCopyConfiguration =
  * Returns a list of snapshot copy configurations.
  */
 export const listSnapshotCopyConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSnapshotCopyConfigurationsRequest,
     output: ListSnapshotCopyConfigurationsResponse,
     errors: [
@@ -1744,6 +1775,12 @@ export const listSnapshotCopyConfigurations =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "snapshotCopyConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Restores a table from a snapshot to your Amazon Redshift Serverless instance. You can't use this operation to restore tables with interleaved sort keys.
@@ -1817,17 +1854,25 @@ export const getUsageLimit = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all usage limits within Amazon Redshift Serverless.
  */
-export const listUsageLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUsageLimitsRequest,
-  output: ListUsageLimitsResponse,
-  errors: [
-    ConflictException,
-    InternalServerException,
-    InvalidPaginationException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listUsageLimits = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUsageLimitsRequest,
+    output: ListUsageLimitsResponse,
+    errors: [
+      ConflictException,
+      InternalServerException,
+      InvalidPaginationException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "usageLimits",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Update a usage limit in Amazon Redshift Serverless. You can't update the usage type or period of a usage limit.
  */
@@ -1963,15 +2008,23 @@ export const getTableRestoreStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of snapshots.
  */
-export const listSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSnapshotsRequest,
-  output: ListSnapshotsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSnapshotsRequest,
+    output: ListSnapshotsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "snapshots",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a tag or set of tags from a resource.
  */
@@ -2004,8 +2057,8 @@ export const deleteCustomDomainAssociation =
 /**
  * Returns information about an array of `TableRestoreStatus` objects.
  */
-export const listTableRestoreStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTableRestoreStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTableRestoreStatusRequest,
     output: ListTableRestoreStatusResponse,
     errors: [
@@ -2013,13 +2066,18 @@ export const listTableRestoreStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tableRestoreStatuses",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists custom domain associations for Amazon Redshift Serverless.
  */
 export const listCustomDomainAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomDomainAssociationsRequest,
     output: ListCustomDomainAssociationsResponse,
     errors: [
@@ -2029,23 +2087,45 @@ export const listCustomDomainAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "associations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns an array of recovery points.
  */
-export const listRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecoveryPointsRequest,
-  output: ListRecoveryPointsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecoveryPointsRequest,
+    output: ListRecoveryPointsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recoveryPoints",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a list of specified workgroups.
  */
-export const listWorkgroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkgroupsRequest,
-  output: ListWorkgroupsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listWorkgroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkgroupsRequest,
+    output: ListWorkgroupsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workgroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified resource policy.
  */
@@ -2075,15 +2155,23 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of Reservation objects.
  */
-export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReservationsRequest,
-  output: ListReservationsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReservationsRequest,
+    output: ListReservationsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reservationsList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the Amazon Redshift Serverless versions.
  */
-export const listTracks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTracks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTracksRequest,
   output: ListTracksResponse,
   errors: [
@@ -2093,6 +2181,12 @@ export const listTracks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "tracks",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns the reservation offering. The offering determines the payment schedule for the reservation.

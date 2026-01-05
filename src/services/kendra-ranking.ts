@@ -434,8 +434,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * is an Amazon Kendra Intelligent Ranking resource used for
  * provisioning the `Rescore` API.
  */
-export const listRescoreExecutionPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRescoreExecutionPlans =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRescoreExecutionPlansRequest,
     output: ListRescoreExecutionPlansResponse,
     errors: [
@@ -444,8 +444,12 @@ export const listRescoreExecutionPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Rescores or re-ranks search results from a search service
  * such as OpenSearch (self managed). You use the semantic search

@@ -1209,69 +1209,107 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the resource policies attached to the specified response plan.
  */
-export const getResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcePoliciesInput,
-  output: GetResourcePoliciesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetResourcePoliciesInput,
+    output: GetResourcePoliciesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resourcePolicies",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all response plans in your account.
  */
-export const listResponsePlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResponsePlansInput,
-  output: ListResponsePlansOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listResponsePlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResponsePlansInput,
+    output: ListResponsePlansOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "responsePlanSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists timeline events for the specified incident record.
  */
-export const listTimelineEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTimelineEventsInput,
-  output: ListTimelineEventsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTimelineEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTimelineEventsInput,
+    output: ListTimelineEventsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "eventSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List all related items for an incident record.
  */
-export const listRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRelatedItemsInput,
-  output: ListRelatedItemsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRelatedItemsInput,
+    output: ListRelatedItemsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "relatedItems",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists details about the replication set configured in your account.
  */
-export const listReplicationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReplicationSetsInput,
-  output: ListReplicationSetsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReplicationSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListReplicationSetsInput,
+    output: ListReplicationSetsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "replicationSetArns",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes the specified response plan. Deleting a response plan stops all linked CloudWatch alarms and EventBridge events from creating an incident with this response
  * plan.
@@ -1319,8 +1357,8 @@ export const getTimelineEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * change made by an CloudFormation stack creation or update or an CodeDeploy
  * deployment that can be investigated as a potential cause of the incident.
  */
-export const listIncidentFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIncidentFindings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIncidentFindingsInput,
     output: ListIncidentFindingsOutput,
     errors: [
@@ -1330,8 +1368,13 @@ export const listIncidentFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findings",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Update the details of an incident record. You can use this operation to update an incident
  * record from the defined chat channel. For more information about using actions in chat
@@ -1613,16 +1656,23 @@ export const createResponsePlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all incident records in your account. Use this command to retrieve the Amazon
  * Resource Name (ARN) of the incident record you want to update.
  */
-export const listIncidentRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIncidentRecordsInput,
-  output: ListIncidentRecordsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIncidentRecords =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListIncidentRecordsInput,
+    output: ListIncidentRecordsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "incidentRecordSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Used to start an incident from CloudWatch alarms, EventBridge events, or
  * manually.

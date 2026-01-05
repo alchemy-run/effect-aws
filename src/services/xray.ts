@@ -1600,48 +1600,75 @@ export const getGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all active group details.
  */
-export const getGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetGroupsRequest,
   output: GetGroupsResult,
   errors: [InvalidRequestException, ThrottledException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Groups",
+  } as const,
 }));
 /**
  * X-Ray reevaluates insights periodically until they're resolved, and records each intermediate state as an
  * event. You can review an insight's events in the Impact Timeline on the Inspect page in the X-Ray
  * console.
  */
-export const getInsightEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInsightEventsRequest,
-  output: GetInsightEventsResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getInsightEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetInsightEventsRequest,
+    output: GetInsightEventsResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the summaries of all insights in the specified group matching the provided filter values.
  */
-export const getInsightSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInsightSummariesRequest,
-  output: GetInsightSummariesResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getInsightSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetInsightSummariesRequest,
+    output: GetInsightSummariesResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about recent sampling results for all sampling rules.
  */
 export const getSamplingStatisticSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSamplingStatisticSummariesRequest,
     output: GetSamplingStatisticSummariesResult,
     errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SamplingStatisticSummaries",
+    } as const,
   }));
 /**
  * Returns the list of resource policies in the target Amazon Web Services account.
  */
-export const listResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourcePoliciesRequest,
     output: ListResourcePoliciesResult,
     errors: [InvalidRequestException, ThrottledException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourcePolicies",
+    } as const,
+  }));
 /**
  * Used by the Amazon Web Services X-Ray daemon to upload telemetry.
  */
@@ -1720,15 +1747,21 @@ export const updateSamplingRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of tags that are applied to the specified Amazon Web Services X-Ray group or sampling rule.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottledException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottledException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+    } as const,
+  }));
 /**
  * Initiates a trace retrieval process using the specified time range and for the given trace IDs in the Transaction Search generated CloudWatch log group. For more information, see Transaction Search.
  *
@@ -1771,19 +1804,33 @@ export const getEncryptionConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all sampling rules.
  */
-export const getSamplingRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSamplingRulesRequest,
-  output: GetSamplingRulesResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getSamplingRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetSamplingRulesRequest,
+    output: GetSamplingRulesResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SamplingRuleRecords",
+    } as const,
+  }),
+);
 /**
  * Retrieves a service graph for one or more specific trace IDs.
  */
-export const getTraceGraph = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTraceGraphRequest,
-  output: GetTraceGraphResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getTraceGraph = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTraceGraphRequest,
+    output: GetTraceGraphResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Services",
+    } as const,
+  }),
+);
 /**
  * Updates the encryption configuration for X-Ray data.
  */
@@ -1856,11 +1903,18 @@ export const createGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * documents that originates from a single request. Use `GetTraceSummaries` to get a
  * list of trace IDs.
  */
-export const batchGetTraces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: BatchGetTracesRequest,
-  output: BatchGetTracesResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const batchGetTraces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: BatchGetTracesRequest,
+    output: BatchGetTracesResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Traces",
+    } as const,
+  }),
+);
 /**
  * Retrieves the summary information of an insight. This includes impact to clients and
  * root cause services, the top anomalous services, the category, the state of the insight,
@@ -1909,10 +1963,15 @@ export const getRetrievedTracesGraph = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * range.
  */
 export const getTimeSeriesServiceStatistics =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTimeSeriesServiceStatisticsRequest,
     output: GetTimeSeriesServiceStatisticsResult,
     errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TimeSeriesServiceStatistics",
+    } as const,
   }));
 /**
  * Retrieves a list of traces for a given `RetrievalToken` from the CloudWatch log group generated by Transaction Search. For information on what each trace returns, see BatchGetTraces.
@@ -2004,11 +2063,18 @@ export const getSamplingTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Downstream services can be other applications, Amazon Web Services resources, HTTP web APIs, or SQL
  * databases.
  */
-export const getServiceGraph = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetServiceGraphRequest,
-  output: GetServiceGraphResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getServiceGraph = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetServiceGraphRequest,
+    output: GetServiceGraphResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Services",
+    } as const,
+  }),
+);
 /**
  * Sets the resource policy to grant one or more Amazon Web Services services and accounts permissions to
  * access X-Ray. Each resource policy will be associated with a specific Amazon Web Services account.
@@ -2047,8 +2113,15 @@ export const putResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * see Use filter
  * expressions in the *Amazon Web Services X-Ray Developer Guide*.
  */
-export const getTraceSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTraceSummariesRequest,
-  output: GetTraceSummariesResult,
-  errors: [InvalidRequestException, ThrottledException],
-}));
+export const getTraceSummaries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTraceSummariesRequest,
+    output: GetTraceSummariesResult,
+    errors: [InvalidRequestException, ThrottledException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TraceSummaries",
+    } as const,
+  }),
+);

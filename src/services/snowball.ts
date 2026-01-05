@@ -992,21 +992,35 @@ export const getSoftwareUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * A list of locations from which the customer can choose to pickup a device.
  */
-export const listPickupLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPickupLocationsRequest,
-  output: ListPickupLocationsResult,
-  errors: [InvalidResourceException],
-}));
+export const listPickupLocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPickupLocationsRequest,
+    output: ListPickupLocationsResult,
+    errors: [InvalidResourceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a specified number of `ADDRESS` objects. Calling this API in one of
  * the US regions will return addresses from the list of all addresses associated with this
  * account in all US regions.
  */
-export const describeAddresses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeAddressesRequest,
-  output: DescribeAddressesResult,
-  errors: [InvalidNextTokenException, InvalidResourceException],
-}));
+export const describeAddresses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeAddressesRequest,
+    output: DescribeAddressesResult,
+    errors: [InvalidNextTokenException, InvalidResourceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Addresses",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a specific cluster including shipping information, cluster
  * status, and other important metadata.
@@ -1021,42 +1035,70 @@ export const describeCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `JobListEntry` object is for a job in the specified cluster and contains a job's
  * state, a job's ID, and other information.
  */
-export const listClusterJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClusterJobsRequest,
-  output: ListClusterJobsResult,
-  errors: [InvalidNextTokenException, InvalidResourceException],
-}));
+export const listClusterJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClusterJobsRequest,
+    output: ListClusterJobsResult,
+    errors: [InvalidNextTokenException, InvalidResourceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobListEntries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of `ClusterListEntry` objects of the specified length. Each
  * `ClusterListEntry` object contains a cluster's state, a cluster's ID, and other
  * important status information.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResult,
-  errors: [InvalidNextTokenException],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResult,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterListEntries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This action returns a list of the different Amazon EC2-compatible Amazon Machine Images (AMIs)
  * that are owned by your Amazon Web Services accountthat would be supported for use on a Snow
  * device. Currently, supported AMIs are based on the Amazon Linux-2, Ubuntu 20.04 LTS - Focal, or Ubuntu 22.04 LTS - Jammy images, available on the
  * Amazon Web Services Marketplace. Ubuntu 16.04 LTS - Xenial (HVM) images are no longer supported in the Market, but still supported for use on devices through Amazon EC2 VM Import/Export and running locally in AMIs.
  */
-export const listCompatibleImages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCompatibleImages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCompatibleImagesRequest,
     output: ListCompatibleImagesResult,
     errors: [Ec2RequestFailedException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CompatibleImages",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all long-term pricing types.
  */
-export const listLongTermPricing = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLongTermPricingRequest,
-  output: ListLongTermPricingResult,
-  errors: [InvalidNextTokenException, InvalidResourceException],
-}));
+export const listLongTermPricing =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListLongTermPricingRequest,
+    output: ListLongTermPricingResult,
+    errors: [InvalidNextTokenException, InvalidResourceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LongTermPricingEntries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Cancels the specified job. You can only cancel a job before its `JobState`
  * value changes to `PreparingAppliance`. Requesting the `ListJobs` or
@@ -1093,10 +1135,16 @@ export const describeReturnShippingLabel = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * in one of the US regions will return jobs from the list of all jobs associated with this
  * account in all US regions.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [InvalidNextTokenException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "JobListEntries",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * While a job's `JobState` value is `New`, you can update some of

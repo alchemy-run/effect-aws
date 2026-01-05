@@ -630,11 +630,18 @@ export class TaskNotFoundException extends S.TaggedError<TaskNotFoundException>(
  * ]
  * }
  */
-export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPipelinesInput,
-  output: ListPipelinesOutput,
-  errors: [InternalServiceError, InvalidRequestException],
-}));
+export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPipelinesInput,
+    output: ListPipelinesOutput,
+    errors: [InternalServiceError, InvalidRequestException],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "marker",
+      items: "pipelineIdList",
+    } as const,
+  }),
+);
 /**
  * Task runners call `ReportTaskRunnerHeartbeat` every 15 minutes to indicate that they are operational.
  * If the AWS Data Pipeline Task Runner is launched on a resource managed by AWS Data Pipeline, the web service can use
@@ -992,16 +999,23 @@ export const validatePipelineDefinition = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ]
  * }
  */
-export const describeObjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeObjectsInput,
-  output: DescribeObjectsOutput,
-  errors: [
-    InternalServiceError,
-    InvalidRequestException,
-    PipelineDeletedException,
-    PipelineNotFoundException,
-  ],
-}));
+export const describeObjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeObjectsInput,
+    output: DescribeObjectsOutput,
+    errors: [
+      InternalServiceError,
+      InvalidRequestException,
+      PipelineDeletedException,
+      PipelineNotFoundException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "marker",
+      items: "pipelineObjects",
+    } as const,
+  }),
+);
 /**
  * Gets the definition of the specified pipeline. You can call `GetPipelineDefinition` to retrieve
  * the pipeline definition that you provided using PutPipelineDefinition.
@@ -1371,16 +1385,24 @@ export const putPipelineDefinition = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ["@SayHello_1_2012-09-25T17:00:00"]
  * }
  */
-export const queryObjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: QueryObjectsInput,
-  output: QueryObjectsOutput,
-  errors: [
-    InternalServiceError,
-    InvalidRequestException,
-    PipelineDeletedException,
-    PipelineNotFoundException,
-  ],
-}));
+export const queryObjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: QueryObjectsInput,
+    output: QueryObjectsOutput,
+    errors: [
+      InternalServiceError,
+      InvalidRequestException,
+      PipelineDeletedException,
+      PipelineNotFoundException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "marker",
+      items: "ids",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Task runners call `ReportTaskProgress` when assigned a task to acknowledge that it has the task. If the web service does not
  * receive this acknowledgement within 2 minutes, it assigns the task in a subsequent PollForTask call. After this initial acknowledgement,

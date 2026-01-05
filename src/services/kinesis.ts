@@ -3189,17 +3189,23 @@ export const updateAccountSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This operation has a limit of 5 transactions per second per stream.
  */
-export const listStreamConsumers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamConsumersInput,
-  output: ListStreamConsumersOutput,
-  errors: [
-    ExpiredNextTokenException,
-    InvalidArgumentException,
-    LimitExceededException,
-    ResourceInUseException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listStreamConsumers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListStreamConsumersInput,
+    output: ListStreamConsumersOutput,
+    errors: [
+      ExpiredNextTokenException,
+      InvalidArgumentException,
+      LimitExceededException,
+      ResourceInUseException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists your Kinesis data streams.
  *
@@ -3220,15 +3226,22 @@ export const listStreamConsumers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * ListStreams has a limit of five transactions per second per
  * account.
  */
-export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamsInput,
-  output: ListStreamsOutput,
-  errors: [
-    ExpiredNextTokenException,
-    InvalidArgumentException,
-    LimitExceededException,
-  ],
-}));
+export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamsInput,
+    output: ListStreamsOutput,
+    errors: [
+      ExpiredNextTokenException,
+      InvalidArgumentException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Updates the warm throughput configuration for the specified Amazon Kinesis Data Streams on-demand data stream. This operation allows you to proactively scale your on-demand data stream to a specified throughput level, enabling better performance for sudden traffic spikes.
  *

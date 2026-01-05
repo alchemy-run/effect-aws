@@ -1754,17 +1754,25 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all access tokens for a DNS view with pagination support.
  */
-export const listAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessTokensInput,
-  output: ListAccessTokensOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessTokensInput,
+    output: ListAccessTokensOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accessTokens",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates multiple DNS firewall rules in a single operation. This is more efficient than creating rules individually when you need to set up multiple rules at once.
  */
@@ -2166,22 +2174,30 @@ export const updateHostedZoneAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all DNS views for a Route 53 Global Resolver with pagination support.
  */
-export const listDNSViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDNSViewsInput,
-  output: ListDNSViewsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDNSViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDNSViewsInput,
+    output: ListDNSViewsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dnsViews",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all firewall domain lists for a Route 53 Global Resolver with pagination support.
  */
-export const listFirewallDomainLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFirewallDomainLists =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFirewallDomainListsInput,
     output: ListFirewallDomainListsOutput,
     errors: [
@@ -2191,40 +2207,60 @@ export const listFirewallDomainLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "firewallDomainLists",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all DNS firewall rules for a DNS view with pagination support.
  */
-export const listFirewallRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallRulesInput,
-  output: ListFirewallRulesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFirewallRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFirewallRulesInput,
+    output: ListFirewallRulesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "firewallRules",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all Route 53 Global Resolver instances in your account with pagination support.
  */
-export const listGlobalResolvers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGlobalResolversInput,
-  output: ListGlobalResolversOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGlobalResolvers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListGlobalResolversInput,
+    output: ListGlobalResolversOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "globalResolvers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all hosted zone associations for a Route 53 Global Resolver resource with pagination support.
  */
-export const listHostedZoneAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listHostedZoneAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHostedZoneAssociationsInput,
     output: ListHostedZoneAssociationsOutput,
     errors: [
@@ -2234,13 +2270,18 @@ export const listHostedZoneAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "hostedZoneAssociations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of the AWS Managed DNS Lists and the categories for DNS Firewall. The categories are either `THREAT` or `CONTENT`.
  */
 export const listManagedFirewallDomainLists =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedFirewallDomainListsInput,
     output: ListManagedFirewallDomainListsOutput,
     errors: [
@@ -2249,6 +2290,12 @@ export const listManagedFirewallDomainLists =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedFirewallDomainLists",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves information about an access source.
@@ -2325,17 +2372,24 @@ export const getFirewallDomainList = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all the domains in DNS Firewall domain list you have created.
  */
-export const listFirewallDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallDomainsInput,
-  output: ListFirewallDomainsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFirewallDomains =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFirewallDomainsInput,
+    output: ListFirewallDomainsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "domains",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about a DNS firewall rule.
  */
@@ -2415,13 +2469,21 @@ export const disassociateHostedZone = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all access sources with pagination support.
  */
-export const listAccessSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessSourcesInput,
-  output: ListAccessSourcesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAccessSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessSourcesInput,
+    output: ListAccessSourcesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accessSources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

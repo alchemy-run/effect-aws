@@ -3894,10 +3894,16 @@ export const getContextKeysForCustomPolicy =
  * Returns a list of IAM users that are in the specified IAM group. You can paginate
  * the results using the `MaxItems` and `Marker` parameters.
  */
-export const getGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getGroup = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetGroupRequest,
   output: GetGroupResponse,
   errors: [NoSuchEntityException, ServiceFailureException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "Users",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * Retrieves the specified inline policy document that is embedded in the specified IAM
@@ -4128,11 +4134,19 @@ export const getUserPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * deleting, and listing an Amazon Web Services account alias in the
  * *IAM User Guide*.
  */
-export const listAccountAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountAliasesRequest,
-  output: ListAccountAliasesResponse,
-  errors: [ServiceFailureException],
-}));
+export const listAccountAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountAliasesRequest,
+    output: ListAccountAliasesResponse,
+    errors: [ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "AccountAliases",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists all managed policies that are attached to the specified IAM role.
  *
@@ -4147,8 +4161,8 @@ export const listAccountAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * attached to the specified role (or none that match the specified path prefix), the
  * operation returns an empty list.
  */
-export const listAttachedRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAttachedRolePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttachedRolePoliciesRequest,
     output: ListAttachedRolePoliciesResponse,
     errors: [
@@ -4156,8 +4170,13 @@ export const listAttachedRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       ServiceFailureException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "AttachedPolicies",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists all managed policies that are attached to the specified IAM user.
  *
@@ -4172,8 +4191,8 @@ export const listAttachedRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * attached to the specified group (or none that match the specified path prefix), the
  * operation returns an empty list.
  */
-export const listAttachedUserPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAttachedUserPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttachedUserPoliciesRequest,
     output: ListAttachedUserPoliciesResponse,
     errors: [
@@ -4181,8 +4200,13 @@ export const listAttachedUserPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       ServiceFailureException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "AttachedPolicies",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists delegation requests based on the specified criteria.
  *
@@ -4217,21 +4241,35 @@ export const listDelegationRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * parameters. If there are no inline policies embedded with the specified group, the
  * operation returns an empty list.
  */
-export const listGroupPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupPoliciesRequest,
-  output: ListGroupPoliciesResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listGroupPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupPoliciesRequest,
+    output: ListGroupPoliciesResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PolicyNames",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the IAM groups that have the specified path prefix.
  *
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [ServiceFailureException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "Groups",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * Lists the IAM groups that the specified IAM user belongs to.
@@ -4239,11 +4277,19 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listGroupsForUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupsForUserRequest,
-  output: ListGroupsForUserResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listGroupsForUser = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupsForUserRequest,
+    output: ListGroupsForUserResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Groups",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the instance profiles that have the specified path prefix. If there are none,
  * the operation returns an empty list. For more information about instance profiles, see
@@ -4257,13 +4303,18 @@ export const listGroupsForUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listInstanceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceProfilesRequest,
     output: ListInstanceProfilesResponse,
     errors: [ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "InstanceProfiles",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the instance profiles that have the specified associated IAM role. If there
  * are none, the operation returns an empty list. For more information about instance
@@ -4273,39 +4324,57 @@ export const listInstanceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listInstanceProfilesForRole = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceProfilesForRole =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceProfilesForRoleRequest,
     output: ListInstanceProfilesForRoleResponse,
     errors: [NoSuchEntityException, ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "InstanceProfiles",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the tags that are attached to the specified IAM instance profile. The returned list of tags is sorted by tag key.
  * For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listInstanceProfileTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceProfileTags =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceProfileTagsRequest,
     output: ListInstanceProfileTagsResponse,
     errors: [NoSuchEntityException, ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the tags that are attached to the specified IAM virtual multi-factor authentication (MFA) device. The returned list of tags is
  * sorted by tag key. For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listMFADeviceTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMFADeviceTagsRequest,
-  output: ListMFADeviceTagsResponse,
-  errors: [
-    InvalidInputException,
-    NoSuchEntityException,
-    ServiceFailureException,
-  ],
-}));
+export const listMFADeviceTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMFADeviceTagsRequest,
+    output: ListMFADeviceTagsResponse,
+    errors: [
+      InvalidInputException,
+      NoSuchEntityException,
+      ServiceFailureException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists information about the IAM OpenID Connect (OIDC) provider resource objects
  * defined in the Amazon Web Services account.
@@ -4329,7 +4398,7 @@ export const listOpenIDConnectProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * *IAM User Guide*.
  */
 export const listOpenIDConnectProviderTags =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOpenIDConnectProviderTagsRequest,
     output: ListOpenIDConnectProviderTagsResponse,
     errors: [
@@ -4337,6 +4406,12 @@ export const listOpenIDConnectProviderTags =
       NoSuchEntityException,
       ServiceFailureException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Lists all the managed policies that are available in your Amazon Web Services account, including
@@ -4358,25 +4433,41 @@ export const listOpenIDConnectProviderTags =
  * attributes for the resource. For example, this operation does not return tags, even though they are an attribute of the returned object. To view all of the information for a customer manged policy, see
  * GetPolicy.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [ServiceFailureException],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Policies",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the tags that are attached to the specified IAM customer managed policy.
  * The returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listPolicyTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyTagsRequest,
-  output: ListPolicyTagsResponse,
-  errors: [
-    InvalidInputException,
-    NoSuchEntityException,
-    ServiceFailureException,
-  ],
-}));
+export const listPolicyTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyTagsRequest,
+    output: ListPolicyTagsResponse,
+    errors: [
+      InvalidInputException,
+      NoSuchEntityException,
+      ServiceFailureException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists information about the versions of the specified managed policy, including the
  * version that is currently set as the policy's default version.
@@ -4384,15 +4475,23 @@ export const listPolicyTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information about managed policies, see Managed policies and inline
  * policies in the *IAM User Guide*.
  */
-export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyVersionsRequest,
-  output: ListPolicyVersionsResponse,
-  errors: [
-    InvalidInputException,
-    NoSuchEntityException,
-    ServiceFailureException,
-  ],
-}));
+export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyVersionsRequest,
+    output: ListPolicyVersionsResponse,
+    errors: [
+      InvalidInputException,
+      NoSuchEntityException,
+      ServiceFailureException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Versions",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the names of the inline policies that are embedded in the specified IAM
  * role.
@@ -4406,11 +4505,19 @@ export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * parameters. If there are no inline policies embedded with the specified role, the
  * operation returns an empty list.
  */
-export const listRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRolePoliciesRequest,
-  output: ListRolePoliciesResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRolePoliciesRequest,
+    output: ListRolePoliciesResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PolicyNames",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the IAM roles that have the specified path prefix. If there are none, the
  * operation returns an empty list. For more information about roles, see IAM roles in the
@@ -4430,21 +4537,35 @@ export const listRolePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listRoles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRoles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRolesRequest,
   output: ListRolesResponse,
   errors: [ServiceFailureException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "Roles",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * Lists the tags that are attached to the specified role. The returned list of tags is
  * sorted by tag key. For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listRoleTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoleTagsRequest,
-  output: ListRoleTagsResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listRoleTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRoleTagsRequest,
+    output: ListRoleTagsResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the SAML provider resource objects defined in IAM in the account.
  * IAM resource-listing operations return a subset of the available
@@ -4465,8 +4586,8 @@ export const listSAMLProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listSAMLProviderTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSAMLProviderTags =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSAMLProviderTagsRequest,
     output: ListSAMLProviderTagsResponse,
     errors: [
@@ -4474,8 +4595,13 @@ export const listSAMLProviderTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       ServiceFailureException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the tags that are attached to the specified IAM server certificate. The
  * returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources in the
@@ -4487,13 +4613,18 @@ export const listSAMLProviderTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * certificates, Working with server
  * certificates in the *IAM User Guide*.
  */
-export const listServerCertificateTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServerCertificateTags =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServerCertificateTagsRequest,
     output: ListServerCertificateTagsResponse,
     errors: [NoSuchEntityException, ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the names of the inline policies embedded in the specified IAM user.
  *
@@ -4506,11 +4637,19 @@ export const listServerCertificateTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * parameters. If there are no inline policies embedded with the specified user, the
  * operation returns an empty list.
  */
-export const listUserPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserPoliciesRequest,
-  output: ListUserPoliciesResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listUserPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserPoliciesRequest,
+    output: ListUserPoliciesResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PolicyNames",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the IAM users that have the specified path prefix. If no path prefix is
  * specified, the operation returns all users in the Amazon Web Services account. If there are none, the
@@ -4528,20 +4667,34 @@ export const listUserPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [ServiceFailureException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "Users",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * Lists the tags that are attached to the specified IAM user. The returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources in the
  * *IAM User Guide*.
  */
-export const listUserTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserTagsRequest,
-  output: ListUserTagsResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listUserTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserTagsRequest,
+    output: ListUserTagsResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the virtual MFA devices defined in the Amazon Web Services account by assignment status. If
  * you do not specify an assignment status, the operation returns a list of all virtual MFA
@@ -4554,13 +4707,18 @@ export const listUserTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listVirtualMFADevices = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVirtualMFADevices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVirtualMFADevicesRequest,
     output: ListVirtualMFADevicesResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "VirtualMFADevices",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Adds or updates an inline policy document that is embedded in the specified IAM
  * group.
@@ -6604,11 +6762,19 @@ export const getServerCertificate = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To ensure the security of your Amazon Web Services account, the secret access key is accessible
  * only during key and user creation.
  */
-export const listAccessKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessKeysRequest,
-  output: ListAccessKeysResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listAccessKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessKeysRequest,
+    output: ListAccessKeysResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "AccessKeyMetadata",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists all managed policies that are attached to the specified IAM group.
  *
@@ -6623,8 +6789,8 @@ export const listAccessKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * attached to the specified group (or none that match the specified path prefix), the
  * operation returns an empty list.
  */
-export const listAttachedGroupPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAttachedGroupPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttachedGroupPoliciesRequest,
     output: ListAttachedGroupPoliciesResponse,
     errors: [
@@ -6632,8 +6798,13 @@ export const listAttachedGroupPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       ServiceFailureException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "AttachedPolicies",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists all IAM users, groups, and roles that the specified managed policy is attached
  * to.
@@ -6646,8 +6817,8 @@ export const listAttachedGroupPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listEntitiesForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEntitiesForPolicy =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEntitiesForPolicyRequest,
     output: ListEntitiesForPolicyResponse,
     errors: [
@@ -6655,8 +6826,12 @@ export const listEntitiesForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       ServiceFailureException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists the MFA devices for an IAM user. If the request includes a IAM user name,
  * then this operation lists all the MFA devices associated with the specified user. If you
@@ -6666,11 +6841,19 @@ export const listEntitiesForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can paginate the results using the `MaxItems` and `Marker`
  * parameters.
  */
-export const listMFADevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMFADevicesRequest,
-  output: ListMFADevicesResponse,
-  errors: [NoSuchEntityException, ServiceFailureException],
-}));
+export const listMFADevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMFADevicesRequest,
+    output: ListMFADevicesResponse,
+    errors: [NoSuchEntityException, ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "MFADevices",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the server certificates stored in IAM that have the specified path prefix. If
  * none exist, the operation returns an empty list.
@@ -6687,13 +6870,18 @@ export const listMFADevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * attributes for the resource. For example, this operation does not return tags, even though they are an attribute of the returned object. To view all of the information for a servercertificate, see
  * GetServerCertificate.
  */
-export const listServerCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServerCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServerCertificatesRequest,
     output: ListServerCertificatesResponse,
     errors: [ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ServerCertificateMetadataList",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns information about the signing certificates associated with the specified IAM
  * user. If none exists, the operation returns an empty list.
@@ -6708,13 +6896,18 @@ export const listServerCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * this operation to manage Amazon Web Services account root user credentials even if the Amazon Web Services account has no
  * associated users.
  */
-export const listSigningCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSigningCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSigningCertificatesRequest,
     output: ListSigningCertificatesResponse,
     errors: [NoSuchEntityException, ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Certificates",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns information about the SSH public keys associated with the specified IAM
  * user. If none exists, the operation returns an empty list.
@@ -6727,11 +6920,19 @@ export const listSigningCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Although each user is limited to a small number of keys, you can still paginate the
  * results using the `MaxItems` and `Marker` parameters.
  */
-export const listSSHPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSSHPublicKeysRequest,
-  output: ListSSHPublicKeysResponse,
-  errors: [NoSuchEntityException],
-}));
+export const listSSHPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSSHPublicKeysRequest,
+    output: ListSSHPublicKeysResponse,
+    errors: [NoSuchEntityException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SSHPublicKeys",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Simulate how a set of IAM policies and optionally a resource-based policy works with
  * a list of API operations and Amazon Web Services resources to determine the policies' effective
@@ -6761,13 +6962,18 @@ export const listSSHPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * policies with the IAM policy simulator in the
  * *IAM User Guide*.
  */
-export const simulateCustomPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const simulateCustomPolicy =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SimulateCustomPolicyRequest,
     output: SimulatePolicyResponse,
     errors: [InvalidInputException, PolicyEvaluationException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EvaluationResults",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Use UpdateRole instead.
  *
@@ -7331,10 +7537,15 @@ export const createServiceSpecificCredential =
  * parameters.
  */
 export const getAccountAuthorizationDetails =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAccountAuthorizationDetailsRequest,
     output: GetAccountAuthorizationDetailsResponse,
     errors: [ServiceFailureException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Retrieves a credential report for the Amazon Web Services account. For more information about the
@@ -7678,8 +7889,8 @@ export const disableOrganizationsRootCredentialsManagement =
  * policies with the IAM policy simulator in the
  * *IAM User Guide*.
  */
-export const simulatePrincipalPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const simulatePrincipalPolicy =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SimulatePrincipalPolicyRequest,
     output: SimulatePolicyResponse,
     errors: [
@@ -7687,8 +7898,13 @@ export const simulatePrincipalPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoSuchEntityException,
       PolicyEvaluationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EvaluationResults",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Enables the management of privileged root user credentials across member accounts in your
  * organization. When you enable root credentials management for centralized root access, the management account and the delegated

@@ -957,16 +957,23 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all tags on a Timestream query resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InvalidEndpointException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InvalidEndpointException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a given scheduled query. This is an irreversible operation.
  */
@@ -1038,8 +1045,8 @@ export const updateAccountSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets a list of all scheduled queries in the caller's Amazon account and Region.
  * `ListScheduledQueries` is eventually consistent.
  */
-export const listScheduledQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listScheduledQueries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListScheduledQueriesRequest,
     output: ListScheduledQueriesResponse,
     errors: [
@@ -1049,8 +1056,13 @@ export const listScheduledQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledQueries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides detailed information about a scheduled query.
  */
@@ -1122,7 +1134,7 @@ export const createScheduledQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * string in the query requests, the query will fail with an Invalid
  * pagination token error.
  */
-export const query = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const query = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: QueryRequest,
   output: QueryResponse,
   errors: [
@@ -1134,4 +1146,10 @@ export const query = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Rows",
+    pageSize: "MaxRows",
+  } as const,
 }));

@@ -1781,11 +1781,18 @@ export const getOnPremisesInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the applications registered with the user or Amazon Web Services account.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsInput,
-  output: ListApplicationsOutput,
-  errors: [InvalidNextTokenException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsInput,
+    output: ListApplicationsOutput,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applications",
+    } as const,
+  }),
+);
 /**
  * Changes the name of an application.
  */
@@ -1815,8 +1822,8 @@ export const getApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the deployment groups for an application registered with the Amazon Web Services
  * user or Amazon Web Services account.
  */
-export const listDeploymentGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeploymentGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeploymentGroupsInput,
     output: ListDeploymentGroupsOutput,
     errors: [
@@ -1825,18 +1832,26 @@ export const listDeploymentGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidApplicationNameException,
       InvalidNextTokenException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deploymentGroups",
+    } as const,
+  }));
 /**
  * Lists the deployment configurations with the user or Amazon Web Services account.
  */
-export const listDeploymentConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeploymentConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeploymentConfigsInput,
     output: ListDeploymentConfigsOutput,
     errors: [InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deploymentConfigsList",
+    } as const,
+  }));
 /**
  * Gets information about one or more applications. The maximum number of applications
  * that can be returned is 100.
@@ -2287,8 +2302,8 @@ export const continueDeployment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about revisions for an application.
  */
-export const listApplicationRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationRevisionsInput,
     output: ListApplicationRevisionsOutput,
     errors: [
@@ -2303,8 +2318,12 @@ export const listApplicationRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidSortByException,
       InvalidSortOrderException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "revisions",
+    } as const,
+  }));
 /**
  * Returns information about a deployment target.
  */
@@ -2430,23 +2449,30 @@ export const registerOnPremisesInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the deployments in a deployment group for an application registered with the
  * user or Amazon Web Services account.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsInput,
-  output: ListDeploymentsOutput,
-  errors: [
-    ApplicationDoesNotExistException,
-    ApplicationNameRequiredException,
-    DeploymentGroupDoesNotExistException,
-    DeploymentGroupNameRequiredException,
-    InvalidApplicationNameException,
-    InvalidDeploymentGroupNameException,
-    InvalidDeploymentStatusException,
-    InvalidExternalIdException,
-    InvalidInputException,
-    InvalidNextTokenException,
-    InvalidTimeRangeException,
-  ],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsInput,
+    output: ListDeploymentsOutput,
+    errors: [
+      ApplicationDoesNotExistException,
+      ApplicationNameRequiredException,
+      DeploymentGroupDoesNotExistException,
+      DeploymentGroupNameRequiredException,
+      InvalidApplicationNameException,
+      InvalidDeploymentGroupNameException,
+      InvalidDeploymentStatusException,
+      InvalidExternalIdException,
+      InvalidInputException,
+      InvalidNextTokenException,
+      InvalidTimeRangeException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deployments",
+    } as const,
+  }),
+);
 /**
  * The newer `BatchGetDeploymentTargets` should be used instead because
  * it works with all compute types. `ListDeploymentInstances` throws an
@@ -2455,8 +2481,8 @@ export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Lists the instance for a deployment associated with the user or Amazon Web Services account.
  */
-export const listDeploymentInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeploymentInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeploymentInstancesInput,
     output: ListDeploymentInstancesOutput,
     errors: [
@@ -2471,8 +2497,12 @@ export const listDeploymentInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       InvalidTargetFilterNameException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "instancesList",
+    } as const,
+  }));
 /**
  * Returns an array of target IDs that are associated a deployment.
  */

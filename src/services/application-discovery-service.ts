@@ -1007,18 +1007,26 @@ export const startExportTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Also, all configuration items associated with your user that have tags can be
  * listed if you call `DescribeTags` as is without passing any parameters.
  */
-export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTagsRequest,
-  output: DescribeTagsResponse,
-  errors: [
-    AuthorizationErrorException,
-    HomeRegionNotSetException,
-    InvalidParameterException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ServerInternalErrorException,
-  ],
-}));
+export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTagsRequest,
+    output: DescribeTagsResponse,
+    errors: [
+      AuthorizationErrorException,
+      HomeRegionNotSetException,
+      InvalidParameterException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ServerInternalErrorException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts an import task, which allows you to import details of your on-premises environment
  * directly into Amazon Web Services Migration Hub without having to use the Amazon Web Services Application Discovery
@@ -1084,17 +1092,25 @@ export const startBatchDeleteConfigurationTask =
  * associated with your user can be listed if you call `DescribeAgents` as is
  * without passing any parameters.
  */
-export const describeAgents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeAgentsRequest,
-  output: DescribeAgentsResponse,
-  errors: [
-    AuthorizationErrorException,
-    HomeRegionNotSetException,
-    InvalidParameterException,
-    InvalidParameterValueException,
-    ServerInternalErrorException,
-  ],
-}));
+export const describeAgents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeAgentsRequest,
+    output: DescribeAgentsResponse,
+    errors: [
+      AuthorizationErrorException,
+      HomeRegionNotSetException,
+      InvalidParameterException,
+      InvalidParameterValueException,
+      ServerInternalErrorException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentsInfo",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes one or more agents or collectors as specified by ID. Deleting an agent or collector does not
  * delete the previously discovered data.
@@ -1185,32 +1201,46 @@ export const describeConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieve status of one or more export tasks. You can retrieve the status of up to 100
  * export tasks.
  */
-export const describeExportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeExportTasksRequest,
-  output: DescribeExportTasksResponse,
-  errors: [
-    AuthorizationErrorException,
-    HomeRegionNotSetException,
-    InvalidParameterException,
-    InvalidParameterValueException,
-    ServerInternalErrorException,
-  ],
-}));
+export const describeExportTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeExportTasksRequest,
+    output: DescribeExportTasksResponse,
+    errors: [
+      AuthorizationErrorException,
+      HomeRegionNotSetException,
+      InvalidParameterException,
+      InvalidParameterValueException,
+      ServerInternalErrorException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "exportsInfo",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns an array of import tasks for your account, including status information, times,
  * IDs, the Amazon S3 Object URL for the import file, and more.
  */
-export const describeImportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImportTasksRequest,
-  output: DescribeImportTasksResponse,
-  errors: [
-    AuthorizationErrorException,
-    HomeRegionNotSetException,
-    InvalidParameterException,
-    InvalidParameterValueException,
-    ServerInternalErrorException,
-  ],
-}));
+export const describeImportTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeImportTasksRequest,
+    output: DescribeImportTasksResponse,
+    errors: [
+      AuthorizationErrorException,
+      HomeRegionNotSetException,
+      InvalidParameterException,
+      InvalidParameterValueException,
+      ServerInternalErrorException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of servers that are one network hop away from a specified
  * server.
@@ -1336,8 +1366,8 @@ export const updateApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * can be listed if you call `DescribeContinuousExports` as is without passing
  * any parameters.
  */
-export const describeContinuousExports = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeContinuousExports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeContinuousExportsRequest,
     output: DescribeContinuousExportsResponse,
     errors: [
@@ -1349,8 +1379,13 @@ export const describeContinuousExports = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServerInternalErrorException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "descriptions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Start the continuous flow of agent's discovered data into Amazon Athena.
  */
@@ -1417,23 +1452,31 @@ export const exportConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * required parameter `configurationType`. Optional filtering may be applied to refine
  * search results.
  */
-export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConfigurationsRequest,
-  output: ListConfigurationsResponse,
-  errors: [
-    AuthorizationErrorException,
-    HomeRegionNotSetException,
-    InvalidParameterException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ServerInternalErrorException,
-  ],
-}));
+export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConfigurationsRequest,
+    output: ListConfigurationsResponse,
+    errors: [
+      AuthorizationErrorException,
+      HomeRegionNotSetException,
+      InvalidParameterException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ServerInternalErrorException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configurations",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * `DescribeExportConfigurations` is deprecated. Use DescribeExportTasks, instead.
  */
 export const describeExportConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeExportConfigurationsRequest,
     output: DescribeExportConfigurationsResponse,
     errors: [
@@ -1444,6 +1487,12 @@ export const describeExportConfigurations =
       ResourceNotFoundException,
       ServerInternalErrorException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "exportsInfo",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates one or more tags for configuration items. Tags are metadata that help you

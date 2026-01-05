@@ -405,10 +405,15 @@ export class RequestedRangeNotSatisfiableException extends S.TaggedError<Request
  * Provides a list of metadata entries about folders and objects in the specified
  * folder.
  */
-export const listItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListItemsRequest,
   output: ListItemsResponse,
   errors: [ContainerNotFoundException, InternalServerError],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Uploads an object to the specified path. Object sizes are limited to 25 MB for standard upload availability and 10 MB for streaming upload availability.

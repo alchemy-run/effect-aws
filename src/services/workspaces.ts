@@ -2281,13 +2281,17 @@ export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You can filter the results using either bundle ID or owner, but not both.
  */
-export const describeWorkspaceBundles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeWorkspaceBundles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeWorkspaceBundlesRequest,
     output: DescribeWorkspaceBundlesResult,
     errors: [InvalidParameterValuesException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Bundles",
+    } as const,
+  }));
 /**
  * Describes the permissions that the owner of an image has granted to other Amazon Web Services accounts for an image.
  */
@@ -2984,7 +2988,7 @@ export const createWorkspacesPool = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Describes the associations between the application and the specified associated resources.
  */
 export const describeApplicationAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeApplicationAssociationsRequest,
     output: DescribeApplicationAssociationsResult,
     errors: [
@@ -2993,12 +2997,17 @@ export const describeApplicationAssociations =
       OperationNotSupportedException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified applications by filtering based on their compute types, license availability, operating systems, and owners.
  */
-export const describeApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeApplications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeApplicationsRequest,
     output: DescribeApplicationsResult,
     errors: [
@@ -3007,8 +3016,12 @@ export const describeApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OperationNotSupportedException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the associations between the applications and the specified bundle.
  */
@@ -3512,11 +3525,23 @@ export const acceptAccountLinkInvitation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all account links.
  */
-export const listAccountLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountLinksRequest,
-  output: ListAccountLinksResult,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listAccountLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountLinksRequest,
+    output: ListAccountLinksResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountLinks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates the account link invitation.
  */
@@ -3655,11 +3680,19 @@ export const createWorkspaceBundle = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can filter the results by using the bundle identifier, directory identifier, or
  * owner, but you can specify only one filter at a time.
  */
-export const describeWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeWorkspacesRequest,
-  output: DescribeWorkspacesResult,
-  errors: [InvalidParameterValuesException, ResourceUnavailableException],
-}));
+export const describeWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeWorkspacesRequest,
+    output: DescribeWorkspacesResult,
+    errors: [InvalidParameterValuesException, ResourceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workspaces",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Creates an IP access control group.
  *
@@ -3725,10 +3758,15 @@ export const associateWorkspaceApplication =
  * Describes the available directories that are registered with Amazon WorkSpaces.
  */
 export const describeWorkspaceDirectories =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeWorkspaceDirectoriesRequest,
     output: DescribeWorkspaceDirectoriesResult,
     errors: [InvalidParameterValuesException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Directories",
+    } as const,
   }));
 /**
  * Specifies which devices and operating systems users can use to access their WorkSpaces.

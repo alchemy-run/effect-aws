@@ -774,15 +774,26 @@ export const describeApp = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the SimSpace Weaver simulations in the Amazon Web Services account used to make the API call.
  */
-export const listSimulations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSimulationsInput,
-  output: ListSimulationsOutput,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listSimulations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSimulationsInput,
+    output: ListSimulationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all custom apps or service apps for the given simulation and domain.
  */
-export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsInput,
   output: ListAppsOutput,
   errors: [
@@ -791,6 +802,11 @@ export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a snapshot of the specified simulation.

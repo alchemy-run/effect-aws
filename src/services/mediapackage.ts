@@ -1193,48 +1193,71 @@ export const describeOriginEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a collection of Channels.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnprocessableEntityException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnprocessableEntityException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Channels",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a collection of HarvestJob records.
  */
-export const listHarvestJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHarvestJobsRequest,
-  output: ListHarvestJobsResponse,
-  errors: [
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnprocessableEntityException,
-  ],
-}));
+export const listHarvestJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHarvestJobsRequest,
+    output: ListHarvestJobsResponse,
+    errors: [
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnprocessableEntityException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HarvestJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a collection of OriginEndpoint records.
  */
-export const listOriginEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOriginEndpointsRequest,
-  output: ListOriginEndpointsResponse,
-  errors: [
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnprocessableEntityException,
-  ],
-}));
+export const listOriginEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListOriginEndpointsRequest,
+    output: ListOriginEndpointsResponse,
+    errors: [
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnprocessableEntityException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OriginEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets details about an existing HarvestJob.
  */

@@ -445,16 +445,24 @@ export const describeHumanLoop = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about human loops, given the specified parameters. If a human loop was deleted, it will not be included.
  */
-export const listHumanLoops = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHumanLoopsRequest,
-  output: ListHumanLoopsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listHumanLoops = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHumanLoopsRequest,
+    output: ListHumanLoopsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HumanLoopSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Stops the specified human loop.
  */

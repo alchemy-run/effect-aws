@@ -798,16 +798,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns information about provisioned Amazon DocumentDB elastic clusters.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersInput,
-  output: ListClustersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersInput,
+    output: ListClustersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Delete an elastic cluster snapshot.
  */
@@ -877,8 +885,8 @@ export const applyPendingMaintenanceAction =
 /**
  * Returns information about snapshots for a specified elastic cluster.
  */
-export const listClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClusterSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClusterSnapshotsInput,
     output: ListClusterSnapshotsOutput,
     errors: [
@@ -887,8 +895,13 @@ export const listClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "snapshots",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds metadata tags to an elastic cluster resource
  */
@@ -934,7 +947,7 @@ export const getClusterSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of all maintenance actions that are pending.
  */
 export const listPendingMaintenanceActions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPendingMaintenanceActionsInput,
     output: ListPendingMaintenanceActionsOutput,
     errors: [
@@ -943,6 +956,12 @@ export const listPendingMaintenanceActions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resourcePendingMaintenanceActions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Restarts the stopped elastic cluster that is specified by `clusterARN`.

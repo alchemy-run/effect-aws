@@ -1423,11 +1423,23 @@ export const deleteCampaign = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Provides summary information about the campaigns under the specified Amazon Connect account.
  */
-export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCampaignsRequest,
-  output: ListCampaignsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCampaignsRequest,
+    output: ListCampaignsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "campaignSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get state of campaigns for the specified Amazon Connect account.
  */
@@ -1447,7 +1459,7 @@ export const getCampaignStateBatch = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Provides summary information about the integration under the specified Connect instance.
  */
 export const listConnectInstanceIntegrations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectInstanceIntegrationsRequest,
     output: ListConnectInstanceIntegrationsResponse,
     errors: [
@@ -1457,6 +1469,12 @@ export const listConnectInstanceIntegrations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "integrationSummaryList",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Put or update the integration for the specified Amazon Connect instance.

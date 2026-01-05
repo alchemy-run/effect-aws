@@ -949,16 +949,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * List data stores.
  */
-export const listDatastores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatastoresRequest,
-  output: ListDatastoresResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDatastores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatastoresRequest,
+    output: ListDatastoresResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datastoreSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Create a data store.
  */
@@ -1130,23 +1138,30 @@ export const getImageSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List import jobs created for a specific data store.
  */
-export const listDICOMImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDICOMImportJobsRequest,
-  output: ListDICOMImportJobsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDICOMImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDICOMImportJobsRequest,
+    output: ListDICOMImportJobsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List image set versions.
  */
-export const listImageSetVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImageSetVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImageSetVersionsRequest,
     output: ListImageSetVersionsResponse,
     errors: [
@@ -1157,8 +1172,13 @@ export const listImageSetVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageSetPropertiesList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Removes tags from a medical imaging resource.
  */
@@ -1214,15 +1234,23 @@ export const copyImageSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * By default, `SearchImageSets` uses the `updatedAt` field for sorting in descending order from newest to oldest.
  */
-export const searchImageSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchImageSetsRequest,
-  output: SearchImageSetsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchImageSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchImageSetsRequest,
+    output: SearchImageSetsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageSetsMetadataSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

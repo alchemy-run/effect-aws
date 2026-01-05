@@ -688,7 +688,7 @@ export const getDimensionKeyDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieve metrics of the specified types that can be queried for a specified DB instance.
  */
 export const listAvailableResourceMetrics =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAvailableResourceMetricsRequest,
     output: ListAvailableResourceMetricsResponse,
     errors: [
@@ -696,12 +696,17 @@ export const listAvailableResourceMetrics =
       InvalidArgumentException,
       NotAuthorizedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all the analysis reports created for the DB instance. The reports are sorted based on the start time of each report.
  */
 export const listPerformanceAnalysisReports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPerformanceAnalysisReportsRequest,
     output: ListPerformanceAnalysisReportsResponse,
     errors: [
@@ -709,6 +714,11 @@ export const listPerformanceAnalysisReports =
       InvalidArgumentException,
       NotAuthorizedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves all the metadata tags associated with Amazon RDS Performance Insights resource.
@@ -766,8 +776,8 @@ export const createPerformanceAnalysisReport =
  * Each response element returns a maximum of 500 bytes. For larger elements, such as SQL statements,
  * only the first 500 bytes are returned.
  */
-export const describeDimensionKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDimensionKeys =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDimensionKeysRequest,
     output: DescribeDimensionKeysResponse,
     errors: [
@@ -775,8 +785,12 @@ export const describeDimensionKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidArgumentException,
       NotAuthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieve Performance Insights metrics for a set of data sources over a time period. You can provide
  * specific dimension groups and dimensions, and provide filtering criteria for each group. You must specify an aggregate function for
@@ -785,20 +799,27 @@ export const describeDimensionKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Each response element returns a maximum of 500 bytes. For larger elements, such as SQL statements,
  * only the first 500 bytes are returned.
  */
-export const getResourceMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourceMetricsRequest,
-  output: GetResourceMetricsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidArgumentException,
-    NotAuthorizedException,
-  ],
-}));
+export const getResourceMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetResourceMetricsRequest,
+    output: GetResourceMetricsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidArgumentException,
+      NotAuthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve the dimensions that can be queried for each specified metric type on a specified DB instance.
  */
 export const listAvailableResourceDimensions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAvailableResourceDimensionsRequest,
     output: ListAvailableResourceDimensionsResponse,
     errors: [
@@ -806,6 +827,11 @@ export const listAvailableResourceDimensions =
       InvalidArgumentException,
       NotAuthorizedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the report including the report ID, status, time details, and the insights

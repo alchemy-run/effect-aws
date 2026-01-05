@@ -1406,16 +1406,23 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
 /**
  * Retrieves a list of pipelines.
  */
-export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPipelinesRequest,
-  output: ListPipelinesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPipelinesRequest,
+    output: ListPipelinesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts the reprocessing of raw message data through the pipeline.
  */
@@ -1493,17 +1500,23 @@ export const getDatasetContent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about dataset contents that have been created.
  */
-export const listDatasetContents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetContentsRequest,
-  output: ListDatasetContentsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listDatasetContents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDatasetContentsRequest,
+    output: ListDatasetContentsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates the content of a dataset by applying a `queryAction` (a SQL query) or a
  * `containerAction` (executing a containerized application).
@@ -1761,16 +1774,23 @@ export const describePipeline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about datasets.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds to or modifies the tags of the given resource. Tags are metadata that can be used to
  * manage a resource.
@@ -1856,16 +1876,23 @@ export const createPipeline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of channels.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Used to create a dataset. A dataset stores data retrieved from a data store by applying a
  * `queryAction` (a SQL query) or a `containerAction` (executing a
@@ -1903,13 +1930,20 @@ export const createDatastore = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of data stores.
  */
-export const listDatastores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatastoresRequest,
-  output: ListDatastoresResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listDatastores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatastoresRequest,
+    output: ListDatastoresResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

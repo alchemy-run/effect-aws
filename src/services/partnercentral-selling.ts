@@ -1896,22 +1896,30 @@ export const startEngagementFromOpportunityTask =
 /**
  * This action allows users to retrieve a list of Engagement records from Partner Central. This action can be used to manage and track various engagements across different stages of the partner selling process.
  */
-export const listEngagements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEngagementsRequest,
-  output: ListEngagementsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEngagements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEngagementsRequest,
+    output: ListEngagementsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EngagementSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all in-progress, completed, or failed StartEngagementByAcceptingInvitationTask tasks that were initiated by the caller's account.
  */
 export const listEngagementByAcceptingInvitationTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEngagementByAcceptingInvitationTasksRequest,
     output: ListEngagementByAcceptingInvitationTasksResponse,
     errors: [
@@ -1921,12 +1929,18 @@ export const listEngagementByAcceptingInvitationTasks =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of engagement invitations sent to the partner. This allows partners to view all pending or past engagement invitations, helping them track opportunities shared by AWS.
  */
-export const listEngagementInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEngagementInvitations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEngagementInvitationsRequest,
     output: ListEngagementInvitationsResponse,
     errors: [
@@ -1936,13 +1950,18 @@ export const listEngagementInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EngagementInvitationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists resource snapshot jobs owned by the customer. This operation supports various filtering scenarios, including listing all jobs owned by the caller, jobs for a specific engagement, jobs with a specific status, or any combination of these filters.
  */
-export const listResourceSnapshotJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceSnapshotJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceSnapshotJobsRequest,
     output: ListResourceSnapshotJobsResponse,
     errors: [
@@ -1952,27 +1971,40 @@ export const listResourceSnapshotJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceSnapshotJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of Partner Solutions that the partner registered on Partner Central. This API is used to generate a list of solutions that an end user selects from for association with an opportunity.
  */
-export const listSolutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSolutionsRequest,
-  output: ListSolutionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSolutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSolutionsRequest,
+    output: ListSolutionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SolutionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the details of member partners in an Engagement. This operation can only be invoked by members of the Engagement. The `ListEngagementMembers` operation allows you to fetch information about the members of a specific Engagement. This action is restricted to members of the Engagement being queried.
  */
-export const listEngagementMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEngagementMembers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEngagementMembersRequest,
     output: ListEngagementMembersResponse,
     errors: [
@@ -1982,13 +2014,18 @@ export const listEngagementMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EngagementMemberList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all in-progress, completed, or failed `EngagementFromOpportunity` tasks that were initiated by the caller's account.
  */
 export const listEngagementFromOpportunityTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEngagementFromOpportunityTasksRequest,
     output: ListEngagementFromOpportunityTasksResponse,
     errors: [
@@ -1998,6 +2035,12 @@ export const listEngagementFromOpportunityTasks =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the details of an engagement invitation shared by AWS with a partner. The information includes aspects such as customer, project details, and lifecycle information. To connect an engagement invitation with an opportunity, match the invitation’s `Payload.Project.Title` with opportunity `Project.Title`.
@@ -2035,7 +2078,7 @@ export const getOpportunity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all in-progress, completed, or failed opportunity creation tasks from engagements that were initiated by the caller's account.
  */
 export const listOpportunityFromEngagementTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOpportunityFromEngagementTasksRequest,
     output: ListOpportunityFromEngagementTasksResponse,
     errors: [
@@ -2045,12 +2088,18 @@ export const listOpportunityFromEngagementTasks =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the associations between resources and engagements where the caller is a member and has at least one snapshot in the engagement.
  */
 export const listEngagementResourceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEngagementResourceAssociationsRequest,
     output: ListEngagementResourceAssociationsResponse,
     errors: [
@@ -2060,6 +2109,12 @@ export const listEngagementResourceAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EngagementResourceAssociationSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of resource view snapshots based on specified criteria. This operation supports various use cases, including:
@@ -2074,8 +2129,8 @@ export const listEngagementResourceAssociations =
  *
  * - Filtering snapshots by resource owner.
  */
-export const listResourceSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceSnapshotsRequest,
     output: ListResourceSnapshotsResponse,
     errors: [
@@ -2085,8 +2140,13 @@ export const listResourceSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceSnapshotSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the `Opportunity` record identified by a given `Identifier`. This operation allows you to modify the details of an existing opportunity to reflect the latest information and progress. Use this action to keep the opportunity record up-to-date and accurate.
  *
@@ -2510,14 +2570,22 @@ export const createEngagementInvitation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Amazon Web Services only returns opportunities created or updated on or after that date and time. Use `NextToken` to iterate over all pages.
  */
-export const listOpportunities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOpportunitiesRequest,
-  output: ListOpportunitiesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listOpportunities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOpportunitiesRequest,
+    output: ListOpportunitiesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OpportunitySummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

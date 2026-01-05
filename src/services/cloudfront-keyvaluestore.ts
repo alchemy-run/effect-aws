@@ -615,7 +615,7 @@ export const getKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of key value pairs.
  */
-export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeysRequest,
   output: ListKeysResponse,
   errors: [
@@ -625,6 +625,12 @@ export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Items",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Puts or Deletes multiple key value pairs in a single, all-or-nothing operation.

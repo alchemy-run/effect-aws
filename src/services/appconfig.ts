@@ -1534,43 +1534,69 @@ export const getAccountSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all applications in your Amazon Web Services account.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: Applications,
-  errors: [BadRequestException, InternalServerException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: Applications,
+    errors: [BadRequestException, InternalServerException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists deployment strategies.
  */
-export const listDeploymentStrategies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeploymentStrategies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeploymentStrategiesRequest,
     output: DeploymentStrategies,
     errors: [BadRequestException, InternalServerException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all AppConfig extension associations in the account. For more
  * information about extensions and associations, see Extending
  * workflows in the *AppConfig User Guide*.
  */
-export const listExtensionAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExtensionAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExtensionAssociationsRequest,
     output: ExtensionAssociations,
     errors: [BadRequestException, InternalServerException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all custom and Amazon Web Services authored AppConfig extensions in the
  * account. For more information about extensions, see Extending
  * workflows in the *AppConfig User Guide*.
  */
-export const listExtensions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExtensionsRequest,
-  output: Extensions,
-  errors: [BadRequestException, InternalServerException],
-}));
+export const listExtensions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExtensionsRequest,
+    output: Extensions,
+    errors: [BadRequestException, InternalServerException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an application.
  */
@@ -2025,15 +2051,23 @@ export const getExtensionAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the environments for an application.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: Environments,
-  errors: [
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: Environments,
+    errors: [
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the list of key-value tags assigned to the resource.
  */
@@ -2049,8 +2083,8 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the configuration profiles for an application.
  */
-export const listConfigurationProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationProfilesRequest,
     output: ConfigurationProfiles,
     errors: [
@@ -2058,26 +2092,39 @@ export const listConfigurationProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the deployments for an environment in descending deployment number order.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsRequest,
-  output: Deployments,
-  errors: [
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsRequest,
+    output: Deployments,
+    errors: [
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists configurations stored in the AppConfig hosted configuration store by
  * version.
  */
 export const listHostedConfigurationVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHostedConfigurationVersionsRequest,
     output: HostedConfigurationVersions,
     errors: [
@@ -2085,6 +2132,12 @@ export const listHostedConfigurationVersions =
       InternalServerException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Deletes an environment.

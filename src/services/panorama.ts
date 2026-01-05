@@ -1378,30 +1378,44 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Returns a list of application instance dependencies.
  */
 export const listApplicationInstanceDependencies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationInstanceDependenciesRequest,
     output: ListApplicationInstanceDependenciesResponse,
     errors: [AccessDeniedException, InternalServerException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of application node instances.
  */
 export const listApplicationInstanceNodeInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationInstanceNodeInstancesRequest,
     output: ListApplicationInstanceNodeInstancesResponse,
     errors: [AccessDeniedException, InternalServerException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of application instances.
  */
-export const listApplicationInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationInstancesRequest,
     output: ListApplicationInstancesResponse,
     errors: [AccessDeniedException, InternalServerException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Tags a resource.
  */
@@ -1724,35 +1738,49 @@ export const describeApplicationInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of devices.
  */
-export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesRequest,
-  output: ListDevicesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ValidationException,
-  ],
-}));
+export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesRequest,
+    output: ListDevicesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of jobs.
  */
-export const listDevicesJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesJobsRequest,
-  output: ListDevicesJobsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listDevicesJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesJobsRequest,
+    output: ListDevicesJobsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of camera stream node jobs.
  */
-export const listNodeFromTemplateJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNodeFromTemplateJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNodeFromTemplateJobsRequest,
     output: ListNodeFromTemplateJobsResponse,
     errors: [
@@ -1761,21 +1789,30 @@ export const listNodeFromTemplateJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of nodes.
  */
-export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [ConflictException, InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a list of package import jobs.
  */
-export const listPackageImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPackageImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPackageImportJobsRequest,
     output: ListPackageImportJobsResponse,
     errors: [
@@ -1784,22 +1821,33 @@ export const listPackageImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of packages.
  */
-export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackagesRequest,
-  output: ListPackagesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPackagesRequest,
+    output: ListPackagesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a job to run on a device. A job can update a device's software or reboot it.
  */

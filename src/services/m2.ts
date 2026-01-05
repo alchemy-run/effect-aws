@@ -1579,8 +1579,8 @@ export const getApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * during the application creation. You can use the batch job definitions in the list to start
  * a batch job.
  */
-export const listBatchJobDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBatchJobDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBatchJobDefinitionsRequest,
     output: ListBatchJobDefinitionsResponse,
     errors: [
@@ -1590,8 +1590,13 @@ export const listBatchJobDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "batchJobDefinitions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Describes a specific runtime environment.
  */
@@ -1609,44 +1614,68 @@ export const getEnvironment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the available engine versions.
  */
-export const listEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEngineVersionsRequest,
-  output: ListEngineVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEngineVersionsRequest,
+    output: ListEngineVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "engineVersions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the applications associated with a specific Amazon Web Services account. You can provide the
  * unique identifier of a specific runtime environment in a query parameter to see all
  * applications associated with that environment.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the runtime environments.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: ListEnvironmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: ListEnvironmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a specific application. You cannot delete a running application.
  */
@@ -1744,8 +1773,8 @@ export const getDataSetImportTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists historical, current, and scheduled batch job executions for a specific
  * application.
  */
-export const listBatchJobExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBatchJobExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBatchJobExecutionsRequest,
     output: ListBatchJobExecutionsResponse,
     errors: [
@@ -1755,8 +1784,13 @@ export const listBatchJobExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "batchJobExecutions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all the job steps for a JCL file to restart a batch job. This is only applicable for Micro Focus engine with versions 8.0.6 and above.
  */
@@ -1777,8 +1811,8 @@ export const listBatchJobRestartPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the data set exports for the specified application.
  */
-export const listDataSetExportHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSetExportHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSetExportHistoryRequest,
     output: ListDataSetExportHistoryResponse,
     errors: [
@@ -1788,13 +1822,18 @@ export const listDataSetExportHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSetExportTasks",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the data set imports for the specified application.
  */
-export const listDataSetImportHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSetImportHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSetImportHistoryRequest,
     output: ListDataSetImportHistoryResponse,
     errors: [
@@ -1804,24 +1843,37 @@ export const listDataSetImportHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSetImportTasks",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all deployments of a specific application. A deployment is a
  * combination of a specific application and a specific version of that application. Each
  * deployment is mapped to a particular application version.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsRequest,
-  output: ListDeploymentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsRequest,
+    output: ListDeploymentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deployments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the tags for the specified resource.
  */
@@ -1869,8 +1921,8 @@ export const getDeployment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the application versions for a specific application.
  */
-export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationVersionsRequest,
     output: ListApplicationVersionsResponse,
     errors: [
@@ -1880,8 +1932,13 @@ export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applicationVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Removes one or more tags from the specified resource.
  */
@@ -2064,20 +2121,28 @@ export const createDataSetExportTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * associated with applications deployed on runtime environments. This is known as importing
  * data sets. Currently, Amazon Web Services Mainframe Modernization can import data sets into catalogs using CreateDataSetImportTask.
  */
-export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSetsRequest,
-  output: ListDataSetsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    ExecutionTimeoutException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSetsRequest,
+    output: ListDataSetsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      ExecutionTimeoutException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts a batch job and returns the unique identifier of this execution of the batch job.
  * The associated application must be running in order to start the batch job.

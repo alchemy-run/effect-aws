@@ -409,16 +409,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Includes S3 on Outposts that you have access to as the Outposts owner, or as a shared user
  * from Resource Access Manager (RAM).
  */
-export const listOutpostsWithS3 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOutpostsWithS3Request,
-  output: ListOutpostsWithS3Result,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listOutpostsWithS3 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOutpostsWithS3Request,
+    output: ListOutpostsWithS3Result,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Outposts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all endpoints associated with an Outpost that has been shared by Amazon Web Services Resource Access Manager (RAM).
  *
@@ -428,17 +436,24 @@ export const listOutpostsWithS3 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - DeleteEndpoint
  */
-export const listSharedEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSharedEndpointsRequest,
-  output: ListSharedEndpointsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSharedEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSharedEndpointsRequest,
+    output: ListSharedEndpointsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Endpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates an endpoint and associates it with the specified Outpost.
  *
@@ -495,14 +510,22 @@ export const deleteEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - DeleteEndpoint
  */
-export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointsRequest,
-  output: ListEndpointsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEndpointsRequest,
+    output: ListEndpointsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Endpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

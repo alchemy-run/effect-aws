@@ -351,8 +351,8 @@ export const deleteHomeRegionControl = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This API permits filtering on the `ControlId` and `HomeRegion`
  * fields.
  */
-export const describeHomeRegionControls = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeHomeRegionControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeHomeRegionControlsRequest,
     output: DescribeHomeRegionControlsResult,
     errors: [
@@ -362,8 +362,12 @@ export const describeHomeRegionControls = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the calling account’s home region, if configured. This API is used by other AWS
  * services to determine the regional endpoint for calling AWS Application Discovery Service and

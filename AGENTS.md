@@ -16,6 +16,10 @@ bun test:protocols
 To run a single protocol test suite:
 bun vitest run ./test/protocols/aws-json-1.0.test.ts
 
+:::warning
+Don't use LOCAL=1 for testing unless explicitly asked to run local tests. Always run live tests by default
+:::
+
 If it is unclear what the XML format for an AWS API is, look up the AWS API reference for that operation.
 
 When asked to explore the smithy models, use `bun -e` to evaluate inline Javascript that loads the JSON in aws-models/models/{service}/{version}.json. the models are too big to load into context. Stick to boring async APIs when using bun -e. Don't bother writing effect just to load, parse and explore JSON files. Use ESM syntax always.
@@ -95,12 +99,6 @@ bun find:errors "test S3 bucket creation with different regions and LocationCons
 
 # Test validation edge cases
 bun find:errors "test DynamoDB with invalid table names and missing required fields"
-```
-
-By default, the script runs against LocalStack. To run against real AWS (requires credentials):
-
-```bash
-LIVE=1 bun find:errors "discover S3 errors"
 ```
 
 The agent will:

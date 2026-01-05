@@ -2818,19 +2818,34 @@ export const describeTaskDefinition = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the account settings for a specified principal.
  */
-export const listAccountSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountSettingsRequest,
-  output: ListAccountSettingsResponse,
-  errors: [ClientException, InvalidParameterException, ServerException],
-}));
+export const listAccountSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAccountSettingsRequest,
+    output: ListAccountSettingsResponse,
+    errors: [ClientException, InvalidParameterException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "settings",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of existing clusters.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [ClientException, InvalidParameterException, ServerException],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [ClientException, InvalidParameterException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusterArns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of task definition families that are registered to your account. This
  * list includes task definition families that no longer have any `ACTIVE` task
@@ -2841,23 +2856,35 @@ export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `ACTIVE`. You can also filter the results with the
  * `familyPrefix` parameter.
  */
-export const listTaskDefinitionFamilies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTaskDefinitionFamilies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTaskDefinitionFamiliesRequest,
     output: ListTaskDefinitionFamiliesResponse,
     errors: [ClientException, InvalidParameterException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "families",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of task definitions that are registered to your account. You can filter
  * the results by family name with the `familyPrefix` parameter or by status
  * with the `status` parameter.
  */
-export const listTaskDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTaskDefinitionsRequest,
-  output: ListTaskDefinitionsResponse,
-  errors: [ClientException, InvalidParameterException, ServerException],
-}));
+export const listTaskDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTaskDefinitionsRequest,
+    output: ListTaskDefinitionsResponse,
+    errors: [ClientException, InvalidParameterException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "taskDefinitionArns",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Modifies an account setting. Account settings are set on a per-Region basis.
  *
@@ -2903,11 +2930,19 @@ export const deleteAccountSetting = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * example, to see which container instances in a cluster are running a Linux AMI
  * (`ecs.os-type=linux`).
  */
-export const listAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttributesRequest,
-  output: ListAttributesResponse,
-  errors: [ClusterNotFoundException, InvalidParameterException],
-}));
+export const listAttributes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttributesRequest,
+    output: ListAttributesResponse,
+    errors: [ClusterNotFoundException, InvalidParameterException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "attributes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * This action is only used by the Amazon ECS agent, and it is not intended for use
  * outside of the agent.
@@ -3109,8 +3144,8 @@ export const describeServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * statements inside the `filter` parameter. For more information, see Cluster Query Language in the Amazon Elastic
  * Container Service Developer Guide.
  */
-export const listContainerInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContainerInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContainerInstancesRequest,
     output: ListContainerInstancesResponse,
     errors: [
@@ -3119,22 +3154,35 @@ export const listContainerInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "containerInstanceArns",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of services. You can filter the results by cluster, launch type, and
  * scheduling strategy.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [
-    ClientException,
-    ClusterNotFoundException,
-    InvalidParameterException,
-    ServerException,
-  ],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [
+      ClientException,
+      ClusterNotFoundException,
+      InvalidParameterException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceArns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the tags for an Amazon ECS resource.
  */
@@ -3228,8 +3276,8 @@ export const deregisterTaskDefinition = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `ListServices`. For more information, see Service Connect
  * in the *Amazon Elastic Container Service Developer Guide*.
  */
-export const listServicesByNamespace = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServicesByNamespace =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServicesByNamespaceRequest,
     output: ListServicesByNamespaceResponse,
     errors: [
@@ -3238,8 +3286,13 @@ export const listServicesByNamespace = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NamespaceNotFoundException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceArns",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Create or update an attribute on an Amazon ECS resource. If the attribute doesn't
  * exist, it's created. If the attribute exists, its value is replaced with the specified
@@ -3279,7 +3332,7 @@ export const describeCapacityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Recently stopped tasks might appear in the returned results.
  */
-export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
   output: ListTasksResponse,
   errors: [
@@ -3289,6 +3342,12 @@ export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServerException,
     ServiceNotFoundException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "taskArns",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Runs a command remotely on a container within a task.

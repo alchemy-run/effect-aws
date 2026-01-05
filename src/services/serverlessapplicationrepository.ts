@@ -856,8 +856,8 @@ export const createApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the list of applications nested in the containing application.
  */
-export const listApplicationDependencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationDependencies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationDependenciesRequest,
     output: ListApplicationDependenciesResponse,
     errors: [
@@ -867,26 +867,37 @@ export const listApplicationDependencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Lists applications owned by the requester.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists versions for the specified application.
  */
-export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationVersionsRequest,
     output: ListApplicationVersionsResponse,
     errors: [
@@ -896,8 +907,12 @@ export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Sets the permission policy for an application. For the list of actions supported for this operation, see
  * Application

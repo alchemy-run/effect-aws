@@ -988,17 +988,25 @@ export const deleteSafetyRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the safety rules (the assertion rules and gating rules) that you've defined for the routing controls in a control panel.
  */
-export const listSafetyRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSafetyRulesRequest,
-  output: ListSafetyRulesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSafetyRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSafetyRulesRequest,
+    output: ListSafetyRulesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SafetyRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Create a new cluster. A cluster is a set of redundant Regional endpoints against which you can run API calls to update or get the state of one or more routing controls. Each cluster has a name, status, Amazon Resource Name (ARN), and an array of the five cluster endpoints (one for each supported Amazon Web Services Region) that you can use with API calls to the cluster data plane.
  */
@@ -1039,7 +1047,7 @@ export const updateSafetyRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns an array of all Amazon Route 53 health checks associated with a specific routing control.
  */
 export const listAssociatedRoute53HealthChecks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedRoute53HealthChecksRequest,
     output: ListAssociatedRoute53HealthChecksResponse,
     errors: [
@@ -1047,6 +1055,12 @@ export const listAssociatedRoute53HealthChecks =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HealthCheckIds",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the tags for a resource.
@@ -1218,45 +1232,68 @@ export const deleteRoutingControl = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns an array of all the clusters in an account.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Clusters",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of control panels in an account or in a cluster.
  */
-export const listControlPanels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListControlPanelsRequest,
-  output: ListControlPanelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listControlPanels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListControlPanelsRequest,
+    output: ListControlPanelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ControlPanels",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of routing controls for a control panel. A routing control is an Amazon Route 53 Application Recovery Controller construct that has one of two states: ON and OFF. You can map the routing control state to the state of an Amazon Route 53 health check, which can be used to control routing.
  */
-export const listRoutingControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoutingControlsRequest,
-  output: ListRoutingControlsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRoutingControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRoutingControlsRequest,
+    output: ListRoutingControlsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingControls",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Delete a cluster.
  */

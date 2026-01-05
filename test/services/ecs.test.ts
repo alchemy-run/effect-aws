@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Config, Effect, Schedule } from "effect";
+import { Config, Effect, Schedule, Stream } from "effect";
 import {
   createCluster,
   deleteCluster,
@@ -721,5 +721,41 @@ test(
 
     const failure = result.failures![0];
     expect(failure.reason).toEqual("MISSING");
+  }),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listClusters.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of clusters
+    const pages = yield* listClusters
+      .pages({ maxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listClusters.items() streams cluster ARNs directly",
+  Effect.gen(function* () {
+    // ECS listClusters only returns ARNs (not full cluster objects)
+    // Use describeClusters with these ARNs to get full cluster details
+    const clusterArns = yield* listClusters
+      .items({ maxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const arnsArray = Array.from(clusterArns);
+
+    // Each item is just a string ARN (by AWS API design)
+    for (const arn of arnsArray) {
+      expect(typeof arn).toBe("string");
+      expect(arn).toContain("arn:");
+    }
   }),
 );

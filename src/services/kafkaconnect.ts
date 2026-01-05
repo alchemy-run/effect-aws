@@ -1251,8 +1251,8 @@ export const describeWorkerConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists information about a connector's operation(s).
  */
-export const listConnectorOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConnectorOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectorOperationsRequest,
     output: ListConnectorOperationsResponse,
     errors: [
@@ -1264,45 +1264,66 @@ export const listConnectorOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "connectorOperations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the connectors in this account and Region. The list is limited to connectors whose name starts with the specified prefix. The response also includes a description of each of the listed connectors.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "connectors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all of the custom plugins in this account and Region.
  */
-export const listCustomPlugins = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCustomPluginsRequest,
-  output: ListCustomPluginsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listCustomPlugins = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCustomPluginsRequest,
+    output: ListCustomPluginsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "customPlugins",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all of the worker configurations in this account and Region.
  */
-export const listWorkerConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkerConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkerConfigurationsRequest,
     output: ListWorkerConfigurationsResponse,
     errors: [
@@ -1314,8 +1335,13 @@ export const listWorkerConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workerConfigurations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Attaches tags to the specified resource.
  */

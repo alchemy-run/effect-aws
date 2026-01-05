@@ -934,11 +934,19 @@ export const getConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of all of your applications. Results are paginated.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing attribute group with new details.
  */
@@ -1002,7 +1010,7 @@ export const disassociateAttributeGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all attribute groups that are associated with specified application. Results are paginated.
  */
 export const listAssociatedAttributeGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedAttributeGroupsRequest,
     output: ListAssociatedAttributeGroupsResponse,
     errors: [
@@ -1010,6 +1018,12 @@ export const listAssociatedAttributeGroups =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "attributeGroups",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all of the tags on the resource.
@@ -1053,7 +1067,7 @@ export const deleteAttributeGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the details of all attribute groups associated with a specific application. The results display in pages.
  */
 export const listAttributeGroupsForApplication =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttributeGroupsForApplicationRequest,
     output: ListAttributeGroupsForApplicationResponse,
     errors: [
@@ -1061,15 +1075,28 @@ export const listAttributeGroupsForApplication =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "attributeGroupsDetails",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all attribute groups which you have access to. Results are paginated.
  */
-export const listAttributeGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttributeGroupsRequest,
-  output: ListAttributeGroupsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listAttributeGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAttributeGroupsRequest,
+    output: ListAttributeGroupsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "attributeGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Associates a `TagKey` configuration
  * to an account.
@@ -1156,8 +1183,8 @@ export const getAssociatedResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * with it
  * using this API.
  */
-export const listAssociatedResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssociatedResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedResourcesRequest,
     output: ListAssociatedResourcesResponse,
     errors: [
@@ -1165,8 +1192,13 @@ export const listAssociatedResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resources",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates an existing application with new attributes.
  */

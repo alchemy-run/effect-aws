@@ -1944,8 +1944,8 @@ export const createAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes the updates of a directory for a particular update type.
  */
-export const describeUpdateDirectory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeUpdateDirectory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeUpdateDirectoryRequest,
     output: DescribeUpdateDirectoryResult,
     errors: [
@@ -1956,8 +1956,12 @@ export const describeUpdateDirectory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ServiceException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UpdateActivities",
+    } as const,
+  }));
 /**
  * Disables single-sign on for a directory.
  */
@@ -2290,36 +2294,52 @@ export const enableCAEnrollmentPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can also specify a maximum number of return results with the *Limit*
  * parameter.
  */
-export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSnapshotsRequest,
-  output: DescribeSnapshotsResult,
-  errors: [
-    ClientException,
-    EntityDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-  ],
-}));
+export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSnapshotsRequest,
+    output: DescribeSnapshotsResult,
+    errors: [
+      ClientException,
+      EntityDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Snapshots",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Lists the address blocks that you have added to a directory.
  */
-export const listIpRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIpRoutesRequest,
-  output: ListIpRoutesResult,
-  errors: [
-    ClientException,
-    EntityDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-  ],
-}));
+export const listIpRoutes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIpRoutesRequest,
+    output: ListIpRoutesResult,
+    errors: [
+      ClientException,
+      EntityDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpRoutesInfo",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Lists the active log subscriptions for the Amazon Web Services account.
  */
-export const listLogSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLogSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLogSubscriptionsRequest,
     output: ListLogSubscriptionsResult,
     errors: [
@@ -2328,13 +2348,18 @@ export const listLogSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ServiceException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LogSubscriptions",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Lists all schema extensions applied to a Microsoft AD Directory.
  */
-export const listSchemaExtensions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSchemaExtensions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSchemaExtensionsRequest,
     output: ListSchemaExtensionsResult,
     errors: [
@@ -2343,22 +2368,34 @@ export const listSchemaExtensions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ServiceException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SchemaExtensionsInfo",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Lists all tags on a directory.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResult,
-  errors: [
-    ClientException,
-    EntityDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResult,
+    errors: [
+      ClientException,
+      EntityDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Obtains information about the directories that belong to this account.
  *
@@ -2375,17 +2412,24 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `Limit`
  * parameter.
  */
-export const describeDirectories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDirectoriesRequest,
-  output: DescribeDirectoriesResult,
-  errors: [
-    ClientException,
-    EntityDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-  ],
-}));
+export const describeDirectories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDirectoriesRequest,
+    output: DescribeDirectoriesResult,
+    errors: [
+      ClientException,
+      EntityDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DirectoryDescriptions",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Enables single sign-on for a directory. Single sign-on allows users in your directory to
  * access certain Amazon Web Services services from a computer joined to the directory without having to enter
@@ -2549,8 +2593,8 @@ export const describeADAssessment = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Provides information about any domain controllers in your directory.
  */
-export const describeDomainControllers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDomainControllers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDomainControllersRequest,
     output: DescribeDomainControllersResult,
     errors: [
@@ -2561,8 +2605,12 @@ export const describeDomainControllers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Retrieves information about the configurable settings for the specified directory.
  */
@@ -2690,7 +2738,7 @@ export const describeCertificate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `SmartCard` is supported.
  */
 export const describeClientAuthenticationSettings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientAuthenticationSettingsRequest,
     output: DescribeClientAuthenticationSettingsResult,
     errors: [
@@ -2701,23 +2749,37 @@ export const describeClientAuthenticationSettings =
       ServiceException,
       UnsupportedOperationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClientAuthenticationSettingsInfo",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Retrieves a list of directory assessments for the specified directory or all
  * assessments in your account. Use this operation to monitor assessment status and manage
  * multiple assessments.
  */
-export const listADAssessments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListADAssessmentsRequest,
-  output: ListADAssessmentsResult,
-  errors: [
-    ClientException,
-    DirectoryDoesNotExistException,
-    InvalidParameterException,
-    ServiceException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listADAssessments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListADAssessmentsRequest,
+    output: ListADAssessmentsResult,
+    errors: [
+      ClientException,
+      DirectoryDoesNotExistException,
+      InvalidParameterException,
+      ServiceException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Assessments",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Initiates a directory assessment to validate your self-managed AD environment for
  * hybrid domain join. The assessment checks compatibility and connectivity of the
@@ -3004,8 +3066,8 @@ export const disableClientAuthentication = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes the status of LDAP security for the specified directory.
  */
-export const describeLDAPSSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLDAPSSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLDAPSSettingsRequest,
     output: DescribeLDAPSSettingsResult,
     errors: [
@@ -3016,64 +3078,92 @@ export const describeLDAPSSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LDAPSSettingsInfo",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Provides information about the Regions that are configured for multi-Region
  * replication.
  */
-export const describeRegions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeRegionsRequest,
-  output: DescribeRegionsResult,
-  errors: [
-    AccessDeniedException,
-    ClientException,
-    DirectoryDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-    UnsupportedOperationException,
-  ],
-}));
+export const describeRegions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeRegionsRequest,
+    output: DescribeRegionsResult,
+    errors: [
+      AccessDeniedException,
+      ClientException,
+      DirectoryDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegionsDescription",
+    } as const,
+  }),
+);
 /**
  * Obtains information about the trust relationships for this account.
  *
  * If no input parameters are provided, such as DirectoryId or TrustIds, this request
  * describes all the trust relationships belonging to the account.
  */
-export const describeTrusts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTrustsRequest,
-  output: DescribeTrustsResult,
-  errors: [
-    ClientException,
-    EntityDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-    UnsupportedOperationException,
-  ],
-}));
+export const describeTrusts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTrustsRequest,
+    output: DescribeTrustsResult,
+    errors: [
+      ClientException,
+      EntityDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Trusts",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * For the specified directory, lists all the certificates registered for a secure LDAP or
  * client certificate authentication.
  */
-export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCertificatesRequest,
-  output: ListCertificatesResult,
-  errors: [
-    ClientException,
-    DirectoryDoesNotExistException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServiceException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCertificatesRequest,
+    output: ListCertificatesResult,
+    errors: [
+      ClientException,
+      DirectoryDoesNotExistException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServiceException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CertificatesInfo",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Returns the shared directories in your account.
  */
-export const describeSharedDirectories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSharedDirectories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSharedDirectoriesRequest,
     output: DescribeSharedDirectoriesResult,
     errors: [
@@ -3084,8 +3174,13 @@ export const describeSharedDirectories = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SharedDirectories",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Adds or removes domain controllers to or from the directory. Based on the difference
  * between current value and new value (provided through this API call), domain controllers will

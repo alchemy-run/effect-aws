@@ -806,13 +806,18 @@ export class MalformedCSRException extends S.TaggedError<MalformedCSRException>(
 /**
  * Lists the private certificate authorities that you created by using the CreateCertificateAuthority action.
  */
-export const listCertificateAuthorities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCertificateAuthorities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCertificateAuthoritiesRequest,
     output: ListCertificateAuthoritiesResponse,
     errors: [InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CertificateAuthorities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists information about your private certificate authority (CA) or one that has been shared with you. You specify the private CA on input by its ARN (Amazon Resource Name). The output contains the status of your CA. This can be any of the following:
  *
@@ -850,17 +855,25 @@ export const describeCertificateAuthority =
  *
  * - If the private CA and the ACM certificates reside in different accounts, then permissions cannot be used to enable automatic renewals. Instead, the ACM certificate owner must set up a resource-based policy to enable cross-account issuance and renewals. For more information, see Using a Resource Based Policy with Amazon Web Services Private CA.
  */
-export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPermissionsRequest,
-  output: ListPermissionsResponse,
-  errors: [
-    InvalidArnException,
-    InvalidNextTokenException,
-    InvalidStateException,
-    RequestFailedException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPermissionsRequest,
+    output: ListPermissionsResponse,
+    errors: [
+      InvalidArnException,
+      InvalidNextTokenException,
+      InvalidStateException,
+      RequestFailedException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Permissions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the resource-based policy attached to a private CA. Deletion will remove any access that the policy has granted. If there is no policy attached to the private CA, this action will return successful.
  *
@@ -1002,7 +1015,7 @@ export const getPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the tags, if any, that are associated with your private CA or one that has been shared with you. Tags are labels that you can use to identify and organize your CAs. Each tag consists of a key and an optional value. Call the TagCertificateAuthority action to add one or more tags to your CA. Call the UntagCertificateAuthority action to remove tags.
  */
-export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
   errors: [
@@ -1011,6 +1024,12 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     RequestFailedException,
     ResourceNotFoundException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Tags",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Revokes permissions on a private CA granted to the Certificate Manager (ACM) service principal (acm.amazonaws.com).

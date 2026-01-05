@@ -1887,95 +1887,156 @@ export class TooManyTagKeysException extends S.TaggedError<TooManyTagKeysExcepti
  * Lists the metrics for the metric attribution.
  */
 export const listMetricAttributionMetrics =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMetricAttributionMetricsRequest,
     output: ListMetricAttributionMetricsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metrics",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists metric attributions.
  */
-export const listMetricAttributions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMetricAttributions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMetricAttributionsRequest,
     output: ListMetricAttributionsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metricAttributions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of available recipes. The response provides the properties
  * for each recipe, including the recipe's Amazon Resource Name (ARN).
  */
-export const listRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecipesRequest,
-  output: ListRecipesResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listRecipes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecipesRequest,
+    output: ListRecipesResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recipes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of recommenders in a given Domain dataset group.
  * When a Domain dataset group is not specified, all the recommenders associated with the account are listed.
  * The response provides the properties for each recommender, including the Amazon Resource Name (ARN).
  * For more information on recommenders, see CreateRecommender.
  */
-export const listRecommenders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendersRequest,
-  output: ListRecommendersResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listRecommenders = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecommendersRequest,
+    output: ListRecommendersResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommenders",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the list of schemas associated with the account. The response provides the
  * properties for each schema, including the Amazon Resource Name (ARN).
  * For more information on schemas, see CreateSchema.
  */
-export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemasRequest,
-  output: ListSchemasResponse,
-  errors: [InvalidNextTokenException],
-}));
+export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemasRequest,
+    output: ListSchemasResponse,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "schemas",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of solutions in a given dataset group.
  * When a dataset group is not specified, all the solutions associated with the account are listed.
  * The response provides the properties for each solution, including the Amazon Resource Name (ARN).
  * For more information on solutions, see CreateSolution.
  */
-export const listSolutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSolutionsRequest,
-  output: ListSolutionsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listSolutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSolutionsRequest,
+    output: ListSolutionsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "solutions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of the batch inference jobs that have been performed off of a solution
  * version.
  */
-export const listBatchInferenceJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBatchInferenceJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBatchInferenceJobsRequest,
     output: ListBatchInferenceJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "batchInferenceJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the batch segment jobs that have been performed off of a solution
  * version that you specify.
  */
-export const listBatchSegmentJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBatchSegmentJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBatchSegmentJobsRequest,
     output: ListBatchSegmentJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "batchSegmentJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of campaigns that use the given solution.
  * When a solution is not specified, all the campaigns associated with the account are listed.
  * The response provides the properties for each campaign, including the Amazon Resource Name (ARN).
  * For more information on campaigns, see CreateCampaign.
  */
-export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCampaignsRequest,
-  output: ListCampaignsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCampaignsRequest,
+    output: ListCampaignsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "campaigns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of data deletion jobs for a dataset group ordered by creation time,
  * with the most recent first.
@@ -2000,23 +2061,36 @@ export const listDataDeletionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * information on dataset export jobs, see CreateDatasetExportJob. For more information on datasets, see
  * CreateDataset.
  */
-export const listDatasetExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDatasetExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDatasetExportJobsRequest,
     output: ListDatasetExportJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasetExportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of dataset groups. The response provides the properties
  * for each dataset group, including the Amazon Resource Name (ARN). For more
  * information on dataset groups, see CreateDatasetGroup.
  */
-export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetGroupsRequest,
-  output: ListDatasetGroupsResponse,
-  errors: [InvalidNextTokenException],
-}));
+export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetGroupsRequest,
+    output: ListDatasetGroupsResponse,
+    errors: [InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasetGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of dataset import jobs that use the given dataset. When
  * a dataset is not specified, all the dataset import jobs associated with
@@ -2025,42 +2099,71 @@ export const listDatasetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * information on dataset import jobs, see CreateDatasetImportJob. For more information on datasets, see
  * CreateDataset.
  */
-export const listDatasetImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDatasetImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDatasetImportJobsRequest,
     output: ListDatasetImportJobsResponse,
     errors: [InvalidInputException, InvalidNextTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasetImportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns the list of datasets contained in the given dataset group. The
  * response provides the properties for each dataset, including the Amazon
  * Resource Name (ARN). For more information on datasets, see CreateDataset.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the list of event trackers associated with the account.
  * The response provides the properties for each event tracker, including the Amazon Resource
  * Name (ARN) and tracking ID. For more
  * information on event trackers, see CreateEventTracker.
  */
-export const listEventTrackers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventTrackersRequest,
-  output: ListEventTrackersResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listEventTrackers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventTrackersRequest,
+    output: ListEventTrackersResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "eventTrackers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all filters that belong to a given dataset group.
  */
-export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFiltersRequest,
-  output: ListFiltersResponse,
-  errors: [InvalidInputException, InvalidNextTokenException],
-}));
+export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFiltersRequest,
+    output: ListFiltersResponse,
+    errors: [InvalidInputException, InvalidNextTokenException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "Filters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an Amazon Personalize schema from the specified schema string. The schema you create
  * must be in Avro JSON format.
@@ -2328,8 +2431,8 @@ export const getSolutionMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * specified, all the solution versions associated with the account are listed. The response
  * provides the properties for each solution version, including the Amazon Resource Name (ARN).
  */
-export const listSolutionVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSolutionVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSolutionVersionsRequest,
     output: ListSolutionVersionsResponse,
     errors: [
@@ -2337,8 +2440,13 @@ export const listSolutionVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "solutionVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates a metric attribution.
  */

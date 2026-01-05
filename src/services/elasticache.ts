@@ -2810,7 +2810,7 @@ export class ReplicationGroupAlreadyExistsFault extends S.TaggedError<Replicatio
  * is specified, the list contains only the descriptions for that group.
  */
 export const describeCacheParameterGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheParameterGroupsMessage,
     output: CacheParameterGroupsMessage,
     errors: [
@@ -2818,14 +2818,20 @@ export const describeCacheParameterGroups =
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheParameterGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of cache security group descriptions. If a cache security group name is
  * specified, the list contains only the description of that group. This applicable only
  * when you have ElastiCache in Classic setup
  */
-export const describeCacheSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCacheSecurityGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheSecurityGroupsMessage,
     output: CacheSecurityGroupMessage,
     errors: [
@@ -2833,8 +2839,13 @@ export const describeCacheSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheSecurityGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about all provisioned clusters if no cluster identifier is
  * specified, or about a specific cache cluster if a cluster identifier is supplied.
@@ -2858,8 +2869,8 @@ export const describeCacheSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If cache nodes are currently being removed from the cluster, no endpoint information
  * for the removed nodes is displayed.
  */
-export const describeCacheClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCacheClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheClustersMessage,
     output: CacheClusterMessage,
     errors: [
@@ -2867,8 +2878,13 @@ export const describeCacheClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheClusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Stop the service update. For more information on service updates and stopping them,
  * see Stopping
@@ -2932,25 +2948,36 @@ export const deleteCacheSubnetGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of the available cache engines and their versions.
  */
-export const describeCacheEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCacheEngineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheEngineVersionsMessage,
     output: CacheEngineVersionMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheEngineVersions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns the default engine and system parameter information for the specified cache
  * engine.
  */
 export const describeEngineDefaultParameters =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEngineDefaultParametersMessage,
     output: DescribeEngineDefaultParametersResult,
     errors: [
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "EngineDefaults.Marker",
+      items: "EngineDefaults.Parameters",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns events related to clusters, cache security groups, and cache parameter groups.
@@ -2960,19 +2987,27 @@ export const describeEngineDefaultParameters =
  * By default, only the events occurring within the last hour are returned; however, you
  * can retrieve up to 14 days' worth of events if necessary.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: EventsMessage,
-  errors: [
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-  ],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: EventsMessage,
+    errors: [
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Events",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Returns details of the service updates
  */
-export const describeServiceUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeServiceUpdates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeServiceUpdatesMessage,
     output: ServiceUpdatesMessage,
     errors: [
@@ -2980,8 +3015,13 @@ export const describeServiceUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ServiceUpdateNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ServiceUpdates",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Revokes ingress from a cache security group. Use this operation to disallow access
  * from an Amazon EC2 security group that had been previously authorized.
@@ -3015,7 +3055,7 @@ export const batchApplyUpdateAction = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * specified, returns information about all Global datastores.
  */
 export const describeGlobalReplicationGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGlobalReplicationGroupsMessage,
     output: DescribeGlobalReplicationGroupsResult,
     errors: [
@@ -3023,6 +3063,12 @@ export const describeGlobalReplicationGroups =
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "GlobalReplicationGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of cache subnet group descriptions. If a subnet group name is
@@ -3030,13 +3076,18 @@ export const describeGlobalReplicationGroups =
  * when you have ElastiCache in VPC setup. All ElastiCache clusters now launch in VPC by
  * default.
  */
-export const describeCacheSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCacheSubnetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheSubnetGroupsMessage,
     output: CacheSubnetGroupMessage,
     errors: [CacheSubnetGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheSubnetGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about a particular replication group. If no identifier is
  * specified, `DescribeReplicationGroups` returns information about all
@@ -3044,8 +3095,8 @@ export const describeCacheSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This operation is valid for Valkey or Redis OSS only.
  */
-export const describeReplicationGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReplicationGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationGroupsMessage,
     output: ReplicationGroupMessage,
     errors: [
@@ -3053,15 +3104,20 @@ export const describeReplicationGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ReplicationGroupNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReplicationGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about a specific serverless cache.
  * If no identifier is specified, then the API returns information on all the serverless caches belonging to
  * this Amazon Web Services account.
  */
-export const describeServerlessCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeServerlessCaches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeServerlessCachesRequest,
     output: DescribeServerlessCachesResponse,
     errors: [
@@ -3069,8 +3125,13 @@ export const describeServerlessCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ServerlessCacheNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServerlessCaches",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about cluster or replication group snapshots. By default,
  * `DescribeSnapshots` lists all of your snapshots; it can optionally
@@ -3079,16 +3140,24 @@ export const describeServerlessCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This operation is valid for Valkey or Redis OSS only.
  */
-export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSnapshotsMessage,
-  output: DescribeSnapshotsListMessage,
-  errors: [
-    CacheClusterNotFoundFault,
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-    SnapshotNotFoundFault,
-  ],
-}));
+export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSnapshotsMessage,
+    output: DescribeSnapshotsListMessage,
+    errors: [
+      CacheClusterNotFoundFault,
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+      SnapshotNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Snapshots",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists all available node types that you can scale with your cluster's replication
  * group's current node type.
@@ -3180,8 +3249,8 @@ export const deleteServerlessCacheSnapshot =
 /**
  * Returns the detailed parameter list for a particular cache parameter group.
  */
-export const describeCacheParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCacheParameters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCacheParametersMessage,
     output: CacheParameterGroupDetails,
     errors: [
@@ -3189,13 +3258,18 @@ export const describeCacheParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Parameters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Lists available reserved cache node offerings.
  */
 export const describeReservedCacheNodesOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedCacheNodesOfferingsMessage,
     output: ReservedCacheNodesOfferingMessage,
     errors: [
@@ -3203,6 +3277,12 @@ export const describeReservedCacheNodesOfferings =
       InvalidParameterValueException,
       ReservedCacheNodesOfferingNotFoundFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedCacheNodesOfferings",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Async API to test connection between source and target replication group.
@@ -3376,7 +3456,7 @@ export const exportServerlessCacheSnapshot =
  * a particular serverless cache. Available for Valkey, Redis OSS and Serverless Memcached only.
  */
 export const describeServerlessCacheSnapshots =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeServerlessCacheSnapshotsRequest,
     output: DescribeServerlessCacheSnapshotsResponse,
     errors: [
@@ -3385,19 +3465,33 @@ export const describeServerlessCacheSnapshots =
       ServerlessCacheNotFoundFault,
       ServerlessCacheSnapshotNotFoundFault,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServerlessCacheSnapshots",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of user groups.
  */
-export const describeUserGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeUserGroupsMessage,
-  output: DescribeUserGroupsResult,
-  errors: [
-    InvalidParameterCombinationException,
-    ServiceLinkedRoleNotFoundFault,
-    UserGroupNotFoundFault,
-  ],
-}));
+export const describeUserGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeUserGroupsMessage,
+    output: DescribeUserGroupsResult,
+    errors: [
+      InvalidParameterCombinationException,
+      ServiceLinkedRoleNotFoundFault,
+      UserGroupNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "UserGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Start the migration of data.
  */
@@ -3435,15 +3529,23 @@ export const deleteServerlessCache = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of users.
  */
-export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeUsersMessage,
-  output: DescribeUsersResult,
-  errors: [
-    InvalidParameterCombinationException,
-    ServiceLinkedRoleNotFoundFault,
-    UserNotFoundFault,
-  ],
-}));
+export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeUsersMessage,
+    output: DescribeUsersResult,
+    errors: [
+      InvalidParameterCombinationException,
+      ServiceLinkedRoleNotFoundFault,
+      UserNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Users",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * This API modifies the attributes of a serverless cache.
  */
@@ -3642,8 +3744,8 @@ export const createGlobalReplicationGroup =
  * Returns information about reserved cache nodes for this account, or about a specified
  * reserved cache node.
  */
-export const describeReservedCacheNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReservedCacheNodes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedCacheNodesMessage,
     output: ReservedCacheNodeMessage,
     errors: [
@@ -3651,8 +3753,13 @@ export const describeReservedCacheNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ReservedCacheNodeNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedCacheNodes",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * A tag is a key-value pair where the key and value are case-sensitive. You can use tags
  * to categorize and track all your ElastiCache resources, with the exception of global
@@ -3960,16 +4067,21 @@ export const createServerlessCache = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns details of the update actions
  */
-export const describeUpdateActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeUpdateActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeUpdateActionsMessage,
     output: UpdateActionsMessage,
     errors: [
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "UpdateActions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Removes the tags identified by the `TagKeys` list from the named resource.
  * A tag is a key-value pair where the key and value are case-sensitive. You can use tags

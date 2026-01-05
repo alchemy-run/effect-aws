@@ -1681,19 +1681,35 @@ export class ShardsPerClusterQuotaExceededFault extends S.TaggedError<ShardsPerC
 /**
  * Returns a list of ACLs.
  */
-export const describeACLs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeACLsRequest,
-  output: DescribeACLsResponse,
-  errors: [ACLNotFoundFault, InvalidParameterCombinationException],
-}));
+export const describeACLs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeACLsRequest,
+    output: DescribeACLsResponse,
+    errors: [ACLNotFoundFault, InvalidParameterCombinationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ACLs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of users.
  */
-export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeUsersRequest,
-  output: DescribeUsersResponse,
-  errors: [InvalidParameterCombinationException, UserNotFoundFault],
-}));
+export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeUsersRequest,
+    output: DescribeUsersResponse,
+    errors: [InvalidParameterCombinationException, UserNotFoundFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Users",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Changes the list of users that belong to the Access Control List.
  */
@@ -1713,8 +1729,8 @@ export const updateACL = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the available Redis OSS engine versions.
  */
-export const describeEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEngineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEngineVersionsRequest,
     output: DescribeEngineVersionsResponse,
     errors: [
@@ -1722,48 +1738,74 @@ export const describeEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ServiceLinkedRoleNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EngineVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns events related to clusters, security groups, and parameter groups. You can obtain events specific to a particular cluster, security group, or parameter group by providing the name as a parameter.
  *
  * By default, only the events occurring within the last hour are returned; however, you can retrieve up to 14 days' worth of events if necessary.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsRequest,
-  output: DescribeEventsResponse,
-  errors: [
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-    ServiceLinkedRoleNotFoundFault,
-  ],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsRequest,
+    output: DescribeEventsResponse,
+    errors: [
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+      ServiceLinkedRoleNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details of the service updates.
  */
-export const describeServiceUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeServiceUpdates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeServiceUpdatesRequest,
     output: DescribeServiceUpdatesResponse,
     errors: [
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceUpdates",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about all provisioned clusters if no cluster identifier is specified, or about a specific cluster if a cluster name is supplied.
  */
-export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeClustersRequest,
-  output: DescribeClustersResponse,
-  errors: [
-    ClusterNotFoundFault,
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-    ServiceLinkedRoleNotFoundFault,
-  ],
-}));
+export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeClustersRequest,
+    output: DescribeClustersResponse,
+    errors: [
+      ClusterNotFoundFault,
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+      ServiceLinkedRoleNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Clusters",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all available node types that you can scale to from your cluster's current node type.
  *
@@ -1796,13 +1838,18 @@ export const deleteACL = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of subnet group descriptions. If a subnet group name is specified, the list contains only the description of that group.
  */
-export const describeSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSubnetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSubnetGroupsRequest,
     output: DescribeSubnetGroupsResponse,
     errors: [ServiceLinkedRoleNotFoundFault, SubnetGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SubnetGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a subnet group. You cannot delete a default subnet group or one that is associated with any clusters.
  */
@@ -1861,8 +1908,8 @@ export const deleteUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about reserved nodes for this account, or about a specified reserved node.
  */
-export const describeReservedNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReservedNodes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedNodesRequest,
     output: DescribeReservedNodesResponse,
     errors: [
@@ -1871,8 +1918,13 @@ export const describeReservedNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ReservedNodeNotFoundFault,
       ServiceLinkedRoleNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReservedNodes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of multi-region parameter groups.
  */
@@ -1891,7 +1943,7 @@ export const describeMultiRegionParameterGroups =
  * Lists available reserved node offerings.
  */
 export const describeReservedNodesOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedNodesOfferingsRequest,
     output: DescribeReservedNodesOfferingsResponse,
     errors: [
@@ -1900,21 +1952,35 @@ export const describeReservedNodesOfferings =
       ReservedNodesOfferingNotFoundFault,
       ServiceLinkedRoleNotFoundFault,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReservedNodesOfferings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns information about cluster snapshots. By default, DescribeSnapshots lists all of your snapshots; it can optionally describe a single snapshot,
  * or just the snapshots associated with a particular cluster.
  */
-export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSnapshotsRequest,
-  output: DescribeSnapshotsResponse,
-  errors: [
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-    ServiceLinkedRoleNotFoundFault,
-    SnapshotNotFoundFault,
-  ],
-}));
+export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSnapshotsRequest,
+    output: DescribeSnapshotsResponse,
+    errors: [
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+      ServiceLinkedRoleNotFoundFault,
+      SnapshotNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Snapshots",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Apply the service update to a list of clusters supplied. For more information on service updates and applying them, see Applying the service updates.
  */
@@ -1966,8 +2032,8 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns details about one or more multi-Region clusters.
  */
-export const describeMultiRegionClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMultiRegionClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMultiRegionClustersRequest,
     output: DescribeMultiRegionClustersResponse,
     errors: [
@@ -1976,8 +2042,13 @@ export const describeMultiRegionClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       MultiRegionClusterNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MultiRegionClusters",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the configuration of an existing multi-Region cluster.
  */
@@ -2040,21 +2111,29 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns the detailed parameter list for a particular parameter group.
  */
-export const describeParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeParametersRequest,
-  output: DescribeParametersResponse,
-  errors: [
-    InvalidParameterCombinationException,
-    InvalidParameterValueException,
-    ParameterGroupNotFoundFault,
-    ServiceLinkedRoleNotFoundFault,
-  ],
-}));
+export const describeParameters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeParametersRequest,
+    output: DescribeParametersResponse,
+    errors: [
+      InvalidParameterCombinationException,
+      InvalidParameterValueException,
+      ParameterGroupNotFoundFault,
+      ServiceLinkedRoleNotFoundFault,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Parameters",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of parameter group descriptions. If a parameter group name is specified, the list contains only the descriptions for that group.
  */
-export const describeParameterGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeParameterGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeParameterGroupsRequest,
     output: DescribeParameterGroupsResponse,
     errors: [
@@ -2063,8 +2142,13 @@ export const describeParameterGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ParameterGroupNotFoundFault,
       ServiceLinkedRoleNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ParameterGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the parameters of a parameter group. You can modify up to 20 parameters in a single request by submitting a list parameter name and value pairs.
  */

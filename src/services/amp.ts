@@ -1536,16 +1536,24 @@ export const describeScraper = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * The `ListScrapers` operation lists all of the scrapers in your account. This includes scrapers being created or deleted. You can optionally filter the returned list.
  */
-export const listScrapers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScrapersRequest,
-  output: ListScrapersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listScrapers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListScrapersRequest,
+    output: ListScrapersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scrapers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a Prometheus workspace. A workspace is a logical space dedicated to the storage and querying of Prometheus metrics. You can have one or more workspaces in each Region in your account.
  */
@@ -1612,16 +1620,24 @@ export const updateWorkspaceConfiguration =
 /**
  * Lists all of the Amazon Managed Service for Prometheus workspaces in your account. This includes workspaces being created or deleted.
  */
-export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkspacesRequest,
-  output: ListWorkspacesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkspacesRequest,
+    output: ListWorkspacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workspaces",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The `DeleteScraper` operation deletes one scraper, and stops any metrics collection that the scraper performs.
  */
@@ -1716,8 +1732,8 @@ export const describeAnomalyDetector = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a paginated list of anomaly detectors for a workspace with optional filtering by alias.
  */
-export const listAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnomalyDetectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnomalyDetectorsRequest,
     output: ListAnomalyDetectorsResponse,
     errors: [
@@ -1727,8 +1743,13 @@ export const listAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "anomalyDetectors",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The `CreateLoggingConfiguration` operation creates rules and alerting logging configuration for the workspace. Use this operation to set the CloudWatch log group to which the logs will be published to.
  *
@@ -1832,8 +1853,8 @@ export const describeRuleGroupsNamespace = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of rule groups namespaces in a workspace.
  */
-export const listRuleGroupsNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRuleGroupsNamespaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRuleGroupsNamespacesRequest,
     output: ListRuleGroupsNamespacesResponse,
     errors: [
@@ -1843,8 +1864,13 @@ export const listRuleGroupsNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ruleGroupsNamespaces",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The `ListTagsForResource` operation returns the tags that are associated with an Amazon Managed Service for Prometheus resource. Currently, the only resources that can be tagged are scrapers, workspaces, and rule groups namespaces.
  */

@@ -5241,11 +5241,19 @@ export const getMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all GuardDuty membership invitations that were sent to the current Amazon Web Services
  * account.
  */
-export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvitationsRequest,
-  output: ListInvitationsResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvitationsRequest,
+    output: ListInvitationsResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Invitations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Malware Protection plan IDs associated with the protected
  * resources in your Amazon Web Services account.
@@ -5267,22 +5275,32 @@ export const listMalwareProtectionPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * API operation.
  */
 export const listOrganizationAdminAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationAdminAccountsRequest,
     output: ListOrganizationAdminAccountsResponse,
     errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AdminAccounts",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of publishing destinations associated with the specified
  * `detectorId`.
  */
-export const listPublishingDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPublishingDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPublishingDestinationsRequest,
     output: ListPublishingDestinationsResponse,
     errors: [BadRequestException, InternalServerErrorException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a new threat entity set. In a threat entity set, you can provide known malicious
  * IP addresses and domains for your Amazon Web Services environment.
@@ -5469,49 +5487,87 @@ export const inviteMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists detectorIds of all the existing Amazon GuardDuty detector resources.
  */
-export const listDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDetectorsRequest,
-  output: ListDetectorsResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listDetectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDetectorsRequest,
+    output: ListDetectorsResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DetectorIds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a paginated list of the current filters.
  */
-export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFiltersRequest,
-  output: ListFiltersResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFiltersRequest,
+    output: ListFiltersResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FilterNames",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists GuardDuty findings for the specified detector ID.
  *
  * There might be regional differences because some flags might not be available in all the Regions where GuardDuty
  * is currently supported. For more information, see Regions and endpoints.
  */
-export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFindingsRequest,
-  output: ListFindingsResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFindingsRequest,
+    output: ListFindingsResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FindingIds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the IPSets of the GuardDuty service specified by the detector ID. If you use this
  * operation from a member account, the IPSets returned are the IPSets from the associated
  * administrator account.
  */
-export const listIPSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listIPSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIPSetsRequest,
   output: ListIPSetsResponse,
   errors: [BadRequestException, InternalServerErrorException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "IpSetIds",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists details about all member accounts for the current GuardDuty administrator
  * account.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersRequest,
-  output: ListMembersResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersRequest,
+    output: ListMembersResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Members",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists tags for a resource. Tagging is currently supported for detectors, finding filters,
  * IP sets, threat intel sets, and publishing destination, with a limit of 50 tags per resource.
@@ -5532,35 +5588,52 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * operation from a member account, the threat entity sets that are returned as a response, belong to the
  * administrator account.
  */
-export const listThreatEntitySets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThreatEntitySets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThreatEntitySetsRequest,
     output: ListThreatEntitySetsResponse,
     errors: [BadRequestException, InternalServerErrorException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ThreatEntitySetIds",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the ThreatIntelSets of the GuardDuty service specified by the detector ID. If you
  * use this operation from a member account, the ThreatIntelSets associated with the
  * administrator account are returned.
  */
-export const listThreatIntelSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThreatIntelSetsRequest,
-  output: ListThreatIntelSetsResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listThreatIntelSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListThreatIntelSetsRequest,
+    output: ListThreatIntelSetsResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ThreatIntelSetIds",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the trusted entity sets associated with the specified GuardDuty detector ID. If you use this
  * operation from a member account, the trusted entity sets that are returned as a response, belong to the
  * administrator account.
  */
-export const listTrustedEntitySets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrustedEntitySets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrustedEntitySetsRequest,
     output: ListTrustedEntitySetsResponse,
     errors: [BadRequestException, InternalServerErrorException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrustedEntitySetIds",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Initiates a malware scan for a specific S3 object. This API allows you to perform on-demand malware scanning of individual objects in S3 buckets that have Malware Protection for S3 enabled.
  *
@@ -6079,11 +6152,19 @@ export const getRemainingFreeTrialDays = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of malware scans. Each member account can view the malware scans for their
  * own accounts. An administrator can view the malware scans for all of its members' accounts.
  */
-export const listMalwareScans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMalwareScansRequest,
-  output: ListMalwareScansResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listMalwareScans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMalwareScansRequest,
+    output: ListMalwareScansResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Scans",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the malware scan settings.
  *
@@ -6174,10 +6255,15 @@ export const createDetector = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * information, see Regions and endpoints.
  */
 export const describeOrganizationConfiguration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationConfigurationRequest,
     output: DescribeOrganizationConfigurationResponse,
     errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a GuardDuty detector specified by the detectorId.
@@ -6214,11 +6300,18 @@ export const getMalwareScan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * so far under 30 days. This may differ from the cost metrics in the console, which project
  * usage over 30 days to provide a monthly cost estimate. For more information, see Understanding How Usage Costs are Calculated.
  */
-export const getUsageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUsageStatisticsRequest,
-  output: GetUsageStatisticsResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const getUsageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUsageStatisticsRequest,
+    output: GetUsageStatisticsResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of malware scans. Each member account can view the malware scans for their
  * own accounts. An administrator can view the malware scans for all the member accounts.
@@ -6227,13 +6320,18 @@ export const getUsageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * available in all the Amazon Web Services Regions where GuardDuty is presently supported. For more
  * information, see Regions and endpoints.
  */
-export const describeMalwareScans = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMalwareScans =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMalwareScansRequest,
     output: DescribeMalwareScansResponse,
     errors: [BadRequestException, InternalServerErrorException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Scans",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves aggregated statistics for your account. If you are a GuardDuty administrator, you
  * can retrieve the statistics for all the resources associated with the active member accounts
@@ -6254,11 +6352,19 @@ export const getCoverageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Make sure the accounts have Runtime Monitoring enabled and GuardDuty agent running on
  * their resources.
  */
-export const listCoverage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCoverageRequest,
-  output: ListCoverageResponse,
-  errors: [BadRequestException, InternalServerErrorException],
-}));
+export const listCoverage = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCoverageRequest,
+    output: ListCoverageResponse,
+    errors: [BadRequestException, InternalServerErrorException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Resources",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes Amazon GuardDuty findings specified by finding IDs.
  */

@@ -1964,49 +1964,70 @@ export const getPricingPlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This API lists the components of an entity.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsRequest,
-  output: ListComponentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsRequest,
+    output: ListComponentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the sync resources.
  */
-export const listSyncResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSyncResourcesRequest,
-  output: ListSyncResourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSyncResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSyncResourcesRequest,
+    output: ListSyncResourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all component types in a workspace.
  */
-export const listComponentTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentTypesRequest,
-  output: ListComponentTypesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listComponentTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentTypesRequest,
+    output: ListComponentTypesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the metadata transfer jobs.
  */
-export const listMetadataTransferJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMetadataTransferJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMetadataTransferJobsRequest,
     output: ListMetadataTransferJobsResponse,
     errors: [
@@ -2015,22 +2036,33 @@ export const listMetadataTransferJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List all SyncJobs.
  */
-export const listSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSyncJobsRequest,
-  output: ListSyncJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSyncJobsRequest,
+    output: ListSyncJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an entity.
  */
@@ -2050,7 +2082,7 @@ export const updateEntity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all scenes in a workspace.
  */
-export const listScenes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listScenes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScenesRequest,
   output: ListScenesResponse,
   errors: [
@@ -2059,6 +2091,11 @@ export const listScenes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Deletes a scene.
@@ -2162,17 +2199,24 @@ export const getScene = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This API lists the properties of a component.
  */
-export const listProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPropertiesRequest,
-  output: ListPropertiesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProperties = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPropertiesRequest,
+    output: ListPropertiesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Cancels the metadata transfer job.
  */
@@ -2207,16 +2251,23 @@ export const getComponentType = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about workspaces in the current account.
  */
-export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkspacesRequest,
-  output: ListWorkspacesResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkspacesRequest,
+    output: ListWorkspacesResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Delete the SyncJob.
  */
@@ -2357,31 +2408,45 @@ export const createScene = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The ExecuteQuery action only works with Amazon Web Services Java SDK2.
  * ExecuteQuery will not work with any Amazon Web Services Java SDK version < 2.x.
  */
-export const executeQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ExecuteQueryRequest,
-  output: ExecuteQueryResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    QueryTimeoutException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const executeQuery = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ExecuteQueryRequest,
+    output: ExecuteQueryResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      QueryTimeoutException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all entities in a workspace.
  */
-export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntitiesRequest,
-  output: ListEntitiesResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntitiesRequest,
+    output: ListEntitiesResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a component type.
  */
@@ -2465,19 +2530,26 @@ export const batchPutPropertyValues = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You must specify a value for either `componentName`,
  * `componentTypeId`, `entityId`, or `workspaceId`.
  */
-export const getPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetPropertyValueRequest,
-  output: GetPropertyValueResponse,
-  errors: [
-    AccessDeniedException,
-    ConnectorFailureException,
-    ConnectorTimeoutException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetPropertyValueRequest,
+    output: GetPropertyValueResponse,
+    errors: [
+      AccessDeniedException,
+      ConnectorFailureException,
+      ConnectorTimeoutException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about the history of a time series property value for a component,
  * component type, entity, or workspace.
@@ -2486,8 +2558,8 @@ export const getPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * specify values for `componentName` and `entityId`. For cross-entity
  * quries, specify a value for `componentTypeId`.
  */
-export const getPropertyValueHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getPropertyValueHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetPropertyValueHistoryRequest,
     output: GetPropertyValueHistoryResponse,
     errors: [
@@ -2499,5 +2571,9 @@ export const getPropertyValueHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));

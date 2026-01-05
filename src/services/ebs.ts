@@ -535,18 +535,25 @@ export const startSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * client error responses. For more information see Error retries in the
  * *Amazon Elastic Compute Cloud User Guide*.
  */
-export const listChangedBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChangedBlocksRequest,
-  output: ListChangedBlocksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestThrottledException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ValidationException,
-  ],
-}));
+export const listChangedBlocks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChangedBlocksRequest,
+    output: ListChangedBlocksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestThrottledException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the blocks in an Amazon Elastic Block Store snapshot.
  *
@@ -555,18 +562,25 @@ export const listChangedBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * client error responses. For more information see Error retries in the
  * *Amazon Elastic Compute Cloud User Guide*.
  */
-export const listSnapshotBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSnapshotBlocksRequest,
-  output: ListSnapshotBlocksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestThrottledException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ValidationException,
-  ],
-}));
+export const listSnapshotBlocks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSnapshotBlocksRequest,
+    output: ListSnapshotBlocksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestThrottledException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the data in a block in an Amazon Elastic Block Store snapshot.
  *

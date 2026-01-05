@@ -1831,8 +1831,8 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
 /**
  * Lists the security policies that are attached to your servers and SFTP connectors. For more information about security policies, see Working with security policies for servers or Working with security policies for SFTP connectors.
  */
-export const listSecurityPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityPoliciesRequest,
     output: ListSecurityPoliciesResponse,
     errors: [
@@ -1841,8 +1841,13 @@ export const listSecurityPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityPolicyNames",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the user assigned to the specific file transfer protocol-enabled server, as identified by its `ServerId` property.
  *
@@ -1863,16 +1868,24 @@ export const describeUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about using VPC endpoints with Transfer Family, see Create a Transfer Family web app in a VPC.
  */
-export const listWebApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWebAppsRequest,
-  output: ListWebAppsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listWebApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWebAppsRequest,
+    output: ListWebAppsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WebApps",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the access that is assigned to the specific file transfer protocol-enabled server, as identified by its `ServerId` property and its `ExternalId`.
  *
@@ -1921,8 +1934,8 @@ export const describeSecurityPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * File transfer results are available up to 7 days after an operation has been requested.
  */
-export const listFileTransferResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFileTransferResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFileTransferResultsRequest,
     output: ListFileTransferResultsResponse,
     errors: [
@@ -1931,8 +1944,13 @@ export const listFileTransferResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FileTransferResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Tests whether your SFTP connector is set up successfully. We highly recommend that you call this operation to test your ability to transfer files between local Amazon Web Services storage and a trading partner's SFTP server.
  */
@@ -1962,17 +1980,25 @@ export const describeAgreement = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the agreements for the server that's identified by the `ServerId` that you supply. If you want to limit the results to a certain number, supply a value for the `MaxResults` parameter. If you ran the command previously and received a value for `NextToken`, you can supply that value to continue listing agreements from where you left off.
  */
-export const listAgreements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAgreementsRequest,
-  output: ListAgreementsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listAgreements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAgreementsRequest,
+    output: ListAgreementsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Agreements",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the certificate that's identified by the `CertificateId`.
  *
@@ -1991,31 +2017,47 @@ export const describeCertificate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the current certificates that have been imported into Transfer Family. If you want to limit the results to a certain number, supply a value for the `MaxResults` parameter. If you ran the command previously and received a value for the `NextToken` parameter, you can supply that value to continue listing certificates from where you left off.
  */
-export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCertificatesRequest,
-  output: ListCertificatesResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCertificatesRequest,
+    output: ListCertificatesResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Certificates",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the connectors for the specified Region.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Connectors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the details of the profile that's specified by the `ProfileId`.
  */
@@ -2032,17 +2074,25 @@ export const describeProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the profiles for your system. If you want to limit the results to a certain number, supply a value for the `MaxResults` parameter. If you ran the command previously and received a value for `NextToken`, you can supply that value to continue listing profiles from where you left off.
  */
-export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfilesRequest,
-  output: ListProfilesResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfilesRequest,
+    output: ListProfilesResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Profiles",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes a file transfer protocol-enabled server that you specify by passing the `ServerId` parameter.
  *
@@ -2061,7 +2111,7 @@ export const describeServer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the users for a file transfer protocol-enabled server that you specify by passing the `ServerId` parameter.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -2071,6 +2121,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Users",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Describes the web app customization object that's identified by `WebAppId`.
@@ -2560,33 +2616,49 @@ export const deleteWorkflow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the details for all the accesses you have on your server.
  */
-export const listAccesses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessesRequest,
-  output: ListAccessesResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listAccesses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessesRequest,
+    output: ListAccessesResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Accesses",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all in-progress executions for the specified workflow.
  *
  * If the specified workflow ID cannot be found, `ListExecutions` returns a `ResourceNotFound` exception.
  */
-export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutionsRequest,
-  output: ListExecutionsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutionsRequest,
+    output: ListExecutionsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Executions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of host keys for the server that's specified by the `ServerId` parameter.
  */
@@ -2755,42 +2827,65 @@ export const createAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the file transfer protocol-enabled servers that are associated with your Amazon Web Services account.
  */
-export const listServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServersRequest,
-  output: ListServersResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listServers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServersRequest,
+    output: ListServersResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Servers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all workflows associated with your Amazon Web Services account for your current region.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workflows",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the tags associated with the Amazon Resource Name (ARN) that you specify. The resource can be a user, server, or role.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Allows you to delete the access specified in the `ServerID` and `ExternalID` parameters.
  */

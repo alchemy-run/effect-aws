@@ -764,23 +764,31 @@ export const createKeyspace = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * The `ListKeyspaces` operation returns a list of keyspaces.
  */
-export const listKeyspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKeyspacesRequest,
-  output: ListKeyspacesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ValidationException,
-  ],
-}));
+export const listKeyspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKeyspacesRequest,
+    output: ListKeyspacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "keyspaces",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The `ListTables` operation returns a list of tables for a specified keyspace.
  *
  * To read keyspace metadata using `ListTables`, the IAM principal needs `Select` action permissions for the system keyspace.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [
@@ -790,6 +798,12 @@ export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceQuotaExceededException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "tables",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Adds new columns to the table or updates one of the table's settings, for example capacity mode, auto scaling, encryption, point-in-time recovery, or ttl settings. Note that you can only update one specific table setting per update operation.
@@ -990,23 +1004,30 @@ export const createType = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * To read keyspace metadata using `ListTagsForResource`, the IAM principal needs `Select` action permissions for the specified resource and the system keyspace.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The `ListTypes` operation returns a list of types for a specified keyspace.
  *
  * To read keyspace metadata using `ListTypes`, the IAM principal needs `Select` action permissions for the system keyspace. To configure the required permissions, see Permissions to view a UDT in the *Amazon Keyspaces Developer Guide*.
  */
-export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesRequest,
   output: ListTypesResponse,
   errors: [
@@ -1016,6 +1037,12 @@ export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceQuotaExceededException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "types",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * The `DeleteKeyspace` operation deletes a keyspace and all of its tables.

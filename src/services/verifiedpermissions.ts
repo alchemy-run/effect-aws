@@ -1294,11 +1294,19 @@ export const getPolicyStore = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of all policy stores in the calling Amazon Web Services account.
  */
-export const listPolicyStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyStoresInput,
-  output: ListPolicyStoresOutput,
-  errors: [],
-}));
+export const listPolicyStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyStoresInput,
+    output: ListPolicyStoresOutput,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policyStores",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Makes an authorization decision about a service request described in the parameters. The principal in this request comes from an external identity source in the form of an identity token formatted as a JSON web token (JWT). The information in the parameters can also define additional context that Verified Permissions can include in the evaluation. The request is evaluated against all matching policies in the specified policy store. The result of the decision is either `Allow` or `Deny`, along with a list of the policies that resulted in the decision.
  *
@@ -1326,11 +1334,18 @@ export const deleteIdentitySource = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a paginated list of all policy templates in the specified policy store.
  */
-export const listPolicyTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyTemplatesInput,
-  output: ListPolicyTemplatesOutput,
-  errors: [ResourceNotFoundException],
-}));
+export const listPolicyTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPolicyTemplatesInput,
+    output: ListPolicyTemplatesOutput,
+    errors: [ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policyTemplates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieve the details for the specified schema in the specified policy store.
  */
@@ -1626,11 +1641,19 @@ export const updateIdentitySource = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a paginated list of all policies stored in the specified policy store.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesInput,
-  output: ListPoliciesOutput,
-  errors: [ResourceNotFoundException],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesInput,
+    output: ListPoliciesOutput,
+    errors: [ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policies",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Makes a series of decisions about multiple authorization requests for one principal or resource. Each request contains the equivalent content of an `IsAuthorized` request: principal, action, resource, and context. Either the `principal` or the `resource` parameter must be identical across all requests. For example, Verified Permissions won't evaluate a pair of requests where `bob` views `photo1` and `alice` views `photo2`. Authorization of `bob` to view `photo1` and `photo2`, or `bob` and `alice` to view `photo1`, are valid batches.
  *
@@ -1648,8 +1671,15 @@ export const batchIsAuthorized = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of all of the identity sources defined in the specified policy store.
  */
-export const listIdentitySources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdentitySourcesInput,
-  output: ListIdentitySourcesOutput,
-  errors: [ResourceNotFoundException],
-}));
+export const listIdentitySources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListIdentitySourcesInput,
+    output: ListIdentitySourcesOutput,
+    errors: [ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "identitySources",
+      pageSize: "maxResults",
+    } as const,
+  }));

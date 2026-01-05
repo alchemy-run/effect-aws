@@ -1704,16 +1704,23 @@ export const deleteCaseRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all cases domains in the Amazon Web Services account. Each list item is a condensed summary object of the domain.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds case event publishing configuration. For a complete list of fields you can add to the event message, see Create case fields in the *Amazon Connect Administrator Guide*
  */
@@ -1751,7 +1758,7 @@ export const batchPutFieldOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns information about a specific case if it exists.
  */
-export const getCase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getCase = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetCaseRequest,
   output: GetCaseResponse,
   errors: [
@@ -1761,39 +1768,54 @@ export const getCase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
 }));
 /**
  * Lists cases for a given contact.
  */
-export const listCasesForContact = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCasesForContactRequest,
-  output: ListCasesForContactResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCasesForContact =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCasesForContactRequest,
+    output: ListCasesForContactResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all case rules in a Cases domain. In the Amazon Connect admin website, case rules are known as *case field conditions*. For more information about case field conditions, see Add case field conditions to a case template.
  */
-export const listCaseRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCaseRulesRequest,
-  output: ListCaseRulesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCaseRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCaseRulesRequest,
+    output: ListCaseRulesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "caseRules",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all fields in a Cases domain.
  */
-export const listFields = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFields = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFieldsRequest,
   output: ListFieldsResponse,
   errors: [
@@ -1803,6 +1825,11 @@ export const listFields = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns the description for the list of fields in the request parameters.
@@ -1821,17 +1848,24 @@ export const batchGetField = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all layouts in the given cases domain. Each list item is a condensed summary object of the layout.
  */
-export const listLayouts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLayoutsRequest,
-  output: ListLayoutsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLayouts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLayoutsRequest,
+    output: ListLayoutsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a template in the Cases domain. This template is used to define the case object model (that is, to define what data can be captured on cases) in a Cases domain. A template must have a unique name within a domain, and it must reference existing field IDs and layout IDs. Additionally, multiple fields with same IDs are not allowed within the same Template. A template can be either Active or Inactive, as indicated by its status. Inactive templates cannot be used to create cases.
  *
@@ -1871,17 +1905,24 @@ export const createTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - UpdateTemplate
  */
-export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplatesRequest,
-  output: ListTemplatesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTemplatesRequest,
+    output: ListTemplatesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a specific domain if it exists.
  */
@@ -1915,17 +1956,24 @@ export const getCaseEventConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all of the field options for a field identifier in the domain.
  */
-export const listFieldOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFieldOptionsRequest,
-  output: ListFieldOptionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFieldOptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFieldOptionsRequest,
+    output: ListFieldOptionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the details for the requested layout.
  */
@@ -2319,33 +2367,48 @@ export const createDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns the audit history about a specific case if it exists.
  */
-export const getCaseAuditEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCaseAuditEventsRequest,
-  output: GetCaseAuditEventsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getCaseAuditEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCaseAuditEventsRequest,
+    output: GetCaseAuditEventsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for cases within their associated Cases domain. Search results are returned as a paginated list of abridged case documents.
  *
  * For `customer_id` you must provide the full customer profile ARN in this format: ` arn:aws:profile:your AWS Region:your AWS account ID:domains/profiles domain name/profiles/profile ID`.
  */
-export const searchCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchCasesRequest,
-  output: SearchCasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchCases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchCasesRequest,
+    output: SearchCasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cases",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a related item (comments, tasks, and contacts) and associates it with a case.
  *
@@ -2396,17 +2459,25 @@ export const createRelatedItem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If no filters are provided, this returns all related items associated with a case.
  */
-export const searchRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchRelatedItemsRequest,
-  output: SearchRelatedItemsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchRelatedItemsRequest,
+    output: SearchRelatedItemsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "relatedItems",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new case rule. In the Amazon Connect admin website, case rules are known as *case field conditions*. For more information about case field conditions, see Add case field conditions to a case template.
  */
@@ -2444,8 +2515,8 @@ export const createCaseRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Endpoints**: See Amazon Connect endpoints and quotas.
  */
-export const searchAllRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchAllRelatedItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchAllRelatedItemsRequest,
     output: SearchAllRelatedItemsResponse,
     errors: [
@@ -2455,8 +2526,13 @@ export const searchAllRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "relatedItems",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a layout in the Cases domain. Layouts define the following configuration in the top section and More Info tab of the Cases user interface:
  *

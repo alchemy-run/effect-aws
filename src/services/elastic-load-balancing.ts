@@ -1331,13 +1331,17 @@ export const setLoadBalancerListenerSSLCertificate =
 /**
  * Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
  */
-export const describeLoadBalancers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLoadBalancers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccessPointsInput,
     output: DescribeAccessPointsOutput,
     errors: [AccessPointNotFoundException, DependencyThrottleException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "LoadBalancerDescriptions",
+    } as const,
+  }));
 /**
  * Creates a Classic Load Balancer.
  *

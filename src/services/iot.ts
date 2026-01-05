@@ -8397,7 +8397,7 @@ export const describeThingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Requires permission to access the GetBehaviorModelTrainingSummaries action.
  */
 export const getBehaviorModelTrainingSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetBehaviorModelTrainingSummariesRequest,
     output: GetBehaviorModelTrainingSummariesResponse,
     errors: [
@@ -8406,6 +8406,12 @@ export const getBehaviorModelTrainingSummaries =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets the fine grained logging options.
@@ -8428,7 +8434,7 @@ export const getV2LoggingOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Requires permission to access the ListAuditMitigationActionsExecutions action.
  */
 export const listAuditMitigationActionsExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAuditMitigationActionsExecutionsRequest,
     output: ListAuditMitigationActionsExecutionsResponse,
     errors: [
@@ -8436,6 +8442,12 @@ export const listAuditMitigationActionsExecutions =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "actionsExecutions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets a list of audit mitigation action tasks that match the specified filters.
@@ -8443,7 +8455,7 @@ export const listAuditMitigationActionsExecutions =
  * Requires permission to access the ListAuditMitigationActionsTasks action.
  */
 export const listAuditMitigationActionsTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAuditMitigationActionsTasksRequest,
     output: ListAuditMitigationActionsTasksResponse,
     errors: [
@@ -8451,14 +8463,20 @@ export const listAuditMitigationActionsTasks =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists your Device Defender audit listings.
  *
  * Requires permission to access the ListAuditSuppressions action.
  */
-export const listAuditSuppressions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAuditSuppressions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAuditSuppressionsRequest,
     output: ListAuditSuppressionsResponse,
     errors: [
@@ -8466,45 +8484,66 @@ export const listAuditSuppressions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "suppressions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the Device Defender audits that have been performed during a given
  * time period.
  *
  * Requires permission to access the ListAuditTasks action.
  */
-export const listAuditTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAuditTasksRequest,
-  output: ListAuditTasksResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listAuditTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAuditTasksRequest,
+    output: ListAuditTasksResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the billing groups you have created.
  *
  * Requires permission to access the ListBillingGroups action.
  */
-export const listBillingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBillingGroupsRequest,
-  output: ListBillingGroupsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listBillingGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBillingGroupsRequest,
+    output: ListBillingGroupsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "billingGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists mitigation actions executions for a Device Defender ML Detect Security Profile.
  *
  * Requires permission to access the ListDetectMitigationActionsExecutions action.
  */
 export const listDetectMitigationActionsExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDetectMitigationActionsExecutionsRequest,
     output: ListDetectMitigationActionsExecutionsResponse,
     errors: [
@@ -8512,14 +8551,20 @@ export const listDetectMitigationActionsExecutions =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "actionsExecutions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the job executions for the specified thing.
  *
  * Requires permission to access the ListJobExecutionsForThing action.
  */
-export const listJobExecutionsForThing = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listJobExecutionsForThing =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListJobExecutionsForThingRequest,
     output: ListJobExecutionsForThingResponse,
     errors: [
@@ -8528,14 +8573,19 @@ export const listJobExecutionsForThing = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "executionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists jobs.
  *
  * Requires permission to access the ListJobs action.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -8544,26 +8594,40 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceUnavailableException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobs",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns a list of job templates.
  *
  * Requires permission to access the ListJobTemplates action.
  */
-export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobTemplatesRequest,
-  output: ListJobTemplatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobTemplatesRequest,
+    output: ListJobTemplatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobTemplates",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of managed job templates.
  */
-export const listManagedJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedJobTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedJobTemplatesRequest,
     output: ListManagedJobTemplatesResponse,
     errors: [
@@ -8572,29 +8636,42 @@ export const listManagedJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedJobTemplates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the values reported for an IoT Device Defender metric (device-side metric, cloud-side metric, or custom metric)
  * by the given thing during the specified time period.
  */
-export const listMetricValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMetricValuesRequest,
-  output: ListMetricValuesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listMetricValues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMetricValuesRequest,
+    output: ListMetricValuesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metricDatumList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of all mitigation actions that match the specified filter criteria.
  *
  * Requires permission to access the ListMitigationActions action.
  */
-export const listMitigationActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMitigationActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMitigationActionsRequest,
     output: ListMitigationActionsResponse,
     errors: [
@@ -8602,22 +8679,34 @@ export const listMitigationActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "actionIdentifiers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all of your scheduled audits.
  *
  * Requires permission to access the ListScheduledAudits action.
  */
-export const listScheduledAudits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScheduledAuditsRequest,
-  output: ListScheduledAuditsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listScheduledAudits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListScheduledAuditsRequest,
+    output: ListScheduledAuditsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scheduledAudits",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the Device Defender security profiles
  * you've
@@ -8627,8 +8716,8 @@ export const listScheduledAudits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * `dimensionName` and `metricName` cannot be used in the same request.
  */
-export const listSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfilesRequest,
     output: ListSecurityProfilesResponse,
     errors: [
@@ -8637,15 +8726,20 @@ export const listSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "securityProfileIdentifiers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the Device Defender security profiles attached to a target (thing group).
  *
  * Requires permission to access the ListSecurityProfilesForTarget action.
  */
 export const listSecurityProfilesForTarget =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfilesForTargetRequest,
     output: ListSecurityProfilesForTargetResponse,
     errors: [
@@ -8654,6 +8748,12 @@ export const listSecurityProfilesForTarget =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "securityProfileTargetMappings",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the targets (thing groups) associated with a given Device Defender security profile.
@@ -8661,7 +8761,7 @@ export const listSecurityProfilesForTarget =
  * Requires permission to access the ListTargetsForSecurityProfile action.
  */
 export const listTargetsForSecurityProfile =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetsForSecurityProfileRequest,
     output: ListTargetsForSecurityProfileResponse,
     errors: [
@@ -8670,22 +8770,35 @@ export const listTargetsForSecurityProfile =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "securityProfileTargets",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists logging levels.
  *
  * Requires permission to access the ListV2LoggingLevels action.
  */
-export const listV2LoggingLevels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListV2LoggingLevelsRequest,
-  output: ListV2LoggingLevelsResponse,
-  errors: [
-    InternalException,
-    InvalidRequestException,
-    NotConfiguredException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listV2LoggingLevels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListV2LoggingLevelsRequest,
+    output: ListV2LoggingLevelsResponse,
+    errors: [
+      InternalException,
+      InvalidRequestException,
+      NotConfiguredException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "logTargetConfigurations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the Device Defender security profile violations discovered during the given time period.
  * You can use filters to limit the results to those alerts issued for a particular security profile,
@@ -8693,15 +8806,22 @@ export const listV2LoggingLevels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListViolationEvents action.
  */
-export const listViolationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListViolationEventsRequest,
-  output: ListViolationEventsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listViolationEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListViolationEventsRequest,
+    output: ListViolationEventsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "violationEvents",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Validates a Device Defender security profile behaviors specification.
  *
@@ -8798,8 +8918,8 @@ export const describeEncryptionConfiguration =
  *
  * Requires permission to access the ListCertificatesByCA action.
  */
-export const listCertificatesByCA = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCertificatesByCA =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCertificatesByCARequest,
     output: ListCertificatesByCAResponse,
     errors: [
@@ -8809,56 +8929,85 @@ export const listCertificatesByCA = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "certificates",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists the search indices.
  *
  * Requires permission to access the ListIndices action.
  */
-export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIndicesRequest,
-  output: ListIndicesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIndicesRequest,
+    output: ListIndicesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "indexNames",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists your policies.
  *
  * Requires permission to access the ListPolicies action.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "policies",
+      pageSize: "pageSize",
+    } as const,
+  }),
+);
 /**
  * Lists the role aliases registered in your account.
  *
  * Requires permission to access the ListRoleAliases action.
  */
-export const listRoleAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoleAliasesRequest,
-  output: ListRoleAliasesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listRoleAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRoleAliasesRequest,
+    output: ListRoleAliasesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "roleAliases",
+      pageSize: "pageSize",
+    } as const,
+  }),
+);
 /**
  * Sets the logging options.
  *
@@ -9695,8 +9844,8 @@ export const getPolicyVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListPolicyPrincipals action.
  */
-export const listPolicyPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPolicyPrincipals =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPolicyPrincipalsRequest,
     output: ListPolicyPrincipalsResponse,
     errors: [
@@ -9707,8 +9856,13 @@ export const listPolicyPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "principals",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists the policies attached to the specified principal. If you use an Cognito
  * identity, the ID must be in AmazonCognito Identity format.
@@ -9718,8 +9872,8 @@ export const listPolicyPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListPrincipalPolicies action.
  */
-export const listPrincipalPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrincipalPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrincipalPoliciesRequest,
     output: ListPrincipalPoliciesResponse,
     errors: [
@@ -9730,8 +9884,13 @@ export const listPrincipalPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "policies",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists the things associated with the specified principal. A principal can be X.509
  * certificates, IAM users, groups, and roles, Amazon Cognito identities or federated
@@ -9739,18 +9898,25 @@ export const listPrincipalPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListPrincipalThings action.
  */
-export const listPrincipalThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPrincipalThingsRequest,
-  output: ListPrincipalThingsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listPrincipalThings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPrincipalThingsRequest,
+    output: ListPrincipalThingsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "things",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the principals associated with the specified thing. A principal can be X.509
  * certificates, IAM users, groups, and roles, Amazon Cognito identities or federated
@@ -9758,18 +9924,25 @@ export const listPrincipalThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListThingPrincipals action.
  */
-export const listThingPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThingPrincipalsRequest,
-  output: ListThingPrincipalsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listThingPrincipals =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListThingPrincipalsRequest,
+    output: ListThingPrincipalsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "principals",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates a certificate provider.
  *
@@ -9898,8 +10071,8 @@ export const createScheduledAudit = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListTargetsForPolicy action.
  */
-export const listTargetsForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTargetsForPolicy =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetsForPolicyRequest,
     output: ListTargetsForPolicyResponse,
     errors: [
@@ -9911,8 +10084,13 @@ export const listTargetsForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "targets",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Sets the logging level.
  *
@@ -10306,36 +10484,52 @@ export const getPackageConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListAuditFindings action.
  */
-export const listAuditFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAuditFindingsRequest,
-  output: ListAuditFindingsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listAuditFindings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAuditFindingsRequest,
+    output: ListAuditFindingsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findings",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists your Device Defender detect custom metrics.
  *
  * Requires permission to access the ListCustomMetrics action.
  */
-export const listCustomMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCustomMetricsRequest,
-  output: ListCustomMetricsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listCustomMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCustomMetricsRequest,
+    output: ListCustomMetricsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metricNames",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List of Device Defender ML Detect mitigation actions tasks.
  *
  * Requires permission to access the ListDetectMitigationActionsTasks action.
  */
 export const listDetectMitigationActionsTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDetectMitigationActionsTasksRequest,
     output: ListDetectMitigationActionsTasksResponse,
     errors: [
@@ -10343,26 +10537,40 @@ export const listDetectMitigationActionsTasks =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List the set of dimensions that are defined for your Amazon Web Services accounts.
  *
  * Requires permission to access the ListDimensions action.
  */
-export const listDimensions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDimensionsRequest,
-  output: ListDimensionsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listDimensions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDimensionsRequest,
+    output: ListDimensionsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dimensionNames",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Information about the thing registration tasks.
  */
 export const listThingRegistrationTaskReports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingRegistrationTaskReportsRequest,
     output: ListThingRegistrationTaskReportsResponse,
     errors: [
@@ -10371,14 +10579,20 @@ export const listThingRegistrationTaskReports =
       ThrottlingException,
       UnauthorizedException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resourceLinks",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List bulk thing provisioning tasks.
  *
  * Requires permission to access the ListThingRegistrationTasks action.
  */
-export const listThingRegistrationTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThingRegistrationTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingRegistrationTasksRequest,
     output: ListThingRegistrationTasksResponse,
     errors: [
@@ -10387,8 +10601,13 @@ export const listThingRegistrationTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "taskIds",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a bulk thing provisioning task.
  *
@@ -10979,38 +11198,52 @@ export const describeThingRegistrationTask =
  *
  * Requires permission to access the ListTagsForResource action.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+    } as const,
+  }));
 /**
  * List the thing groups in your account.
  *
  * Requires permission to access the ListThingGroups action.
  */
-export const listThingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThingGroupsRequest,
-  output: ListThingGroupsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listThingGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListThingGroupsRequest,
+    output: ListThingGroupsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "thingGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the thing groups to which the specified thing belongs.
  *
  * Requires permission to access the ListThingGroupsForThing action.
  */
-export const listThingGroupsForThing = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThingGroupsForThing =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingGroupsForThingRequest,
     output: ListThingGroupsForThingResponse,
     errors: [
@@ -11019,15 +11252,20 @@ export const listThingGroupsForThing = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "thingGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the things you have added to the given billing group.
  *
  * Requires permission to access the ListThingsInBillingGroup action.
  */
-export const listThingsInBillingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThingsInBillingGroup =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingsInBillingGroupRequest,
     output: ListThingsInBillingGroupResponse,
     errors: [
@@ -11036,15 +11274,20 @@ export const listThingsInBillingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "things",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the things in the specified group.
  *
  * Requires permission to access the ListThingsInThingGroup action.
  */
-export const listThingsInThingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThingsInThingGroup =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingsInThingGroupRequest,
     output: ListThingsInThingGroupResponse,
     errors: [
@@ -11053,8 +11296,13 @@ export const listThingsInThingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "things",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates a
  * Device Defender detect custom metric.
@@ -11549,8 +11797,8 @@ export const getTopicRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListAttachedPolicies action.
  */
-export const listAttachedPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAttachedPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttachedPoliciesRequest,
     output: ListAttachedPoliciesResponse,
     errors: [
@@ -11562,24 +11810,37 @@ export const listAttachedPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "policies",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists the authorizers registered in your account.
  *
  * Requires permission to access the ListAuthorizers action.
  */
-export const listAuthorizers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAuthorizersRequest,
-  output: ListAuthorizersResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listAuthorizers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAuthorizersRequest,
+    output: ListAuthorizersResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "authorizers",
+      pageSize: "pageSize",
+    } as const,
+  }),
+);
 /**
  * Lists the CA certificates registered for your Amazon Web Services account.
  *
@@ -11588,17 +11849,25 @@ export const listAuthorizers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListCACertificates action.
  */
-export const listCACertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCACertificatesRequest,
-  output: ListCACertificatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listCACertificates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCACertificatesRequest,
+    output: ListCACertificatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "certificates",
+      pageSize: "pageSize",
+    } as const,
+  }),
+);
 /**
  * Lists all your certificate providers in your Amazon Web Services account.
  *
@@ -11625,25 +11894,33 @@ export const listCertificateProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListCertificates action.
  */
-export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCertificatesRequest,
-  output: ListCertificatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listCertificates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCertificatesRequest,
+    output: ListCertificatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "certificates",
+      pageSize: "pageSize",
+    } as const,
+  }),
+);
 /**
  * Gets a list of domain configurations for the user. This list is sorted
  * alphabetically by domain configuration name.
  *
  * Requires permission to access the ListDomainConfigurations action.
  */
-export const listDomainConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainConfigurationsRequest,
     output: ListDomainConfigurationsResponse,
     errors: [
@@ -11653,47 +11930,68 @@ export const listDomainConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "domainConfigurations",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists all your fleet metrics.
  *
  * Requires permission to access the ListFleetMetrics action.
  */
-export const listFleetMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFleetMetricsRequest,
-  output: ListFleetMetricsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listFleetMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFleetMetricsRequest,
+    output: ListFleetMetricsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "fleetMetrics",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists OTA updates.
  *
  * Requires permission to access the ListOTAUpdates action.
  */
-export const listOTAUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOTAUpdatesRequest,
-  output: ListOTAUpdatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listOTAUpdates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOTAUpdatesRequest,
+    output: ListOTAUpdatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "otaUpdates",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists certificates that are being transferred but not yet accepted.
  *
  * Requires permission to access the ListOutgoingCertificates action.
  */
-export const listOutgoingCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOutgoingCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOutgoingCertificatesRequest,
     output: ListOutgoingCertificatesResponse,
     errors: [
@@ -11703,8 +12001,13 @@ export const listOutgoingCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "nextMarker",
+      items: "outgoingCertificates",
+      pageSize: "pageSize",
+    } as const,
+  }));
 /**
  * Lists the versions of the specified policy and identifies the default
  * version.
@@ -11729,8 +12032,8 @@ export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListPrincipalThings action.
  */
-export const listPrincipalThingsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrincipalThingsV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrincipalThingsV2Request,
     output: ListPrincipalThingsV2Response,
     errors: [
@@ -11741,15 +12044,20 @@ export const listPrincipalThingsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "principalThingObjects",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the provisioning templates in your Amazon Web Services account.
  *
  * Requires permission to access the ListProvisioningTemplates action.
  */
-export const listProvisioningTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProvisioningTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisioningTemplatesRequest,
     output: ListProvisioningTemplatesResponse,
     errors: [
@@ -11758,15 +12066,20 @@ export const listProvisioningTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * A list of provisioning template versions.
  *
  * Requires permission to access the ListProvisioningTemplateVersions action.
  */
 export const listProvisioningTemplateVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisioningTemplateVersionsRequest,
     output: ListProvisioningTemplateVersionsResponse,
     errors: [
@@ -11776,31 +12089,45 @@ export const listProvisioningTemplateVersions =
       ThrottlingException,
       UnauthorizedException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "versions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all of the streams in your Amazon Web Services account.
  *
  * Requires permission to access the ListStreams action.
  */
-export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamsRequest,
-  output: ListStreamsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamsRequest,
+    output: ListStreamsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "streams",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the principals associated with the specified thing. A principal can be an X.509
  * certificate or an Amazon Cognito ID.
  *
  * Requires permission to access the ListThingPrincipals action.
  */
-export const listThingPrincipalsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listThingPrincipalsV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThingPrincipalsV2Request,
     output: ListThingPrincipalsV2Response,
     errors: [
@@ -11811,8 +12138,13 @@ export const listThingPrincipalsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "thingPrincipalObjects",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists your things. Use the **attributeName** and **attributeValue** parameters to filter your things. For example,
  * calling `ListThings` with attributeName=Color and attributeValue=Red
@@ -11824,7 +12156,7 @@ export const listThingPrincipalsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You will not be charged for calling this API if an `Access denied` error is returned. You will also not be charged if no attributes or pagination token was provided in request and no pagination token and no results were returned.
  */
-export const listThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listThings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThingsRequest,
   output: ListThingsResponse,
   errors: [
@@ -11834,38 +12166,60 @@ export const listThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "things",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists the existing thing types.
  *
  * Requires permission to access the ListThingTypes action.
  */
-export const listThingTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThingTypesRequest,
-  output: ListThingTypesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listThingTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListThingTypesRequest,
+    output: ListThingTypesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "thingTypes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the rules for the specific topic.
  *
  * Requires permission to access the ListTopicRules action.
  */
-export const listTopicRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTopicRulesRequest,
-  output: ListTopicRulesResponse,
-  errors: [
-    InternalException,
-    InvalidRequestException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listTopicRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTopicRulesRequest,
+    output: ListTopicRulesResponse,
+    errors: [
+      InternalException,
+      InvalidRequestException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "rules",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Register a certificate that does not have a certificate authority (CA).
  * For supported certificates, consult
@@ -12177,8 +12531,8 @@ export const getTopicRuleDestination = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Requires permission to access the ListActiveViolations action.
  */
-export const listActiveViolations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listActiveViolations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListActiveViolationsRequest,
     output: ListActiveViolationsResponse,
     errors: [
@@ -12187,8 +12541,13 @@ export const listActiveViolations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "activeViolations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List all command executions.
  *
@@ -12207,8 +12566,8 @@ export const listActiveViolations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * List
  * command executions in your account (CLI).
  */
-export const listCommandExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCommandExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCommandExecutionsRequest,
     output: ListCommandExecutionsResponse,
     errors: [
@@ -12217,15 +12576,20 @@ export const listCommandExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "commandExecutions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the job executions for a job.
  *
  * Requires permission to access the ListJobExecutionsForJob action.
  */
-export const listJobExecutionsForJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listJobExecutionsForJob =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListJobExecutionsForJobRequest,
     output: ListJobExecutionsForJobResponse,
     errors: [
@@ -12234,8 +12598,13 @@ export const listJobExecutionsForJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "executionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The related resources of an Audit finding.
  * The following resources can be returned from calling this API:
@@ -12264,7 +12633,7 @@ export const listJobExecutionsForJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * active device certificates check, RelatedResources will not be populated. You must use this API, ListRelatedResourcesForAuditFinding, to list the certificates.
  */
 export const listRelatedResourcesForAuditFinding =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRelatedResourcesForAuditFindingRequest,
     output: ListRelatedResourcesForAuditFindingResponse,
     errors: [
@@ -12273,14 +12642,20 @@ export const listRelatedResourcesForAuditFinding =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "relatedResources",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all the topic rule destinations in your Amazon Web Services account.
  *
  * Requires permission to access the ListTopicRuleDestinations action.
  */
-export const listTopicRuleDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTopicRuleDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTopicRuleDestinationsRequest,
     output: ListTopicRuleDestinationsResponse,
     errors: [
@@ -12289,8 +12664,13 @@ export const listTopicRuleDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "destinationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The query search index.
  *
@@ -12501,38 +12881,61 @@ export const createPolicyVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all commands in your account.
  */
-export const listCommands = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCommandsRequest,
-  output: ListCommandsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listCommands = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCommandsRequest,
+    output: ListCommandsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "commands",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the software packages associated to the account.
  *
  * Requires permission to access the ListPackages action.
  */
-export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackagesRequest,
-  output: ListPackagesResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listPackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPackagesRequest,
+    output: ListPackagesResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packageSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the software package versions associated to the account.
  *
  * Requires permission to access the ListPackageVersions action.
  */
-export const listPackageVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackageVersionsRequest,
-  output: ListPackageVersionsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listPackageVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPackageVersionsRequest,
+    output: ListPackageVersionsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "packageVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The validation results for all software bill of materials (SBOM) attached to a specific software package version.
  *
  * Requires permission to access the ListSbomValidationResults action.
  */
-export const listSbomValidationResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSbomValidationResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSbomValidationResultsRequest,
     output: ListSbomValidationResultsResponse,
     errors: [
@@ -12541,8 +12944,13 @@ export const listSbomValidationResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "validationResultSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Disassociates the selected software bill of materials (SBOM) from a specific software package version.
  *

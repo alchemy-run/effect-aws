@@ -9126,8 +9126,8 @@ export class ResourceInUseException extends S.TaggedError<ResourceInUseException
  *
  * This operation returns an empty list for standard subscriptions where `StandardsControlsUpdatable` has value `NOT_READY_FOR_UPDATES`.
  */
-export const describeStandardsControls = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeStandardsControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeStandardsControlsRequest,
     output: DescribeStandardsControlsResponse,
     errors: [
@@ -9136,24 +9136,35 @@ export const describeStandardsControls = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Controls",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all findings-generating solutions (products) that you are subscribed to receive
  * findings from in Security Hub.
  */
 export const listEnabledProductsForImport =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnabledProductsForImportRequest,
     output: ListEnabledProductsForImportResponse,
     errors: [InternalException, InvalidAccessException, LimitExceededException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProductSubscriptions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * If cross-Region aggregation is enabled, then `ListFindingAggregators` returns the Amazon Resource Name (ARN)
  * of the finding aggregator. You can run this operation from any Amazon Web Services Region.
  */
-export const listFindingAggregators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFindingAggregators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFindingAggregatorsRequest,
     output: ListFindingAggregatorsResponse,
     errors: [
@@ -9163,14 +9174,19 @@ export const listFindingAggregators = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FindingAggregators",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the Security Hub administrator accounts. Can only be called by the organization
  * management account.
  */
 export const listOrganizationAdminAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationAdminAccountsRequest,
     output: ListOrganizationAdminAccountsResponse,
     errors: [
@@ -9179,6 +9195,12 @@ export const listOrganizationAdminAccounts =
       InvalidInputException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AdminAccounts",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Specifies whether a control is currently enabled or disabled in each enabled standard in the calling account.
@@ -9186,7 +9208,7 @@ export const listOrganizationAdminAccounts =
  * This operation omits standards control associations for standard subscriptions where `StandardsControlsUpdatable` has value `NOT_READY_FOR_UPDATES`.
  */
 export const listStandardsControlAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStandardsControlAssociationsRequest,
     output: ListStandardsControlAssociationsResponse,
     errors: [
@@ -9195,6 +9217,12 @@ export const listStandardsControlAssociations =
       InvalidInputException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StandardsControlAssociationSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Adds one or more tags to a resource.
@@ -9293,8 +9321,8 @@ export const declineInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the custom action targets in Security Hub in your account.
  */
-export const describeActionTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeActionTargets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeActionTargetsRequest,
     output: DescribeActionTargetsResponse,
     errors: [
@@ -9303,8 +9331,13 @@ export const describeActionTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActionTargets",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The *aggregation Region* is now called the *home Region*.
  *
@@ -9791,16 +9824,23 @@ export const getConfigurationPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of the standards that are currently enabled.
  */
-export const getEnabledStandards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetEnabledStandardsRequest,
-  output: GetEnabledStandardsResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const getEnabledStandards =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetEnabledStandardsRequest,
+    output: GetEnabledStandardsResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StandardsSubscriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The *aggregation Region* is now called the *home Region*.
  *
@@ -9858,16 +9898,24 @@ export const inviteMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Only accounts that are managed by invitation can use this operation.
  * Accounts that are managed using the integration with Organizations don't receive invitations.
  */
-export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvitationsRequest,
-  output: ListInvitationsResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvitationsRequest,
+    output: ListInvitationsResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Invitations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists details about all member accounts for the current Security Hub administrator
  * account.
@@ -9875,21 +9923,29 @@ export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The results include both member accounts that belong to an organization and member
  * accounts that were invited manually.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersRequest,
-  output: ListMembersResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersRequest,
+    output: ListMembersResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Members",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the security controls that apply to a specified standard.
  */
 export const listSecurityControlDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityControlDefinitionsRequest,
     output: ListSecurityControlDefinitionsResponse,
     errors: [
@@ -9898,6 +9954,12 @@ export const listSecurityControlDefinitions =
       InvalidInputException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityControlDefinitions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Associates a target account, organizational unit, or the root with a specified configuration. The target can be
@@ -9992,16 +10054,24 @@ export const batchUpdateAutomationRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If you don't provide an integration ARN, then the results include all of the available
  * product integrations.
  */
-export const describeProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeProductsRequest,
-  output: DescribeProductsResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const describeProducts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeProductsRequest,
+    output: DescribeProductsResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Products",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the association between a configuration and a target account, organizational unit, or the root. The
  * configuration can be a configuration policy or self-managed behavior. Only the Security Hub delegated administrator can
@@ -10025,30 +10095,46 @@ export const getConfigurationPolicyAssociation =
  *
  * If cross-Region aggregation is enabled, then when you call `GetFindings` from the home Region, the results include all of the matching findings from both the home Region and linked Regions.
  */
-export const getFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFindingsRequest,
-  output: GetFindingsResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const getFindings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFindingsRequest,
+    output: GetFindingsResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Findings",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists and describes insights for the specified insight ARNs.
  */
-export const getInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInsightsRequest,
-  output: GetInsightsResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-    ResourceNotFoundException,
-  ],
-}));
+export const getInsights = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetInsightsRequest,
+    output: GetInsightsResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Insights",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the details for the Security Hub member accounts for the specified account IDs.
  *
@@ -10087,8 +10173,8 @@ export const listAutomationRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the configuration policies that the Security Hub delegated administrator has created for your
  * organization. Only the delegated administrator can invoke this operation from the home Region.
  */
-export const listConfigurationPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationPoliciesRequest,
     output: ListConfigurationPoliciesResponse,
     errors: [
@@ -10098,14 +10184,19 @@ export const listConfigurationPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationPolicySummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides information about the associations for your configuration policies and self-managed behavior. Only the
  * Security Hub delegated administrator can invoke this operation from the home Region.
  */
 export const listConfigurationPolicyAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationPolicyAssociationsRequest,
     output: ListConfigurationPolicyAssociationsResponse,
     errors: [
@@ -10115,6 +10206,12 @@ export const listConfigurationPolicyAssociations =
       InvalidInputException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationPolicyAssociationSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Disables the standards specified by the provided
@@ -10253,11 +10350,19 @@ export const batchUpdateStandardsControlAssociations =
  *
  * For each standard, the results include the standard ARN, the name, and a description.
  */
-export const describeStandards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeStandardsRequest,
-  output: DescribeStandardsResponse,
-  errors: [InternalException, InvalidAccessException, InvalidInputException],
-}));
+export const describeStandards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeStandardsRequest,
+    output: DescribeStandardsResponse,
+    errors: [InternalException, InvalidAccessException, InvalidInputException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Standards",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Enables the service in account for the current Amazon Web Services Region or specified Amazon Web Services Region.
  */
@@ -10297,16 +10402,24 @@ export const getConnectorV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * that the results are incomplete. However, you should continue to specify a `NextToken` value until you receive a
  * response that doesn't include this value.
  */
-export const getFindingHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFindingHistoryRequest,
-  output: GetFindingHistoryResponse,
-  errors: [
-    InternalException,
-    InvalidAccessException,
-    InvalidInputException,
-    LimitExceededException,
-  ],
-}));
+export const getFindingHistory = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFindingHistoryRequest,
+    output: GetFindingHistoryResponse,
+    errors: [
+      InternalException,
+      InvalidAccessException,
+      InvalidInputException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Records",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the results of the Security Hub insight specified by the insight ARN.
  */
@@ -10388,18 +10501,26 @@ export const getResourcesStatisticsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of V2 aggregators.
  */
-export const listAggregatorsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAggregatorsV2Request,
-  output: ListAggregatorsV2Response,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAggregatorsV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAggregatorsV2Request,
+    output: ListAggregatorsV2Response,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AggregatorsV2",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Grants permission to update a connectorV2 based on its id and input parameters.
  */
@@ -10572,17 +10693,25 @@ export const disableSecurityHubV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about the product integration.
  */
-export const describeProductsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeProductsV2Request,
-  output: DescribeProductsV2Response,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeProductsV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeProductsV2Request,
+    output: DescribeProductsV2Response,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProductsV2",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details about the service resource in your account.
  */
@@ -10884,17 +11013,25 @@ export const getFindingStatisticsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `GetFindings` and `GetFindingsV2` both use `securityhub:GetFindings` in the `Action` element of an IAM policy statement.
  * You must have permission to perform the `securityhub:GetFindings` action.
  */
-export const getFindingsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFindingsV2Request,
-  output: GetFindingsV2Response,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getFindingsV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFindingsV2Request,
+    output: GetFindingsV2Response,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Findings",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the properties of a security control.
  */
@@ -10949,21 +11086,28 @@ export const getSecurityControlDefinition =
 /**
  * Returns findings trend data based on the specified criteria. This operation helps you analyze patterns and changes in findings over time.
  */
-export const getFindingsTrendsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFindingsTrendsV2Request,
-  output: GetFindingsTrendsV2Response,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getFindingsTrendsV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetFindingsTrendsV2Request,
+    output: GetFindingsTrendsV2Response,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrendsMetrics",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns resource trend data based on the specified criteria. This operation helps you analyze patterns and changes in resource compliance over time.
  */
-export const getResourcesTrendsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getResourcesTrendsV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourcesTrendsV2Request,
     output: GetResourcesTrendsV2Response,
     errors: [
@@ -10972,23 +11116,36 @@ export const getResourcesTrendsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrendsMetrics",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of resources.
  */
-export const getResourcesV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcesV2Request,
-  output: GetResourcesV2Response,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getResourcesV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetResourcesV2Request,
+    output: GetResourcesV2Response,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Resources",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Imports security findings generated by a finding provider into Security Hub.
  * This action is requested by the finding provider to import its findings into

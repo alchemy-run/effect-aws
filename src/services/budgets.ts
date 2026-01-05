@@ -1089,7 +1089,7 @@ export class ResourceLockedException extends S.TaggedError<ResourceLockedExcepti
  * Describes all of the budget actions for an account.
  */
 export const describeBudgetActionsForAccount =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBudgetActionsForAccountRequest,
     output: DescribeBudgetActionsForAccountResponse,
     errors: [
@@ -1099,6 +1099,12 @@ export const describeBudgetActionsForAccount =
       InvalidParameterException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Actions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes a budget.
@@ -1121,7 +1127,7 @@ export const describeBudget = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes a budget action history detail.
  */
 export const describeBudgetActionHistories =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBudgetActionHistoriesRequest,
     output: DescribeBudgetActionHistoriesResponse,
     errors: [
@@ -1132,6 +1138,12 @@ export const describeBudgetActionHistories =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActionHistories",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the budgets that are associated with an account.
@@ -1139,19 +1151,27 @@ export const describeBudgetActionHistories =
  * The Request Syntax section shows the `BudgetLimit` syntax. For
  * `PlannedBudgetLimits`, see the Examples section.
  */
-export const describeBudgets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeBudgetsRequest,
-  output: DescribeBudgetsResponse,
-  errors: [
-    AccessDeniedException,
-    ExpiredNextTokenException,
-    InternalErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const describeBudgets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeBudgetsRequest,
+    output: DescribeBudgetsResponse,
+    errors: [
+      AccessDeniedException,
+      ExpiredNextTokenException,
+      InternalErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Budgets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a notification.
  */
@@ -1310,7 +1330,7 @@ export const createSubscriber = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes all of the budget actions for a budget.
  */
 export const describeBudgetActionsForBudget =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBudgetActionsForBudgetRequest,
     output: DescribeBudgetActionsForBudgetResponse,
     errors: [
@@ -1321,12 +1341,18 @@ export const describeBudgetActionsForBudget =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Actions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the notifications that are associated with a budget.
  */
 export const describeNotificationsForBudget =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNotificationsForBudgetRequest,
     output: DescribeNotificationsForBudgetResponse,
     errors: [
@@ -1338,12 +1364,18 @@ export const describeNotificationsForBudget =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Notifications",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the subscribers that are associated with a notification.
  */
 export const describeSubscribersForNotification =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSubscribersForNotificationRequest,
     output: DescribeSubscribersForNotificationResponse,
     errors: [
@@ -1355,12 +1387,18 @@ export const describeSubscribersForNotification =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscribers",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the budget names and notifications that are associated with an account.
  */
 export const describeBudgetNotificationsForAccount =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBudgetNotificationsForAccountRequest,
     output: DescribeBudgetNotificationsForAccountResponse,
     errors: [
@@ -1372,12 +1410,18 @@ export const describeBudgetNotificationsForAccount =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BudgetNotificationsForAccount",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the history for `DAILY`, `MONTHLY`, and `QUARTERLY` budgets. Budget history isn't available for `ANNUAL` budgets.
  */
 export const describeBudgetPerformanceHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBudgetPerformanceHistoryRequest,
     output: DescribeBudgetPerformanceHistoryResponse,
     errors: [
@@ -1390,6 +1434,11 @@ export const describeBudgetPerformanceHistory =
       NotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Updates a budget. You can change every part of a budget except for the `budgetName` and the `calculatedSpend`. When you modify a budget, the `calculatedSpend` drops to zero until Amazon Web Services has new usage data to use for forecasting.

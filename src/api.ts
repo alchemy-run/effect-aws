@@ -5,9 +5,15 @@ import * as Option from "effect/Option";
 import type * as ParseResult from "effect/ParseResult";
 import * as Redacted from "effect/Redacted";
 import * as Ref from "effect/Ref";
+import * as Stream from "effect/Stream";
 import { Credentials } from "./aws/credentials.ts";
 import { Endpoint } from "./aws/endpoint.ts";
-import { UnknownAwsError, type CommonAwsError } from "./aws/errors.ts";
+import {
+  isTransientNetworkError,
+  TransientFetchError,
+  UnknownAwsError,
+  type CommonAwsError,
+} from "./aws/errors.ts";
 import { Region } from "./aws/region.ts";
 import type { Operation } from "./operation.ts";
 import { makeRequestBuilder } from "./request-builder.ts";
@@ -18,7 +24,7 @@ import type {
   NoMatchingRuleError,
 } from "./rules-engine/index.ts";
 import { makeRulesResolver } from "./rules-engine/resolver.ts";
-import { getAwsAuthSigv4 } from "./traits.ts";
+import { getAwsAuthSigv4, getPath } from "./traits.ts";
 
 export const make = <Op extends Operation>(
   initOperation: () => Op,
@@ -30,6 +36,7 @@ export const make = <Op extends Operation>(
   | ParseResult.ParseError
   | UnknownAwsError
   | CommonAwsError
+  | TransientFetchError
   | EndpointError
   | NoMatchingRuleError,
   Region | Credentials
@@ -189,7 +196,16 @@ export const make = <Op extends Operation>(
           // Enable streaming uploads - required for ReadableStream bodies
           ...(isStreamingBody ? { duplex: "half" as const } : {}),
         } as RequestInit),
-      catch: (error) => new Error(`Fetch error: ${error}`),
+      catch: (error) => {
+        // Check if this is a transient network error that should be retried
+        if (isTransientNetworkError(error)) {
+          return new TransientFetchError({
+            message: `Fetch error: ${error}`,
+            cause: error,
+          });
+        }
+        return new Error(`Fetch error: ${error}`);
+      },
     });
 
     yield* Effect.logDebug("Raw Response Status", rawResponse.status);
@@ -247,4 +263,158 @@ export const make = <Op extends Operation>(
     }),
     op,
   );
+};
+
+// =============================================================================
+// Paginated Operation Types
+// =============================================================================
+
+/** Error types returned by paginated operations */
+type PaginatedErrors =
+  | ParseResult.ParseError
+  | UnknownAwsError
+  | CommonAwsError
+  | TransientFetchError
+  | EndpointError
+  | NoMatchingRuleError;
+
+/** Extract the item type from a paginated operation's output */
+type PaginatedItemType<Op extends Operation> = Op["pagination"] extends {
+  items: string;
+}
+  ? Op["pagination"]["items"] extends keyof Operation.Output<Op>
+    ? Operation.Output<Op>[Op["pagination"]["items"]] extends
+        | readonly (infer Item)[]
+        | undefined
+      ? Item
+      : never
+    : never
+  : never;
+
+/** A paginated operation with both Effect and Stream interfaces */
+export interface PaginatedOperation<Op extends Operation> {
+  /** Call the operation once, returning a single page */
+  (
+    payload: Operation.Input<Op>,
+  ): Effect.Effect<
+    Operation.Output<Op>,
+    Operation.Error<Op> | PaginatedErrors,
+    Region | Credentials
+  >;
+
+  /** Stream all pages (full response objects) */
+  pages: (
+    payload: Operation.Input<Op>,
+  ) => Stream.Stream<
+    Operation.Output<Op>,
+    Operation.Error<Op> | PaginatedErrors,
+    Region | Credentials
+  >;
+
+  /** Stream individual items from the paginated field across all pages */
+  items: (
+    payload: Operation.Input<Op>,
+  ) => Stream.Stream<
+    PaginatedItemType<Op>,
+    Operation.Error<Op> | PaginatedErrors,
+    Region | Credentials
+  >;
+
+  /** The operation metadata */
+  input: Op["input"];
+  output: Op["output"];
+  errors: Op["errors"];
+  pagination: Op["pagination"];
+}
+
+/**
+ * Create a paginated operation that supports both single-call and streaming interfaces.
+ *
+ * @param initOperation - Factory function that returns the operation definition
+ * @returns A callable with `.pages()` and `.items()` methods for paginated access
+ */
+export const makePaginated = <Op extends Operation>(
+  initOperation: () => Op,
+): PaginatedOperation<Op> => {
+  const op = initOperation();
+  const pagination = op.pagination!;
+
+  // Reuse API.make for the Effect-based single-call interface
+  const baseFn = make(initOperation);
+
+  type State = { token: unknown; done: boolean };
+  type Errors = Operation.Error<Op> | PaginatedErrors;
+  type Deps = Region | Credentials;
+
+  // Stream all pages (full response objects)
+  const pagesFn = (
+    payload: Operation.Input<Op>,
+  ): Stream.Stream<Operation.Output<Op>, Errors, Deps> => {
+    const unfoldFn = (
+      state: State,
+    ): Effect.Effect<
+      Option.Option<readonly [Operation.Output<Op>, State]>,
+      Errors,
+      Deps
+    > =>
+      Effect.gen(function* () {
+        if (state.done) {
+          return Option.none();
+        }
+
+        // Build the request with the continuation token
+        const requestPayload =
+          state.token !== undefined
+            ? { ...payload, [pagination.inputToken]: state.token }
+            : payload;
+
+        // Make the API call
+        const response = yield* baseFn(requestPayload);
+
+        // Extract the next token using path traversal
+        const nextToken = getPath(response, pagination.outputToken);
+
+        // Return the full page and next state
+        const nextState: State = {
+          token: nextToken,
+          done: nextToken === undefined || nextToken === null,
+        };
+        return Option.some([response, nextState] as const);
+      });
+
+    return Stream.unfoldEffect(
+      { token: undefined, done: false } as State,
+      unfoldFn,
+    );
+  };
+
+  // Stream individual items from the paginated field
+  const itemsFn = (
+    payload: Operation.Input<Op>,
+  ): Stream.Stream<PaginatedItemType<Op>, Errors, Deps> => {
+    if (!pagination.items) {
+      // If no items path is specified, this operation doesn't support .items()
+      // Return an empty stream (caller should use .pages() instead)
+      return Stream.empty as Stream.Stream<PaginatedItemType<Op>, Errors, Deps>;
+    }
+
+    return pagesFn(payload).pipe(
+      Stream.flatMap((page) => {
+        const items = getPath(page, pagination.items!) as
+          | PaginatedItemType<Op>[]
+          | undefined;
+        return Stream.fromIterable(items ?? []);
+      }),
+    );
+  };
+
+  // Return callable with .pages and .items methods and operation metadata
+  return Object.assign(baseFn, {
+    pages: pagesFn,
+    items: itemsFn,
+    input: op.input,
+    output: op.output,
+    errors: op.errors,
+    pagination: op.pagination,
+  }) as PaginatedOperation<Op>;
 };

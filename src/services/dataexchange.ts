@@ -1825,23 +1825,31 @@ export const createDataGrant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This operation returns information about all data grants.
  */
-export const listDataGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataGrantsRequest,
-  output: ListDataGrantsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataGrants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataGrantsRequest,
+    output: ListDataGrantsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataGrantSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation lists a data set's revisions sorted by CreatedAt in descending
  * order.
  */
-export const listDataSetRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSetRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSetRevisionsRequest,
     output: ListDataSetRevisionsResponse,
     errors: [
@@ -1850,39 +1858,60 @@ export const listDataSetRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Revisions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation lists your data sets. When listing by origin OWNED, results are sorted by
  * CreatedAt in descending order. When listing by origin ENTITLED, there is no order.
  */
-export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSetsRequest,
-  output: ListDataSetsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSetsRequest,
+    output: ListDataSetsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataSets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation lists your event actions.
  */
-export const listEventActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventActionsRequest,
-  output: ListEventActionsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEventActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventActionsRequest,
+    output: ListEventActionsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventActions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation lists your jobs sorted by CreatedAt in descending order.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -1891,12 +1920,18 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Jobs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * This operation returns information about all received data grants.
  */
-export const listReceivedDataGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReceivedDataGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReceivedDataGrantsRequest,
     output: ListReceivedDataGrantsResponse,
     errors: [
@@ -1906,22 +1941,35 @@ export const listReceivedDataGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataGrantSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation lists a revision's assets sorted alphabetically in descending
  * order.
  */
-export const listRevisionAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRevisionAssetsRequest,
-  output: ListRevisionAssetsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRevisionAssets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRevisionAssetsRequest,
+    output: ListRevisionAssetsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Assets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation returns information about a data grant.
  */

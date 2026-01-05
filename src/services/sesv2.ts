@@ -3588,24 +3588,35 @@ export class SendingPausedException extends S.TaggedError<SendingPausedException
  * the configuration set in the headers of the email. When you apply a configuration set to
  * an email, all of the rules in that configuration set are applied to the email.
  */
-export const listConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationSetsRequest,
     output: ListConfigurationSetsResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists all of the contact lists available.
  *
  * If your output includes a "NextToken" field with a string value, this indicates there may be additional
  * contacts on the filtered list - regardless of the number of contacts returned.
  */
-export const listContactLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactListsRequest,
-  output: ListContactListsResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listContactLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContactListsRequest,
+    output: ListContactListsResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Lists the existing custom verification email templates for your account in the current
  * Amazon Web Services Region.
@@ -3617,10 +3628,15 @@ export const listContactLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can execute this operation no more than once per second.
  */
 export const listCustomVerificationEmailTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomVerificationEmailTemplatesRequest,
     output: ListCustomVerificationEmailTemplatesResponse,
     errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Returns a list of all of the email identities that are associated with your Amazon Web Services
@@ -3628,51 +3644,83 @@ export const listCustomVerificationEmailTemplates =
  * identities that are verified as well as those that aren't. This operation returns
  * identities that are associated with Amazon SES and Amazon Pinpoint.
  */
-export const listEmailIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEmailIdentitiesRequest,
-  output: ListEmailIdentitiesResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listEmailIdentities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEmailIdentitiesRequest,
+    output: ListEmailIdentitiesResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists the email templates present in your Amazon SES account in the current Amazon Web Services
  * Region.
  *
  * You can execute this operation no more than once per second.
  */
-export const listEmailTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEmailTemplatesRequest,
-  output: ListEmailTemplatesResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listEmailTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEmailTemplatesRequest,
+    output: ListEmailTemplatesResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Lists all of the export jobs.
  */
-export const listExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportJobsRequest,
-  output: ListExportJobsResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportJobsRequest,
+    output: ListExportJobsResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Lists all of the import jobs.
  */
-export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportJobsRequest,
-  output: ListImportJobsResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportJobsRequest,
+    output: ListImportJobsResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * List the multi-region endpoints (global-endpoints).
  *
  * Only multi-region endpoints (global-endpoints) whose primary region is the AWS-Region
  * where operation is executed will be listed.
  */
-export const listMultiRegionEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMultiRegionEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMultiRegionEndpointsRequest,
     output: ListMultiRegionEndpointsResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MultiRegionEndpoints",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List reputation entities in your Amazon SES account in the current Amazon Web Services Region.
  * You can filter the results by entity type, reputation impact, sending status,
@@ -3682,13 +3730,18 @@ export const listMultiRegionEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * tracking and management capabilities. Use this operation to get an overview of
  * all entities and their current reputation status.
  */
-export const listReputationEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReputationEntities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReputationEntitiesRequest,
     output: ListReputationEntitiesResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReputationEntities",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List all tenants associated with a specific resource.
  *
@@ -3696,22 +3749,37 @@ export const listReputationEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * resource. This is useful for understanding which tenants are currently using a particular
  * resource such as an email identity, configuration set, or email template.
  */
-export const listResourceTenants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceTenantsRequest,
-  output: ListResourceTenantsResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const listResourceTenants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListResourceTenantsRequest,
+    output: ListResourceTenantsResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceTenants",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List all tenants associated with your account in the current Amazon Web Services Region.
  *
  * This operation returns basic information about each tenant,
  * such as tenant name, ID, ARN, and creation timestamp.
  */
-export const listTenants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTenantsRequest,
-  output: ListTenantsResponse,
-  errors: [BadRequestException, TooManyRequestsException],
-}));
+export const listTenants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTenantsRequest,
+    output: ListTenantsResponse,
+    errors: [BadRequestException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tenants",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Update your Amazon SES account details.
  */
@@ -3772,11 +3840,18 @@ export const getCustomVerificationEmailTemplate =
  * List the dedicated IP addresses that are associated with your Amazon Web Services
  * account.
  */
-export const getDedicatedIps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDedicatedIpsRequest,
-  output: GetDedicatedIpsResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const getDedicatedIps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDedicatedIpsRequest,
+    output: GetDedicatedIpsResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Returns the requested sending authorization policies for the given identity (an email
  * address or a domain). The policies are returned as a map of policy names to policy
@@ -3824,10 +3899,15 @@ export const getImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * operation to view the results.
  */
 export const listDeliverabilityTestReports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeliverabilityTestReportsRequest,
     output: ListDeliverabilityTestReportsResponse,
     errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Retrieve deliverability data for all the campaigns that used a specific domain to send
@@ -3835,10 +3915,15 @@ export const listDeliverabilityTestReports =
  * enabled the Deliverability dashboard for the domain.
  */
 export const listDomainDeliverabilityCampaigns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainDeliverabilityCampaignsRequest,
     output: ListDomainDeliverabilityCampaignsResponse,
     errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Retrieve a list of the tags (keys and values) that are associated with a specified
@@ -4560,13 +4645,17 @@ export const createEmailIdentity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List all of the dedicated IP pools that exist in your Amazon Web Services account in the current
  * Region.
  */
-export const listDedicatedIpPools = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDedicatedIpPools =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDedicatedIpPoolsRequest,
     output: ListDedicatedIpPoolsResponse,
     errors: [BadRequestException, TooManyRequestsException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Enable or disable the automatic warm-up feature for dedicated IP addresses.
  */
@@ -4924,17 +5013,23 @@ export const getSuppressedDestination = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You can execute this operation no more than once per second.
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsRequest,
-  output: ListRecommendationsResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsRequest,
+    output: ListRecommendationsResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Retrieves a list of email addresses that are on the suppression list for your
  * account.
  */
-export const listSuppressedDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSuppressedDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSuppressedDestinationsRequest,
     output: ListSuppressedDestinationsResponse,
     errors: [
@@ -4942,8 +5037,12 @@ export const listSuppressedDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List all resources associated with a specific tenant.
  *
@@ -4951,11 +5050,18 @@ export const listSuppressedDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * or email templates) that are associated with the specified tenant. You can optionally
  * filter the results by resource type.
  */
-export const listTenantResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTenantResourcesRequest,
-  output: ListTenantResourcesResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const listTenantResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTenantResourcesRequest,
+    output: ListTenantResourcesResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TenantResources",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Change the settings for the account-level suppression list.
  */
@@ -4983,11 +5089,18 @@ export const createExportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the contacts present in a specific contact list.
  */
-export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactsRequest,
-  output: ListContactsResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContactsRequest,
+    output: ListContactsResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Retrieves batches of metric data collected based on your sending activity.
  *

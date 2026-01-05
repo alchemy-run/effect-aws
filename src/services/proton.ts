@@ -1984,16 +1984,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Proton components in the
  * *Proton User Guide*.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsInput,
-  output: ListComponentsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsInput,
+    output: ListComponentsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "components",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get detailed data for a deployment.
  */
@@ -2032,17 +2040,25 @@ export const createEnvironmentAccountConnection =
 /**
  * List environments with detail data summaries.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsInput,
-  output: ListEnvironmentsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsInput,
+    output: ListEnvironmentsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Create a new major or minor version of an environment template. A major version of an environment template is a version that
  * *isn't* backwards compatible. A minor version of an environment template is a version that's backwards compatible within its major
@@ -2066,8 +2082,8 @@ export const createEnvironmentTemplateVersion =
  * List service instances with summary data. This action lists service instances of all
  * services in the Amazon Web Services account.
  */
-export const listServiceInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceInstancesInput,
     output: ListServiceInstancesOutput,
     errors: [
@@ -2077,8 +2093,13 @@ export const listServiceInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceInstances",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Update the service sync blocker by resolving it.
  */
@@ -2120,7 +2141,7 @@ export const getServiceTemplateVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * *Proton User Guide*.
  */
 export const listComponentProvisionedResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComponentProvisionedResourcesInput,
     output: ListComponentProvisionedResourcesOutput,
     errors: [
@@ -2130,21 +2151,34 @@ export const listComponentProvisionedResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "provisionedResources",
+    } as const,
   }));
 /**
  * List deployments. You can filter the result list by environment, service, or a single service instance.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsInput,
-  output: ListDeploymentsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsInput,
+    output: ListDeploymentsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deployments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get detailed data for a major or minor version of an environment template.
  */
@@ -2164,7 +2198,7 @@ export const getEnvironmentTemplateVersion =
  * List major or minor versions of an environment template with detail data.
  */
 export const listEnvironmentTemplateVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentTemplateVersionsInput,
     output: ListEnvironmentTemplateVersionsOutput,
     errors: [
@@ -2174,21 +2208,35 @@ export const listEnvironmentTemplateVersions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templateVersions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List linked repositories with detail data.
  */
-export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRepositoriesInput,
-  output: ListRepositoriesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRepositoriesInput,
+    output: ListRepositoriesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Create an Proton service. An Proton service is an instantiation of a service
  * template and often includes several service instances and pipeline. For more information, see
@@ -2245,8 +2293,8 @@ export const createServiceTemplateVersion =
 /**
  * List major or minor versions of a service template with detail data.
  */
-export const listServiceTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceTemplateVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceTemplateVersionsInput,
     output: ListServiceTemplateVersionsOutput,
     errors: [
@@ -2256,8 +2304,13 @@ export const listServiceTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templateVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Create an Proton component. A component is an infrastructure extension for a service instance.
  *
@@ -3079,8 +3132,8 @@ export const getEnvironmentAccountConnection =
 /**
  * List the infrastructure as code outputs for your environment.
  */
-export const listEnvironmentOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentOutputs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentOutputsInput,
     output: ListEnvironmentOutputsOutput,
     errors: [
@@ -3090,13 +3143,17 @@ export const listEnvironmentOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "outputs",
+    } as const,
+  }));
 /**
  * List the provisioned resources for your environment.
  */
 export const listEnvironmentProvisionedResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentProvisionedResourcesInput,
     output: ListEnvironmentProvisionedResourcesOutput,
     errors: [
@@ -3106,6 +3163,11 @@ export const listEnvironmentProvisionedResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "provisionedResources",
+    } as const,
   }));
 /**
  * Get detailed data for an environment.
@@ -3154,8 +3216,8 @@ export const getRepository = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Get a list service of instance Infrastructure as Code (IaC) outputs.
  */
-export const listServiceInstanceOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceInstanceOutputs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceInstanceOutputsInput,
     output: ListServiceInstanceOutputsOutput,
     errors: [
@@ -3165,13 +3227,17 @@ export const listServiceInstanceOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "outputs",
+    } as const,
+  }));
 /**
  * List provisioned resources for a service instance with details.
  */
 export const listServiceInstanceProvisionedResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceInstanceProvisionedResourcesInput,
     output: ListServiceInstanceProvisionedResourcesOutput,
     errors: [
@@ -3181,6 +3247,11 @@ export const listServiceInstanceProvisionedResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "provisionedResources",
+    } as const,
   }));
 /**
  * Get detailed data for a service instance. A service instance is an instantiation of
@@ -3200,8 +3271,8 @@ export const getServiceInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Get a list of service pipeline Infrastructure as Code (IaC) outputs.
  */
-export const listServicePipelineOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServicePipelineOutputs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServicePipelineOutputsInput,
     output: ListServicePipelineOutputsOutput,
     errors: [
@@ -3211,13 +3282,17 @@ export const listServicePipelineOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "outputs",
+    } as const,
+  }));
 /**
  * List provisioned resources for a service and pipeline with details.
  */
 export const listServicePipelineProvisionedResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServicePipelineProvisionedResourcesInput,
     output: ListServicePipelineProvisionedResourcesOutput,
     errors: [
@@ -3227,6 +3302,11 @@ export const listServicePipelineProvisionedResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "provisionedResources",
+    } as const,
   }));
 /**
  * Get detailed data for a service.
@@ -3308,17 +3388,24 @@ export const getTemplateSyncStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * List tags for a resource. For more information, see Proton
  * resources and tagging in the *Proton User Guide*.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceInput,
-  output: ListTagsForResourceOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceInput,
+    output: ListTagsForResourceOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Remove a customer tag from a resource. A tag is a key-value pair of metadata associated with an Proton resource.
  *
@@ -3396,7 +3483,7 @@ export const getServiceInstanceSyncStatus =
  * connections in the *Proton User guide*.
  */
 export const listEnvironmentAccountConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentAccountConnectionsInput,
     output: ListEnvironmentAccountConnectionsOutput,
     errors: [
@@ -3405,12 +3492,18 @@ export const listEnvironmentAccountConnections =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environmentAccountConnections",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List environment templates.
  */
-export const listEnvironmentTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentTemplatesInput,
     output: ListEnvironmentTemplatesOutput,
     errors: [
@@ -3419,26 +3512,39 @@ export const listEnvironmentTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List services with summaries of detail data.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesInput,
-  output: ListServicesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesInput,
+    output: ListServicesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "services",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List service templates with detail data.
  */
-export const listServiceTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServiceTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceTemplatesInput,
     output: ListServiceTemplatesOutput,
     errors: [
@@ -3447,8 +3553,13 @@ export const listServiceTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get counts of Proton resources.
  *
@@ -3479,7 +3590,7 @@ export const getResourcesSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List repository sync definitions with detail data.
  */
 export const listRepositorySyncDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRepositorySyncDefinitionsInput,
     output: ListRepositorySyncDefinitionsOutput,
     errors: [
@@ -3488,6 +3599,11 @@ export const listRepositorySyncDefinitions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "syncDefinitions",
+    } as const,
   }));
 /**
  * Update Proton settings that are used for multiple services in the Amazon Web Services account.
@@ -3512,8 +3628,8 @@ export const updateAccountSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Proton components in the
  * *Proton User Guide*.
  */
-export const listComponentOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComponentOutputs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComponentOutputsInput,
     output: ListComponentOutputsOutput,
     errors: [
@@ -3523,8 +3639,12 @@ export const listComponentOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "outputs",
+    } as const,
+  }));
 /**
  * Create an environment template for Proton. For more information, see Environment Templates in the *Proton User Guide*.
  *

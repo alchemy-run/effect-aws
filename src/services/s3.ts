@@ -16652,13 +16652,18 @@ export const listBucketMetricsConfigurations =
  *
  * You must URL encode any signed header values that contain spaces. For example, if your header value is `my file.txt`, containing two spaces after `my`, you must URL encode this value to `my%20%20file.txt`.
  */
-export const listDirectoryBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDirectoryBuckets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDirectoryBucketsRequest,
     output: ListDirectoryBucketsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "ContinuationToken",
+      outputToken: "ContinuationToken",
+      items: "Buckets",
+      pageSize: "MaxDirectoryBuckets",
+    } as const,
+  }));
 /**
  * Returns some or all (up to 1,000) of the objects in a bucket with each request. You can use the
  * request parameters as selection criteria to return a subset of the objects in a bucket. A 200
@@ -16725,11 +16730,18 @@ export const listDirectoryBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You must URL encode any signed header values that contain spaces. For example, if your header value is `my file.txt`, containing two spaces after `my`, you must URL encode this value to `my%20%20file.txt`.
  */
-export const listObjectsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListObjectsV2Request,
-  output: ListObjectsV2Output,
-  errors: [NoSuchBucket],
-}));
+export const listObjectsV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListObjectsV2Request,
+    output: ListObjectsV2Output,
+    errors: [NoSuchBucket],
+    pagination: {
+      inputToken: "ContinuationToken",
+      outputToken: "NextContinuationToken",
+      pageSize: "MaxKeys",
+    } as const,
+  }),
+);
 /**
  * Sets the attribute-based access control (ABAC) property of the general purpose bucket. You must have `s3:PutBucketABAC` permission to perform this action. When you enable ABAC, you can use tags for access control on your buckets. Additionally, when ABAC is enabled, you must use the TagResource and UntagResource actions to manage tags on your buckets. You can nolonger use the PutBucketTagging and DeleteBucketTagging actions to tag your bucket. For more information, see Enabling ABAC in general purpose buckets.
  */
@@ -17795,11 +17807,19 @@ export const getObject = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must URL encode any signed header values that contain spaces. For example, if your header value is `my file.txt`, containing two spaces after `my`, you must URL encode this value to `my%20%20file.txt`.
  */
-export const listBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBucketsRequest,
-  output: ListBucketsOutput,
-  errors: [],
-}));
+export const listBuckets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBucketsRequest,
+    output: ListBucketsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "ContinuationToken",
+      outputToken: "ContinuationToken",
+      items: "Buckets",
+      pageSize: "MaxBuckets",
+    } as const,
+  }),
+);
 /**
  * This operation lists in-progress multipart uploads in a bucket. An in-progress multipart upload is a
  * multipart upload that has been initiated by the `CreateMultipartUpload` request, but has not
@@ -17987,10 +18007,16 @@ export const listObjectVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must URL encode any signed header values that contain spaces. For example, if your header value is `my file.txt`, containing two spaces after `my`, you must URL encode this value to `my%20%20file.txt`.
  */
-export const listParts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listParts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartsRequest,
   output: ListPartsOutput,
   errors: [NoSuchBucket],
+  pagination: {
+    inputToken: "PartNumberMarker",
+    outputToken: "NextPartNumberMarker",
+    items: "Parts",
+    pageSize: "MaxParts",
+  } as const,
 }));
 /**
  * This operation is not supported for directory buckets.

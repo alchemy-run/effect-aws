@@ -1249,8 +1249,8 @@ export const deleteDataIntegrationFlow = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Enables you to programmatically list all data pipelines for the provided Amazon Web Services Supply Chain instance.
  */
-export const listDataIntegrationFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataIntegrationFlows =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIntegrationFlowsRequest,
     output: ListDataIntegrationFlowsResponse,
     errors: [
@@ -1259,8 +1259,13 @@ export const listDataIntegrationFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flows",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get status and details of a BillOfMaterialsImportJob.
  */
@@ -1358,8 +1363,8 @@ export const deleteDataLakeDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Enables you to programmatically view the list of Amazon Web Services Supply Chain data lake datasets. Developers can view the datasets and the corresponding information such as namespace, schema, and so on for a given instance ID and namespace.
  */
-export const listDataLakeDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataLakeDatasets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataLakeDatasetsRequest,
     output: ListDataLakeDatasetsResponse,
     errors: [
@@ -1369,8 +1374,13 @@ export const listDataLakeDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasets",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Enables you to programmatically view an Amazon Web Services Supply Chain data lake namespace. Developers can view the data lake namespace information such as description for a given instance ID and namespace name.
  */
@@ -1467,7 +1477,7 @@ export const deleteInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List flow executions.
  */
 export const listDataIntegrationFlowExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIntegrationFlowExecutionsRequest,
     output: ListDataIntegrationFlowExecutionsResponse,
     errors: [
@@ -1477,6 +1487,12 @@ export const listDataIntegrationFlowExecutions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flowExecutions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * List all the tags for an Amazon Web ServicesSupply Chain resource. You can list all the tags added to a resource. By listing the tags, developers can view the tag level information on a resource and perform actions such as, deleting a resource associated with a particular tag.
@@ -1561,8 +1577,8 @@ export const createInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Enables you to programmatically view the list of Amazon Web Services Supply Chain data lake namespaces. Developers can view the namespaces and the corresponding information such as description for a given instance ID. Note that this API only return custom namespaces, instance pre-defined namespaces are not included.
  */
-export const listDataLakeNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataLakeNamespaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataLakeNamespacesRequest,
     output: ListDataLakeNamespacesResponse,
     errors: [
@@ -1571,26 +1587,39 @@ export const listDataLakeNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "namespaces",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List all Amazon Web Services Supply Chain instances for a specific account. Enables you to programmatically list all Amazon Web Services Supply Chain instances based on their account ID, instance name, and state of the instance (active or delete).
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesRequest,
-  output: ListInstancesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesRequest,
+    output: ListInstancesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "instances",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Enables you to programmatically list all data integration events for the provided Amazon Web Services Supply Chain instance.
  */
-export const listDataIntegrationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataIntegrationEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIntegrationEventsRequest,
     output: ListDataIntegrationEventsResponse,
     errors: [
@@ -1599,8 +1628,13 @@ export const listDataIntegrationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * You can delete tags for an Amazon Web Services Supply chain resource such as instance, data flow, or dataset in AWS Supply Chain. During the data ingestion process, you can delete tags such as dev, test, or prod to data flows created during the data ingestion process in the AWS Supply Chain datasets.
  */

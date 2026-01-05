@@ -2231,8 +2231,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists geofence collections in your Amazon Web Services account.
  */
-export const listGeofenceCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGeofenceCollections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGeofenceCollectionsRequest,
     output: ListGeofenceCollectionsResponse,
     errors: [
@@ -2241,8 +2241,13 @@ export const listGeofenceCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation is no longer current and may be deprecated in the future. We recommend you upgrade to `CalculateRoutes` or `CalculateIsolines` unless you require Grab data.
  *
@@ -2320,8 +2325,8 @@ export const batchPutGeofence = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Heading direction is not considered in the current version. The API takes a conservative approach and includes events that can occur for any heading.
  */
-export const forecastGeofenceEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const forecastGeofenceEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ForecastGeofenceEventsRequest,
     output: ForecastGeofenceEventsResponse,
     errors: [
@@ -2331,8 +2336,13 @@ export const forecastGeofenceEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ForecastedEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Stores a geofence geometry in a given geofence collection, or updates the geometry of an existing geofence if a geofence ID is included in the request.
  */
@@ -2429,30 +2439,45 @@ export const calculateRouteMatrix = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * A batch request to retrieve all device positions.
  */
-export const listDevicePositions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicePositionsRequest,
-  output: ListDevicePositionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDevicePositions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDevicePositionsRequest,
+    output: ListDevicePositionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists geofences stored in a given geofence collection.
  */
-export const listGeofences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGeofencesRequest,
-  output: ListGeofencesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGeofences = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGeofencesRequest,
+    output: ListGeofencesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation is no longer current and may be deprecated in the future. We recommend upgrading to the Maps API V2 unless you require `Grab` data.
  *
@@ -2974,8 +2999,8 @@ export const getDevicePosition = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Device positions are deleted after 30 days.
  */
-export const getDevicePositionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getDevicePositionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetDevicePositionHistoryRequest,
     output: GetDevicePositionHistoryResponse,
     errors: [
@@ -2985,13 +3010,18 @@ export const getDevicePositionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DevicePositions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists geofence collections currently associated to the given tracker resource.
  */
-export const listTrackerConsumers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrackerConsumers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrackerConsumersRequest,
     output: ListTrackerConsumersResponse,
     errors: [
@@ -3001,8 +3031,13 @@ export const listTrackerConsumers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConsumerArns",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Assigns one or more tags (key-value pairs) to the specified Amazon Location Service resource.
  *
@@ -3365,7 +3400,7 @@ export const createKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Lists map resources in your Amazon Web Services account.
  */
-export const listMaps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listMaps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMapsRequest,
   output: ListMapsResponse,
   errors: [
@@ -3374,6 +3409,12 @@ export const listMaps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Entries",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * This operation is no longer current and may be deprecated in the future. We recommend you upgrade to the Places API V2 unless you require Grab data.
@@ -3390,16 +3431,24 @@ export const listMaps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Lists place index resources in your Amazon Web Services account.
  */
-export const listPlaceIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPlaceIndexesRequest,
-  output: ListPlaceIndexesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPlaceIndexes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPlaceIndexesRequest,
+    output: ListPlaceIndexesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation is no longer current and may be deprecated in the future. We recommend you upgrade to the Routes API V2 unless you require Grab data.
  *
@@ -3415,8 +3464,8 @@ export const listPlaceIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Lists route calculator resources in your Amazon Web Services account.
  */
-export const listRouteCalculators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRouteCalculators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRouteCalculatorsRequest,
     output: ListRouteCalculatorsResponse,
     errors: [
@@ -3425,21 +3474,34 @@ export const listRouteCalculators = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists tracker resources in your Amazon Web Services account.
  */
-export const listTrackers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrackersRequest,
-  output: ListTrackersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTrackers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrackersRequest,
+    output: ListTrackersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified API key. The API key must have been deactivated more than 90 days previously.
  *
@@ -3461,7 +3523,7 @@ export const deleteKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information, see Use API keys to authenticate in the *Amazon Location Service Developer Guide*.
  */
-export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeysRequest,
   output: ListKeysResponse,
   errors: [
@@ -3470,6 +3532,12 @@ export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Entries",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a geofence collection, which manages and stores geofences.

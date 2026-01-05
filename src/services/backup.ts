@@ -3916,16 +3916,24 @@ export const getSupportedResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns metadata about your copy jobs.
  */
-export const listCopyJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCopyJobsInput,
-  output: ListCopyJobsOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listCopyJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCopyJobsInput,
+    output: ListCopyJobsOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CopyJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This request lists the protected resources corresponding to each backup vault.
  */
 export const listProtectedResourcesByBackupVault =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProtectedResourcesByBackupVaultInput,
     output: ListProtectedResourcesByBackupVaultOutput,
     errors: [
@@ -3933,28 +3941,48 @@ export const listProtectedResourcesByBackupVault =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns details about your report jobs.
  */
-export const listReportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportJobsInput,
-  output: ListReportJobsOutput,
-  errors: [
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listReportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportJobsInput,
+    output: ListReportJobsOutput,
+    errors: [
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of your report plans. For detailed information about a single report
  * plan, use `DescribeReportPlan`.
  */
-export const listReportPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportPlansInput,
-  output: ListReportPlansOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listReportPlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportPlansInput,
+    output: ListReportPlansOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This request deletes the specified restore testing plan.
  *
@@ -4136,11 +4164,19 @@ export const getTieringConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of existing backup jobs for an authenticated account for the last 30
  * days. For a longer period of time, consider using these monitoring tools.
  */
-export const listBackupJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBackupJobsInput,
-  output: ListBackupJobsOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listBackupJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBackupJobsInput,
+    output: ListBackupJobsOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This is a request for a summary of backup jobs created
  * or running within the most recent 30 days. You can
@@ -4152,31 +4188,43 @@ export const listBackupJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Region, Account, State, ResourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listBackupJobSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBackupJobSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBackupJobSummariesInput,
     output: ListBackupJobSummariesOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the active backup plans for the account.
  */
-export const listBackupPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBackupPlansInput,
-  output: ListBackupPlansOutput,
-  errors: [
-    InvalidParameterValueException,
-    MissingParameterValueException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listBackupPlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBackupPlansInput,
+    output: ListBackupPlansOutput,
+    errors: [
+      InvalidParameterValueException,
+      MissingParameterValueException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupPlansList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the backup plan templates.
  */
-export const listBackupPlanTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBackupPlanTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBackupPlanTemplatesInput,
     output: ListBackupPlanTemplatesOutput,
     errors: [
@@ -4185,14 +4233,19 @@ export const listBackupPlanTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupPlanTemplatesList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns an array containing metadata of the resources associated with the target backup
  * plan.
  */
-export const listBackupSelections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBackupSelections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBackupSelectionsInput,
     output: ListBackupSelectionsOutput,
     errors: [
@@ -4201,22 +4254,35 @@ export const listBackupSelections = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupSelectionsList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of recovery point storage containers along with information about
  * them.
  */
-export const listBackupVaults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBackupVaultsInput,
-  output: ListBackupVaultsOutput,
-  errors: [
-    InvalidParameterValueException,
-    MissingParameterValueException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listBackupVaults = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBackupVaultsInput,
+    output: ListBackupVaultsOutput,
+    errors: [
+      InvalidParameterValueException,
+      MissingParameterValueException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupVaultList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This request obtains a list of copy jobs created
  * or running within the the most recent 30 days. You can
@@ -4228,21 +4294,32 @@ export const listBackupVaults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Region, Account, State, RestourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listCopyJobSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCopyJobSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCopyJobSummariesInput,
     output: ListCopyJobSummariesOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all frameworks for an Amazon Web Services account and Amazon Web Services Region.
  */
-export const listFrameworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFrameworksInput,
-  output: ListFrameworksOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listFrameworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFrameworksInput,
+    output: ListFrameworksOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation returns a list of recovery points that have an
  * associated index, belonging to the specified account.
@@ -4251,8 +4328,8 @@ export const listFrameworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * NextToken; SourceResourceArns; CreatedBefore; CreatedAfter;
  * and ResourceType.
  */
-export const listIndexedRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIndexedRecoveryPoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIndexedRecoveryPointsInput,
     output: ListIndexedRecoveryPointsOutput,
     errors: [
@@ -4260,34 +4337,52 @@ export const listIndexedRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IndexedRecoveryPoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This action returns metadata about active and previous legal holds.
  */
-export const listLegalHolds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLegalHoldsInput,
-  output: ListLegalHoldsOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listLegalHolds = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLegalHoldsInput,
+    output: ListLegalHoldsOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LegalHolds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of resources successfully backed up by Backup, including
  * the time the resource was saved, an Amazon Resource Name (ARN) of the resource, and a
  * resource type.
  */
-export const listProtectedResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProtectedResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProtectedResourcesInput,
     output: ListProtectedResourcesOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This action returns recovery point ARNs (Amazon Resource Names) of the
  * specified legal hold.
  */
 export const listRecoveryPointsByLegalHold =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecoveryPointsByLegalHoldInput,
     output: ListRecoveryPointsByLegalHoldOutput,
     errors: [
@@ -4295,6 +4390,12 @@ export const listRecoveryPointsByLegalHold =
       MissingParameterValueException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RecoveryPoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * The information about the recovery points of the type specified by a
@@ -4304,7 +4405,7 @@ export const listRecoveryPointsByLegalHold =
  * created by Backup.
  */
 export const listRecoveryPointsByResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecoveryPointsByResourceInput,
     output: ListRecoveryPointsByResourceOutput,
     errors: [
@@ -4313,21 +4414,35 @@ export const listRecoveryPointsByResource =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RecoveryPoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of jobs that Backup initiated to restore a saved resource,
  * including details about the recovery process.
  */
-export const listRestoreJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRestoreJobsInput,
-  output: ListRestoreJobsOutput,
-  errors: [
-    InvalidParameterValueException,
-    MissingParameterValueException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listRestoreJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRestoreJobsInput,
+    output: ListRestoreJobsOutput,
+    errors: [
+      InvalidParameterValueException,
+      MissingParameterValueException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RestoreJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This request obtains a summary of restore jobs created
  * or running within the the most recent 30 days. You can
@@ -4339,29 +4454,38 @@ export const listRestoreJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Region, Account, State, RestourceType, MessageCategory,
  * StartTime, EndTime, and Count of included jobs.
  */
-export const listRestoreJobSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRestoreJobSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRestoreJobSummariesInput,
     output: ListRestoreJobSummariesOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of restore testing plans.
  */
-export const listRestoreTestingPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRestoreTestingPlans =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRestoreTestingPlansInput,
     output: ListRestoreTestingPlansOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RestoreTestingPlans",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of restore testing selections. Can be filtered
  * by `MaxResults` and `RestoreTestingPlanName`.
  */
 export const listRestoreTestingSelections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRestoreTestingSelectionsInput,
     output: ListRestoreTestingSelectionsOutput,
     errors: [
@@ -4369,35 +4493,59 @@ export const listRestoreTestingSelections =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RestoreTestingSelections",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of existing scan jobs for an authenticated account for the last 30 days.
  */
-export const listScanJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScanJobsInput,
-  output: ListScanJobsOutput,
-  errors: [InvalidParameterValueException, ServiceUnavailableException],
-}));
+export const listScanJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListScanJobsInput,
+    output: ListScanJobsOutput,
+    errors: [InvalidParameterValueException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScanJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This is a request for a summary of scan jobs created or running within the most recent 30 days.
  */
-export const listScanJobSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listScanJobSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListScanJobSummariesInput,
     output: ListScanJobSummariesOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScanJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of tiering configurations.
  */
-export const listTieringConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTieringConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTieringConfigurationsInput,
     output: ListTieringConfigurationsOutput,
     errors: [InvalidParameterValueException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TieringConfigurations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts an on-demand backup job for the specified resource.
  */
@@ -4760,8 +4908,8 @@ export const getRestoreTestingInferredMetadata =
  * Returns version metadata of your backup plans, including Amazon Resource Names (ARNs),
  * backup plan IDs, creation and deletion dates, plan names, and version IDs.
  */
-export const listBackupPlanVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBackupPlanVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBackupPlanVersionsInput,
     output: ListBackupPlanVersionsOutput,
     errors: [
@@ -4770,8 +4918,13 @@ export const listBackupPlanVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackupPlanVersionsList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This returns restore jobs that contain the specified protected resource.
  *
@@ -4781,7 +4934,7 @@ export const listBackupPlanVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `ByRecoveryPointCreationDateBefore`.
  */
 export const listRestoreJobsByProtectedResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRestoreJobsByProtectedResourceInput,
     output: ListRestoreJobsByProtectedResourceOutput,
     errors: [
@@ -4790,6 +4943,12 @@ export const listRestoreJobsByProtectedResource =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RestoreJobs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns the tags assigned to the resource, such as a target recovery point, backup plan,
@@ -4808,7 +4967,7 @@ export const listRestoreJobsByProtectedResource =
  * resource types that are fully managed by Backup. These have an ARN that begins
  * `arn:aws:backup` and they are noted in the Feature availability by resource table.
  */
-export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsInput,
   output: ListTagsOutput,
   errors: [
@@ -4817,6 +4976,11 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Starts an on-demand report job for the specified report plan.
@@ -5531,7 +5695,7 @@ export const getBackupPlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns detailed information about the recovery points stored in a backup vault.
  */
 export const listRecoveryPointsByBackupVault =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecoveryPointsByBackupVaultInput,
     output: ListRecoveryPointsByBackupVaultOutput,
     errors: [
@@ -5540,12 +5704,18 @@ export const listRecoveryPointsByBackupVault =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RecoveryPoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of restore access backup vaults associated with a specified backup vault.
  */
 export const listRestoreAccessBackupVaults =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRestoreAccessBackupVaultsInput,
     output: ListRestoreAccessBackupVaultsOutput,
     errors: [
@@ -5554,6 +5724,12 @@ export const listRestoreAccessBackupVaults =
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RestoreAccessBackupVaults",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns metadata associated with a restore job that is specified by a job ID.

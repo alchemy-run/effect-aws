@@ -1766,62 +1766,108 @@ export const deleteFleet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of build IDs, with each build ID representing a single build.
  */
-export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBuilds = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBuildsInput,
   output: ListBuildsOutput,
   errors: [InvalidInputException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "ids",
+  } as const,
 }));
 /**
  * Gets a list of compute fleet names with each compute fleet name representing a single compute fleet.
  */
-export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsInput,
   output: ListFleetsOutput,
   errors: [InvalidInputException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets a list of build project names, with each build project name representing a single
  * build project.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsInput,
-  output: ListProjectsOutput,
-  errors: [InvalidInputException],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsInput,
+    output: ListProjectsOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projects",
+    } as const,
+  }),
+);
 /**
  * Gets a list ARNs for the report groups in the current Amazon Web Services account.
  */
-export const listReportGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportGroupsInput,
-  output: ListReportGroupsOutput,
-  errors: [InvalidInputException],
-}));
+export const listReportGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportGroupsInput,
+    output: ListReportGroupsOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reportGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of sandboxes.
  */
-export const listSandboxes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSandboxesInput,
-  output: ListSandboxesOutput,
-  errors: [InvalidInputException],
-}));
+export const listSandboxes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSandboxesInput,
+    output: ListSandboxesOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ids",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of projects that are shared with other Amazon Web Services accounts or users.
  */
-export const listSharedProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSharedProjectsInput,
-  output: ListSharedProjectsOutput,
-  errors: [InvalidInputException],
-}));
+export const listSharedProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSharedProjectsInput,
+    output: ListSharedProjectsOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projects",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of report groups that are shared with other Amazon Web Services accounts or users.
  */
-export const listSharedReportGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSharedReportGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSharedReportGroupsInput,
     output: ListSharedReportGroupsOutput,
     errors: [InvalidInputException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reportGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of `SourceCredentialsInfo` objects.
  */
@@ -1915,13 +1961,18 @@ export const deleteSourceCredentials = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves one or more code coverage reports.
  */
-export const describeCodeCoverages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCodeCoverages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCodeCoveragesInput,
     output: DescribeCodeCoveragesOutput,
     errors: [InvalidInputException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "codeCoverages",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Analyzes and accumulates test report values for the specified test reports.
  */
@@ -1933,19 +1984,35 @@ export const getReportGroupTrend = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the identifiers of your build batches in the current region.
  */
-export const listBuildBatches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBuildBatchesInput,
-  output: ListBuildBatchesOutput,
-  errors: [InvalidInputException],
-}));
+export const listBuildBatches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBuildBatchesInput,
+    output: ListBuildBatchesOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ids",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of ARNs for the reports in the current Amazon Web Services account.
  */
-export const listReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportsInput,
-  output: ListReportsOutput,
-  errors: [InvalidInputException],
-}));
+export const listReports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportsInput,
+    output: ListReportsOutput,
+    errors: [InvalidInputException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reports",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts running a build with the settings defined in the project. These setting include: how to run a build,
  * where to get the source code, which build environment to use, which build commands to run, and where to store the build output.
@@ -2009,53 +2076,78 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the identifiers of the build batches for a specific project.
  */
-export const listBuildBatchesForProject = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBuildBatchesForProject =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBuildBatchesForProjectInput,
     output: ListBuildBatchesForProjectOutput,
     errors: [InvalidInputException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ids",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of build identifiers for the specified build project, with each build
  * identifier representing a single build.
  */
-export const listBuildsForProject = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBuildsForProject =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBuildsForProjectInput,
     output: ListBuildsForProjectOutput,
     errors: [InvalidInputException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ids",
+    } as const,
+  }));
 /**
  * Gets a list of command executions for a sandbox.
  */
 export const listCommandExecutionsForSandbox =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCommandExecutionsForSandboxInput,
     output: ListCommandExecutionsForSandboxOutput,
     errors: [InvalidInputException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "commandExecutions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of ARNs for the reports that belong to a `ReportGroup`.
  */
-export const listReportsForReportGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReportsForReportGroup =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReportsForReportGroupInput,
     output: ListReportsForReportGroupOutput,
     errors: [InvalidInputException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reports",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of sandboxes for a given project.
  */
-export const listSandboxesForProject = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSandboxesForProject =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSandboxesForProjectInput,
     output: ListSandboxesForProjectOutput,
     errors: [InvalidInputException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ids",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Stores a resource policy for the ARN of a `Project` or
  * `ReportGroup` object.
@@ -2242,11 +2334,19 @@ export const batchGetProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of details about test cases for a report.
  */
-export const describeTestCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTestCasesInput,
-  output: DescribeTestCasesOutput,
-  errors: [InvalidInputException, ResourceNotFoundException],
-}));
+export const describeTestCases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTestCasesInput,
+    output: DescribeTestCasesOutput,
+    errors: [InvalidInputException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "testCases",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Imports the source repository credentials for an CodeBuild project that has its
  * source code stored in a GitHub, GitHub Enterprise, GitLab, GitLab Self Managed, or Bitbucket repository.

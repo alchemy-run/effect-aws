@@ -795,16 +795,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of thin client devices.
  */
-export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesRequest,
-  output: ListDevicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesRequest,
+    output: ListDevicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an environment.
  */
@@ -968,29 +976,45 @@ export const getSoftwareSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of environments.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: ListEnvironmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: ListEnvironmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of software sets.
  */
-export const listSoftwareSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSoftwareSetsRequest,
-  output: ListSoftwareSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSoftwareSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSoftwareSetsRequest,
+    output: ListSoftwareSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "softwareSets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of tags for a resource.
  */

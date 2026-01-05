@@ -480,18 +480,25 @@ export const updateRoutingControlStates = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - Working with
  * routing controls in Route 53 ARC
  */
-export const listRoutingControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoutingControlsRequest,
-  output: ListRoutingControlsResponse,
-  errors: [
-    AccessDeniedException,
-    EndpointTemporarilyUnavailableException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRoutingControls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRoutingControlsRequest,
+    output: ListRoutingControlsResponse,
+    errors: [
+      AccessDeniedException,
+      EndpointTemporarilyUnavailableException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingControls",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Set the state of the routing control to reroute traffic. You can set the value to ON or
  * OFF. When the state is ON, traffic flows to a cell. When the state is OFF, traffic does not

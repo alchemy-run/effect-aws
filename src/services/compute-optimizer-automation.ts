@@ -1118,8 +1118,8 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the steps for a specific automation event. You can only list steps for events created within the past year.
  */
-export const listAutomationEventSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAutomationEventSteps =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomationEventStepsRequest,
     output: ListAutomationEventStepsResponse,
     errors: [
@@ -1132,8 +1132,13 @@ export const listAutomationEventSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automationEventSteps",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves details about a specific automation rule.
  */
@@ -1232,8 +1237,8 @@ export const updateEnrollmentConfiguration =
 /**
  * Lists automation events based on specified filters. You can retrieve events that were created within the past year.
  */
-export const listAutomationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAutomationEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomationEventsRequest,
     output: ListAutomationEventsResponse,
     errors: [
@@ -1245,13 +1250,18 @@ export const listAutomationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automationEvents",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Provides a summary of automation events based on specified filters. Only events created within the past year will be included in the summary.
  */
 export const listAutomationEventSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomationEventSummariesRequest,
     output: ListAutomationEventSummariesResponse,
     errors: [
@@ -1263,12 +1273,18 @@ export const listAutomationEventSummaries =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automationEventSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a summary of the recommended actions that match your rule preview configuration and criteria.
  */
 export const listAutomationRulePreviewSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomationRulePreviewSummariesRequest,
     output: ListAutomationRulePreviewSummariesResponse,
     errors: [
@@ -1280,30 +1296,43 @@ export const listAutomationRulePreviewSummaries =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "previewResultSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the automation rules that match specified filters.
  */
-export const listAutomationRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAutomationRulesRequest,
-  output: ListAutomationRulesResponse,
-  errors: [
-    AccessDeniedException,
-    ForbiddenException,
-    InternalServerException,
-    InvalidParameterValueException,
-    OptInRequiredException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listAutomationRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAutomationRulesRequest,
+    output: ListAutomationRulesResponse,
+    errors: [
+      AccessDeniedException,
+      ForbiddenException,
+      InternalServerException,
+      InvalidParameterValueException,
+      OptInRequiredException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automationRules",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the recommended actions based that match specified filters.
  *
  * Management accounts and delegated administrators can retrieve recommended actions that include associated member accounts. You can associate a member account using `AssociateAccounts`.
  */
-export const listRecommendedActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendedActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendedActionsRequest,
     output: ListRecommendedActionsResponse,
     errors: [
@@ -1315,15 +1344,20 @@ export const listRecommendedActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendedActions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Provides a summary of recommended actions based on specified filters.
  *
  * Management accounts and delegated administrators can retrieve recommended actions that include associated member accounts. You can associate a member account using `AssociateAccounts`.
  */
 export const listRecommendedActionSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendedActionSummariesRequest,
     output: ListRecommendedActionSummariesResponse,
     errors: [
@@ -1335,6 +1369,12 @@ export const listRecommendedActionSummaries =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendedActionSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Associates one or more member accounts with your organization's management account, enabling centralized implementation of optimization actions across those accounts. Once associated, the management account (or a delegated administrator) can apply recommended actions to the member account. When you associate a member account, its organization rule mode is automatically set to "Any allowed," which permits the management account to create Automation rules that automatically apply actions to that account. If the member account has not previously enabled the Automation feature, the association process automatically enables it.
@@ -1362,20 +1402,28 @@ export const associateAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Only the management account or a delegated administrator can perform this action.
  */
-export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountsRequest,
-  output: ListAccountsResponse,
-  errors: [
-    AccessDeniedException,
-    ForbiddenException,
-    InternalServerException,
-    InvalidParameterValueException,
-    NotManagementAccountException,
-    OptInRequiredException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountsRequest,
+    output: ListAccountsResponse,
+    errors: [
+      AccessDeniedException,
+      ForbiddenException,
+      InternalServerException,
+      InvalidParameterValueException,
+      NotManagementAccountException,
+      OptInRequiredException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accounts",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves details about a specific automation event.
  */
@@ -1396,8 +1444,8 @@ export const getAutomationEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a preview of the recommended actions that match your Automation rule's configuration and criteria.
  */
-export const listAutomationRulePreview = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAutomationRulePreview =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomationRulePreviewRequest,
     output: ListAutomationRulePreviewResponse,
     errors: [
@@ -1409,8 +1457,13 @@ export const listAutomationRulePreview = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "previewResults",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a new automation rule to apply recommended actions to resources based on specified criteria.
  */

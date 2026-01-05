@@ -1136,18 +1136,26 @@ export const deleteDataLakeExceptionSubscription =
 /**
  * Retrieves the log sources.
  */
-export const listLogSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLogSourcesRequest,
-  output: ListLogSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listLogSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLogSourcesRequest,
+    output: ListLogSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Initializes an Amazon Security Lake instance with the provided (or default) configuration. You
  * can enable Security Lake in Amazon Web Services Regions with customized settings before enabling
@@ -1220,18 +1228,26 @@ export const createCustomLogSource = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves a snapshot of the current Region, including whether Amazon Security Lake is enabled
  * for those accounts and which sources Security Lake is collecting data from.
  */
-export const getDataLakeSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDataLakeSourcesRequest,
-  output: GetDataLakeSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getDataLakeSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDataLakeSourcesRequest,
+    output: GetDataLakeSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataLakeSources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Notifies the subscriber when new data is written to the data lake for the sources that
  * the subscriber consumes in Security Lake. You can create only one subscriber notification per
@@ -1254,8 +1270,8 @@ export const createSubscriberNotification =
  * Lists the Amazon Security Lake exceptions that you can use to find the source of problems and
  * fix them.
  */
-export const listDataLakeExceptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataLakeExceptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataLakeExceptionsRequest,
     output: ListDataLakeExceptionsResponse,
     errors: [
@@ -1266,8 +1282,13 @@ export const listDataLakeExceptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "exceptions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds a natively supported Amazon Web Services service as an Amazon Security Lake source. Enables
  * source types for member accounts in required Amazon Web Services Regions, based on the
@@ -1449,18 +1470,26 @@ export const updateSubscriber = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all subscribers for the specific Amazon Security Lake account ID. You can retrieve a list
  * of subscriptions associated with a specific organization or Amazon Web Services account.
  */
-export const listSubscribers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubscribersRequest,
-  output: ListSubscribersResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listSubscribers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSubscribersRequest,
+    output: ListSubscribersResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "subscribers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing notification method for the subscription (SQS or HTTPs endpoint) or
  * switches the notification subscription endpoint for a subscriber.

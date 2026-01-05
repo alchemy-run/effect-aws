@@ -3478,8 +3478,8 @@ export const listOrganizationServiceAccessStatus =
 /**
  * Gets the count of network resources, by resource type, for the specified global network.
  */
-export const getNetworkResourceCounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getNetworkResourceCounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetNetworkResourceCountsRequest,
     output: GetNetworkResourceCountsResponse,
     errors: [
@@ -3488,8 +3488,13 @@ export const getNetworkResourceCounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkResourceCounts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the network routes of the specified global network.
  */
@@ -3537,29 +3542,45 @@ export const startOrganizationServiceAccessUpdate =
 /**
  * Returns a list of core network Connect peers.
  */
-export const listConnectPeers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectPeersRequest,
-  output: ListConnectPeersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConnectPeers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectPeersRequest,
+    output: ListConnectPeersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectPeers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of owned and shared core networks.
  */
-export const listCoreNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCoreNetworksRequest,
-  output: ListCoreNetworksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCoreNetworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCoreNetworksRequest,
+    output: ListCoreNetworksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoreNetworks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a resource policy.
  */
@@ -3576,29 +3597,45 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of core network attachments.
  */
-export const listAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttachmentsRequest,
-  output: ListAttachmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAttachments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttachmentsRequest,
+    output: ListAttachmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Attachments",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the peerings for a core network.
  */
-export const listPeerings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPeeringsRequest,
-  output: ListPeeringsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPeerings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPeeringsRequest,
+    output: ListPeeringsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Peerings",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a resource policy for the specified resource. This revokes the access of the principals specified in the resource policy.
  */
@@ -3682,8 +3719,8 @@ export const createCoreNetwork = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `Get*` action. For example, to list the transit gateways in your global
  * network, use GetTransitGatewayRegistrations.
  */
-export const describeGlobalNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGlobalNetworks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGlobalNetworksRequest,
     output: DescribeGlobalNetworksResponse,
     errors: [
@@ -3693,13 +3730,18 @@ export const describeGlobalNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GlobalNetworks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about a core network change event.
  */
-export const getCoreNetworkChangeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCoreNetworkChangeEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCoreNetworkChangeEventsRequest,
     output: GetCoreNetworkChangeEventsResponse,
     errors: [
@@ -3709,8 +3751,13 @@ export const getCoreNetworkChangeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoreNetworkChangeEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about a core network Connect attachment.
  */
@@ -3731,7 +3778,7 @@ export const getConnectAttachment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets the network resource relationships for the specified global network.
  */
 export const getNetworkResourceRelationships =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetNetworkResourceRelationshipsRequest,
     output: GetNetworkResourceRelationshipsResponse,
     errors: [
@@ -3741,23 +3788,36 @@ export const getNetworkResourceRelationships =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Relationships",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the network resources for the specified global network.
  *
  * The results include information from the corresponding Describe call for the resource, minus any sensitive information such as pre-shared keys.
  */
-export const getNetworkResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetNetworkResourcesRequest,
-  output: GetNetworkResourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getNetworkResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetNetworkResourcesRequest,
+    output: GetNetworkResourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkResources",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about a VPC attachment.
  */
@@ -3776,7 +3836,7 @@ export const getVpcAttachment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the routing policy associations for attachments in a core network.
  */
 export const listAttachmentRoutingPolicyAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAttachmentRoutingPolicyAssociationsRequest,
     output: ListAttachmentRoutingPolicyAssociationsResponse,
     errors: [
@@ -3786,12 +3846,18 @@ export const listAttachmentRoutingPolicyAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AttachmentRoutingPolicyAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of core network policy versions.
  */
 export const listCoreNetworkPolicyVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCoreNetworkPolicyVersionsRequest,
     output: ListCoreNetworkPolicyVersionsResponse,
     errors: [
@@ -3801,12 +3867,18 @@ export const listCoreNetworkPolicyVersions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoreNetworkPolicyVersions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the prefix list associations for a core network.
  */
 export const listCoreNetworkPrefixListAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCoreNetworkPrefixListAssociationsRequest,
     output: ListCoreNetworkPrefixListAssociationsResponse,
     errors: [
@@ -3816,6 +3888,12 @@ export const listCoreNetworkPrefixListAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PrefixListAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Starts analyzing the routing path between the specified source and destination. For more information,
@@ -3933,8 +4011,8 @@ export const disassociateTransitGatewayConnectPeer =
 /**
  * Returns information about a core network Connect peer associations.
  */
-export const getConnectPeerAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getConnectPeerAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetConnectPeerAssociationsRequest,
     output: GetConnectPeerAssociationsResponse,
     errors: [
@@ -3945,14 +4023,19 @@ export const getConnectPeerAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectPeerAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the association information for customer gateways that are associated with
  * devices and links in your global network.
  */
 export const getCustomerGatewayAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCustomerGatewayAssociationsRequest,
     output: GetCustomerGatewayAssociationsResponse,
     errors: [
@@ -3963,12 +4046,18 @@ export const getCustomerGatewayAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomerGatewayAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about one or more of your transit gateway Connect peer associations in a global network.
  */
 export const getTransitGatewayConnectPeerAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayConnectPeerAssociationsRequest,
     output: GetTransitGatewayConnectPeerAssociationsResponse,
     errors: [
@@ -3979,6 +4068,12 @@ export const getTransitGatewayConnectPeerAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayConnectPeerAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Applies a routing policy label to an attachment for traffic routing decisions.
@@ -4626,17 +4721,25 @@ export const deleteLink = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about one or more of your connections in a global network.
  */
-export const getConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetConnectionsRequest,
-  output: GetConnectionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetConnectionsRequest,
+    output: GetConnectionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Connections",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a core network Connect peer.
  */
@@ -4684,7 +4787,7 @@ export const getCoreNetworkPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about one or more of your devices in a global network.
  */
-export const getDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetDevicesRequest,
   output: GetDevicesResponse,
   errors: [
@@ -4694,6 +4797,12 @@ export const getDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Devices",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns information about a specific Amazon Web Services Direct Connect gateway attachment.
@@ -4714,23 +4823,30 @@ export const getDirectConnectGatewayAttachment =
  * Gets the link associations for a device or a link. Either the device ID or the link ID
  * must be specified.
  */
-export const getLinkAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetLinkAssociationsRequest,
-  output: GetLinkAssociationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getLinkAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetLinkAssociationsRequest,
+    output: GetLinkAssociationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LinkAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets information about one or more links in a specified global network.
  *
  * If you specify the site ID, you cannot specify the type or provider in the same request. You can specify the type and provider in the same request.
  */
-export const getLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetLinksRequest,
   output: GetLinksResponse,
   errors: [
@@ -4740,11 +4856,17 @@ export const getLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Links",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Gets information about one or more of your sites in a global network.
  */
-export const getSites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getSites = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetSitesRequest,
   output: GetSitesResponse,
   errors: [
@@ -4754,6 +4876,12 @@ export const getSites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Sites",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns information about a site-to-site VPN attachment.
@@ -4792,7 +4920,7 @@ export const getTransitGatewayPeering = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * global network.
  */
 export const getTransitGatewayRegistrations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayRegistrationsRequest,
     output: GetTransitGatewayRegistrationsResponse,
     errors: [
@@ -4802,6 +4930,12 @@ export const getTransitGatewayRegistrations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayRegistrations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns information about a transit gateway route table attachment.
@@ -4887,22 +5021,29 @@ export const deregisterTransitGateway = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets the network telemetry of the specified global network.
  */
-export const getNetworkTelemetry = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetNetworkTelemetryRequest,
-  output: GetNetworkTelemetryResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getNetworkTelemetry =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetNetworkTelemetryRequest,
+    output: GetNetworkTelemetryResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkTelemetry",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists routing information for a core network, including routes and their attributes.
  */
 export const listCoreNetworkRoutingInformation =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCoreNetworkRoutingInformationRequest,
     output: ListCoreNetworkRoutingInformationResponse,
     errors: [
@@ -4912,6 +5053,12 @@ export const listCoreNetworkRoutingInformation =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoreNetworkRoutingInformation",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Creates a new, immutable version of a core network policy. A subsequent change set is created showing the differences between the LIVE policy and the submitted policy.
@@ -4964,8 +5111,8 @@ export const deletePeering = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a change set between the LIVE core network policy and a submitted policy.
  */
-export const getCoreNetworkChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCoreNetworkChangeSet =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCoreNetworkChangeSetRequest,
     output: GetCoreNetworkChangeSetResponse,
     errors: [
@@ -4975,5 +5122,10 @@ export const getCoreNetworkChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoreNetworkChanges",
+      pageSize: "MaxResults",
+    } as const,
+  }));

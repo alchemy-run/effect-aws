@@ -5772,69 +5772,109 @@ export const deletePatchBaseline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Currently, `DescribeAvailablePatches` supports only the Amazon Linux 1, Amazon
  * Linux 2, and Windows Server operating systems.
  */
-export const describeAvailablePatches = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAvailablePatches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAvailablePatchesRequest,
     output: DescribeAvailablePatchesResult,
     errors: [InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Patches",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the individual task executions (one per target) for a particular task run as part
  * of a maintenance window execution.
  */
 export const describeMaintenanceWindowExecutionTaskInvocations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowExecutionTaskInvocationsRequest,
     output: DescribeMaintenanceWindowExecutionTaskInvocationsResult,
     errors: [DoesNotExistException, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WindowExecutionTaskInvocationIdentities",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * For a given maintenance window execution, lists the tasks that were run.
  */
 export const describeMaintenanceWindowExecutionTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowExecutionTasksRequest,
     output: DescribeMaintenanceWindowExecutionTasksResult,
     errors: [DoesNotExistException, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WindowExecutionTaskIdentities",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the maintenance windows in an Amazon Web Services account.
  */
-export const describeMaintenanceWindows = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMaintenanceWindows =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowsRequest,
     output: DescribeMaintenanceWindowsResult,
     errors: [InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WindowIdentities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about upcoming executions of a maintenance window.
  */
 export const describeMaintenanceWindowSchedule =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowScheduleRequest,
     output: DescribeMaintenanceWindowScheduleResult,
     errors: [DoesNotExistException, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledWindowExecutions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves information about the maintenance window targets or tasks that a managed node is
  * associated with.
  */
 export const describeMaintenanceWindowsForTarget =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowsForTargetRequest,
     output: DescribeMaintenanceWindowsForTargetResult,
     errors: [InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WindowIdentities",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the targets registered with the maintenance window.
  */
 export const describeMaintenanceWindowTargets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowTargetsRequest,
     output: DescribeMaintenanceWindowTargetsResult,
     errors: [DoesNotExistException, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Targets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the tasks in a maintenance window.
@@ -5845,29 +5885,47 @@ export const describeMaintenanceWindowTargets =
  * These values don't affect the running of your task and can be ignored.
  */
 export const describeMaintenanceWindowTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowTasksRequest,
     output: DescribeMaintenanceWindowTasksResult,
     errors: [DoesNotExistException, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tasks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the patch baselines in your Amazon Web Services account.
  */
-export const describePatchBaselines = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePatchBaselines =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePatchBaselinesRequest,
     output: DescribePatchBaselinesResult,
     errors: [InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BaselineIdentities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all patch groups that have been registered with patch baselines.
  */
-export const describePatchGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePatchGroupsRequest,
-  output: DescribePatchGroupsResult,
-  errors: [InternalServerError],
-}));
+export const describePatchGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribePatchGroupsRequest,
+    output: DescribePatchGroupsResult,
+    errors: [InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Mappings",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns high-level aggregated patch compliance state information for a patch group.
  */
@@ -5938,13 +5996,18 @@ export const describePatchGroupState = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Valid properties: `PRODUCT` | `PRODUCT_FAMILY` |
  * `CLASSIFICATION` | `MSRC_SEVERITY`
  */
-export const describePatchProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePatchProperties =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePatchPropertiesRequest,
     output: DescribePatchPropertiesResult,
     errors: [InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Properties",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the details about a specific task run as part of a maintenance window
  * execution.
@@ -5973,47 +6036,71 @@ export const getParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all versions of an association for a specific association ID.
  */
-export const listAssociationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssociationVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociationVersionsRequest,
     output: ListAssociationVersionsResult,
     errors: [AssociationDoesNotExist, InternalServerError, InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssociationVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the commands requested by users of the Amazon Web Services account.
  */
-export const listCommands = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCommandsRequest,
-  output: ListCommandsResult,
-  errors: [
-    InternalServerError,
-    InvalidCommandId,
-    InvalidFilterKey,
-    InvalidInstanceId,
-    InvalidNextToken,
-  ],
-}));
+export const listCommands = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCommandsRequest,
+    output: ListCommandsResult,
+    errors: [
+      InternalServerError,
+      InvalidCommandId,
+      InvalidFilterKey,
+      InvalidInstanceId,
+      InvalidNextToken,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Commands",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all versions for a document.
  */
-export const listDocumentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDocumentVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDocumentVersionsRequest,
     output: ListDocumentVersionsResult,
     errors: [InternalServerError, InvalidDocument, InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DocumentVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a resource-level summary count. The summary includes information about compliant and
  * non-compliant statuses and detailed compliance-item severity counts, according to the filter
  * criteria you specify.
  */
 export const listResourceComplianceSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceComplianceSummariesRequest,
     output: ListResourceComplianceSummariesResult,
     errors: [InternalServerError, InvalidFilter, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceComplianceSummaryItems",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Stop an Automation that is currently running.
@@ -6328,21 +6415,32 @@ export const startAssociationsOnce = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * All associations for the managed nodes.
  */
 export const describeEffectiveInstanceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEffectiveInstanceAssociationsRequest,
     output: DescribeEffectiveInstanceAssociationsResult,
     errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Associations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the high-level patch state of one or more managed nodes.
  */
-export const describeInstancePatchStates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstancePatchStates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstancePatchStatesRequest,
     output: DescribeInstancePatchStatesResult,
     errors: [InternalServerError, InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstancePatchStates",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Delete a parameter from the system. After deleting a parameter, wait for at least 30 seconds
  * to create a parameter with the same name.
@@ -6356,8 +6454,8 @@ export const deleteParameter = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves information about the patches on the specified managed node and their state
  * relative to the patch baseline being used for the node.
  */
-export const describeInstancePatches = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstancePatches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstancePatchesRequest,
     output: DescribeInstancePatchesResult,
     errors: [
@@ -6366,17 +6464,28 @@ export const describeInstancePatches = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInstanceId,
       InvalidNextToken,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Patches",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the high-level patch state for the managed nodes in the specified patch
  * group.
  */
 export const describeInstancePatchStatesForPatchGroup =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstancePatchStatesForPatchGroupRequest,
     output: DescribeInstancePatchStatesForPatchGroupResult,
     errors: [InternalServerError, InvalidFilter, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstancePatchStates",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * `ServiceSetting` is an account-level setting for an Amazon Web Services service. This setting
@@ -6591,26 +6700,39 @@ export const createPatchBaseline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the managed nodes in the activation, and the number of nodes registered by using this
  * activation.
  */
-export const describeActivations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeActivationsRequest,
-  output: DescribeActivationsResult,
-  errors: [InternalServerError, InvalidFilter, InvalidNextToken],
-}));
+export const describeActivations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeActivationsRequest,
+    output: DescribeActivationsResult,
+    errors: [InternalServerError, InvalidFilter, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActivationList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Views all executions for a specific association ID.
  */
 export const describeAssociationExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAssociationExecutionsRequest,
     output: DescribeAssociationExecutionsResult,
     errors: [AssociationDoesNotExist, InternalServerError, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssociationExecutions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Information about all active and terminated step executions in an Automation
  * workflow.
  */
 export const describeAutomationStepExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAutomationStepExecutionsRequest,
     output: DescribeAutomationStepExecutionsResult,
     errors: [
@@ -6620,27 +6742,44 @@ export const describeAutomationStepExecutions =
       InvalidFilterValue,
       InvalidNextToken,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StepExecutions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes a specific delete inventory operation.
  */
-export const describeInventoryDeletions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInventoryDeletions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInventoryDeletionsRequest,
     output: DescribeInventoryDeletionsResult,
     errors: [InternalServerError, InvalidDeletionIdException, InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InventoryDeletions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the executions of a maintenance window. This includes information about when the
  * maintenance window was scheduled to be active, and information about tasks registered and run
  * with the maintenance window.
  */
 export const describeMaintenanceWindowExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMaintenanceWindowExecutionsRequest,
     output: DescribeMaintenanceWindowExecutionsResult,
     errors: [InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WindowExecutions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Query a set of OpsItems. You must have permission in Identity and Access Management (IAM) to query a list of OpsItems. For more information, see Set up OpsCenter in the
@@ -6651,11 +6790,19 @@ export const describeMaintenanceWindowExecutions =
  * more information, see Amazon Web Services Systems Manager OpsCenter in the
  * *Amazon Web Services Systems Manager User Guide*.
  */
-export const describeOpsItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeOpsItemsRequest,
-  output: DescribeOpsItemsResponse,
-  errors: [InternalServerError],
-}));
+export const describeOpsItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeOpsItemsRequest,
+    output: DescribeOpsItemsResponse,
+    errors: [InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OpsItemSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the parameters in your Amazon Web Services account or the parameters shared with you when you enable
  * the Shared option.
@@ -6676,17 +6823,24 @@ export const describeOpsItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `DescribeParameters` retrieves whatever the original key alias was
  * referencing.
  */
-export const describeParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeParametersRequest,
-  output: DescribeParametersResult,
-  errors: [
-    InternalServerError,
-    InvalidFilterKey,
-    InvalidFilterOption,
-    InvalidFilterValue,
-    InvalidNextToken,
-  ],
-}));
+export const describeParameters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeParametersRequest,
+    output: DescribeParametersResult,
+    errors: [
+      InternalServerError,
+      InvalidFilterKey,
+      InvalidFilterOption,
+      InvalidFilterValue,
+      InvalidNextToken,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the contents of the specified Amazon Web Services Systems Manager document (SSM document).
  */
@@ -6719,42 +6873,63 @@ export const getOpsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetParameterHistory` retrieves whatever the original key alias was
  * referencing.
  */
-export const getParameterHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetParameterHistoryRequest,
-  output: GetParameterHistoryResult,
-  errors: [
-    InternalServerError,
-    InvalidKeyId,
-    InvalidNextToken,
-    ParameterNotFound,
-  ],
-}));
+export const getParameterHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetParameterHistoryRequest,
+    output: GetParameterHistoryResult,
+    errors: [
+      InternalServerError,
+      InvalidKeyId,
+      InvalidNextToken,
+      ParameterNotFound,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns all State Manager associations in the current Amazon Web Services account and Amazon Web Services Region. You
  * can limit the results to a specific State Manager association document or managed node by
  * specifying a filter. State Manager is a tool in Amazon Web Services Systems Manager.
  */
-export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssociationsRequest,
-  output: ListAssociationsResult,
-  errors: [InternalServerError, InvalidNextToken],
-}));
+export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssociationsRequest,
+    output: ListAssociationsResult,
+    errors: [InternalServerError, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Associations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * For a specified resource ID, this API operation returns a list of compliance statuses for
  * different resource types. Currently, you can only specify one resource ID per call. List results
  * depend on the criteria specified in the filter.
  */
-export const listComplianceItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComplianceItemsRequest,
-  output: ListComplianceItemsResult,
-  errors: [
-    InternalServerError,
-    InvalidFilter,
-    InvalidNextToken,
-    InvalidResourceId,
-    InvalidResourceType,
-  ],
-}));
+export const listComplianceItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListComplianceItemsRequest,
+    output: ListComplianceItemsResult,
+    errors: [
+      InternalServerError,
+      InvalidFilter,
+      InvalidNextToken,
+      InvalidResourceId,
+      InvalidResourceType,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComplianceItems",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Amazon Web Services Systems Manager Change Manager will no longer be open to new
  * customers starting November 7, 2025. If you would like to use Change Manager, sign up prior to that date. Existing customers can
@@ -6779,11 +6954,19 @@ export const listDocumentMetadataHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns all Systems Manager (SSM) documents in the current Amazon Web Services account and Amazon Web Services Region. You can
  * limit the results of this request by using a filter.
  */
-export const listDocuments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDocumentsRequest,
-  output: ListDocumentsResult,
-  errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
-}));
+export const listDocuments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDocumentsRequest,
+    output: ListDocumentsResult,
+    errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DocumentIdentifiers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * A list of inventory items returned by the request.
  */
@@ -6804,22 +6987,35 @@ export const listInventoryEntries = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all related-item resources associated with a Systems Manager OpsCenter OpsItem. OpsCenter is a
  * tool in Amazon Web Services Systems Manager.
  */
-export const listOpsItemRelatedItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOpsItemRelatedItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOpsItemRelatedItemsRequest,
     output: ListOpsItemRelatedItemsResponse,
     errors: [InternalServerError, OpsItemInvalidParameterException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Amazon Web Services Systems Manager calls this API operation when displaying all Application Manager OpsMetadata objects or
  * blobs.
  */
-export const listOpsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOpsMetadataRequest,
-  output: ListOpsMetadataResult,
-  errors: [InternalServerError, OpsMetadataInvalidArgumentException],
-}));
+export const listOpsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOpsMetadataRequest,
+    output: ListOpsMetadataResult,
+    errors: [InternalServerError, OpsMetadataInvalidArgumentException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OpsMetadataList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists your resource data sync configurations. Includes information about the last time a
  * sync attempted to start, the last sync status, and the last time a sync successfully
@@ -6832,8 +7028,8 @@ export const listOpsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * more sync configurations to list, you can request them by specifying the `NextToken`
  * returned in the call to the parameter of a subsequent call.
  */
-export const listResourceDataSync = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceDataSync =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceDataSyncRequest,
     output: ListResourceDataSyncResult,
     errors: [
@@ -6841,8 +7037,13 @@ export const listResourceDataSync = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextToken,
       ResourceDataSyncInvalidConfigurationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceDataSyncItems",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Shares a Amazon Web Services Systems Manager document (SSM document)publicly or privately. If you share a document
  * privately, you must specify the Amazon Web Services user IDs for those people who can use the document. If
@@ -6980,23 +7181,29 @@ export const registerTargetWithMaintenanceWindow =
  * beginning or end of a parameter name. If the specified name for a parameter contains spaces
  * between characters, the request fails with a `ValidationException` error.
  */
-export const getParametersByPath = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetParametersByPathRequest,
-  output: GetParametersByPathResult,
-  errors: [
-    InternalServerError,
-    InvalidFilterKey,
-    InvalidFilterOption,
-    InvalidFilterValue,
-    InvalidKeyId,
-    InvalidNextToken,
-  ],
-}));
+export const getParametersByPath =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetParametersByPathRequest,
+    output: GetParametersByPathResult,
+    errors: [
+      InternalServerError,
+      InvalidFilterKey,
+      InvalidFilterOption,
+      InvalidFilterValue,
+      InvalidKeyId,
+      InvalidNextToken,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides details about all active and terminated Automation executions.
  */
 export const describeAutomationExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAutomationExecutionsRequest,
     output: DescribeAutomationExecutionsResult,
     errors: [
@@ -7005,6 +7212,12 @@ export const describeAutomationExecutions =
       InvalidFilterValue,
       InvalidNextToken,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AutomationExecutionMetadataList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Amazon Web Services Systems Manager Change Manager will no longer be open to new
@@ -7088,11 +7301,19 @@ export const getParameter = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Return a list of inventory type names for the account, or return a list of attribute names
  * for a specific Inventory item type.
  */
-export const getInventorySchema = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInventorySchemaRequest,
-  output: GetInventorySchemaResult,
-  errors: [InternalServerError, InvalidNextToken, InvalidTypeNameException],
-}));
+export const getInventorySchema = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetInventorySchemaRequest,
+    output: GetInventorySchemaResult,
+    errors: [InternalServerError, InvalidNextToken, InvalidTypeNameException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the permissions for a Amazon Web Services Systems Manager document (SSM document). If you created the
  * document, you are the owner. If a document is shared, it can either be shared privately (by
@@ -7298,7 +7519,7 @@ export const describeAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * patch baseline. Applies to patch baselines for Windows only.
  */
 export const describeEffectivePatchesForPatchBaseline =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEffectivePatchesForPatchBaselineRequest,
     output: DescribeEffectivePatchesForPatchBaselineResult,
     errors: [
@@ -7307,25 +7528,45 @@ export const describeEffectivePatchesForPatchBaseline =
       InvalidResourceId,
       UnsupportedOperatingSystem,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EffectivePatches",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * The status of the associations for the managed nodes.
  */
 export const describeInstanceAssociationsStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceAssociationsStatusRequest,
     output: DescribeInstanceAssociationsStatusResult,
     errors: [InternalServerError, InvalidInstanceId, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceAssociationStatusInfos",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of all active sessions (both connected and disconnected) or terminated
  * sessions from the past 30 days.
  */
-export const describeSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSessionsRequest,
-  output: DescribeSessionsResponse,
-  errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
-}));
+export const describeSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSessionsRequest,
+    output: DescribeSessionsResponse,
+    errors: [InternalServerError, InvalidFilterKey, InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Sessions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Get detailed information about a particular Automation execution.
  */
@@ -7348,15 +7589,22 @@ export const getExecutionPreview = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns an array of the `Policy` object.
  */
-export const getResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcePoliciesRequest,
-  output: GetResourcePoliciesResponse,
-  errors: [
-    InternalServerError,
-    ResourceNotFoundException,
-    ResourcePolicyInvalidParameterException,
-  ],
-}));
+export const getResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetResourcePoliciesRequest,
+    output: GetResourcePoliciesResponse,
+    errors: [
+      InternalServerError,
+      ResourceNotFoundException,
+      ResourcePolicyInvalidParameterException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Policies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * An invocation is copy of a command sent to a specific managed node. A command can apply to
  * one or more managed nodes. A command invocation applies to one managed node. For example, if a
@@ -7364,8 +7612,8 @@ export const getResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * created for each requested managed node ID. `ListCommandInvocations` provide status
  * about command execution.
  */
-export const listCommandInvocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCommandInvocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCommandInvocationsRequest,
     output: ListCommandInvocationsResult,
     errors: [
@@ -7375,34 +7623,52 @@ export const listCommandInvocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInstanceId,
       InvalidNextToken,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CommandInvocations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a summary count of compliant and non-compliant resources for a compliance type. For
  * example, this call can return State Manager associations, patches, or custom compliance types
  * according to the filter criteria that you specify.
  */
-export const listComplianceSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComplianceSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComplianceSummariesRequest,
     output: ListComplianceSummariesResult,
     errors: [InternalServerError, InvalidFilter, InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComplianceSummaryItems",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all OpsItem events in the current Amazon Web Services Region and Amazon Web Services account. You can
  * limit the results to events associated with specific OpsItems by specifying a filter.
  */
-export const listOpsItemEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOpsItemEventsRequest,
-  output: ListOpsItemEventsResponse,
-  errors: [
-    InternalServerError,
-    OpsItemInvalidParameterException,
-    OpsItemLimitExceededException,
-    OpsItemNotFoundException,
-  ],
-}));
+export const listOpsItemEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOpsItemEventsRequest,
+    output: ListOpsItemEventsResponse,
+    errors: [
+      InternalServerError,
+      OpsItemInvalidParameterException,
+      OpsItemLimitExceededException,
+      OpsItemNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Adds a new task to a maintenance window.
  */
@@ -7521,8 +7787,8 @@ export const getAccessToken = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * An API operation used by the Systems Manager console to display information about Systems Manager managed
  * nodes.
  */
-export const describeInstanceProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceProperties =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstancePropertiesRequest,
     output: DescribeInstancePropertiesResult,
     errors: [
@@ -7534,8 +7800,13 @@ export const describeInstanceProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInstancePropertyFilterValue,
       InvalidNextToken,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceProperties",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Associates a related item to a Systems Manager OpsCenter OpsItem. For example, you can associate an
  * Incident Manager incident or analysis with an OpsItem. Incident Manager and OpsCenter are tools in
@@ -7626,7 +7897,7 @@ export const createResourceDataSync = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Views information about a specific execution of a specific association.
  */
 export const describeAssociationExecutionTargets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAssociationExecutionTargetsRequest,
     output: DescribeAssociationExecutionTargetsResult,
     errors: [
@@ -7635,23 +7906,37 @@ export const describeAssociationExecutionTargets =
       InternalServerError,
       InvalidNextToken,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssociationExecutionTargets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Generates a summary of managed instance/node metadata based on the filters and aggregators
  * you specify. Results are grouped by the input aggregator you specify.
  */
-export const listNodesSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNodesSummaryRequest,
-  output: ListNodesSummaryResult,
-  errors: [
-    InternalServerError,
-    InvalidAggregatorException,
-    InvalidFilter,
-    InvalidNextToken,
-    ResourceDataSyncNotFoundException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listNodesSummary = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNodesSummaryRequest,
+    output: ListNodesSummaryResult,
+    errors: [
+      InternalServerError,
+      InvalidAggregatorException,
+      InvalidFilter,
+      InvalidNextToken,
+      ResourceDataSyncNotFoundException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summary",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates one or more values for an SSM document.
  */
@@ -7674,7 +7959,7 @@ export const updateDocument = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Takes in filters and returns a list of managed nodes matching the filter criteria.
  */
-export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResult,
   errors: [
@@ -7684,6 +7969,12 @@ export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceDataSyncNotFoundException,
     UnsupportedOperationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Nodes",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Initiates execution of an Automation runbook.
@@ -7819,8 +8110,8 @@ export const deleteInventory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon EC2 instance configured with a Systems Manager Quick Setup host management configuration or
  * the role assigned to an on-premises managed node.
  */
-export const describeInstanceInformation = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceInformation =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceInformationRequest,
     output: DescribeInstanceInformationResult,
     errors: [
@@ -7830,8 +8121,13 @@ export const describeInstanceInformation = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInstanceInformationFilterValue,
       InvalidNextToken,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceInformationList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Registers a compliance type and other compliance details on a designated resource. This
  * operation lets you register custom compliance details with a resource. This call overwrites
@@ -8008,18 +8304,26 @@ export const createAssociationBatch = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * well as information about any Amazon Web Services resource or service configured to report OpsData to Amazon Web Services Systems Manager
  * Explorer.
  */
-export const getOpsSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetOpsSummaryRequest,
-  output: GetOpsSummaryResult,
-  errors: [
-    InternalServerError,
-    InvalidAggregatorException,
-    InvalidFilter,
-    InvalidNextToken,
-    InvalidTypeNameException,
-    ResourceDataSyncNotFoundException,
-  ],
-}));
+export const getOpsSummary = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetOpsSummaryRequest,
+    output: GetOpsSummaryResult,
+    errors: [
+      InternalServerError,
+      InvalidAggregatorException,
+      InvalidFilter,
+      InvalidNextToken,
+      InvalidTypeNameException,
+      ResourceDataSyncNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entities",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an association. You can update the association name and version, the document
  * version, schedule, parameters, and Amazon Simple Storage Service (Amazon S3) output. When you
@@ -8063,19 +8367,27 @@ export const updateAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Query inventory information. This includes managed node status, such as `Stopped`
  * or `Terminated`.
  */
-export const getInventory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetInventoryRequest,
-  output: GetInventoryResult,
-  errors: [
-    InternalServerError,
-    InvalidAggregatorException,
-    InvalidFilter,
-    InvalidInventoryGroupException,
-    InvalidNextToken,
-    InvalidResultAttributeException,
-    InvalidTypeNameException,
-  ],
-}));
+export const getInventory = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetInventoryRequest,
+    output: GetInventoryResult,
+    errors: [
+      InternalServerError,
+      InvalidAggregatorException,
+      InvalidFilter,
+      InvalidInventoryGroupException,
+      InvalidNextToken,
+      InvalidResultAttributeException,
+      InvalidTypeNameException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entities",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Bulk update custom inventory items on one or more managed nodes. The request adds an
  * inventory item, if it doesn't already exist, or updates an inventory item, if it does

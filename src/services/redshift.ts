@@ -4452,10 +4452,16 @@ export const deleteTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * them.
  */
 export const describeClusterParameterGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterParameterGroupsMessage,
     output: ClusterParameterGroupsMessage,
     errors: [ClusterParameterGroupNotFoundFault, InvalidTagFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ParameterGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a detailed list of parameters contained within the specified Amazon Redshift
@@ -4472,13 +4478,18 @@ export const describeClusterParameterGroups =
  * Amazon Redshift Parameter Groups
  * in the *Amazon Redshift Cluster Management Guide*.
  */
-export const describeClusterParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterParameters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterParametersMessage,
     output: ClusterParameterGroupDetails,
     errors: [ClusterParameterGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Parameters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns properties of provisioned clusters including general cluster properties,
  * cluster database properties, maintenance and backup properties, and security and access
@@ -4496,11 +4507,19 @@ export const describeClusterParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If both tag keys and values are omitted from the request, clusters are returned
  * regardless of whether they have tag keys or values associated with them.
  */
-export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeClustersMessage,
-  output: ClustersMessage,
-  errors: [ClusterNotFoundFault, InvalidTagFault],
-}));
+export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeClustersMessage,
+    output: ClustersMessage,
+    errors: [ClusterNotFoundFault, InvalidTagFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Clusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Returns information about Amazon Redshift security groups. If the name of a security
  * group is specified, the response will contain only information about only that security
@@ -4521,10 +4540,16 @@ export const describeClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * them.
  */
 export const describeClusterSecurityGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterSecurityGroupsMessage,
     output: ClusterSecurityGroupMessage,
     errors: [ClusterSecurityGroupNotFoundFault, InvalidTagFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ClusterSecurityGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns one or more cluster subnet group objects, which contain metadata about your
@@ -4541,30 +4566,49 @@ export const describeClusterSecurityGroups =
  * returned regardless of whether they have tag keys or values associated with
  * them.
  */
-export const describeClusterSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterSubnetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterSubnetGroupsMessage,
     output: ClusterSubnetGroupMessage,
     errors: [ClusterSubnetGroupNotFoundFault, InvalidTagFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ClusterSubnetGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Shows the status of any inbound or outbound datashares available in the specified
  * account.
  */
-export const describeDataShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDataSharesMessage,
-  output: DescribeDataSharesResult,
-  errors: [InvalidDataShareFault],
-}));
+export const describeDataShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDataSharesMessage,
+    output: DescribeDataSharesResult,
+    errors: [InvalidDataShareFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DataShares",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Describes an endpoint authorization.
  */
 export const describeEndpointAuthorization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEndpointAuthorizationMessage,
     output: EndpointAuthorizationList,
     errors: [ClusterNotFoundFault, UnsupportedOperationFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EndpointAuthorizationList",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about the specified HSM client certificate. If no certificate
@@ -4581,10 +4625,16 @@ export const describeEndpointAuthorization =
  * them.
  */
 export const describeHsmClientCertificates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeHsmClientCertificatesMessage,
     output: HsmClientCertificateMessage,
     errors: [HsmClientCertificateNotFoundFault, InvalidTagFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "HsmClientCertificates",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about the specified Amazon Redshift HSM configuration. If no
@@ -4601,13 +4651,18 @@ export const describeHsmClientCertificates =
  * returned regardless of whether they have tag keys or values associated with
  * them.
  */
-export const describeHsmConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeHsmConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeHsmConfigurationsMessage,
     output: HsmConfigurationMessage,
     errors: [HsmConfigurationNotFoundFault, InvalidTagFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "HsmConfigurations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes whether information, such as queries and connection attempts, is being
  * logged for the specified Amazon Redshift cluster.
@@ -4622,13 +4677,18 @@ export const describeLoggingStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of snapshot schedules.
  */
-export const describeSnapshotSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSnapshotSchedules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSnapshotSchedulesMessage,
     output: DescribeSnapshotSchedulesOutputMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SnapshotSchedules",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Shows usage limits on a cluster.
  * Results are filtered based on the combination of input usage limit identifier, cluster identifier, and feature type parameters:
@@ -4645,11 +4705,18 @@ export const describeSnapshotSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - If cluster identifier and feature type are provided,
  * then all usage limit objects for the combination of cluster and feature are returned.
  */
-export const describeUsageLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeUsageLimitsMessage,
-  output: UsageLimitList,
-  errors: [ClusterNotFoundFault, UnsupportedOperationFault],
-}));
+export const describeUsageLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeUsageLimitsMessage,
+    output: UsageLimitList,
+    errors: [ClusterNotFoundFault, UnsupportedOperationFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "UsageLimits",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a database user name and temporary password with temporary authorization to
  * log on to an Amazon Redshift database. The action returns the database user name
@@ -4940,8 +5007,8 @@ export const deleteUsageLimit = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If both tag keys and values are omitted from the request, snapshots are returned
  * regardless of whether they have tag keys or values associated with them.
  */
-export const describeClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterSnapshotsMessage,
     output: SnapshotMessage,
     errors: [
@@ -4950,8 +5017,13 @@ export const describeClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidTagFault,
       UnsupportedOperationFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Snapshots",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns descriptions of the available Amazon Redshift cluster versions. You can call this
  * operation even before creating any clusters to learn more about the Amazon Redshift versions.
@@ -4960,21 +5032,32 @@ export const describeClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Amazon Redshift Clusters
  * in the *Amazon Redshift Cluster Management Guide*.
  */
-export const describeClusterVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterVersionsMessage,
     output: ClusterVersionsMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ClusterVersions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of datashares where the account identifier being called is a consumer account identifier.
  */
 export const describeDataSharesForConsumer =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataSharesForConsumerMessage,
     output: DescribeDataSharesForConsumerResult,
     errors: [InvalidNamespaceFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DataShares",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of parameter settings for the specified parameter group
@@ -4985,16 +5068,22 @@ export const describeDataSharesForConsumer =
  * in the *Amazon Redshift Cluster Management Guide*.
  */
 export const describeDefaultClusterParameters =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDefaultClusterParametersMessage,
     output: DescribeDefaultClusterParametersResult,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "DefaultClusterParameters.Marker",
+      items: "DefaultClusterParameters.Parameters",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Describes a Redshift-managed VPC endpoint.
  */
-export const describeEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEndpointAccess =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEndpointAccessMessage,
     output: EndpointAccessList,
     errors: [
@@ -5002,29 +5091,47 @@ export const describeEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
       EndpointNotFoundFault,
       InvalidClusterStateFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EndpointAccessList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns events related to clusters, security groups, snapshots, and parameter
  * groups for the past 14 days. Events specific to a particular cluster, security group,
  * snapshot or parameter group can be obtained by providing the name as a parameter. By
  * default, the past hour of events are returned.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: EventsMessage,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: EventsMessage,
+    errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Events",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Describes properties of scheduled actions.
  */
-export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScheduledActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScheduledActionsMessage,
     output: ScheduledActionsMessage,
     errors: [ScheduledActionNotFoundFault, UnauthorizedOperation],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ScheduledActions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of tags. You can return tags from a specific resource by specifying
  * an ARN, or you can return all tags for a given type of resource, such as clusters,
@@ -5050,11 +5157,19 @@ export const describeScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If both tag keys and values are omitted from the request, resources are returned
  * regardless of whether they have tag keys or values associated with them.
  */
-export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTagsMessage,
-  output: TaggedResourceListMessage,
-  errors: [InvalidTagFault, ResourceNotFoundFault],
-}));
+export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTagsMessage,
+    output: TaggedResourceListMessage,
+    errors: [InvalidTagFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TaggedResources",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Disables the automatic copying of snapshots from one region to another region for a
  * specified cluster.
@@ -5239,13 +5354,18 @@ export const resetClusterParameterGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * returned regardless of whether they have tag keys or values associated with
  * them.
  */
-export const describeEventSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEventSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventSubscriptionsMessage,
     output: EventSubscriptionsMessage,
     errors: [InvalidTagFault, SubscriptionNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EventSubscriptionsList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Fails over the primary compute unit of the specified Multi-AZ cluster to another Availability Zone.
  */
@@ -5269,13 +5389,18 @@ export const failoverPrimaryCompute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Amazon Redshift Database Encryption
  * in the *Amazon Redshift Cluster Management Guide*.
  */
-export const describeSnapshotCopyGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSnapshotCopyGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSnapshotCopyGrantsMessage,
     output: SnapshotCopyGrantMessage,
     errors: [InvalidTagFault, SnapshotCopyGrantNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SnapshotCopyGrants",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Modifies a snapshot schedule for a cluster.
  */
@@ -5325,10 +5450,16 @@ export const modifyUsageLimit = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of datashares when the account identifier being called is a producer account identifier.
  */
 export const describeDataSharesForProducer =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataSharesForProducerMessage,
     output: DescribeDataSharesForProducerResult,
     errors: [InvalidNamespaceFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DataShares",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Registers a cluster or serverless namespace to the Amazon Web Services Glue Data Catalog.
@@ -5538,13 +5669,18 @@ export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns an array of `ClusterDbRevision` objects.
  */
-export const describeClusterDbRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterDbRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterDbRevisionsMessage,
     output: ClusterDbRevisionsMessage,
     errors: [ClusterNotFoundFault, InvalidClusterStateFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ClusterDbRevisions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Displays a list of event categories for all event source types, or for a specified
  * source type. For a list of the event categories and source types, go to Amazon Redshift Event
@@ -5560,8 +5696,8 @@ export const describeEventCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of inbound integrations.
  */
-export const describeInboundIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInboundIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInboundIntegrationsMessage,
     output: InboundIntegrationsMessage,
     errors: [
@@ -5569,14 +5705,19 @@ export const describeInboundIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNamespaceFault,
       UnsupportedOperationFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "InboundIntegrations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns properties of possible node configurations such as node type, number of nodes, and
  * disk usage for the specified action type.
  */
 export const describeNodeConfigurationOptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNodeConfigurationOptionsMessage,
     output: NodeConfigurationOptionsMessage,
     errors: [
@@ -5586,6 +5727,12 @@ export const describeNodeConfigurationOptions =
       InvalidClusterSnapshotStateFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "NodeConfigurationOptionList",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of the available reserved node offerings by Amazon Redshift with their
@@ -5600,7 +5747,7 @@ export const describeNodeConfigurationOptions =
  * in the *Amazon Redshift Cluster Management Guide*.
  */
 export const describeReservedNodeOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedNodeOfferingsMessage,
     output: ReservedNodeOfferingsMessage,
     errors: [
@@ -5608,6 +5755,12 @@ export const describeReservedNodeOfferings =
       ReservedNodeOfferingNotFoundFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedNodeOfferings",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Lists the status of one or more table restore requests made using the RestoreTableFromClusterSnapshot API action. If you don't specify a value
@@ -5617,13 +5770,18 @@ export const describeReservedNodeOfferings =
  * `DescribeTableRestoreStatus` returns the status of the table specified by
  * `TableRestoreRequestId`.
  */
-export const describeTableRestoreStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTableRestoreStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTableRestoreStatusMessage,
     output: TableRestoreStatusMessage,
     errors: [ClusterNotFoundFault, TableRestoreNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TableRestoreStatusDetails",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Get the resource policy for a specified resource.
  */
@@ -5639,11 +5797,18 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the Amazon Redshift Advisor recommendations for one or multiple Amazon Redshift clusters in an Amazon Web Services account.
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsMessage,
-  output: ListRecommendationsResult,
-  errors: [ClusterNotFoundFault, UnsupportedOperationFault],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsMessage,
+    output: ListRecommendationsResult,
+    errors: [ClusterNotFoundFault, UnsupportedOperationFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Recommendations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Modifies a zero-ETL integration or S3 event integration with Amazon Redshift.
  */
@@ -5831,18 +5996,23 @@ export const modifyClusterSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns the descriptions of the reserved nodes.
  */
-export const describeReservedNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReservedNodes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedNodesMessage,
     output: ReservedNodesMessage,
     errors: [DependentServiceUnavailableFault, ReservedNodeNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedNodes",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Lists the Amazon Redshift IAM Identity Center applications.
  */
 export const describeRedshiftIdcApplications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRedshiftIdcApplicationsMessage,
     output: DescribeRedshiftIdcApplicationsResult,
     errors: [
@@ -5851,6 +6021,12 @@ export const describeRedshiftIdcApplications =
       RedshiftIdcApplicationNotExistsFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "RedshiftIdcApplications",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Modifies the lakehouse configuration for a cluster. This operation allows you to manage Amazon Redshift federated permissions and Amazon Web Services IAM Identity Center trusted identity propagation.
@@ -5917,13 +6093,18 @@ export const deleteEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes one or more zero-ETL or S3 event integrations with Amazon Redshift.
  */
-export const describeIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIntegrationsMessage,
     output: IntegrationsMessage,
     errors: [IntegrationNotFoundFault, UnsupportedOperationFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Integrations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Updates the resource policy for a specified resource.
  */
@@ -6029,17 +6210,23 @@ export const deleteCustomDomainAssociation =
  * Contains information about custom domain associations for a cluster.
  */
 export const describeCustomDomainAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCustomDomainAssociationsMessage,
     output: CustomDomainAssociationsMessage,
     errors: [CustomDomainAssociationNotFoundFault, UnsupportedOperationFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Associations",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns exchange status details and associated metadata for a reserved-node
  * exchange. Statuses include such values as in progress and requested.
  */
 export const describeReservedNodeExchangeStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedNodeExchangeStatusInputMessage,
     output: DescribeReservedNodeExchangeStatusOutputMessage,
     errors: [
@@ -6047,6 +6234,12 @@ export const describeReservedNodeExchangeStatus =
       ReservedNodeNotFoundFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedNodeExchangeStatusDetails",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Modifies a Redshift-managed VPC endpoint.
@@ -6206,13 +6399,18 @@ export const deleteCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the available maintenance tracks.
  */
-export const describeClusterTracks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterTracks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterTracksMessage,
     output: TrackListMessage,
     errors: [InvalidClusterTrackFault, UnauthorizedOperation],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "MaintenanceTracks",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of orderable cluster options. Before you create a new cluster you
  * can use this operation to find what options are available, such as the EC2 Availability
@@ -6225,10 +6423,16 @@ export const describeClusterTracks = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * in the *Amazon Redshift Cluster Management Guide*.
  */
 export const describeOrderableClusterOptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrderableClusterOptionsMessage,
     output: OrderableClusterOptionsMessage,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "OrderableClusterOptions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Starts logging information, such as queries and connection attempts, for the
@@ -6253,7 +6457,7 @@ export const enableLogging = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Details include the node type, the price, the node count, and the offering type.
  */
 export const getReservedNodeExchangeConfigurationOptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetReservedNodeExchangeConfigurationOptionsInputMessage,
     output: GetReservedNodeExchangeConfigurationOptionsOutputMessage,
     errors: [
@@ -6266,6 +6470,12 @@ export const getReservedNodeExchangeConfigurationOptions =
       ReservedNodeOfferingNotFoundFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedNodeConfigurationOptionList",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Creates a new table from a table in an Amazon Redshift cluster snapshot. You must
@@ -6326,7 +6536,7 @@ export const purchaseReservedNodeOffering =
  * and usage price of the given DC1 reserved node.
  */
 export const getReservedNodeExchangeOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetReservedNodeExchangeOfferingsInputMessage,
     output: GetReservedNodeExchangeOfferingsOutputMessage,
     errors: [
@@ -6337,6 +6547,12 @@ export const getReservedNodeExchangeOfferings =
       ReservedNodeOfferingNotFoundFault,
       UnsupportedOperationFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedNodeOfferings",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Exchanges a DC1 Reserved Node for a DC2 Reserved Node with no changes to the

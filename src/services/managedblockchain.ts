@@ -1109,52 +1109,74 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
  * Returns a list of the accessors and their properties. Accessor objects are containers that have the
  * information required for token based access to your Ethereum nodes.
  */
-export const listAccessors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessorsInput,
-  output: ListAccessorsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listAccessors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessorsInput,
+    output: ListAccessorsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Accessors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the members in a network and properties of their configurations.
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersInput,
-  output: ListMembersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersInput,
+    output: ListMembersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the networks in which the current Amazon Web Services account participates.
  *
  * Applies to Hyperledger Fabric and Ethereum.
  */
-export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNetworksInput,
-  output: ListNetworksOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNetworksInput,
+    output: ListNetworksOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the nodes within a network.
  *
  * Applies to Hyperledger Fabric and Ethereum.
  */
-export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesInput,
   output: ListNodesOutput,
   errors: [
@@ -1163,22 +1185,34 @@ export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidRequestException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns the list of votes for a specified proposal, including the value of each vote and the unique identifier of the member that cast the vote.
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listProposalVotes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProposalVotesInput,
-  output: ListProposalVotesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listProposalVotes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProposalVotesInput,
+    output: ListProposalVotesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a node configuration with new parameters.
  *
@@ -1268,17 +1302,24 @@ export const getProposal = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listProposals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProposalsInput,
-  output: ListProposalsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listProposals = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProposalsInput,
+    output: ListProposalsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Casts a vote for a specified `ProposalId` on behalf of a member. The member to vote as, specified by `VoterMemberId`, must be in the same Amazon Web Services account as the principal that calls the action.
  *
@@ -1301,18 +1342,25 @@ export const voteOnProposal = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Applies only to Hyperledger Fabric.
  */
-export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvitationsInput,
-  output: ListInvitationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidRequestException,
-    ResourceLimitExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvitationsInput,
+    output: ListInvitationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidRequestException,
+      ResourceLimitExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a member. Deleting a member removes the member and all associated resources from the network. `DeleteMember` can only be called for a specified `MemberId` if the principal performing the action is associated with the Amazon Web Services account that owns the member. In all other cases, the `DeleteMember` action is carried out as the result of an approved proposal to remove a member. If `MemberId` is the last member in a network specified by the last Amazon Web Services account, the network is deleted also.
  *

@@ -974,25 +974,36 @@ export class TooManyRequestsException extends S.TaggedError<TooManyRequestsExcep
  * see
  * Limiting a user to viewing specific canaries.
  */
-export const describeCanariesLastRun = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCanariesLastRun =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCanariesLastRunRequest,
     output: DescribeCanariesLastRunResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of runs for a specified canary.
  */
-export const getCanaryRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCanaryRunsRequest,
-  output: GetCanaryRunsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const getCanaryRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCanaryRunsRequest,
+    output: GetCanaryRunsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Use this operation to start a dry run for a canary that has already been created
  */
@@ -1037,8 +1048,8 @@ export const updateCanary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of the groups that the specified canary is associated with. The canary
  * that you specify must be in the current Region.
  */
-export const listAssociatedGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssociatedGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedGroupsRequest,
     output: ListAssociatedGroupsResponse,
     errors: [
@@ -1046,8 +1057,12 @@ export const listAssociatedGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about one group. Groups are a global resource, so you can use this operation from
  * any Region.
@@ -1065,16 +1080,23 @@ export const getGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This operation returns a list of the ARNs of the canaries that are associated with the specified group.
  */
-export const listGroupResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupResourcesRequest,
-  output: ListGroupResourcesResponse,
-  errors: [
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listGroupResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupResourcesRequest,
+    output: ListGroupResourcesResponse,
+    errors: [
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Permanently deletes the specified canary.
  *
@@ -1201,13 +1223,17 @@ export const associateResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * see
  * Canary Runtime Versions.
  */
-export const describeRuntimeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRuntimeVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRuntimeVersionsRequest,
     output: DescribeRuntimeVersionsResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves complete information about one canary. You must specify
  * the name of the canary that you want. To get a list of canaries
@@ -1222,10 +1248,15 @@ export const getCanary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of all groups in the account, displaying their names, unique IDs, and ARNs. The groups
  * from all Regions are returned.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a group which you can use to associate canaries with each other, including cross-Region
@@ -1297,11 +1328,18 @@ export const createCanary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * see
  * Limiting a user to viewing specific canaries.
  */
-export const describeCanaries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeCanariesRequest,
-  output: DescribeCanariesResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const describeCanaries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeCanariesRequest,
+    output: DescribeCanariesResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Assigns one or more tags (key-value pairs) to the specified canary or group.
  *

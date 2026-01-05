@@ -1185,8 +1185,8 @@ export const getQueueUrl = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information about using dead-letter queues, see Using Amazon SQS Dead-Letter Queues in the Amazon SQS Developer
  * Guide.
  */
-export const listDeadLetterSourceQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeadLetterSourceQueues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeadLetterSourceQueuesRequest,
     output: ListDeadLetterSourceQueuesResult,
     errors: [
@@ -1196,8 +1196,13 @@ export const listDeadLetterSourceQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RequestThrottled,
       UnsupportedOperation,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "queueUrls",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all cost allocation tags added to the specified Amazon SQS queue.
  * For an overview, see Tagging
@@ -1384,7 +1389,7 @@ export const addPermission = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * see Grant
  * cross-account permissions to a role and a username in the *Amazon SQS Developer Guide*.
  */
-export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
   output: ListQueuesResult,
   errors: [
@@ -1393,6 +1398,12 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     RequestThrottled,
     UnsupportedOperation,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "QueueUrls",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Gets attributes for the specified queue.

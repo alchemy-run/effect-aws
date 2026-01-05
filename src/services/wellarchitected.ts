@@ -2815,78 +2815,113 @@ export const getReviewTemplateAnswer = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List of Trusted Advisor check details by account related to the workload.
  */
-export const listCheckDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCheckDetailsInput,
-  output: ListCheckDetailsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCheckDetails = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCheckDetailsInput,
+    output: ListCheckDetailsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List lens reviews for a particular workload.
  */
-export const listLensReviews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLensReviewsInput,
-  output: ListLensReviewsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLensReviews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLensReviewsInput,
+    output: ListLensReviewsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the lens shares associated with the lens.
  */
-export const listLensShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLensSharesInput,
-  output: ListLensSharesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLensShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLensSharesInput,
+    output: ListLensSharesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all milestones for an existing workload.
  */
-export const listMilestones = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMilestonesInput,
-  output: ListMilestonesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMilestones = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMilestonesInput,
+    output: ListMilestonesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List profile shares.
  */
-export const listProfileShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfileSharesInput,
-  output: ListProfileSharesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProfileShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfileSharesInput,
+    output: ListProfileSharesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the answers of a review template.
  */
-export const listReviewTemplateAnswers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReviewTemplateAnswers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReviewTemplateAnswersInput,
     output: ListReviewTemplateAnswersOutput,
     errors: [
@@ -2896,40 +2931,58 @@ export const listReviewTemplateAnswers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List review template shares.
  */
-export const listTemplateShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplateSharesInput,
-  output: ListTemplateSharesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTemplateShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTemplateSharesInput,
+    output: ListTemplateSharesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the workload shares associated with the workload.
  */
-export const listWorkloadShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkloadSharesInput,
-  output: ListWorkloadSharesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkloadShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkloadSharesInput,
+    output: ListWorkloadSharesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the available lenses.
  */
-export const listLenses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLenses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLensesInput,
   output: ListLensesOutput,
   errors: [
@@ -2938,12 +2991,17 @@ export const listLenses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * List profile notifications.
  */
-export const listProfileNotifications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProfileNotifications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProfileNotificationsInput,
     output: ListProfileNotificationsOutput,
     errors: [
@@ -2952,34 +3010,51 @@ export const listProfileNotifications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List profiles.
  */
-export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfilesInput,
-  output: ListProfilesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfilesInput,
+    output: ListProfilesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List review templates.
  */
-export const listReviewTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReviewTemplatesInput,
-  output: ListReviewTemplatesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReviewTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListReviewTemplatesInput,
+    output: ListReviewTemplatesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the share invitations.
  *
@@ -2987,8 +3062,8 @@ export const listReviewTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `ProfileNamePrefix`, and `TemplateNamePrefix` are mutually
  * exclusive. Use the parameter that matches your `ShareResourceType`.
  */
-export const listShareInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listShareInvitations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListShareInvitationsInput,
     output: ListShareInvitationsOutput,
     errors: [
@@ -2997,21 +3072,32 @@ export const listShareInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Paginated list of workloads.
  */
-export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkloadsInput,
-  output: ListWorkloadsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkloadsInput,
+    output: ListWorkloadsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Update a workload or custom lens share invitation.
  *
@@ -3481,36 +3567,50 @@ export const getWorkload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List of answers for a particular workload and lens.
  */
-export const listAnswers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAnswersInput,
-  output: ListAnswersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAnswers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAnswersInput,
+    output: ListAnswersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List of Trusted Advisor checks summarized for all accounts related to the workload.
  */
-export const listCheckSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCheckSummariesInput,
-  output: ListCheckSummariesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCheckSummaries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCheckSummariesInput,
+    output: ListCheckSummariesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the improvements of a particular lens review.
  */
-export const listLensReviewImprovements = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLensReviewImprovements =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLensReviewImprovementsInput,
     output: ListLensReviewImprovementsOutput,
     errors: [
@@ -3520,21 +3620,32 @@ export const listLensReviewImprovements = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List lens notifications.
  */
-export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNotificationsInput,
-  output: ListNotificationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNotificationsInput,
+    output: ListNotificationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Update the answer to a specific question in a workload review.
  */
@@ -3900,8 +4011,8 @@ export const getProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You can optionally choose to include workloads that have been shared with you.
  */
-export const getConsolidatedReport = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getConsolidatedReport =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetConsolidatedReportInput,
     output: GetConsolidatedReportOutput,
     errors: [
@@ -3911,5 +4022,9 @@ export const getConsolidatedReport = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));

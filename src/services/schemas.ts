@@ -1146,17 +1146,25 @@ export const createSchema = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Search the schemas
  */
-export const searchSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchSchemasRequest,
-  output: SearchSchemasResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const searchSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchSchemasRequest,
+    output: SearchSchemasResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Put code binding URI
  */
@@ -1192,18 +1200,26 @@ export const putResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Provides a list of the schema versions and related information.
  */
-export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemaVersionsRequest,
-  output: ListSchemaVersionsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemaVersionsRequest,
+    output: ListSchemaVersionsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SchemaVersions",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Describes the discoverer.
  */
@@ -1389,45 +1405,69 @@ export const deleteSchemaVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the discoverers.
  */
-export const listDiscoverers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDiscoverersRequest,
-  output: ListDiscoverersResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listDiscoverers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDiscoverersRequest,
+    output: ListDiscoverersResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Discoverers",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * List the registries.
  */
-export const listRegistries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRegistriesRequest,
-  output: ListRegistriesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listRegistries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRegistriesRequest,
+    output: ListRegistriesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Registries",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * List the schemas.
  */
-export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemasRequest,
-  output: ListSchemasResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemasRequest,
+    output: ListSchemasResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Creates a registry.
  */

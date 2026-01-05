@@ -1811,10 +1811,16 @@ export const describeApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists an environment's completed and failed managed actions.
  */
 export const describeEnvironmentManagedActionHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEnvironmentManagedActionHistoryRequest,
     output: DescribeEnvironmentManagedActionHistoryResult,
     errors: [ElasticBeanstalkServiceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ManagedActionHistoryItems",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Lists an environment's upcoming and in-progress managed actions.
@@ -1831,11 +1837,19 @@ export const describeEnvironmentManagedActions =
  * This action returns the most recent 1,000 events from the specified
  * `NextToken`.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: EventDescriptionsMessage,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: EventDescriptionsMessage,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists the platform versions available for your account in an AWS Region. Provides
  * summary information about each platform version. Compare to DescribePlatformVersion, which provides full details about a single platform
@@ -1844,13 +1858,18 @@ export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For definitions of platform version and other platform-related terms, see AWS Elastic Beanstalk
  * Platforms Glossary.
  */
-export const listPlatformVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlatformVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlatformVersionsRequest,
     output: ListPlatformVersionsResult,
     errors: [ElasticBeanstalkServiceException, InsufficientPrivilegesException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PlatformSummaryList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Retrieves the compiled information from a RequestEnvironmentInfo
  * request.
@@ -2060,13 +2079,17 @@ export const describePlatformVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For definitions of platform branch and other platform-related terms, see AWS Elastic Beanstalk
  * Platforms Glossary.
  */
-export const listPlatformBranches = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlatformBranches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlatformBranchesRequest,
     output: ListPlatformBranchesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Return the tags applied to an AWS Elastic Beanstalk resource. The response contains a list of tag key-value pairs.
  *

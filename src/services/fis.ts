@@ -1443,10 +1443,16 @@ export const getSafetyLever = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the resolved targets information of the specified experiment.
  */
 export const listExperimentResolvedTargets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExperimentResolvedTargetsRequest,
     output: ListExperimentResolvedTargetsResponse,
     errors: [ResourceNotFoundException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resolvedTargets",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Updates the specified safety lever state.
@@ -1470,19 +1476,35 @@ export const getExperimentTargetAccountConfiguration =
 /**
  * Lists the available FIS actions.
  */
-export const listActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListActionsRequest,
-  output: ListActionsResponse,
-  errors: [ValidationException],
-}));
+export const listActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListActionsRequest,
+    output: ListActionsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "actions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists your experiments.
  */
-export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExperimentsRequest,
-  output: ListExperimentsResponse,
-  errors: [ValidationException],
-}));
+export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExperimentsRequest,
+    output: ListExperimentsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "experiments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the target account configurations of the specified experiment.
  */
@@ -1495,32 +1517,48 @@ export const listExperimentTargetAccountConfigurations =
 /**
  * Lists your experiment templates.
  */
-export const listExperimentTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExperimentTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExperimentTemplatesRequest,
     output: ListExperimentTemplatesResponse,
     errors: [ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "experimentTemplates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the target account configurations of the specified experiment template.
  */
 export const listTargetAccountConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetAccountConfigurationsRequest,
     output: ListTargetAccountConfigurationsResponse,
     errors: [ResourceNotFoundException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "targetAccountConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the target resource types.
  */
-export const listTargetResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTargetResourceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetResourceTypesRequest,
     output: ListTargetResourceTypesResponse,
     errors: [ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "targetResourceTypes",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about the specified experiment template.
  */

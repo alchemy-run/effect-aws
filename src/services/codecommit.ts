@@ -2638,13 +2638,17 @@ export const deleteApprovalRuleTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all approval rule templates in the specified Amazon Web Services Region in your Amazon Web Services account. If
  * an Amazon Web Services Region is not specified, the Amazon Web Services Region where you are signed in is used.
  */
-export const listApprovalRuleTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApprovalRuleTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApprovalRuleTemplatesInput,
     output: ListApprovalRuleTemplatesOutput,
     errors: [InvalidContinuationTokenException, InvalidMaxResultsException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the description for a specified approval rule template.
  */
@@ -2704,15 +2708,22 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about one or more repositories.
  */
-export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRepositoriesInput,
-  output: ListRepositoriesOutput,
-  errors: [
-    InvalidContinuationTokenException,
-    InvalidOrderException,
-    InvalidSortByException,
-  ],
-}));
+export const listRepositories = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRepositoriesInput,
+    output: ListRepositoriesOutput,
+    errors: [
+      InvalidContinuationTokenException,
+      InvalidOrderException,
+      InvalidSortByException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+    } as const,
+  }),
+);
 /**
  * Updates the content of an approval rule template. You can change the number of
  * required approvals, the membership of the approval rule, and whether an approval pool is
@@ -2807,7 +2818,7 @@ export const createApprovalRuleTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all repositories associated with the specified approval rule template.
  */
 export const listRepositoriesForApprovalRuleTemplate =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRepositoriesForApprovalRuleTemplateInput,
     output: ListRepositoriesForApprovalRuleTemplateOutput,
     errors: [
@@ -2822,6 +2833,11 @@ export const listRepositoriesForApprovalRuleTemplate =
       InvalidContinuationTokenException,
       InvalidMaxResultsException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Removes the association between a template and a repository so that approval rules
@@ -2913,7 +2929,7 @@ export const getRepositoryTriggers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all approval rule templates that are associated with a specified repository.
  */
 export const listAssociatedApprovalRuleTemplatesForRepository =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedApprovalRuleTemplatesForRepositoryInput,
     output: ListAssociatedApprovalRuleTemplatesForRepositoryOutput,
     errors: [
@@ -2928,25 +2944,37 @@ export const listAssociatedApprovalRuleTemplatesForRepository =
       RepositoryDoesNotExistException,
       RepositoryNameRequiredException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets information about one or more branches in a repository.
  */
-export const listBranches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBranchesInput,
-  output: ListBranchesOutput,
-  errors: [
-    EncryptionIntegrityChecksFailedException,
-    EncryptionKeyAccessDeniedException,
-    EncryptionKeyDisabledException,
-    EncryptionKeyNotFoundException,
-    EncryptionKeyUnavailableException,
-    InvalidContinuationTokenException,
-    InvalidRepositoryNameException,
-    RepositoryDoesNotExistException,
-    RepositoryNameRequiredException,
-  ],
-}));
+export const listBranches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBranchesInput,
+    output: ListBranchesOutput,
+    errors: [
+      EncryptionIntegrityChecksFailedException,
+      EncryptionKeyAccessDeniedException,
+      EncryptionKeyDisabledException,
+      EncryptionKeyNotFoundException,
+      EncryptionKeyUnavailableException,
+      InvalidContinuationTokenException,
+      InvalidRepositoryNameException,
+      RepositoryDoesNotExistException,
+      RepositoryNameRequiredException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "branches",
+    } as const,
+  }),
+);
 /**
  * Returns the content of a comment made on a change, file, or commit in a repository.
  *
@@ -2990,19 +3018,25 @@ export const batchGetCommits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about reactions to a specified comment ID. Reactions from users who have been deleted will not be included in the count.
  */
-export const getCommentReactions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCommentReactionsInput,
-  output: GetCommentReactionsOutput,
-  errors: [
-    CommentDeletedException,
-    CommentDoesNotExistException,
-    CommentIdRequiredException,
-    InvalidCommentIdException,
-    InvalidContinuationTokenException,
-    InvalidMaxResultsException,
-    InvalidReactionUserArnException,
-  ],
-}));
+export const getCommentReactions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetCommentReactionsInput,
+    output: GetCommentReactionsOutput,
+    errors: [
+      CommentDeletedException,
+      CommentDoesNotExistException,
+      CommentIdRequiredException,
+      InvalidCommentIdException,
+      InvalidContinuationTokenException,
+      InvalidMaxResultsException,
+      InvalidReactionUserArnException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Posts a comment in reply to an existing comment on a comparison between commits or a pull request.
  */
@@ -3080,7 +3114,7 @@ export const updateRepositoryEncryptionKey =
  * reactions from active identities, use GetCommentReactions.
  */
 export const getCommentsForComparedCommit =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCommentsForComparedCommitInput,
     output: GetCommentsForComparedCommitOutput,
     errors: [
@@ -3098,6 +3132,11 @@ export const getCommentsForComparedCommit =
       RepositoryDoesNotExistException,
       RepositoryNameRequiredException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Sets or changes the comment or description for a repository.
@@ -3157,25 +3196,32 @@ export const associateApprovalRuleTemplateWithRepository =
  * Returns a list of pull requests for a specified repository. The return list can be refined by pull request
  * status or pull request author ARN.
  */
-export const listPullRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPullRequestsInput,
-  output: ListPullRequestsOutput,
-  errors: [
-    AuthorDoesNotExistException,
-    EncryptionIntegrityChecksFailedException,
-    EncryptionKeyAccessDeniedException,
-    EncryptionKeyDisabledException,
-    EncryptionKeyNotFoundException,
-    EncryptionKeyUnavailableException,
-    InvalidAuthorArnException,
-    InvalidContinuationTokenException,
-    InvalidMaxResultsException,
-    InvalidPullRequestStatusException,
-    InvalidRepositoryNameException,
-    RepositoryDoesNotExistException,
-    RepositoryNameRequiredException,
-  ],
-}));
+export const listPullRequests = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPullRequestsInput,
+    output: ListPullRequestsOutput,
+    errors: [
+      AuthorDoesNotExistException,
+      EncryptionIntegrityChecksFailedException,
+      EncryptionKeyAccessDeniedException,
+      EncryptionKeyDisabledException,
+      EncryptionKeyNotFoundException,
+      EncryptionKeyUnavailableException,
+      InvalidAuthorArnException,
+      InvalidContinuationTokenException,
+      InvalidMaxResultsException,
+      InvalidPullRequestStatusException,
+      InvalidRepositoryNameException,
+      RepositoryDoesNotExistException,
+      RepositoryNameRequiredException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an approval rule from a specified pull request. Approval rules can be deleted from a pull request only if the pull request is open, and if the
  * approval rule was created specifically for a pull request and not generated from an approval rule template associated with the repository where the
@@ -3473,8 +3519,8 @@ export const getBlob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about one or more pull request events.
  */
-export const describePullRequestEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePullRequestEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePullRequestEventsInput,
     output: DescribePullRequestEventsOutput,
     errors: [
@@ -3492,8 +3538,12 @@ export const describePullRequestEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       PullRequestDoesNotExistException,
       PullRequestIdRequiredException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates an approval rule for a pull request.
  */
@@ -3525,8 +3575,8 @@ export const createPullRequestApprovalRule =
  * Reaction counts might include numbers from user identities who were deleted after the reaction was made. For a count of
  * reactions from active identities, use GetCommentReactions.
  */
-export const getCommentsForPullRequest = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCommentsForPullRequest =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCommentsForPullRequestInput,
     output: GetCommentsForPullRequestOutput,
     errors: [
@@ -3548,13 +3598,17 @@ export const getCommentsForPullRequest = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RepositoryNameRequiredException,
       RepositoryNotAssociatedWithPullRequestException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of commits and changes to a specified file.
  */
-export const listFileCommitHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFileCommitHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFileCommitHistoryRequest,
     output: ListFileCommitHistoryResponse,
     errors: [
@@ -3573,8 +3627,12 @@ export const listFileCommitHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RepositoryNameRequiredException,
       TipsDivergenceExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about the approval states for a specified pull request. Approval states only apply to pull requests that have one or more
  * approval rules applied to them.
@@ -3789,28 +3847,35 @@ export const evaluatePullRequestApprovalRules =
  * branch, tag, HEAD, commit ID, or other fully qualified reference). Results can be
  * limited to a specified path.
  */
-export const getDifferences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDifferencesInput,
-  output: GetDifferencesOutput,
-  errors: [
-    CommitDoesNotExistException,
-    CommitRequiredException,
-    EncryptionIntegrityChecksFailedException,
-    EncryptionKeyAccessDeniedException,
-    EncryptionKeyDisabledException,
-    EncryptionKeyNotFoundException,
-    EncryptionKeyUnavailableException,
-    InvalidCommitException,
-    InvalidCommitIdException,
-    InvalidContinuationTokenException,
-    InvalidMaxResultsException,
-    InvalidPathException,
-    InvalidRepositoryNameException,
-    PathDoesNotExistException,
-    RepositoryDoesNotExistException,
-    RepositoryNameRequiredException,
-  ],
-}));
+export const getDifferences = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDifferencesInput,
+    output: GetDifferencesOutput,
+    errors: [
+      CommitDoesNotExistException,
+      CommitRequiredException,
+      EncryptionIntegrityChecksFailedException,
+      EncryptionKeyAccessDeniedException,
+      EncryptionKeyDisabledException,
+      EncryptionKeyNotFoundException,
+      EncryptionKeyUnavailableException,
+      InvalidCommitException,
+      InvalidCommitIdException,
+      InvalidContinuationTokenException,
+      InvalidMaxResultsException,
+      InvalidPathException,
+      InvalidRepositoryNameException,
+      PathDoesNotExistException,
+      RepositoryDoesNotExistException,
+      RepositoryNameRequiredException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the base-64 encoded contents of a specified file and its metadata.
  */
@@ -4048,41 +4113,48 @@ export const batchDescribeMergeConflicts = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns information about merge conflicts between the before and after commit IDs for a pull request in a repository.
  */
-export const getMergeConflicts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMergeConflictsInput,
-  output: GetMergeConflictsOutput,
-  errors: [
-    CommitDoesNotExistException,
-    CommitRequiredException,
-    EncryptionIntegrityChecksFailedException,
-    EncryptionKeyAccessDeniedException,
-    EncryptionKeyDisabledException,
-    EncryptionKeyNotFoundException,
-    EncryptionKeyUnavailableException,
-    InvalidCommitException,
-    InvalidConflictDetailLevelException,
-    InvalidConflictResolutionStrategyException,
-    InvalidContinuationTokenException,
-    InvalidDestinationCommitSpecifierException,
-    InvalidMaxConflictFilesException,
-    InvalidMergeOptionException,
-    InvalidRepositoryNameException,
-    InvalidSourceCommitSpecifierException,
-    MaximumFileContentToLoadExceededException,
-    MaximumItemsToCompareExceededException,
-    MergeOptionRequiredException,
-    RepositoryDoesNotExistException,
-    RepositoryNameRequiredException,
-    TipsDivergenceExceededException,
-  ],
-}));
+export const getMergeConflicts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMergeConflictsInput,
+    output: GetMergeConflictsOutput,
+    errors: [
+      CommitDoesNotExistException,
+      CommitRequiredException,
+      EncryptionIntegrityChecksFailedException,
+      EncryptionKeyAccessDeniedException,
+      EncryptionKeyDisabledException,
+      EncryptionKeyNotFoundException,
+      EncryptionKeyUnavailableException,
+      InvalidCommitException,
+      InvalidConflictDetailLevelException,
+      InvalidConflictResolutionStrategyException,
+      InvalidContinuationTokenException,
+      InvalidDestinationCommitSpecifierException,
+      InvalidMaxConflictFilesException,
+      InvalidMergeOptionException,
+      InvalidRepositoryNameException,
+      InvalidSourceCommitSpecifierException,
+      MaximumFileContentToLoadExceededException,
+      MaximumItemsToCompareExceededException,
+      MergeOptionRequiredException,
+      RepositoryDoesNotExistException,
+      RepositoryNameRequiredException,
+      TipsDivergenceExceededException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxConflictFiles",
+    } as const,
+  }),
+);
 /**
  * Returns information about one or more merge conflicts in the attempted merge of two
  * commit specifiers using the squash or three-way merge strategy. If the merge option for
  * the attempted merge is specified as FAST_FORWARD_MERGE, an exception is thrown.
  */
-export const describeMergeConflicts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMergeConflicts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMergeConflictsInput,
     output: DescribeMergeConflictsOutput,
     errors: [
@@ -4110,8 +4182,12 @@ export const describeMergeConflicts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RepositoryNameRequiredException,
       TipsDivergenceExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxMergeHunks",
+    } as const,
+  }));
 /**
  * Deletes a specified file from a specified branch. A commit is created on the branch
  * that contains the revision. The file still exists in the commits earlier to the commit

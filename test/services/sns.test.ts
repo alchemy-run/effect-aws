@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect, Schedule } from "effect";
+import { Effect, Schedule, Stream } from "effect";
 import {
   // Permissions
   addPermission,
@@ -620,4 +620,34 @@ test(
       // Subscriptions will be cleaned up when the topic is deleted
     }),
   ),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listTopics.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of topics
+    const pages = yield* listTopics.pages({}).pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listTopics.items() streams Topic objects directly",
+  Effect.gen(function* () {
+    // Stream all topics using .items()
+    const topics = yield* listTopics.items({}).pipe(Stream.runCollect);
+
+    const topicsArray = Array.from(topics);
+
+    // Each item should be a Topic with TopicArn
+    for (const topic of topicsArray) {
+      expect(topic.TopicArn).toBeDefined();
+    }
+  }),
 );

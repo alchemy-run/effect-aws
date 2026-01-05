@@ -1429,56 +1429,88 @@ export const deleteCapability = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the capabilities associated with your Amazon Web Services account for your current or specified region. A trading capability contains the information required to transform incoming EDI documents into JSON or XML outputs.
  */
-export const listCapabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCapabilitiesRequest,
-  output: ListCapabilitiesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCapabilities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCapabilitiesRequest,
+    output: ListCapabilitiesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "capabilities",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the partnerships associated with your Amazon Web Services account for your current or specified region. A partnership represents the connection between you and your trading partner. It ties together a profile and one or more trading capabilities.
  */
-export const listPartnerships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPartnershipsRequest,
-  output: ListPartnershipsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPartnerships = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPartnershipsRequest,
+    output: ListPartnershipsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "partnerships",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the profiles associated with your Amazon Web Services account for your current or specified region. A profile is the mechanism used to create the concept of a private network.
  */
-export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfilesRequest,
-  output: ListProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfilesRequest,
+    output: ListProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "profiles",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the available transformers. A transformer can take an EDI file as input and transform it into a JSON-or XML-formatted document. Alternatively, a transformer can take a JSON-or XML-formatted document as input and transform it into an EDI file.
  */
-export const listTransformers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTransformersRequest,
-  output: ListTransformersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTransformers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTransformersRequest,
+    output: ListTransformersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "transformers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the details for a partnership, based on the partner and profile IDs specified. A partnership represents the connection between you and your trading partner. It ties together a profile and one or more trading capabilities.
  */

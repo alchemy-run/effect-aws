@@ -1744,15 +1744,22 @@ export const getUtterancesView = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions for the
  * `lex:GetBotAliases` action.
  */
-export const getBotAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBotAliasesRequest,
-  output: GetBotAliasesResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const getBotAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetBotAliasesRequest,
+    output: GetBotAliasesResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all of the channels associated with the
  * specified bot.
@@ -1761,8 +1768,8 @@ export const getBotAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * permissions for the `lex:GetBotChannelAssociations`
  * action.
  */
-export const getBotChannelAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getBotChannelAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetBotChannelAssociationsRequest,
     output: GetBotChannelAssociationsResponse,
     errors: [
@@ -1770,8 +1777,12 @@ export const getBotChannelAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of built-in intents that meet the specified
  * criteria.
@@ -1779,15 +1790,22 @@ export const getBotChannelAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This operation requires permission for the
  * `lex:GetBuiltinIntents` action.
  */
-export const getBuiltinIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBuiltinIntentsRequest,
-  output: GetBuiltinIntentsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const getBuiltinIntents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetBuiltinIntentsRequest,
+    output: GetBuiltinIntentsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of built-in slot types that meet the specified
  * criteria.
@@ -1798,27 +1816,40 @@ export const getBuiltinIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permission for the
  * `lex:GetBuiltInSlotTypes` action.
  */
-export const getBuiltinSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBuiltinSlotTypesRequest,
-  output: GetBuiltinSlotTypesResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const getBuiltinSlotTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetBuiltinSlotTypesRequest,
+    output: GetBuiltinSlotTypesResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of migrations between Amazon Lex V1 and Amazon Lex V2.
  */
-export const getMigrations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMigrationsRequest,
-  output: GetMigrationsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const getMigrations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMigrationsRequest,
+    output: GetMigrationsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts a job to import a resource to Amazon Lex.
  */
@@ -1995,7 +2026,7 @@ export const getBotChannelAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This operation requires permission for the `lex:GetBots`
  * action.
  */
-export const getBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetBotsRequest,
   output: GetBotsResponse,
   errors: [
@@ -2004,6 +2035,11 @@ export const getBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     LimitExceededException,
     NotFoundException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns information about a built-in intent.
@@ -2035,7 +2071,7 @@ export const getBuiltinIntent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The operation requires permission for the
  * `lex:GetIntents` action.
  */
-export const getIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getIntents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetIntentsRequest,
   output: GetIntentsResponse,
   errors: [
@@ -2044,6 +2080,11 @@ export const getIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     LimitExceededException,
     NotFoundException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Provides details about an ongoing or complete migration from an
@@ -2074,16 +2115,23 @@ export const getMigration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The operation requires permission for the
  * `lex:GetSlotTypes` action.
  */
-export const getSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSlotTypesRequest,
-  output: GetSlotTypesResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-    NotFoundException,
-  ],
-}));
+export const getSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetSlotTypesRequest,
+    output: GetSlotTypesResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts migrating a bot from Amazon Lex V1 to Amazon Lex V2. Migrate your bot when
  * you want to take advantage of the new features of Amazon Lex V2.
@@ -2255,16 +2303,23 @@ export const createSlotTypeVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This operation requires permissions for the
  * `lex:GetBotVersions` action.
  */
-export const getBotVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBotVersionsRequest,
-  output: GetBotVersionsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-    NotFoundException,
-  ],
-}));
+export const getBotVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetBotVersionsRequest,
+    output: GetBotVersionsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Exports the contents of a Amazon Lex resource in a specified format.
  */
@@ -2325,16 +2380,23 @@ export const getIntent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions for the
  * `lex:GetIntentVersions` action.
  */
-export const getIntentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetIntentVersionsRequest,
-  output: GetIntentVersionsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-    NotFoundException,
-  ],
-}));
+export const getIntentVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetIntentVersionsRequest,
+    output: GetIntentVersionsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a specific version of a slot type. In
  * addition to specifying the slot type name, you must specify the slot type
@@ -2369,16 +2431,22 @@ export const getSlotType = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions for the
  * `lex:GetSlotTypeVersions` action.
  */
-export const getSlotTypeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSlotTypeVersionsRequest,
-  output: GetSlotTypeVersionsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-    NotFoundException,
-  ],
-}));
+export const getSlotTypeVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetSlotTypeVersionsRequest,
+    output: GetSlotTypeVersionsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of tags associated with the specified resource. Only bots,
  * bot aliases, and bot channels can have tags associated with them.

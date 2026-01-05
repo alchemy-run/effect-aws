@@ -1686,18 +1686,26 @@ export const getLibraryItem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the library items for Amazon Q Apps that are published and available for users in your Amazon Web Services account.
  */
-export const listLibraryItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLibraryItemsInput,
-  output: ListLibraryItemsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listLibraryItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLibraryItemsInput,
+    output: ListLibraryItemsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "libraryItems",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Updates read permissions for a Amazon Q App in Amazon Q Business application environment instance.
  */
@@ -1863,7 +1871,7 @@ export const updateQApp = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Amazon Q Apps owned by or associated with the user either because they created it or because they used it from the library in the past. The user identity is extracted from the credentials used to invoke this operation..
  */
-export const listQApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQAppsInput,
   output: ListQAppsOutput,
   errors: [
@@ -1873,6 +1881,12 @@ export const listQApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     UnauthorizedException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "apps",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Creates a new library item for an Amazon Q App, allowing it to be discovered and used by other allowed users.

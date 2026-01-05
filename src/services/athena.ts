@@ -1807,29 +1807,48 @@ export const getWorkGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * In the Athena console, data catalogs are listed as "data sources" on
  * the **Data sources** page under the **Data source name** column.
  */
-export const listDataCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataCatalogsInput,
-  output: ListDataCatalogsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
-/**
- * Lists the prepared statements in the specified workgroup.
- */
-export const listPreparedStatements = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listDataCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListPreparedStatementsInput,
-    output: ListPreparedStatementsOutput,
+    input: ListDataCatalogsInput,
+    output: ListDataCatalogsOutput,
     errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataCatalogsSummary",
+      pageSize: "MaxResults",
+    } as const,
   }),
 );
 /**
+ * Lists the prepared statements in the specified workgroup.
+ */
+export const listPreparedStatements =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPreparedStatementsInput,
+    output: ListPreparedStatementsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
+/**
  * Lists available workgroups for the account.
  */
-export const listWorkGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkGroupsInput,
-  output: ListWorkGroupsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listWorkGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkGroupsInput,
+    output: ListWorkGroupsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the workgroup with the specified name. The workgroup's name cannot be changed.
  * Only `ConfigurationUpdates` can be specified.
@@ -1889,43 +1908,67 @@ export const getQueryExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the capacity reservations for the current account.
  */
-export const listCapacityReservations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCapacityReservations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCapacityReservationsInput,
     output: ListCapacityReservationsOutput,
     errors: [InternalServerException, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of engine versions that are available to choose from, including the
  * Auto option.
  */
-export const listEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEngineVersionsInput,
-  output: ListEngineVersionsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEngineVersionsInput,
+    output: ListEngineVersionsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of available query IDs only for queries saved in the specified
  * workgroup. Requires that you have access to the specified workgroup. If a workgroup is
  * not specified, lists the saved queries for the primary workgroup.
  */
-export const listNamedQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNamedQueriesInput,
-  output: ListNamedQueriesOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listNamedQueries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNamedQueriesInput,
+    output: ListNamedQueriesOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of available query execution IDs for the queries in the specified
  * workgroup. Athena keeps a query history for 45 days. If a workgroup is not
  * specified, returns a list of query execution IDs for the primary workgroup. Requires you
  * to have access to the workgroup in which the queries ran.
  */
-export const listQueryExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQueryExecutionsInput,
-  output: ListQueryExecutionsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listQueryExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListQueryExecutionsInput,
+    output: ListQueryExecutionsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Puts a new capacity assignment configuration for a specified capacity reservation. If
  * a capacity assignment configuration already exists for the capacity reservation,
@@ -2128,8 +2171,8 @@ export const startQueryExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns the supported DPU sizes for the supported application runtimes (for example,
  * `Athena notebook version 1`).
  */
-export const listApplicationDPUSizes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationDPUSizes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationDPUSizesInput,
     output: ListApplicationDPUSizesOutput,
     errors: [
@@ -2137,8 +2180,12 @@ export const listApplicationDPUSizes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Displays the notebook files for the specified workgroup in paginated format.
  */
@@ -2251,8 +2298,8 @@ export const getSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the calculations that have been submitted to a session in descending order.
  * Newer calculations are listed first; older calculations are listed later.
  */
-export const listCalculationExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCalculationExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCalculationExecutionsRequest,
     output: ListCalculationExecutionsResponse,
     errors: [
@@ -2260,22 +2307,33 @@ export const listCalculationExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists, in descending order, the executors that joined a session. Newer executors are
  * listed first; older executors are listed later. The result can be optionally filtered by
  * state.
  */
-export const listExecutors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutorsRequest,
-  output: ListExecutorsResponse,
-  errors: [
-    InternalServerException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listExecutors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutorsRequest,
+    output: ListExecutorsResponse,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists, in descending order, the sessions that have been created in a notebook that are
  * in an active state like `CREATING`, `CREATED`, `IDLE`
@@ -2299,15 +2357,22 @@ export const listNotebookSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `BUSY`. Newer sessions are listed first; older sessions are listed
  * later.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    InternalServerException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Submits calculations for execution within a session. You can supply the code to run as
  * an inline code block within the request.
@@ -2429,15 +2494,22 @@ export const getSessionStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the tags associated with an Athena resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceInput,
-  output: ListTagsForResourceOutput,
-  errors: [
-    InternalServerException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceInput,
+    output: ListTagsForResourceOutput,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Requests the cancellation of a calculation. A `StopCalculationExecution`
  * call on a calculation that is already in a terminal state (for example,
@@ -2542,19 +2614,43 @@ export const updatePreparedStatement = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the databases in the specified data catalog.
  */
-export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatabasesInput,
-  output: ListDatabasesOutput,
-  errors: [InternalServerException, InvalidRequestException, MetadataException],
-}));
+export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatabasesInput,
+    output: ListDatabasesOutput,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      MetadataException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DatabaseList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the metadata for the tables in the specified data catalog database.
  */
-export const listTableMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTableMetadataInput,
-  output: ListTableMetadataOutput,
-  errors: [InternalServerException, InvalidRequestException, MetadataException],
-}));
+export const listTableMetadata = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTableMetadataInput,
+    output: ListTableMetadataOutput,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      MetadataException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TableMetadataList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the details of a single query execution or a list of up to 50 query
  * executions, which you provide as an array of query execution ID strings. Requires you to
@@ -2588,15 +2684,22 @@ export const batchGetQueryExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ensure that Amazon S3 permissions to the Athena query location
  * are denied.
  */
-export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetQueryResultsInput,
-  output: GetQueryResultsOutput,
-  errors: [
-    InternalServerException,
-    InvalidRequestException,
-    TooManyRequestsException,
-  ],
-}));
+export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetQueryResultsInput,
+    output: GetQueryResultsOutput,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns query execution runtime statistics related to a single execution of a query if
  * you have access to the workgroup in which the query ran. Statistics from the

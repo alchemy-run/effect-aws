@@ -832,8 +832,8 @@ export const describeRecommendationFeedback =
  * Returns a list of RecommendationFeedbackSummary objects that contain customer recommendation
  * feedback for all CodeGuru Reviewer users.
  */
-export const listRecommendationFeedback = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendationFeedback =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendationFeedbackRequest,
     output: ListRecommendationFeedbackResponse,
     errors: [
@@ -843,8 +843,12 @@ export const listRecommendationFeedback = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Use to associate an Amazon Web Services CodeCommit repository or a repository managed by Amazon Web Services
  * CodeStar Connections with Amazon CodeGuru Reviewer. When you associate a repository, CodeGuru Reviewer reviews
@@ -893,30 +897,43 @@ export const describeCodeReview = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the code reviews that the customer has created in the past 90 days.
  */
-export const listCodeReviews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCodeReviewsRequest,
-  output: ListCodeReviewsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCodeReviews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCodeReviewsRequest,
+    output: ListCodeReviewsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the list of all recommendations for a completed code review.
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsRequest,
-  output: ListRecommendationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsRequest,
+    output: ListRecommendationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Removes the association between Amazon CodeGuru Reviewer and a repository.
  */
@@ -962,13 +979,18 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of RepositoryAssociationSummary objects that contain summary information about a
  * repository association. You can filter the returned list by ProviderType, Name, State, and Owner.
  */
-export const listRepositoryAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRepositoryAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRepositoryAssociationsRequest,
     output: ListRepositoryAssociationsResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RepositoryAssociationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a RepositoryAssociation object that contains information about the requested
  * repository association.

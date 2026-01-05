@@ -537,19 +537,21 @@ export const deleteAccountAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the Slack channel configurations for an Amazon Web Services account.
  */
 export const listSlackChannelConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSlackChannelConfigurationsRequest,
     output: ListSlackChannelConfigurationsResult,
     errors: [AccessDeniedException, InternalServerException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
   }));
 /**
  * Lists the Slack workspace configurations for an Amazon Web Services account.
  */
 export const listSlackWorkspaceConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSlackWorkspaceConfigurationsRequest,
     output: ListSlackWorkspaceConfigurationsResult,
     errors: [AccessDeniedException, InternalServerException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
   }));
 /**
  * Creates or updates an individual alias for each Amazon Web Services account ID. The alias appears in the

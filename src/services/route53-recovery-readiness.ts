@@ -1336,7 +1336,7 @@ export const getRecoveryGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Displays a summary of information about a recovery group's readiness status. Includes the readiness checks for resources in the recovery group and the readiness status of each one.
  */
 export const getRecoveryGroupReadinessSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetRecoveryGroupReadinessSummaryRequest,
     output: GetRecoveryGroupReadinessSummaryResponse,
     errors: [
@@ -1346,6 +1346,12 @@ export const getRecoveryGroupReadinessSummary =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReadinessChecks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Displays the details about a resource set, including a list of the resources in the set.
@@ -1393,8 +1399,8 @@ export const getArchitectureRecommendations =
 /**
  * Gets readiness for a cell. Aggregates the readiness of all the resources that are associated with the cell into a single value.
  */
-export const getCellReadinessSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCellReadinessSummary =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCellReadinessSummaryRequest,
     output: GetCellReadinessSummaryResponse,
     errors: [
@@ -1404,13 +1410,18 @@ export const getCellReadinessSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReadinessChecks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets individual readiness status for a readiness check. To see the overall readiness status for a recovery group, that considers the readiness status for all the readiness checks in the recovery group, use GetRecoveryGroupReadinessSummary.
  */
 export const getReadinessCheckResourceStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetReadinessCheckResourceStatusRequest,
     output: GetReadinessCheckResourceStatusResponse,
     errors: [
@@ -1420,12 +1431,18 @@ export const getReadinessCheckResourceStatus =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Rules",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the readiness status for an individual readiness check. To see the overall readiness status for a recovery group, that considers the readiness status for all the readiness checks in a recovery group, use GetRecoveryGroupReadinessSummary.
  */
-export const getReadinessCheckStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getReadinessCheckStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetReadinessCheckStatusRequest,
     output: GetReadinessCheckStatusResponse,
     errors: [
@@ -1435,13 +1452,18 @@ export const getReadinessCheckStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Resources",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the cross-account readiness authorizations that are in place for an account.
  */
 export const listCrossAccountAuthorizations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCrossAccountAuthorizationsRequest,
     output: ListCrossAccountAuthorizationsResponse,
     errors: [
@@ -1450,11 +1472,17 @@ export const listCrossAccountAuthorizations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CrossAccountAuthorizations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the cells for an account.
  */
-export const listCells = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listCells = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCellsRequest,
   output: ListCellsResponse,
   errors: [
@@ -1463,50 +1491,79 @@ export const listCells = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Cells",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the readiness checks for an account.
  */
-export const listReadinessChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReadinessChecksRequest,
-  output: ListReadinessChecksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReadinessChecks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListReadinessChecksRequest,
+    output: ListReadinessChecksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReadinessChecks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the recovery groups in an account.
  */
-export const listRecoveryGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecoveryGroupsRequest,
-  output: ListRecoveryGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRecoveryGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecoveryGroupsRequest,
+    output: ListRecoveryGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RecoveryGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the resource sets in an account.
  */
-export const listResourceSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceSetsRequest,
-  output: ListResourceSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listResourceSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourceSetsRequest,
+    output: ListResourceSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceSets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all readiness rules, or lists the readiness rules for a specific resource type.
  */
-export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [
@@ -1515,6 +1572,12 @@ export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Rules",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a readiness check in an account. A readiness check monitors a resource set in your application, such as a set of Amazon Aurora instances, that Application Recovery Controller is auditing recovery readiness for. The audits run once every minute on every resource that's associated with a readiness check.

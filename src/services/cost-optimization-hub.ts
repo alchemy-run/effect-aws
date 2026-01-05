@@ -982,8 +982,8 @@ export const getPreferences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * The operation supports both daily and monthly time granularities and allows grouping results by account ID, Amazon Web Services Region. Results are returned as time-series data, enabling you to analyze trends in your cost optimization performance over the specified time period.
  */
-export const listEfficiencyMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEfficiencyMetrics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEfficiencyMetricsRequest,
     output: ListEfficiencyMetricsResponse,
     errors: [
@@ -992,26 +992,38 @@ export const listEfficiencyMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "efficiencyMetricsByGroup",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of recommendations.
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsRequest,
-  output: ListRecommendationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsRequest,
+    output: ListRecommendationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the enrollment status for an account. It can also return the list of accounts that are enrolled under the organization.
  */
-export const listEnrollmentStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnrollmentStatuses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnrollmentStatusesRequest,
     output: ListEnrollmentStatusesResponse,
     errors: [
@@ -1020,15 +1032,20 @@ export const listEnrollmentStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a concise representation of savings estimates for resources. Also returns de-duped savings across different types of recommendations.
  *
  * The following filters are not supported for this API: `recommendationIds`, `resourceArns`, and `resourceIds`.
  */
-export const listRecommendationSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendationSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendationSummariesRequest,
     output: ListRecommendationSummariesResponse,
     errors: [
@@ -1037,8 +1054,13 @@ export const listRecommendationSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the enrollment (opt in and opt out) status of an account to the Cost Optimization Hub service.
  *

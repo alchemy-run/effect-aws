@@ -3399,13 +3399,17 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about all the managed data identifiers that Amazon Macie currently provides.
  */
-export const listManagedDataIdentifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedDataIdentifiers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedDataIdentifiersRequest,
     output: ListManagedDataIdentifiersResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+    } as const,
+  }));
 /**
  * Checks whether occurrences of sensitive data can be retrieved for a finding.
  */
@@ -3489,21 +3493,29 @@ export const getFindingStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a subset of information about all the allow lists for an account.
  */
-export const listAllowLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAllowListsRequest,
-  output: ListAllowListsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAllowLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAllowListsRequest,
+    output: ListAllowListsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "allowLists",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the status of automated sensitive data discovery for one or more accounts.
  */
 export const listAutomatedDiscoveryAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomatedDiscoveryAccountsRequest,
     output: ListAutomatedDiscoveryAccountsResponse,
     errors: [
@@ -3513,12 +3525,18 @@ export const listAutomatedDiscoveryAccounts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves a subset of information about the classification scope for an account.
  */
-export const listClassificationScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClassificationScopes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClassificationScopesRequest,
     output: ListClassificationScopesResponse,
     errors: [
@@ -3527,13 +3545,17 @@ export const listClassificationScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "classificationScopes",
+    } as const,
+  }));
 /**
  * Retrieves information about objects that Amazon Macie selected from an S3 bucket for automated sensitive data discovery.
  */
 export const listResourceProfileArtifacts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceProfileArtifactsRequest,
     output: ListResourceProfileArtifactsResponse,
     errors: [
@@ -3543,6 +3565,11 @@ export const listResourceProfileArtifacts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "artifacts",
+    } as const,
   }));
 /**
  * Updates the classification scope settings for an account.
@@ -3725,8 +3752,8 @@ export const getUsageTotals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a subset of information about the custom data identifiers for an account.
  */
-export const listCustomDataIdentifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomDataIdentifiers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomDataIdentifiersRequest,
     output: ListCustomDataIdentifiersResponse,
     errors: [
@@ -3738,45 +3765,65 @@ export const listCustomDataIdentifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a subset of information about all the findings filters for an account.
  */
-export const listFindingsFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFindingsFiltersRequest,
-  output: ListFindingsFiltersResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFindingsFilters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFindingsFiltersRequest,
+    output: ListFindingsFiltersResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findingsFilterListItems",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about the accounts that are associated with an Amazon Macie administrator account.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersRequest,
-  output: ListMembersResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersRequest,
+    output: ListMembersResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about the delegated Amazon Macie administrator account for an organization in Organizations.
  */
 export const listOrganizationAdminAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationAdminAccountsRequest,
     output: ListOrganizationAdminAccountsResponse,
     errors: [
@@ -3788,12 +3835,18 @@ export const listOrganizationAdminAccounts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "adminAccounts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves information about the types and amount of sensitive data that Amazon Macie found in an S3 bucket.
  */
 export const listResourceProfileDetections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceProfileDetectionsRequest,
     output: ListResourceProfileDetectionsResponse,
     errors: [
@@ -3804,12 +3857,18 @@ export const listResourceProfileDetections =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "detections",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves a subset of information about the sensitivity inspection template for an account.
  */
 export const listSensitivityInspectionTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSensitivityInspectionTemplatesRequest,
     output: ListSensitivityInspectionTemplatesResponse,
     errors: [
@@ -3819,6 +3878,12 @@ export const listSensitivityInspectionTemplates =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sensitivityInspectionTemplates",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves the criteria and other settings for a findings filter.
@@ -3872,35 +3937,51 @@ export const getMember = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a subset of information about one or more findings.
  */
-export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFindingsRequest,
-  output: ListFindingsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFindingsRequest,
+    output: ListFindingsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findingIds",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about Amazon Macie membership invitations that were received by an account.
  */
-export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvitationsRequest,
-  output: ListInvitationsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvitationsRequest,
+    output: ListInvitationsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "invitations",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds or updates the configuration settings for storing data classification results.
  */
@@ -4560,8 +4641,8 @@ export const getSensitiveDataOccurrences = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a subset of information about one or more classification jobs.
  */
-export const listClassificationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClassificationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClassificationJobsRequest,
     output: ListClassificationJobsResponse,
     errors: [
@@ -4573,24 +4654,37 @@ export const listClassificationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves (queries) quotas and aggregated usage data for one or more accounts.
  */
-export const getUsageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUsageStatisticsRequest,
-  output: GetUsageStatisticsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getUsageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUsageStatisticsRequest,
+    output: GetUsageStatisticsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "records",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates and defines the settings for a classification job.
  */
@@ -4612,35 +4706,51 @@ export const createClassificationJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves (queries) statistical data and other information about one or more S3 buckets that Amazon Macie monitors and analyzes for an account.
  */
-export const describeBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeBucketsRequest,
-  output: DescribeBucketsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeBuckets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeBucketsRequest,
+    output: DescribeBucketsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "buckets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves (queries) statistical data and other information about Amazon Web Services resources that Amazon Macie monitors and analyzes for an account.
  */
-export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchResourcesRequest,
-  output: SearchResourcesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchResourcesRequest,
+    output: SearchResourcesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "matchingResources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the details of one or more findings.
  */

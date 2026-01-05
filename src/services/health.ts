@@ -913,10 +913,16 @@ export const enableHealthServiceAccessForOrganization =
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
 export const describeAffectedAccountsForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAffectedAccountsForOrganizationRequest,
     output: DescribeAffectedAccountsForOrganizationResponse,
     errors: [InvalidPaginationToken],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "affectedAccounts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns the number of entities that are affected by each of the specified events.
@@ -944,13 +950,18 @@ export const describeEntityAggregatesForOrganization =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEventAggregates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEventAggregates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventAggregatesRequest,
     output: DescribeEventAggregatesResponse,
     errors: [InvalidPaginationToken],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "eventAggregates",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns detailed information about one or more specified events for one or more
  * Amazon Web Services accounts in your organization. This information includes standard event data (such as
@@ -1013,10 +1024,16 @@ export const describeEventDetailsForOrganization =
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
 export const describeEventsForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventsForOrganizationRequest,
     output: DescribeEventsForOrganizationResponse,
     errors: [InvalidPaginationToken, UnsupportedLocale],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns the event types that meet the specified filter criteria. You can use this API
@@ -1027,11 +1044,19 @@ export const describeEventsForOrganization =
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventTypesRequest,
-  output: DescribeEventTypesResponse,
-  errors: [InvalidPaginationToken, UnsupportedLocale],
-}));
+export const describeEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventTypesRequest,
+    output: DescribeEventTypesResponse,
+    errors: [InvalidPaginationToken, UnsupportedLocale],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "eventTypes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about events that meet the specified filter criteria. Events are
  * returned in a summary form and do not include the detailed description, any additional
@@ -1052,11 +1077,19 @@ export const describeEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - This API operation uses pagination. Specify the `nextToken` parameter in the next request to return more results.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsRequest,
-  output: DescribeEventsResponse,
-  errors: [InvalidPaginationToken, UnsupportedLocale],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsRequest,
+    output: DescribeEventsResponse,
+    errors: [InvalidPaginationToken, UnsupportedLocale],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of entities that have been affected by the specified events, based on the
  * specified filter criteria. Entities can refer to individual customer resources, groups of
@@ -1071,13 +1104,18 @@ export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - This operation supports resource-level permissions. You can use this operation to allow or deny access to specific Health events. For more
  * information, see Resource- and action-based conditions in the *Health User Guide*.
  */
-export const describeAffectedEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAffectedEntities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAffectedEntitiesRequest,
     output: DescribeAffectedEntitiesResponse,
     errors: [InvalidPaginationToken, UnsupportedLocale],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns detailed information about one or more specified events. Information includes
  * standard event data (Amazon Web Services Region, service, and so on, as returned by DescribeEvents), a detailed event description, and possible additional metadata
@@ -1115,8 +1153,14 @@ export const describeEventDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * information, see Resource- and action-based conditions in the *Health User Guide*.
  */
 export const describeAffectedEntitiesForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAffectedEntitiesForOrganizationRequest,
     output: DescribeAffectedEntitiesForOrganizationResponse,
     errors: [InvalidPaginationToken, UnsupportedLocale],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+      pageSize: "maxResults",
+    } as const,
   }));

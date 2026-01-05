@@ -4527,7 +4527,7 @@ export const createPromptRouter = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists test results for an Automated Reasoning policy, showing how the policy performed against various test scenarios and validation checks.
  */
 export const listAutomatedReasoningPolicyTestResults =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomatedReasoningPolicyTestResultsRequest,
     output: ListAutomatedReasoningPolicyTestResultsResponse,
     errors: [
@@ -4538,6 +4538,12 @@ export const listAutomatedReasoningPolicyTestResults =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "testResults",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Deploys a custom model for on-demand inference in Amazon Bedrock. After you deploy your custom model, you use the deployment's Amazon Resource Name (ARN) as the `modelId` parameter when you submit prompts and generate responses with model inference.
@@ -4822,7 +4828,7 @@ export const getAutomatedReasoningPolicyBuildWorkflow =
  * Lists tests for an Automated Reasoning policy. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
 export const listAutomatedReasoningPolicyTestCases =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomatedReasoningPolicyTestCasesRequest,
     output: ListAutomatedReasoningPolicyTestCasesResponse,
     errors: [
@@ -4832,6 +4838,12 @@ export const listAutomatedReasoningPolicyTestCases =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "testCases",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Updates a custom model deployment with a new custom model. This allows you to deploy updated models without creating new deployment endpoints.
@@ -5344,7 +5356,7 @@ export const getUseCaseForModelAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all Automated Reasoning policies in your account, with optional filtering by policy ARN. This helps you manage and discover existing policies.
  */
 export const listAutomatedReasoningPolicies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomatedReasoningPoliciesRequest,
     output: ListAutomatedReasoningPoliciesResponse,
     errors: [
@@ -5354,6 +5366,12 @@ export const listAutomatedReasoningPolicies =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automatedReasoningPolicySummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves the next test scenario for validating an Automated Reasoning policy. This is used during the interactive policy refinement process to test policy behavior.
@@ -5389,7 +5407,7 @@ export const getAutomatedReasoningPolicyTestCase =
  * Lists all build workflows for an Automated Reasoning policy, showing the history of policy creation and modification attempts.
  */
 export const listAutomatedReasoningPolicyBuildWorkflows =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutomatedReasoningPolicyBuildWorkflowsRequest,
     output: ListAutomatedReasoningPolicyBuildWorkflowsResponse,
     errors: [
@@ -5399,6 +5417,12 @@ export const listAutomatedReasoningPolicyBuildWorkflows =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "automatedReasoningPolicyBuildWorkflowSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Initiates a test workflow to validate Automated Reasoning policy tests. The workflow executes the specified tests against the policy and generates validation results.
@@ -5436,7 +5460,7 @@ export const getMarketplaceModelEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the endpoints for models from Amazon Bedrock Marketplace in your Amazon Web Services account.
  */
 export const listMarketplaceModelEndpoints =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMarketplaceModelEndpointsRequest,
     output: ListMarketplaceModelEndpointsResponse,
     errors: [
@@ -5446,6 +5470,12 @@ export const listMarketplaceModelEndpoints =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "marketplaceModelEndpoints",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves information about a custom model deployment, including its status, configuration, and metadata. Use this operation to monitor the deployment status and retrieve details needed for inference requests.
@@ -5484,8 +5514,8 @@ export const getCustomModelDeployment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - DeleteCustomModelDeployment
  */
-export const listCustomModelDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomModelDeployments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomModelDeploymentsRequest,
     output: ListCustomModelDeploymentsResponse,
     errors: [
@@ -5494,8 +5524,13 @@ export const listCustomModelDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelDeploymentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get the properties associated with a Amazon Bedrock custom model that you have created. For more information, see Custom models in the Amazon Bedrock User Guide.
  */
@@ -5515,21 +5550,29 @@ export const getCustomModel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information, see Custom models in the Amazon Bedrock User Guide.
  */
-export const listCustomModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCustomModelsRequest,
-  output: ListCustomModelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCustomModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCustomModelsRequest,
+    output: ListCustomModelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the account-level enforced guardrail configurations.
  */
 export const listEnforcedGuardrailsConfiguration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnforcedGuardrailsConfigurationRequest,
     output: ListEnforcedGuardrailsConfigurationResponse,
     errors: [
@@ -5539,6 +5582,11 @@ export const listEnforcedGuardrailsConfiguration =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "guardrailsConfig",
+    } as const,
   }));
 /**
  * Sets the account-level enforced guardrail configuration.
@@ -5578,17 +5626,25 @@ export const batchDeleteEvaluationJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You can set the maximum number of results to return in a response in the `maxResults` field. If there are more results than the number you set, the response returns a `nextToken` that you can send in another `ListGuardrails` request to see the next batch of results.
  */
-export const listGuardrails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGuardrailsRequest,
-  output: ListGuardrailsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGuardrails = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGuardrailsRequest,
+    output: ListGuardrailsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "guardrails",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about an inference profile. For more information, see Increase throughput and resilience with cross-region inference in Amazon Bedrock. in the Amazon Bedrock User Guide.
  */
@@ -5606,8 +5662,8 @@ export const getInferenceProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of inference profiles that you can use. For more information, see Increase throughput and resilience with cross-region inference in Amazon Bedrock. in the Amazon Bedrock User Guide.
  */
-export const listInferenceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInferenceProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceProfilesRequest,
     output: ListInferenceProfilesResponse,
     errors: [
@@ -5616,22 +5672,35 @@ export const listInferenceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "inferenceProfileSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of model copy jobs that you have submitted. You can filter the jobs to return based on one or more criteria. For more information, see Copy models to be used in other regions in the Amazon Bedrock User Guide.
  */
-export const listModelCopyJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelCopyJobsRequest,
-  output: ListModelCopyJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listModelCopyJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListModelCopyJobsRequest,
+    output: ListModelCopyJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelCopyJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets properties associated with a customized model you imported.
  */
@@ -5649,34 +5718,49 @@ export const getImportedModel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of models you've imported. You can filter the results to return based on one or more criteria. For more information, see Import a customized model in the Amazon Bedrock User Guide.
  */
-export const listImportedModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportedModelsRequest,
-  output: ListImportedModelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listImportedModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportedModelsRequest,
+    output: ListImportedModelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of import jobs you've submitted. You can filter the results to return based on one or more criteria. For more information, see Import a customized model in the Amazon Bedrock User Guide.
  */
-export const listModelImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelImportJobsRequest,
-  output: ListModelImportJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listModelImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListModelImportJobsRequest,
+    output: ListModelImportJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelImportJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all batch inference jobs in the account. For more information, see View details about a batch inference job.
  */
-export const listModelInvocationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelInvocationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelInvocationJobsRequest,
     output: ListModelInvocationJobsResponse,
     errors: [
@@ -5685,8 +5769,13 @@ export const listModelInvocationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "invocationJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists Amazon Bedrock foundation models that you can use. You can filter the results with the request parameters. For more information, see Foundation models in the Amazon Bedrock User Guide.
  */
@@ -5705,21 +5794,29 @@ export const listFoundationModels = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of prompt routers.
  */
-export const listPromptRouters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPromptRoutersRequest,
-  output: ListPromptRoutersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPromptRouters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPromptRoutersRequest,
+    output: ListPromptRoutersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "promptRouterSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Provisioned Throughputs in the account. For more information, see Provisioned Throughput in the Amazon Bedrock User Guide.
  */
 export const listProvisionedModelThroughputs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisionedModelThroughputsRequest,
     output: ListProvisionedModelThroughputsResponse,
     errors: [
@@ -5728,6 +5825,12 @@ export const listProvisionedModelThroughputs =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "provisionedModelSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Get information about the Foundation model availability.
@@ -5749,8 +5852,8 @@ export const getFoundationModelAvailability =
  *
  * For more information, see Custom models in the Amazon Bedrock User Guide.
  */
-export const listModelCustomizationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelCustomizationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelCustomizationJobsRequest,
     output: ListModelCustomizationJobsResponse,
     errors: [
@@ -5759,8 +5862,13 @@ export const listModelCustomizationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "modelCustomizationJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets details about a guardrail. If you don't specify a version, the response returns details for the `DRAFT` version.
  */
@@ -5933,16 +6041,24 @@ export const startAutomatedReasoningPolicyBuildWorkflow =
 /**
  * Lists all existing evaluation jobs.
  */
-export const listEvaluationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEvaluationJobsRequest,
-  output: ListEvaluationJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEvaluationJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEvaluationJobsRequest,
+    output: ListEvaluationJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the annotations for an Automated Reasoning policy build workflow. This allows you to modify extracted rules, variables, and types before finalizing the policy.
  */

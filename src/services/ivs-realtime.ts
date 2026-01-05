@@ -1589,30 +1589,39 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists all IngestConfigurations in your account, in the AWS region where the API request is processed.
  */
-export const listIngestConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIngestConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIngestConfigurationsRequest,
     output: ListIngestConfigurationsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ingestConfigurations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists events for a specified participant that occurred during a specified stage
  * session.
  */
-export const listParticipantEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listParticipantEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListParticipantEventsRequest,
     output: ListParticipantEventsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets summary information about all storage configurations in your account,
  * in the AWS region where the API request is processed.
  */
-export const listStorageConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStorageConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStorageConfigurationsRequest,
     output: ListStorageConfigurationsResponse,
     errors: [
@@ -1622,8 +1631,12 @@ export const listStorageConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceQuotaExceededException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Import a public key to be used for signing stage participant tokens.
  */
@@ -1851,60 +1864,99 @@ export const createStage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets summary information about all Compositions in your account, in the AWS region
  * where the API request is processed.
  */
-export const listCompositions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCompositionsRequest,
-  output: ListCompositionsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ValidationException,
-  ],
-}));
-/**
- * Lists all the replicas for a participant from a source stage.
- */
-export const listParticipantReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listCompositions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListParticipantReplicasRequest,
-    output: ListParticipantReplicasResponse,
-    errors: [AccessDeniedException, ValidationException],
+    input: ListCompositionsRequest,
+    output: ListCompositionsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }),
 );
 /**
+ * Lists all the replicas for a participant from a source stage.
+ */
+export const listParticipantReplicas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListParticipantReplicasRequest,
+    output: ListParticipantReplicasResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "replicas",
+      pageSize: "maxResults",
+    } as const,
+  }));
+/**
  * Lists all participants in a specified stage session.
  */
-export const listParticipants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListParticipantsRequest,
-  output: ListParticipantsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listParticipants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListParticipantsRequest,
+    output: ListParticipantsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets summary information about all public keys in your account, in the AWS region where the API request is processed.
  */
-export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPublicKeysRequest,
-  output: ListPublicKeysResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPublicKeysRequest,
+    output: ListPublicKeysResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "publicKeys",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets summary information about all stages in your account, in the AWS region where the
  * API request is processed.
  */
-export const listStages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listStages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStagesRequest,
   output: ListStagesResponse,
   errors: [AccessDeniedException, ConflictException, ValidationException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets all sessions for a specified stage.
  */
-export const listStageSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStageSessionsRequest,
-  output: ListStageSessionsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listStageSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStageSessionsRequest,
+    output: ListStageSessionsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds or updates tags for the AWS resource with the specified ARN.
  */
@@ -2102,8 +2154,8 @@ export const getStage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets summary information about all EncoderConfigurations in your account, in the AWS
  * region where the API request is processed.
  */
-export const listEncoderConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEncoderConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEncoderConfigurationsRequest,
     output: ListEncoderConfigurationsResponse,
     errors: [
@@ -2113,8 +2165,12 @@ export const listEncoderConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceQuotaExceededException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get information about the specified Composition resource.
  */

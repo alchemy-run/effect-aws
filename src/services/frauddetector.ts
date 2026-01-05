@@ -1892,16 +1892,22 @@ export const getKMSEncryptionKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * response as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResult,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResult,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates or updates an Amazon SageMaker model endpoint. You can also use this action to update the configuration of the model endpoint, including the IAM role and/or the mapped variables.
  */
@@ -1980,17 +1986,24 @@ export const getDetectorVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets all the elements in the specified list.
  */
-export const getListElements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetListElementsRequest,
-  output: GetListElementsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getListElements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetListElementsRequest,
+    output: GetListElementsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the details of the specified model version.
  */
@@ -2013,17 +2026,24 @@ export const getModelVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetVariablesResult` as part of your request. Null pagination token
  * fetches the records from the beginning.
  */
-export const getVariables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetVariablesRequest,
-  output: GetVariablesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getVariables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetVariablesRequest,
+    output: GetVariablesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates or updates an event type. An event is a business activity that is evaluated for fraud risk. With Amazon Fraud Detector, you generate fraud predictions for events. An event type defines the structure for an event sent to Amazon Fraud Detector. This includes the variables sent as part of the event, the entity performing the event (such as a customer), and the labels that classify the event. Example event types include online payment transactions, account registrations, and authentications.
  */
@@ -2742,22 +2762,29 @@ export const describeDetector = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * To get the next page results, provide the pagination token from the `GetBatchImportJobsResponse` as part of your request.
  * A null pagination token fetches the records from the beginning.
  */
-export const getBatchImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBatchImportJobsRequest,
-  output: GetBatchImportJobsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getBatchImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetBatchImportJobsRequest,
+    output: GetBatchImportJobsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets all batch prediction jobs or a specific job if you specify a job ID. This is a paginated API. If you provide a null maxResults, this action retrieves a maximum of 50 records per page. If you provide a maxResults, the value must be between 1 and 50. To get the next page results, provide the pagination token from the GetBatchPredictionJobsResponse as part of your request. A null pagination token fetches the records from the beginning.
  */
-export const getBatchPredictionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getBatchPredictionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetBatchPredictionJobsRequest,
     output: GetBatchPredictionJobsResult,
     errors: [
@@ -2767,8 +2794,12 @@ export const getBatchPredictionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets all detectors or a single detector if a `detectorId` is specified. This is a paginated API. If you
  * provide a null `maxResults`, this action retrieves a maximum of 10 records
@@ -2777,17 +2808,24 @@ export const getBatchPredictionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `GetDetectorsResponse` as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDetectorsRequest,
-  output: GetDetectorsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getDetectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDetectorsRequest,
+    output: GetDetectorsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets all entity types or a specific entity type if a name is specified. This is a paginated API. If you
  * provide a null `maxResults`, this action retrieves a maximum of 10 records
@@ -2796,17 +2834,24 @@ export const getDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetEntityTypesResponse` as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetEntityTypesRequest,
-  output: GetEntityTypesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetEntityTypesRequest,
+    output: GetEntityTypesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the details for one or more Amazon SageMaker models that have been imported into the
  * service. This is a paginated API. If you provide a null `maxResults`, this
@@ -2815,17 +2860,24 @@ export const getEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * results, provide the pagination token from the `GetExternalModelsResult` as part
  * of your request. A null pagination token fetches the records from the beginning.
  */
-export const getExternalModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetExternalModelsRequest,
-  output: GetExternalModelsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getExternalModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetExternalModelsRequest,
+    output: GetExternalModelsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets all labels or a specific label if name is provided. This is a paginated API. If you
  * provide a null `maxResults`, this action retrieves a maximum of 50 records
@@ -2834,7 +2886,7 @@ export const getExternalModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetGetLabelsResponse` as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getLabels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetLabelsRequest,
   output: GetLabelsResult,
   errors: [
@@ -2844,21 +2896,33 @@ export const getLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets the metadata of either all the lists under the account or the specified list.
  */
-export const getListsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetListsMetadataRequest,
-  output: GetListsMetadataResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getListsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetListsMetadataRequest,
+    output: GetListsMetadataResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets one or more models. Gets all models for the Amazon Web Services account if no model type and no model id provided. Gets all models for the Amazon Web Services account and model type, if the model type is specified but model id is not provided. Gets a specific model if (model type, model id) tuple is specified.
  *
@@ -2869,7 +2933,7 @@ export const getListsMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * response as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetModelsRequest,
   output: GetModelsResult,
   errors: [
@@ -2879,6 +2943,11 @@ export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets one or more outcomes. This is a paginated
@@ -2888,23 +2957,30 @@ export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetOutcomesResult` as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getOutcomes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetOutcomesRequest,
-  output: GetOutcomesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getOutcomes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetOutcomesRequest,
+    output: GetOutcomesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get all rules for a detector (paginated) if `ruleId` and `ruleVersion` are not specified. Gets all rules for the detector and the `ruleId` if present (paginated). Gets a specific rule if both the `ruleId` and the `ruleVersion` are specified.
  *
  * This is a paginated API. Providing null maxResults results in retrieving maximum of 100 records per page. If you provide maxResults the value must be between 50 and 100. To get the next page result, a provide a pagination token from GetRulesResult as part of your request. Null pagination token fetches the records from the beginning.
  */
-export const getRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetRulesRequest,
   output: GetRulesResult,
   errors: [
@@ -2914,6 +2990,11 @@ export const getRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Creates a batch of variables.
@@ -2950,17 +3031,24 @@ export const getEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `GetEventTypesResponse` as part of your request. A null pagination token
  * fetches the records from the beginning.
  */
-export const getEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetEventTypesRequest,
-  output: GetEventTypesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetEventTypesRequest,
+    output: GetEventTypesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of past predictions. The list can be filtered by detector ID, detector version ID, event ID, event type, or by specifying a time period.
  * If filter is not specified, the most recent prediction is returned.
@@ -2975,8 +3063,8 @@ export const getEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you provide a `maxResults`, the value must be between 50 and 100. To get the next page results, provide
  * the `nextToken` from the response as part of your request. A null `nextToken` fetches the records from the beginning.
  */
-export const listEventPredictions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEventPredictions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventPredictionsRequest,
     output: ListEventPredictionsResult,
     errors: [
@@ -2985,8 +3073,12 @@ export const listEventPredictions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a version of the model using the specified model type and model id.
  */
@@ -3036,8 +3128,8 @@ export const getEventPrediction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets all of the model versions for the specified model type or for the specified model type and model ID. You can also get details for a single, specified model version.
  */
-export const describeModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeModelVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeModelVersionsRequest,
     output: DescribeModelVersionsResult,
     errors: [
@@ -3047,5 +3139,9 @@ export const describeModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));

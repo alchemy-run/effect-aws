@@ -924,11 +924,18 @@ export class TagsAlreadyExistException extends S.TaggedError<TagsAlreadyExistExc
 /**
  * Lists the IDs of the applications that you are monitoring.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the INFO, WARN, and ERROR events for periodic configuration updates performed by
  * Application Insights. Examples of events represented are:
@@ -940,8 +947,8 @@ export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - ERROR: alarm not created due to permission errors or exceeding quotas.
  */
-export const listConfigurationHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationHistoryRequest,
     output: ListConfigurationHistoryResponse,
     errors: [
@@ -949,20 +956,31 @@ export const listConfigurationHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the workloads that are configured on a given component.
  */
-export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkloadsRequest,
-  output: ListWorkloadsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkloadsRequest,
+    output: ListWorkloadsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Add one or more tags (keys and values) to a specified application. A
  * *tag* is a label that you optionally define and associate with an
@@ -1190,51 +1208,79 @@ export const describeWorkload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the auto-grouped, standalone, and custom components of the application.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsRequest,
-  output: ListComponentsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsRequest,
+    output: ListComponentsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the log patterns in the specific log `LogPatternSet`.
  */
-export const listLogPatterns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLogPatternsRequest,
-  output: ListLogPatternsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listLogPatterns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLogPatternsRequest,
+    output: ListLogPatternsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the log pattern sets in the specific application.
  */
-export const listLogPatternSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLogPatternSetsRequest,
-  output: ListLogPatternSetsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listLogPatternSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLogPatternSetsRequest,
+    output: ListLogPatternSetsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the problems with your application.
  */
-export const listProblems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProblemsRequest,
-  output: ListProblemsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listProblems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProblemsRequest,
+    output: ListProblemsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve a list of the tags (keys and values) that are associated with a specified
  * application. A *tag* is a label that you optionally define and associate

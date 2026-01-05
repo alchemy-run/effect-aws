@@ -9100,8 +9100,8 @@ export const getUserProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the accounts in the specified account pool.
  */
-export const listAccountsInAccountPool = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountsInAccountPool =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountsInAccountPoolInput,
     output: ListAccountsInAccountPoolOutput,
     errors: [
@@ -9111,8 +9111,13 @@ export const listAccountsInAccountPool = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists tags for the specified resource in Amazon DataZone.
  */
@@ -9243,17 +9248,25 @@ export const getTimeSeriesDataPoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - The asset must have at least one filter created to return results.
  */
-export const listAssetFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetFiltersInput,
-  output: ListAssetFiltersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAssetFilters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssetFiltersInput,
+    output: ListAssetFiltersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the revisions for the asset.
  *
@@ -9267,17 +9280,24 @@ export const listAssetFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - User must have permissions on the asset and domain.
  */
-export const listAssetRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetRevisionsInput,
-  output: ListAssetRevisionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAssetRevisions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssetRevisionsInput,
+    output: ListAssetRevisionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists data product revisions.
  *
@@ -9289,8 +9309,8 @@ export const listAssetRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - The domain must be in a valid and accessible state.
  */
-export const listDataProductRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataProductRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataProductRevisionsInput,
     output: ListDataProductRevisionsOutput,
     errors: [
@@ -9300,13 +9320,18 @@ export const listDataProductRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists blueprints in an Amazon DataZone environment.
  */
-export const listEnvironmentBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentBlueprints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentBlueprintsInput,
     output: ListEnvironmentBlueprintsOutput,
     errors: [
@@ -9316,27 +9341,40 @@ export const listEnvironmentBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists job runs.
  */
-export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobRunsInput,
-  output: ListJobRunsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobRunsInput,
+    output: ListJobRunsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the history of the specified data lineage node.
  */
-export const listLineageNodeHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLineageNodeHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLineageNodeHistoryInput,
     output: ListLineageNodeHistoryOutput,
     errors: [
@@ -9346,13 +9384,18 @@ export const listLineageNodeHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "nodes",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists subscription grants.
  */
-export const listSubscriptionGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubscriptionGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubscriptionGrantsInput,
     output: ListSubscriptionGrantsOutput,
     errors: [
@@ -9362,27 +9405,40 @@ export const listSubscriptionGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists subscriptions in Amazon DataZone.
  */
-export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubscriptionsInput,
-  output: ListSubscriptionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSubscriptionsInput,
+    output: ListSubscriptionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists subscription targets in Amazon DataZone.
  */
-export const listSubscriptionTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubscriptionTargets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubscriptionTargetsInput,
     output: ListSubscriptionTargetsOutput,
     errors: [
@@ -9392,13 +9448,18 @@ export const listSubscriptionTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists time series data points.
  */
-export const listTimeSeriesDataPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTimeSeriesDataPoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTimeSeriesDataPointsInput,
     output: ListTimeSeriesDataPointsOutput,
     errors: [
@@ -9408,8 +9469,13 @@ export const listTimeSeriesDataPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Rejects automatically generated business-friendly metadata for your Amazon DataZone assets.
  */
@@ -9428,60 +9494,91 @@ export const rejectPredictions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches group profiles in Amazon DataZone.
  */
-export const searchGroupProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchGroupProfilesInput,
-  output: SearchGroupProfilesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const searchGroupProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: SearchGroupProfilesInput,
+    output: SearchGroupProfilesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches user profiles in Amazon DataZone.
  */
-export const searchUserProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchUserProfilesInput,
-  output: SearchUserProfilesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const searchUserProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchUserProfilesInput,
+    output: SearchUserProfilesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists existing account pools.
  */
-export const listAccountPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountPoolsInput,
-  output: ListAccountPoolsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAccountPools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountPoolsInput,
+    output: ListAccountPoolsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists connections. In Amazon DataZone, a connection enables you to connect your resources (domains, projects, and environments) to external resources and services.
  */
-export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectionsInput,
-  output: ListConnectionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectionsInput,
+    output: ListConnectionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists existing environment actions.
  */
-export const listEnvironmentActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentActionsInput,
     output: ListEnvironmentActionsOutput,
     errors: [
@@ -9490,13 +9587,18 @@ export const listEnvironmentActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists Amazon DataZone environment profiles.
  */
-export const listEnvironmentProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentProfilesInput,
     output: ListEnvironmentProfilesOutput,
     errors: [
@@ -9505,60 +9607,96 @@ export const listEnvironmentProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists Amazon DataZone environments.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsInput,
-  output: ListEnvironmentsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsInput,
+    output: ListEnvironmentsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists policy grants.
  */
-export const listPolicyGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyGrantsInput,
-  output: ListPolicyGrantsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPolicyGrants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyGrantsInput,
+    output: ListPolicyGrantsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "grantList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists project profiles.
  */
-export const listProjectProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectProfilesInput,
-  output: ListProjectProfilesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProjectProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListProjectProfilesInput,
+    output: ListProjectProfilesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists Amazon DataZone projects.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsInput,
-  output: ListProjectsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsInput,
+    output: ListProjectsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the status of the specified subscription grant status in Amazon DataZone.
  */
@@ -9602,8 +9740,8 @@ export const getAsset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists child domain units for the specified parent domain unit.
  */
-export const listDomainUnitsForParent = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainUnitsForParent =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainUnitsForParentInput,
     output: ListDomainUnitsForParentOutput,
     errors: [
@@ -9612,8 +9750,13 @@ export const listDomainUnitsForParent = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a metadata form type in Amazon DataZone.
  *
@@ -9679,8 +9822,8 @@ export const getMetadataGenerationRun = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - User must have access to metadata generation runs in the domain.
  */
-export const listMetadataGenerationRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMetadataGenerationRuns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMetadataGenerationRunsInput,
     output: ListMetadataGenerationRunsOutput,
     errors: [
@@ -9690,12 +9833,17 @@ export const listMetadataGenerationRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists existing rules. In Amazon DataZone, a rule is a formal agreement that enforces specific requirements across user workflows (e.g., publishing assets to the catalog, requesting subscriptions, creating projects) within the Amazon DataZone data portal. These rules help maintain consistency, ensure compliance, and uphold governance standards in data management processes. For instance, a metadata enforcement rule can specify the required information for creating a subscription request or publishing a data asset to the catalog, ensuring alignment with organizational standards.
  */
-export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesInput,
   output: ListRulesOutput,
   errors: [
@@ -9705,6 +9853,12 @@ export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Tags a resource in Amazon DataZone.
@@ -9722,7 +9876,7 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists blueprint configurations for a Amazon DataZone environment.
  */
 export const listEnvironmentBlueprintConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentBlueprintConfigurationsInput,
     output: ListEnvironmentBlueprintConfigurationsOutput,
     errors: [
@@ -9731,6 +9885,12 @@ export const listEnvironmentBlueprintConfigurations =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Removes a policy grant.
@@ -9843,21 +10003,29 @@ export const getEnvironment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the entity (domain units) owners.
  */
-export const listEntityOwners = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntityOwnersInput,
-  output: ListEntityOwnersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEntityOwners = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntityOwnersInput,
+    output: ListEntityOwnersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "owners",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists Amazon DataZone subscription requests.
  */
-export const listSubscriptionRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubscriptionRequests =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubscriptionRequestsInput,
     output: ListSubscriptionRequestsOutput,
     errors: [
@@ -9867,8 +10035,13 @@ export const listSubscriptionRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for types in Amazon DataZone.
  *
@@ -9886,16 +10059,24 @@ export const listSubscriptionRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Filters contain correct structure (attribute, value, operator).
  */
-export const searchTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchTypesInput,
-  output: SearchTypesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchTypesInput,
+    output: SearchTypesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets an Amazon DataZone asset type.
  *
@@ -9981,19 +10162,27 @@ export const putEnvironmentBlueprintConfiguration =
 /**
  * Lists data sources in Amazon DataZone.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesInput,
-  output: ListDataSourcesOutput,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesInput,
+    output: ListDataSourcesOutput,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Start the run of the specified data source in Amazon DataZone.
  */
@@ -10029,19 +10218,27 @@ export const getDataSourceRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists data source runs in Amazon DataZone.
  */
-export const listDataSourceRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourceRunsInput,
-  output: ListDataSourceRunsOutput,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSourceRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourceRunsInput,
+    output: ListDataSourceRunsOutput,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an Amazon DataZone domain.
  */
@@ -10061,19 +10258,27 @@ export const createDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists Amazon DataZone domains.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsInput,
-  output: ListDomainsOutput,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsInput,
+    output: ListDomainsOutput,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a metadata form type.
  *
@@ -10562,8 +10767,8 @@ export const createSubscriptionRequest = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists data source run activities.
  */
-export const listDataSourceRunActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSourceRunActivities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSourceRunActivitiesInput,
     output: ListDataSourceRunActivitiesOutput,
     errors: [
@@ -10575,8 +10780,13 @@ export const listDataSourceRunActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates an asset in Amazon DataZone catalog.
  *
@@ -10689,21 +10899,29 @@ export const getJobRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Amazon DataZone notifications.
  */
-export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNotificationsInput,
-  output: ListNotificationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNotificationsInput,
+    output: ListNotificationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "notifications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all members of the specified project.
  */
-export const listProjectMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProjectMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProjectMembershipsInput,
     output: ListProjectMembershipsOutput,
     errors: [
@@ -10713,8 +10931,13 @@ export const listProjectMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the specified project in Amazon DataZone.
  */
@@ -10810,16 +11033,24 @@ export const cancelSubscription = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists lineage events.
  */
-export const listLineageEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLineageEventsInput,
-  output: ListLineageEventsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLineageEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLineageEventsInput,
+    output: ListLineageEventsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a connection. In Amazon DataZone, a connection enables you to connect your resources (domains, projects, and environments) to external resources and services.
  */
@@ -10899,7 +11130,7 @@ export const createAssetFilter = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - For paginated results, be prepared to use --next-token to fetch additional pages.
  */
-export const search = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const search = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchInput,
   output: SearchOutput,
   errors: [
@@ -10908,6 +11139,12 @@ export const search = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Creates a new connection. In Amazon DataZone, a connection enables you to connect your resources (domains, projects, and environments) to external resources and services.
@@ -10940,13 +11177,21 @@ export const createConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * To find out whether an attribute has been annotated and indexed for a given search type, use the GetFormType API to retrieve the form containing the attribute.
  */
-export const searchListings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchListingsInput,
-  output: SearchListingsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchListings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchListingsInput,
+    output: SearchListingsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

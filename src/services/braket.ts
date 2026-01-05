@@ -891,20 +891,28 @@ export const getDevice = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches for devices using the specified filters.
  */
-export const searchDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchDevicesRequest,
-  output: SearchDevicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchDevicesRequest,
+    output: SearchDevicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for Amazon Braket hybrid jobs that match the specified filter values.
  */
-export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchJobsRequest,
   output: SearchJobsResponse,
   errors: [
@@ -913,20 +921,34 @@ export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobs",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Searches for tasks that match the specified filter values.
  */
-export const searchQuantumTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchQuantumTasksRequest,
-  output: SearchQuantumTasksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchQuantumTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchQuantumTasksRequest,
+    output: SearchQuantumTasksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "quantumTasks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a spending limit for a specified quantum device. Spending limits help you control costs by setting maximum amounts that can be spent on quantum computing tasks within a specified time period. Simulators do not support spending limits.
  */
@@ -944,8 +966,8 @@ export const createSpendingLimit = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches and lists spending limits based on specified filters. This operation supports pagination and allows filtering by various criteria to find specific spending limits. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const searchSpendingLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchSpendingLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchSpendingLimitsRequest,
     output: SearchSpendingLimitsResponse,
     errors: [
@@ -954,8 +976,13 @@ export const searchSpendingLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "spendingLimits",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the specified Amazon Braket hybrid job.
  */

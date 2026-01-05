@@ -2599,20 +2599,34 @@ export const joinDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `DescribeCacheReport` action, such as report name, status, completion
  * progress, start time, end time, filters, and tags.
  */
-export const listCacheReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCacheReportsInput,
-  output: ListCacheReportsOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listCacheReports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCacheReportsInput,
+    output: ListCacheReportsOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "CacheReportList",
+    } as const,
+  }),
+);
 /**
  * Lists the tags that have been added to the specified resource. This operation is
  * supported in storage gateways of all types.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceInput,
-  output: ListTagsForResourceOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceInput,
+    output: ListTagsForResourceOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tags",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Lists iSCSI initiators that are connected to a volume. You can use this operation to
  * determine whether a volume is being used or not. This operation is only supported in the
@@ -3149,13 +3163,18 @@ export const describeStorediSCSIVolumes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If a specific `TapeARN` is not specified, Storage Gateway returns a
  * description of all virtual tapes found in the VTS associated with your account.
  */
-export const describeTapeArchives = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTapeArchives =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTapeArchivesInput,
     output: DescribeTapeArchivesOutput,
     errors: [InternalServerError, InvalidGatewayRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TapeArchives",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a list of virtual tape recovery points that are available for the specified tape
  * gateway.
@@ -3165,13 +3184,18 @@ export const describeTapeArchives = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * points can be recovered to a new gateway. This operation is only supported in the tape
  * gateway type.
  */
-export const describeTapeRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTapeRecoveryPoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTapeRecoveryPointsInput,
     output: DescribeTapeRecoveryPointsOutput,
     errors: [InternalServerError, InvalidGatewayRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TapeRecoveryPointInfos",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a description of virtual tapes that correspond to the specified Amazon Resource
  * Names (ARNs). If `TapeARN` is not specified, returns a description of the
@@ -3185,11 +3209,19 @@ export const describeTapeRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `Marker` value in your subsequent request to retrieve the next set of
  * tapes.
  */
-export const describeTapes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTapesInput,
-  output: DescribeTapesOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const describeTapes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTapesInput,
+    output: DescribeTapesOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Tapes",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Lists the automatic tape creation policies for a gateway. If there are no automatic tape
  * creation policies for the gateway, it returns an empty list.
@@ -3207,23 +3239,36 @@ export const listAutomaticTapeCreationPolicies =
  * shares that belong to the calling Amazon Web Services account. This operation is only
  * supported for S3 File Gateways.
  */
-export const listFileShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFileSharesInput,
-  output: ListFileSharesOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listFileShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFileSharesInput,
+    output: ListFileSharesOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FileShareInfoList",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Gets a list of `FileSystemAssociationSummary` objects. Each object contains a
  * summary of a file system association. This operation is only supported for FSx File
  * Gateways.
  */
-export const listFileSystemAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFileSystemAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFileSystemAssociationsInput,
     output: ListFileSystemAssociationsOutput,
     errors: [InternalServerError, InvalidGatewayRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FileSystemAssociationSummaryList",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Lists gateways owned by an Amazon Web Services account in an Amazon Web Services Region
  * specified in the request. The returned list is ordered by gateway Amazon Resource Name
@@ -3237,11 +3282,19 @@ export const listFileSystemAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * only a truncated list of your gateways), the response contains a marker that you can
  * specify in your next request to fetch the next page of gateways.
  */
-export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewaysInput,
-  output: ListGatewaysOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewaysInput,
+    output: ListGatewaysOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Gateways",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the gateway's local disks. To specify which gateway to describe,
  * you use the Amazon Resource Name (ARN) of the gateway in the body of the request.
@@ -3269,11 +3322,19 @@ export const listLocalDisks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `Marker` element that you can use in your subsequent request to retrieve the
  * next set of tape pools.
  */
-export const listTapePools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTapePoolsInput,
-  output: ListTapePoolsOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listTapePools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTapePoolsInput,
+    output: ListTapePoolsOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PoolInfos",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Lists virtual tapes in your virtual tape library (VTL) and your virtual tape shelf
  * (VTS). You specify the tapes to list by specifying one or more tape Amazon Resource Names
@@ -3287,10 +3348,16 @@ export const listTapePools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * subsequent request to retrieve the next set of tapes. This operation is only supported in
  * the tape gateway type.
  */
-export const listTapes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTapes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTapesInput,
   output: ListTapesOutput,
   errors: [InternalServerError, InvalidGatewayRequestException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "TapeInfos",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Lists the recovery points for a specified gateway. This operation is only supported in
@@ -3320,11 +3387,19 @@ export const listVolumeRecoveryPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * subsequent request to retrieve the next set of volumes. This operation is only supported in
  * the cached volume and stored volume gateway types.
  */
-export const listVolumes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVolumesInput,
-  output: ListVolumesOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const listVolumes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVolumesInput,
+    output: ListVolumesOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "VolumeInfos",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Starts generating a report of the file metadata currently cached by an S3 File Gateway for a specific file share. You can use this report to identify and resolve
  * issues if you have files failing upload from your gateway to Amazon S3. The report
@@ -3456,11 +3531,19 @@ export const describeFileSystemAssociations =
  *
  * This operation is only supported in the tape gateway type.
  */
-export const describeVTLDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeVTLDevicesInput,
-  output: DescribeVTLDevicesOutput,
-  errors: [InternalServerError, InvalidGatewayRequestException],
-}));
+export const describeVTLDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeVTLDevicesInput,
+    output: DescribeVTLDevicesOutput,
+    errors: [InternalServerError, InvalidGatewayRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "VTLDevices",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Initiates a snapshot of a volume.
  *

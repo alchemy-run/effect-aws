@@ -913,7 +913,7 @@ export const deleteAppMonitor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the list of metrics and dimensions that a RUM app monitor is sending to a single destination.
  */
 export const batchGetRumMetricDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: BatchGetRumMetricDefinitionsRequest,
     output: BatchGetRumMetricDefinitionsResponse,
     errors: [
@@ -922,14 +922,20 @@ export const batchGetRumMetricDefinitions =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MetricDefinitions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of destinations that you have created to receive RUM extended metrics, for the specified app monitor.
  *
  * For more information about extended metrics, see AddRumMetrics.
  */
-export const listRumMetricsDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRumMetricsDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRumMetricsDestinationsRequest,
     output: ListRumMetricsDestinationsResponse,
     errors: [
@@ -938,8 +944,13 @@ export const listRumMetricsDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Destinations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Displays the tags associated with a CloudWatch RUM resource.
  */
@@ -1013,16 +1024,24 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the Amazon CloudWatch RUM app monitors in the account.
  */
-export const listAppMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppMonitorsRequest,
-  output: ListAppMonitorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAppMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppMonitorsRequest,
+    output: ListAppMonitorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AppMonitorSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes the specified metrics from being sent to an extended metrics destination.
  *
@@ -1046,17 +1065,25 @@ export const batchDeleteRumMetricDefinitions =
 /**
  * Retrieves the raw performance events that RUM has collected from your web application, so that you can do your own processing or analysis of this data.
  */
-export const getAppMonitorData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAppMonitorDataRequest,
-  output: GetAppMonitorDataResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getAppMonitorData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAppMonitorDataRequest,
+    output: GetAppMonitorDataResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Sends telemetry events about your application performance and user behavior to CloudWatch RUM. The code snippet that RUM generates for you to add to your application includes `PutRumEvents` operations to send this data to RUM.
  *

@@ -3592,8 +3592,8 @@ export const deleteAgentRuntime = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all endpoints for a specific Amazon Secure Agent.
  */
-export const listAgentRuntimeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAgentRuntimeEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAgentRuntimeEndpointsRequest,
     output: ListAgentRuntimeEndpointsResponse,
     errors: [
@@ -3602,8 +3602,13 @@ export const listAgentRuntimeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "runtimeEndpoints",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a new OAuth2 credential provider.
  */
@@ -3628,17 +3633,25 @@ export const createOauth2CredentialProvider =
 /**
  * Lists the available Amazon Bedrock AgentCore Memory resources in the current Amazon Web Services Region.
  */
-export const listMemories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMemoriesInput,
-  output: ListMemoriesOutput,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ServiceException,
-    ThrottledException,
-    ValidationException,
-  ],
-}));
+export const listMemories = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMemoriesInput,
+    output: ListMemoriesOutput,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ServiceException,
+      ThrottledException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memories",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a custom code interpreter.
  */
@@ -3675,8 +3688,8 @@ export const getOnlineEvaluationConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of generated policy assets from a policy generation request within the AgentCore Policy system. This operation returns the actual Cedar policies and related artifacts produced by the AI-powered policy generation process, allowing users to review and select from multiple generated policy options.
  */
-export const listPolicyGenerationAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPolicyGenerationAssets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPolicyGenerationAssetsRequest,
     output: ListPolicyGenerationAssetsResponse,
     errors: [
@@ -3686,8 +3699,13 @@ export const listPolicyGenerationAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policyGenerationAssets",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a policy within the AgentCore Policy system. Policies provide real-time, deterministic control over agentic interactions with AgentCore Gateway. Using the Cedar policy language, you can define fine-grained policies that specify which interactions with Gateway tools are permitted based on input parameters and OAuth claims, ensuring agents operate within defined boundaries and business rules. The policy is validated during creation against the Cedar schema generated from the Gateway's tools' input schemas, which defines the available tools, their parameters, and expected data types. This is an asynchronous operation. Use the GetPolicy operation to poll the `status` field to track completion.
  */
@@ -3775,8 +3793,8 @@ export const startPolicyGeneration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of policy generation requests within the AgentCore Policy system. This operation supports pagination and filtering to help track and manage AI-powered policy generation operations.
  */
-export const listPolicyGenerations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPolicyGenerations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPolicyGenerationsRequest,
     output: ListPolicyGenerationsResponse,
     errors: [
@@ -3786,22 +3804,35 @@ export const listPolicyGenerations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policyGenerations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of policies within the AgentCore Policy engine. This operation supports pagination and filtering to help administrators manage and discover policies across policy engines. Results can be filtered by policy engine or resource associations.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policies",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the resource-based policy for a specified resource.
  *
@@ -3886,8 +3917,8 @@ export const getAgentRuntimeEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all versions of a specific Amazon Secure Agent.
  */
-export const listAgentRuntimeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAgentRuntimeVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAgentRuntimeVersionsRequest,
     output: ListAgentRuntimeVersionsResponse,
     errors: [
@@ -3897,8 +3928,13 @@ export const listAgentRuntimeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentRuntimes",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves detailed information about an evaluator, including its configuration, status, and metadata. Works with both built-in and custom evaluators.
  */
@@ -4256,34 +4292,50 @@ export const deletePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Amazon Secure Agents in your account.
  */
-export const listAgentRuntimes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAgentRuntimesRequest,
-  output: ListAgentRuntimesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAgentRuntimes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAgentRuntimesRequest,
+    output: ListAgentRuntimesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentRuntimes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all custom browsers in your account.
  */
-export const listBrowsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBrowsersRequest,
-  output: ListBrowsersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBrowsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBrowsersRequest,
+    output: ListBrowsersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "browserSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all custom code interpreters in your account.
  */
-export const listCodeInterpreters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCodeInterpreters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCodeInterpretersRequest,
     output: ListCodeInterpretersResponse,
     errors: [
@@ -4292,52 +4344,81 @@ export const listCodeInterpreters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "codeInterpreterSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all available evaluators, including both builtin evaluators provided by the service and custom evaluators created by the user.
  */
-export const listEvaluators = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEvaluatorsRequest,
-  output: ListEvaluatorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEvaluators = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEvaluatorsRequest,
+    output: ListEvaluatorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "evaluators",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all gateways in the account.
  */
-export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewaysRequest,
-  output: ListGatewaysResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewaysRequest,
+    output: ListGatewaysResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all targets for a specific gateway.
  */
-export const listGatewayTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewayTargetsRequest,
-  output: ListGatewayTargetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGatewayTargets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewayTargetsRequest,
+    output: ListGatewayTargetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all online evaluation configurations in the account, providing summary information about each configuration's status and settings.
  */
-export const listOnlineEvaluationConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOnlineEvaluationConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOnlineEvaluationConfigsRequest,
     output: ListOnlineEvaluationConfigsResponse,
     errors: [
@@ -4346,21 +4427,34 @@ export const listOnlineEvaluationConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "onlineEvaluationConfigs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of policy engines within the AgentCore Policy system. This operation supports pagination to help administrators discover and manage policy engines across their account. Each policy engine serves as a container for related policies.
  */
-export const listPolicyEngines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyEnginesRequest,
-  output: ListPolicyEnginesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPolicyEngines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyEnginesRequest,
+    output: ListPolicyEnginesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "policyEngines",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the resource-based policy for a specified resource.
  *
@@ -4482,7 +4576,7 @@ export const getApiKeyCredentialProvider = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all API key credential providers in your account.
  */
 export const listApiKeyCredentialProviders =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApiKeyCredentialProvidersRequest,
     output: ListApiKeyCredentialProvidersResponse,
     errors: [
@@ -4493,12 +4587,18 @@ export const listApiKeyCredentialProviders =
       UnauthorizedException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "credentialProviders",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all OAuth2 credential providers in your account.
  */
 export const listOauth2CredentialProviders =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOauth2CredentialProvidersRequest,
     output: ListOauth2CredentialProvidersResponse,
     errors: [
@@ -4509,12 +4609,18 @@ export const listOauth2CredentialProviders =
       UnauthorizedException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "credentialProviders",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all workload identities in your account.
  */
-export const listWorkloadIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkloadIdentities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkloadIdentitiesRequest,
     output: ListWorkloadIdentitiesResponse,
     errors: [
@@ -4525,8 +4631,13 @@ export const listWorkloadIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workloadIdentities",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about a token vault.
  */

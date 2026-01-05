@@ -2178,7 +2178,7 @@ export const getSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * of these conditions are met, no data is listed for that control.
  */
 export const listAssessmentControlInsightsByControlDomain =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssessmentControlInsightsByControlDomainRequest,
     output: ListAssessmentControlInsightsByControlDomainResponse,
     errors: [
@@ -2187,15 +2187,31 @@ export const listAssessmentControlInsightsByControlDomain =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of current and past assessments from Audit Manager.
  */
-export const listAssessments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssessmentsRequest,
-  output: ListAssessmentsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listAssessments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssessmentsRequest,
+    output: ListAssessmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a control within an assessment in Audit Manager.
  */
@@ -2231,8 +2247,8 @@ export const updateAssessmentFramework = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of keywords that are pre-mapped to the specified control data
  * source.
  */
-export const listKeywordsForDataSource = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listKeywordsForDataSource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListKeywordsForDataSourceRequest,
     output: ListKeywordsForDataSourceResponse,
     errors: [
@@ -2240,21 +2256,36 @@ export const listKeywordsForDataSource = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of delegations from an audit owner to a delegate.
  */
-export const getDelegations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDelegationsRequest,
-  output: GetDelegationsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const getDelegations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDelegationsRequest,
+    output: GetDelegationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets all evidence from a specified evidence folder in Audit Manager.
  */
-export const getEvidenceByEvidenceFolder = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getEvidenceByEvidenceFolder =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetEvidenceByEvidenceFolderRequest,
     output: GetEvidenceByEvidenceFolderResponse,
     errors: [
@@ -2263,8 +2294,12 @@ export const getEvidenceByEvidenceFolder = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a presigned Amazon S3 URL that can be used to upload a file as manual
  * evidence. For instructions on how to use this operation, see Upload a file from your browser in the Audit Manager User
@@ -2325,8 +2360,8 @@ export const getInsightsByAssessment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of the frameworks that are available in the Audit Manager framework
  * library.
  */
-export const listAssessmentFrameworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssessmentFrameworks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssessmentFrameworksRequest,
     output: ListAssessmentFrameworksResponse,
     errors: [
@@ -2334,13 +2369,17 @@ export const listAssessmentFrameworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of sent or received share requests for custom frameworks in Audit Manager.
  */
 export const listAssessmentFrameworkShareRequests =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssessmentFrameworkShareRequestsRequest,
     output: ListAssessmentFrameworkShareRequestsResponse,
     errors: [
@@ -2348,12 +2387,17 @@ export const listAssessmentFrameworkShareRequests =
       InternalServerException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of assessment reports created in Audit Manager.
  */
-export const listAssessmentReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssessmentReports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssessmentReportsRequest,
     output: ListAssessmentReportsResponse,
     errors: [
@@ -2361,8 +2405,12 @@ export const listAssessmentReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the latest analytics data for control domains across all of your active
  * assessments.
@@ -2379,8 +2427,8 @@ export const listAssessmentReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `controlDomainInsights`. If this condition isn’t met, no data is listed
  * for that control domain.
  */
-export const listControlDomainInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listControlDomainInsights =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListControlDomainInsightsRequest,
     output: ListControlDomainInsightsResponse,
     errors: [
@@ -2389,8 +2437,12 @@ export const listControlDomainInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the latest analytics data for controls within a specific control domain across all
  * active assessments.
@@ -2401,7 +2453,7 @@ export const listControlDomainInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * is listed for that control.
  */
 export const listControlInsightsByControlDomain =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListControlInsightsByControlDomainRequest,
     output: ListControlInsightsByControlDomainResponse,
     errors: [
@@ -2410,23 +2462,50 @@ export const listControlInsightsByControlDomain =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of controls from Audit Manager.
  */
-export const listControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListControlsRequest,
-  output: ListControlsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listControls = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListControlsRequest,
+    output: ListControlsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all Audit Manager notifications.
  */
-export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNotificationsRequest,
-  output: ListNotificationsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listNotifications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNotificationsRequest,
+    output: ListNotificationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the status of a control set in an Audit Manager assessment.
  */
@@ -2466,7 +2545,7 @@ export const updateSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets the evidence folders from a specified assessment in Audit Manager.
  */
 export const getEvidenceFoldersByAssessment =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetEvidenceFoldersByAssessmentRequest,
     output: GetEvidenceFoldersByAssessmentResponse,
     errors: [
@@ -2475,13 +2554,18 @@ export const getEvidenceFoldersByAssessment =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets a list of evidence folders that are associated with a specified control in an
  * Audit Manager assessment.
  */
 export const getEvidenceFoldersByAssessmentControl =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetEvidenceFoldersByAssessmentControlRequest,
     output: GetEvidenceFoldersByAssessmentControlResponse,
     errors: [
@@ -2490,6 +2574,11 @@ export const getEvidenceFoldersByAssessmentControl =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists analytics data for control domains within a specified active assessment.
@@ -2507,7 +2596,7 @@ export const getEvidenceFoldersByAssessmentControl =
  * for that domain.
  */
 export const listControlDomainInsightsByAssessment =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListControlDomainInsightsByAssessmentRequest,
     output: ListControlDomainInsightsByAssessmentResponse,
     errors: [
@@ -2516,6 +2605,11 @@ export const listControlDomainInsightsByAssessment =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of tags for the specified resource in Audit Manager.
@@ -2948,16 +3042,23 @@ export const getAssessmentReportUrl = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets a list of changelogs from Audit Manager.
  */
-export const getChangeLogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetChangeLogsRequest,
-  output: GetChangeLogsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const getChangeLogs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetChangeLogsRequest,
+    output: GetChangeLogsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about a specified control.
  */

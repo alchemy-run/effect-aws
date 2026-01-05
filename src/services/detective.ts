@@ -1159,17 +1159,28 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  * invitation. The results also do not include behavior graphs that the member account
  * resigned from or was removed from.
  */
-export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvitationsRequest,
-  output: ListInvitationsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listInvitations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvitationsRequest,
+    output: ListInvitationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the Detective administrator account for an
  * organization. Can only be called by the organization management account.
  */
 export const listOrganizationAdminAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationAdminAccountsRequest,
     output: ListOrganizationAdminAccountsResponse,
     errors: [
@@ -1178,6 +1189,11 @@ export const listOrganizationAdminAccounts =
       TooManyRequestsException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Designates the Detective administrator account for the organization in the
@@ -1266,16 +1282,23 @@ export const getInvestigation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * that the Detective administrator account has not enabled as member
  * accounts.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersRequest,
-  output: ListMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersRequest,
+    output: ListMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the tag values that are assigned to a behavior graph.
  */
@@ -1495,10 +1518,15 @@ export const disassociateMembership = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Because an account can currently only be the administrator of one behavior graph within
  * a Region, the results always contain a single behavior graph.
  */
-export const listGraphs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGraphs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGraphsRequest,
   output: ListGraphsResponse,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a new behavior graph for the calling account, and sets that account as the
@@ -1527,8 +1555,8 @@ export const createGraph = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists data source packages in the behavior graph.
  */
-export const listDatasourcePackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDatasourcePackages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDatasourcePackagesRequest,
     output: ListDatasourcePackagesResponse,
     errors: [
@@ -1537,8 +1565,12 @@ export const listDatasourcePackages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts a data source package for the Detective behavior graph.
  */

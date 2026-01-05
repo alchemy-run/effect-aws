@@ -7,7 +7,7 @@
  */
 
 import { expect } from "@effect/vitest";
-import { Effect, Option } from "effect";
+import { Effect, Option, Stream } from "effect";
 import {
   createDistribution,
   createInvalidation,
@@ -418,5 +418,31 @@ test(
         expect(projectTag?.Value).toEqual("itty-aws");
       }),
     );
+  }),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listDistributions.pages() streams full response pages with nested items",
+  Effect.gen(function* () {
+    // CloudFront uses nested paths (DistributionList.Items) so we use .pages()
+    // and extract distributions from the nested structure
+    const distributions = yield* listDistributions.pages({}).pipe(
+      Stream.flatMap((page) =>
+        Stream.fromIterable(page.DistributionList?.Items ?? []),
+      ),
+      Stream.runCollect,
+    );
+
+    const distArray = Array.from(distributions);
+
+    // Each item should be a DistributionSummary with Id and ARN
+    for (const dist of distArray) {
+      expect(dist.Id).toBeDefined();
+      expect(dist.ARN).toBeDefined();
+    }
   }),
 );

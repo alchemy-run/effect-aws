@@ -709,10 +709,16 @@ export const getUserId = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If you have access to a member account, you can use this API operation from the member account. For more information, see Limiting access to the identity store from member accounts in the * IAM Identity Center User Guide*.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [ResourceNotFoundException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Groups",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a user within the specified identity store.
@@ -743,20 +749,32 @@ export const isMemberInGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you have access to a member account, you can use this API operation from the member account. For more information, see Limiting access to the identity store from member accounts in the * IAM Identity Center User Guide*.
  */
 export const listGroupMembershipsForMember =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGroupMembershipsForMemberRequest,
     output: ListGroupMembershipsForMemberResponse,
     errors: [ResourceNotFoundException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupMemberships",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all users in the identity store. Returns a paginated list of complete `User` objects. Filtering for a `User` by the `UserName` attribute is deprecated. Instead, use the `GetUserId` API action.
  *
  * If you have access to a member account, you can use this API operation from the member account. For more information, see Limiting access to the identity store from member accounts in the * IAM Identity Center User Guide*.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [ResourceNotFoundException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Users",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves membership metadata and attributes from `MembershipId` in an identity store.
@@ -785,13 +803,18 @@ export const deleteGroupMembership = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * If you have access to a member account, you can use this API operation from the member account. For more information, see Limiting access to the identity store from member accounts in the * IAM Identity Center User Guide*.
  */
-export const listGroupMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGroupMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGroupMembershipsRequest,
     output: ListGroupMembershipsResponse,
     errors: [ResourceNotFoundException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupMemberships",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the group metadata and attributes from `GroupId` in an identity store.
  *

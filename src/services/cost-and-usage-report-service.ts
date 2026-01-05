@@ -365,13 +365,17 @@ export class ReportLimitReachedException extends S.TaggedError<ReportLimitReache
 /**
  * Lists the Amazon Web Services Cost and Usage Report available to this account.
  */
-export const describeReportDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReportDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReportDefinitionsRequest,
     output: DescribeReportDefinitionsResponse,
     errors: [InternalErrorException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes the specified report. Any tags associated with the report are also
  * deleted.

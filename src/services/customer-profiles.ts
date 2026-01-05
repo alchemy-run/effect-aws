@@ -3966,8 +3966,8 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of available recommender recipes that can be used to create recommenders.
  */
-export const listRecommenderRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommenderRecipes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommenderRecipesRequest,
     output: ListRecommenderRecipesResponse,
     errors: [
@@ -3976,8 +3976,13 @@ export const listRecommenderRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RecommenderRecipes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the properties of a profile. The ProfileId is required for updating a customer
  * profile.
@@ -4607,17 +4612,25 @@ export const getSegmentSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * matching that you want for finding similar profiles using either
  * `RULE_BASED_MATCHING` or `ML_BASED_MATCHING`.
  */
-export const getSimilarProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSimilarProfilesRequest,
-  output: GetSimilarProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getSimilarProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetSimilarProfilesRequest,
+    output: GetSimilarProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProfileIds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This API retrieves the pre-signed URL and client token for uploading the file associated
  * with the upload job.
@@ -4650,8 +4663,8 @@ export const listIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a set of `MatchIds` that belong to the given domain.
  */
-export const listRuleBasedMatches = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRuleBasedMatches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRuleBasedMatchesRequest,
     output: ListRuleBasedMatchesResponse,
     errors: [
@@ -4661,8 +4674,13 @@ export const listRuleBasedMatches = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MatchIds",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Displays the tags associated with an Amazon Connect Customer Profiles resource. In Connect
  * Customer Profiles, domains, profile object types, and integrations can be tagged.
@@ -4937,22 +4955,30 @@ export const listCalculatedAttributesForProfile =
  * Lists the existing layouts that can be used to view data for a specific domain. This API
  * can only be invoked from the Amazon Connect admin website.
  */
-export const listDomainLayouts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainLayoutsRequest,
-  output: ListDomainLayoutsResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listDomainLayouts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainLayoutsRequest,
+    output: ListDomainLayoutsResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all DomainObjectType(s) in a Customer Profiles domain.
  */
-export const listDomainObjectTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainObjectTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainObjectTypesRequest,
     output: ListDomainObjectTypesResponse,
     errors: [
@@ -4962,8 +4988,13 @@ export const listDomainObjectTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the domains for an AWS account that have been created.
  */
@@ -4981,17 +5012,25 @@ export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all Event Triggers under a domain.
  */
-export const listEventTriggers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventTriggersRequest,
-  output: ListEventTriggersResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listEventTriggers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventTriggersRequest,
+    output: ListEventTriggersResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the Identity Resolution Jobs in your domain. The response sorts the list by
  * `JobStartTime`.
@@ -5012,8 +5051,8 @@ export const listIdentityResolutionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Fetch the possible attribute values given the attribute name.
  */
-export const listObjectTypeAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listObjectTypeAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListObjectTypeAttributesRequest,
     output: ListObjectTypeAttributesResponse,
     errors: [
@@ -5023,8 +5062,13 @@ export const listObjectTypeAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The ListObjectTypeAttributeValues API provides access to the most recent distinct values for any specified attribute, making it valuable for real-time data validation and consistency checks within your object types. This API works across domain, supporting both custom and standard object types. The API accepts the object type name, attribute name, and domain name as input parameters and returns values up to the storage limit of approximately 350KB.
  */
@@ -5106,22 +5150,30 @@ export const listProfileObjectTypeTemplates =
 /**
  * Returns a list of recommenders in the specified domain.
  */
-export const listRecommenders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendersRequest,
-  output: ListRecommendersResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listRecommenders = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecommendersRequest,
+    output: ListRecommendersResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Recommenders",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all segment definitions under a domain.
  */
-export const listSegmentDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSegmentDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSegmentDefinitionsRequest,
     output: ListSegmentDefinitionsResponse,
     errors: [
@@ -5131,22 +5183,35 @@ export const listSegmentDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API retrieves a list of upload jobs for the specified domain.
  */
-export const listUploadJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUploadJobsRequest,
-  output: ListUploadJobsResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listUploadJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUploadJobsRequest,
+    output: ListUploadJobsResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Query to list all workflows.
  */
@@ -5312,17 +5377,25 @@ export const getWorkflowSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the event streams in a specific domain.
  */
-export const listEventStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventStreamsRequest,
-  output: ListEventStreamsResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listEventStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventStreamsRequest,
+    output: ListEventStreamsResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of objects associated with a profile of a given ProfileObjectType.
  */

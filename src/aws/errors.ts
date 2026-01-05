@@ -160,6 +160,42 @@ export class UnknownAwsError extends S.TaggedError<UnknownAwsError>()(
   },
 ).pipe(withCategory(ERROR_CATEGORIES.AWS_ERROR)) {}
 
+/**
+ * Check if an error is a transient network error that should be retried.
+ * These are low-level fetch/socket errors that indicate temporary connectivity issues.
+ */
+export const isTransientNetworkError = (err: unknown): boolean => {
+  if (typeof err !== "object" || err === null) return false;
+  const e = err as { code?: string; name?: string; cause?: unknown };
+  // Check for common transient error codes
+  if (
+    e.code === "UND_ERR_SOCKET" ||
+    e.code === "ECONNRESET" ||
+    e.code === "UND_ERR_CONNECT_TIMEOUT" ||
+    e.code === "EPIPE" ||
+    e.name === "FetchError"
+  ) {
+    return true;
+  }
+  // Also check the cause chain for nested errors (fetch wraps errors)
+  if (e.cause) {
+    return isTransientNetworkError(e.cause);
+  }
+  return false;
+};
+
+/**
+ * Error thrown when a fetch request fails due to a transient network issue.
+ * Marked as retryable so the default retry policy will automatically retry these.
+ */
+export class TransientFetchError extends S.TaggedError<TransientFetchError>()(
+  "TransientFetchError",
+  {
+    message: S.String,
+    cause: S.Any,
+  },
+).pipe(withCategory(ERROR_CATEGORIES.NETWORK_ERROR), withRetryable()) {}
+
 export class InternalError extends S.TaggedError<InternalError>()(
   "InternalError",
   {},

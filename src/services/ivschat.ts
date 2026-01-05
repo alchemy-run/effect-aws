@@ -753,18 +753,22 @@ export const getLoggingConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets summary information about all your logging configurations in the AWS region where
  * the API request is processed.
  */
-export const listLoggingConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLoggingConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLoggingConfigurationsRequest,
     output: ListLoggingConfigurationsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets summary information about all your rooms in the AWS region where the API request is
  * processed. Results are sorted in descending order of `updateTime`.
  */
-export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoomsRequest,
   output: ListRoomsResponse,
   errors: [
@@ -772,6 +776,11 @@ export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Updates a specified logging configuration.

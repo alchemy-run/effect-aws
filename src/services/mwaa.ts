@@ -665,11 +665,19 @@ export const createCliToken = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Amazon Managed Workflows for Apache Airflow (MWAA) environments.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsInput,
-  output: ListEnvironmentsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsInput,
+    output: ListEnvironmentsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Environments",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * **Internal only**. Publishes environment health metrics to Amazon CloudWatch.
  */

@@ -2713,7 +2713,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Lists the associations between a service network and a VPC endpoint.
  */
 export const listServiceNetworkVpcEndpointAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceNetworkVpcEndpointAssociationsRequest,
     output: ListServiceNetworkVpcEndpointAssociationsResponse,
     errors: [
@@ -2722,6 +2722,12 @@ export const listServiceNetworkVpcEndpointAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a listener rule. Each listener has a default rule for checking connection requests, but you can define additional rules. Each rule consists of a priority, one or more actions, and one or more conditions. For more information, see Listener rules in the *Amazon VPC Lattice User Guide*.
@@ -2810,8 +2816,8 @@ export const createAccessLogSubscription = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the domain verifications.
  */
-export const listDomainVerifications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainVerifications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainVerificationsRequest,
     output: ListDomainVerificationsResponse,
     errors: [
@@ -2821,26 +2827,39 @@ export const listDomainVerifications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the listeners for the specified service.
  */
-export const listListeners = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListListenersRequest,
-  output: ListListenersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listListeners = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListListenersRequest,
+    output: ListListenersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the rules for the specified listener.
  */
-export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [
@@ -2850,6 +2869,12 @@ export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Creates a service. A service is any software application that can run on instances containers, or serverless functions within an account or virtual private cloud (VPC).
@@ -2948,17 +2973,25 @@ export const deregisterTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the targets for the target group. By default, all targets are included. You can use this API to check the health status of targets. You can also ﬁlter the results by target.
  */
-export const listTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTargetsRequest,
-  output: ListTargetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTargets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTargetsRequest,
+    output: ListTargetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Registers the targets with the target group. If it's a Lambda target, you can only have one target in a target group.
  */
@@ -3685,8 +3718,8 @@ export const batchUpdateRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the access log subscriptions for the specified service network or service.
  */
-export const listAccessLogSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccessLogSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessLogSubscriptionsRequest,
     output: ListAccessLogSubscriptionsResponse,
     errors: [
@@ -3695,13 +3728,18 @@ export const listAccessLogSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the resource configurations owned by or shared with this account.
  */
-export const listResourceConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceConfigurationsRequest,
     output: ListResourceConfigurationsResponse,
     errors: [
@@ -3710,13 +3748,18 @@ export const listResourceConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the associations for the specified VPC endpoint.
  */
 export const listResourceEndpointAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceEndpointAssociationsRequest,
     output: ListResourceEndpointAssociationsResponse,
     errors: [
@@ -3725,12 +3768,18 @@ export const listResourceEndpointAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the resource gateways that you own or that were shared with you.
  */
-export const listResourceGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceGatewaysRequest,
     output: ListResourceGatewaysResponse,
     errors: [
@@ -3739,39 +3788,59 @@ export const listResourceGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the services owned by the caller account or shared with the caller account.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the service networks owned by or shared with this account. The account ID in the ARN shows which account owns the service network.
  */
-export const listServiceNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceNetworksRequest,
-  output: ListServiceNetworksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServiceNetworks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListServiceNetworksRequest,
+    output: ListServiceNetworksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the associations between a service network and a resource configuration.
  */
 export const listServiceNetworkResourceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceNetworkResourceAssociationsRequest,
     output: ListServiceNetworkResourceAssociationsResponse,
     errors: [
@@ -3780,6 +3849,12 @@ export const listServiceNetworkResourceAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the associations between a service network and a service. You can filter the list either by service or service network. You must provide either the service network identifier or the service identifier.
@@ -3787,7 +3862,7 @@ export const listServiceNetworkResourceAssociations =
  * Every association in Amazon VPC Lattice has a unique Amazon Resource Name (ARN), such as when a service network is associated with a VPC or when a service is associated with a service network. If the association is for a resource is shared with another account, the association includes the local account ID as the prefix in the ARN.
  */
 export const listServiceNetworkServiceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceNetworkServiceAssociationsRequest,
     output: ListServiceNetworkServiceAssociationsResponse,
     errors: [
@@ -3796,12 +3871,18 @@ export const listServiceNetworkServiceAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the associations between a service network and a VPC. You can filter the list either by VPC or service network. You must provide either the ID of the service network identifier or the ID of the VPC.
  */
 export const listServiceNetworkVpcAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceNetworkVpcAssociationsRequest,
     output: ListServiceNetworkVpcAssociationsResponse,
     errors: [
@@ -3810,20 +3891,34 @@ export const listServiceNetworkVpcAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists your target groups. You can narrow your search by using the filters below in your request.
  */
-export const listTargetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTargetGroupsRequest,
-  output: ListTargetGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTargetGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTargetGroupsRequest,
+    output: ListTargetGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified auth policy. If an auth is set to `AWS_IAM` and the auth policy is deleted, all requests are denied. If you are trying to remove the auth policy completely, you must set the auth type to `NONE`. If auth is enabled on the resource, but no auth policy is set, all requests are denied.
  */

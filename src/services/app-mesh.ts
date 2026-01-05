@@ -2165,7 +2165,7 @@ export const updateMesh = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of existing service meshes.
  */
-export const listMeshes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listMeshes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListMeshesInput,
   output: ListMeshesOutput,
   errors: [
@@ -2176,72 +2176,109 @@ export const listMeshes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceUnavailableException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "meshes",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Returns a list of existing virtual gateways in a service mesh.
  */
-export const listVirtualGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualGatewaysInput,
-  output: ListVirtualGatewaysOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listVirtualGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVirtualGatewaysInput,
+    output: ListVirtualGatewaysOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "virtualGateways",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Returns a list of existing gateway routes that are associated to a virtual
  * gateway.
  */
-export const listGatewayRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewayRoutesInput,
-  output: ListGatewayRoutesOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listGatewayRoutes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewayRoutesInput,
+    output: ListGatewayRoutesOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "gatewayRoutes",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Returns a list of existing virtual nodes.
  */
-export const listVirtualNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualNodesInput,
-  output: ListVirtualNodesOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listVirtualNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVirtualNodesInput,
+    output: ListVirtualNodesOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "virtualNodes",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Returns a list of existing virtual routers in a service mesh.
  */
-export const listVirtualRouters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualRoutersInput,
-  output: ListVirtualRoutersOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listVirtualRouters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVirtualRoutersInput,
+    output: ListVirtualRoutersOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "virtualRouters",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Returns a list of existing routes in a service mesh.
  */
-export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoutesInput,
   output: ListRoutesOutput,
   errors: [
@@ -2252,37 +2289,57 @@ export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceUnavailableException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "routes",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Returns a list of existing virtual services in a service mesh.
  */
-export const listVirtualServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualServicesInput,
-  output: ListVirtualServicesOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listVirtualServices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVirtualServicesInput,
+    output: ListVirtualServicesOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "virtualServices",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * List the tags for an App Mesh resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceInput,
-  output: ListTagsForResourceOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceInput,
+    output: ListTagsForResourceOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Creates a virtual router within a service mesh.
  *

@@ -690,7 +690,7 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the source views (managed Amazon Web Services billing views) associated with the billing view.
  */
 export const listSourceViewsForBillingView =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourceViewsForBillingViewRequest,
     output: ListSourceViewsForBillingViewResponse,
     errors: [
@@ -700,6 +700,12 @@ export const listSourceViewsForBillingView =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sourceViews",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists tags associated with the billing view resource.
@@ -752,16 +758,24 @@ export const getBillingView = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Every Amazon Web Services account has a unique `PRIMARY` billing view that represents the billing data available by default. Accounts that use Billing Conductor also have `BILLING_GROUP` billing views representing pro forma costs associated with each created billing group.
  */
-export const listBillingViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBillingViewsRequest,
-  output: ListBillingViewsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBillingViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBillingViewsRequest,
+    output: ListBillingViewsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "billingViews",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * An API operation for adding one or more tags (key-value pairs) to a resource.
  */

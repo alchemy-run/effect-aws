@@ -834,17 +834,25 @@ export const setIdentityPoolRoles = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You must use Amazon Web Services developer credentials to call this
  * operation.
  */
-export const listIdentityPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdentityPoolsInput,
-  output: ListIdentityPoolsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listIdentityPools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIdentityPoolsInput,
+    output: ListIdentityPoolsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidParameterException,
+      NotAuthorizedException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IdentityPools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns metadata related to the given identity, including when the identity was
  * created and any associated linked logins.

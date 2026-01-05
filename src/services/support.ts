@@ -973,11 +973,19 @@ export const describeAttachment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `SubscriptionRequiredException` error message appears. For
  * information about changing your support plan, see Amazon Web Services Support.
  */
-export const describeCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeCasesRequest,
-  output: DescribeCasesResponse,
-  errors: [CaseIdNotFound, InternalServerError],
-}));
+export const describeCases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeCasesRequest,
+    output: DescribeCasesResponse,
+    errors: [CaseIdNotFound, InternalServerError],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cases",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns communications and attachments for one or more support cases. Use the
  * `afterTime` and `beforeTime` parameters to filter by date. You
@@ -1000,13 +1008,18 @@ export const describeCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `SubscriptionRequiredException` error message appears. For
  * information about changing your support plan, see Amazon Web Services Support.
  */
-export const describeCommunications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCommunications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCommunicationsRequest,
     output: DescribeCommunicationsResponse,
     errors: [CaseIdNotFound, InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "communications",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns the current list of Amazon Web Services services and a list of service categories for each
  * service. You then use service names and categories in your CreateCase

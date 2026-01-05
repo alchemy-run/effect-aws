@@ -875,16 +875,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists all the domains in the Amazon Web Services account.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DomainSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts a new batch fraudster registration job using provided details.
  */
@@ -1007,7 +1015,7 @@ export const describeSpeakerEnrollmentJob =
  * fraudster registration jobs in the given domain.
  */
 export const listFraudsterRegistrationJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFraudsterRegistrationJobsRequest,
     output: ListFraudsterRegistrationJobsResponse,
     errors: [
@@ -1017,28 +1025,42 @@ export const listFraudsterRegistrationJobs =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all fraudsters in a specified watchlist or domain.
  */
-export const listFraudsters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFraudstersRequest,
-  output: ListFraudstersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFraudsters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFraudstersRequest,
+    output: ListFraudstersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FraudsterSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the speaker enrollment jobs in the domain with the specified
  * `JobStatus`. If `JobStatus` is not provided, this lists all
  * jobs with all possible speaker enrollment job statuses.
  */
-export const listSpeakerEnrollmentJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSpeakerEnrollmentJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSpeakerEnrollmentJobsRequest,
     output: ListSpeakerEnrollmentJobsResponse,
     errors: [
@@ -1048,36 +1070,57 @@ export const listSpeakerEnrollmentJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all speakers in a specified domain.
  */
-export const listSpeakers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSpeakersRequest,
-  output: ListSpeakersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSpeakers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSpeakersRequest,
+    output: ListSpeakersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpeakerSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all watchlists in a specified domain.
  */
-export const listWatchlists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWatchlistsRequest,
-  output: ListWatchlistsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWatchlists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWatchlistsRequest,
+    output: ListWatchlistsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WatchlistSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Disassociates the fraudsters from the watchlist specified. Voice ID always expects a
  * fraudster to be a part of at least one watchlist. If

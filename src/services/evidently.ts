@@ -1579,16 +1579,24 @@ export const getLaunch = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns configuration details about all the launches in the specified project.
  */
-export const listLaunches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLaunchesRequest,
-  output: ListLaunchesResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listLaunches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLaunchesRequest,
+    output: ListLaunchesResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "launches",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Use this operation to find which experiments or launches are using a specified segment.
  */
-export const listSegmentReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSegmentReferences =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSegmentReferencesRequest,
     output: ListSegmentReferencesResponse,
     errors: [
@@ -1597,8 +1605,13 @@ export const listSegmentReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "referencedBy",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes an Evidently project. Before you can delete a project, you must delete all the
  * features that the project contains. To delete a feature, use DeleteFeature.
@@ -1677,15 +1690,23 @@ export const updateExperiment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns configuration details about all the experiments in the specified project.
  */
-export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExperimentsRequest,
-  output: ListExperimentsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExperimentsRequest,
+    output: ListExperimentsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "experiments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a launch of a given feature.
  *
@@ -1814,11 +1835,19 @@ export const deleteSegment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of audience segments that you have created in your account in this Region.
  */
-export const listSegments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSegmentsRequest,
-  output: ListSegmentsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listSegments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSegmentsRequest,
+    output: ListSegmentsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "segments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Use this operation to test a rules pattern that you plan to use to create an audience segment.
  * For more information about segments, see CreateSegment.
@@ -1832,11 +1861,19 @@ export const testSegmentPattern = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns configuration details about all the projects in the current Region in your
  * account.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsRequest,
-  output: ListProjectsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsRequest,
+    output: ListProjectsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projects",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the results of a running or completed experiment. No results are available until
  * there have been 100 events for each variation and at least 10 minutes have passed since the start of the experiment.
@@ -1864,16 +1901,24 @@ export const getExperimentResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns configuration details about all the features in the specified project.
  */
-export const listFeatures = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFeaturesRequest,
-  output: ListFeaturesResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFeatures = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFeaturesRequest,
+    output: ListFeaturesResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "features",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a project, which is the logical object in Evidently that can contain features, launches, and
  * experiments. Use projects to group similar features together.

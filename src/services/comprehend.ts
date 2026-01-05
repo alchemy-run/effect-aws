@@ -2427,16 +2427,23 @@ export class TooManyTagKeysException extends S.TaggedError<TooManyTagKeysExcepti
 /**
  * Gets a list of the flywheels that you have created.
  */
-export const listFlywheels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlywheelsRequest,
-  output: ListFlywheelsResponse,
-  errors: [
-    InternalServerException,
-    InvalidFilterException,
-    InvalidRequestException,
-    TooManyRequestsException,
-  ],
-}));
+export const listFlywheels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFlywheelsRequest,
+    output: ListFlywheelsResponse,
+    errors: [
+      InternalServerException,
+      InvalidFilterException,
+      InvalidRequestException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a classification request to analyze a single document in real-time. `ClassifyDocument`
  * supports the following model types:
@@ -2552,17 +2559,24 @@ export const deleteFlywheel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List the datasets that you have configured in this Region. For more information about datasets, see
  * Flywheel overview in the *Amazon Comprehend Developer Guide*.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [
-    InternalServerException,
-    InvalidFilterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [
+      InternalServerException,
+      InvalidFilterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the details of a resource-based policy that is attached to a custom model, including
  * the JSON body of the policy.
@@ -2708,7 +2722,7 @@ export const describeFlywheel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Flywheel overview in the *Amazon Comprehend Developer Guide*.
  */
 export const listFlywheelIterationHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFlywheelIterationHistoryRequest,
     output: ListFlywheelIterationHistoryResponse,
     errors: [
@@ -2718,6 +2732,11 @@ export const listFlywheelIterationHistory =
       ResourceNotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Deletes a previously created document classifier
@@ -3071,7 +3090,7 @@ export const batchDetectDominantLanguage = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets a list of summaries of the document classifiers that you have created
  */
 export const listDocumentClassifierSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDocumentClassifierSummariesRequest,
     output: ListDocumentClassifierSummariesResponse,
     errors: [
@@ -3079,25 +3098,38 @@ export const listDocumentClassifierSummaries =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of all existing endpoints that you've created.
  * For information about endpoints, see Managing endpoints.
  */
-export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointsRequest,
-  output: ListEndpointsResponse,
-  errors: [
-    InternalServerException,
-    InvalidRequestException,
-    TooManyRequestsException,
-  ],
-}));
+export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEndpointsRequest,
+    output: ListEndpointsResponse,
+    errors: [
+      InternalServerException,
+      InvalidRequestException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EndpointPropertiesList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of summaries for the entity recognizers that you have created.
  */
 export const listEntityRecognizerSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEntityRecognizerSummariesRequest,
     output: ListEntityRecognizerSummariesResponse,
     errors: [
@@ -3105,12 +3137,17 @@ export const listEntityRecognizerSummaries =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of the documentation classification jobs that you have submitted.
  */
 export const listDocumentClassificationJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDocumentClassificationJobsRequest,
     output: ListDocumentClassificationJobsResponse,
     errors: [
@@ -3119,12 +3156,17 @@ export const listDocumentClassificationJobs =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of the document classifiers that you have created.
  */
-export const listDocumentClassifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDocumentClassifiers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDocumentClassifiersRequest,
     output: ListDocumentClassifiersResponse,
     errors: [
@@ -3133,13 +3175,17 @@ export const listDocumentClassifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the dominant language detection jobs that you have submitted.
  */
 export const listDominantLanguageDetectionJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDominantLanguageDetectionJobsRequest,
     output: ListDominantLanguageDetectionJobsResponse,
     errors: [
@@ -3148,12 +3194,17 @@ export const listDominantLanguageDetectionJobs =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of the entity detection jobs that you have submitted.
  */
-export const listEntitiesDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEntitiesDetectionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEntitiesDetectionJobsRequest,
     output: ListEntitiesDetectionJobsResponse,
     errors: [
@@ -3162,8 +3213,12 @@ export const listEntitiesDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the properties of all entity recognizers that you created, including
  * recognizers currently in training. Allows you to filter the list of recognizers based on
@@ -3173,8 +3228,8 @@ export const listEntitiesDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The results of this list are not in any particular order. Please get the list and sort
  * locally if needed.
  */
-export const listEntityRecognizers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEntityRecognizers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEntityRecognizersRequest,
     output: ListEntityRecognizersResponse,
     errors: [
@@ -3183,13 +3238,17 @@ export const listEntityRecognizers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the events detection jobs that you have submitted.
  */
-export const listEventsDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEventsDetectionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventsDetectionJobsRequest,
     output: ListEventsDetectionJobsResponse,
     errors: [
@@ -3198,13 +3257,17 @@ export const listEventsDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Get a list of key phrase detection jobs that you have submitted.
  */
-export const listKeyPhrasesDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listKeyPhrasesDetectionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListKeyPhrasesDetectionJobsRequest,
     output: ListKeyPhrasesDetectionJobsResponse,
     errors: [
@@ -3213,13 +3276,17 @@ export const listKeyPhrasesDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the PII entity detection jobs that you have submitted.
  */
 export const listPiiEntitiesDetectionJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPiiEntitiesDetectionJobsRequest,
     output: ListPiiEntitiesDetectionJobsResponse,
     errors: [
@@ -3228,12 +3295,18 @@ export const listPiiEntitiesDetectionJobs =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PiiEntitiesDetectionJobPropertiesList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of sentiment detection jobs that you have submitted.
  */
-export const listSentimentDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSentimentDetectionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSentimentDetectionJobsRequest,
     output: ListSentimentDetectionJobsResponse,
     errors: [
@@ -3242,13 +3315,17 @@ export const listSentimentDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of targeted sentiment detection jobs that you have submitted.
  */
 export const listTargetedSentimentDetectionJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetedSentimentDetectionJobsRequest,
     output: ListTargetedSentimentDetectionJobsResponse,
     errors: [
@@ -3257,12 +3334,17 @@ export const listTargetedSentimentDetectionJobs =
       InvalidRequestException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of the topic detection jobs that you have submitted.
  */
-export const listTopicsDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTopicsDetectionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTopicsDetectionJobsRequest,
     output: ListTopicsDetectionJobsResponse,
     errors: [
@@ -3271,8 +3353,12 @@ export const listTopicsDetectionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieve the configuration properties of a flywheel iteration.
  * For more information about flywheels, see

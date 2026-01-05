@@ -3287,13 +3287,18 @@ export const createCodeSigningConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of code signing configurations. A request returns up to 10,000 configurations per call. You can use the `MaxItems` parameter to return fewer configurations per call.
  */
-export const listCodeSigningConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCodeSigningConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCodeSigningConfigsRequest,
     output: ListCodeSigningConfigsResponse,
     errors: [InvalidParameterValueException, ServiceException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "CodeSigningConfigs",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Deletes a version of an Lambda layer. Deleted versions can no longer be viewed or added to functions. To avoid breaking functions, a copy of the version remains in Lambda until no functions refer to it.
  */
@@ -3435,7 +3440,7 @@ export const updateAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * To configure options for asynchronous invocation, use PutFunctionEventInvokeConfig.
  */
 export const listFunctionEventInvokeConfigs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFunctionEventInvokeConfigsRequest,
     output: ListFunctionEventInvokeConfigsResponse,
     errors: [
@@ -3445,6 +3450,12 @@ export const listFunctionEventInvokeConfigs =
       TooManyRequestsException,
       ParseError,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FunctionEventInvokeConfigs",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Returns a function, event source mapping, or code signing configuration's tags. You can also view function tags with GetFunction.
@@ -3494,7 +3505,7 @@ export const getCodeSigningConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * List the functions that use the specified code signing configuration. You can use this method prior to deleting a code signing configuration, to verify that no functions are using it.
  */
 export const listFunctionsByCodeSigningConfig =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFunctionsByCodeSigningConfigRequest,
     output: ListFunctionsByCodeSigningConfigResponse,
     errors: [
@@ -3502,6 +3513,12 @@ export const listFunctionsByCodeSigningConfig =
       ResourceNotFoundException,
       ServiceException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FunctionArns",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Update the code signing configuration. Changes to the code signing configuration take effect the next time a user tries to deploy a code package to the function.
@@ -3520,8 +3537,8 @@ export const updateCodeSigningConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists event source mappings. Specify an `EventSourceArn` to show only event source mappings for a single event source.
  */
-export const listEventSourceMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEventSourceMappings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventSourceMappingsRequest,
     output: ListEventSourceMappingsResponse,
     errors: [
@@ -3530,8 +3547,13 @@ export const listEventSourceMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "EventSourceMappings",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Deletes a Lambda function URL. When you delete a function URL, you can't recover it. Creating a new function URL results in a different URL address.
  */
@@ -3760,21 +3782,29 @@ export const getAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of aliases for a Lambda function.
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesRequest,
-  output: ListAliasesResponse,
-  errors: [
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesRequest,
+    output: ListAliasesResponse,
+    errors: [
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Aliases",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Returns a list of versions, with the version-specific configuration of each. Lambda returns up to 50 versions per call.
  */
-export const listVersionsByFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVersionsByFunction =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVersionsByFunctionRequest,
     output: ListVersionsByFunctionResponse,
     errors: [
@@ -3783,8 +3813,13 @@ export const listVersionsByFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Versions",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns the permission policy for a version of an Lambda layer. For more information, see AddLayerVersionPermission.
  */
@@ -4130,8 +4165,8 @@ export const sendDurableExecutionCallbackHeartbeat =
 /**
  * Returns a list of capacity providers in your account.
  */
-export const listCapacityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCapacityProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCapacityProvidersRequest,
     output: ListCapacityProvidersResponse,
     errors: [
@@ -4139,8 +4174,13 @@ export const listCapacityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "CapacityProviders",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns a list of Lambda functions, with the version-specific configuration of each. Lambda returns up to 50 functions per call.
  *
@@ -4148,15 +4188,23 @@ export const listCapacityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * The `ListFunctions` operation returns a subset of the FunctionConfiguration fields. To get the additional fields (State, StateReasonCode, StateReason, LastUpdateStatus, LastUpdateStatusReason, LastUpdateStatusReasonCode, RuntimeVersionConfig) for a function or version, use GetFunction.
  */
-export const listFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFunctionsRequest,
-  output: ListFunctionsResponse,
-  errors: [
-    InvalidParameterValueException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listFunctions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFunctionsRequest,
+    output: ListFunctionsResponse,
+    errors: [
+      InvalidParameterValueException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Functions",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Retrieves the configuration for asynchronous invocation for a function, version, or alias.
  *
@@ -4178,7 +4226,7 @@ export const getFunctionEventInvokeConfig =
  * Returns a list of durable executions for a specified Lambda function. You can filter the results by execution name, status, and start time range. This API supports pagination for large result sets.
  */
 export const listDurableExecutionsByFunction =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDurableExecutionsByFunctionRequest,
     output: ListDurableExecutionsByFunctionResponse,
     errors: [
@@ -4187,6 +4235,12 @@ export const listDurableExecutionsByFunction =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "DurableExecutions",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Configures options for asynchronous invocation on a function, version, or alias. If a configuration already exists for a function, version, or alias, this operation overwrites it. If you exclude any settings, they are removed. To set one option without affecting existing settings for other options, use UpdateFunctionEventInvokeConfig.
@@ -4227,7 +4281,7 @@ export const getCapacityProvider = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of function versions that are configured to use a specific capacity provider.
  */
 export const listFunctionVersionsByCapacityProvider =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFunctionVersionsByCapacityProviderRequest,
     output: ListFunctionVersionsByCapacityProviderResponse,
     errors: [
@@ -4236,6 +4290,12 @@ export const listFunctionVersionsByCapacityProvider =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FunctionVersions",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Returns details about an event source mapping. You can get the identifier of a mapping from the output of ListEventSourceMappings.
@@ -4272,8 +4332,8 @@ export const createFunctionUrlConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of Lambda function URLs for the specified function.
  */
-export const listFunctionUrlConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFunctionUrlConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFunctionUrlConfigsRequest,
     output: ListFunctionUrlConfigsResponse,
     errors: [
@@ -4282,13 +4342,18 @@ export const listFunctionUrlConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FunctionUrlConfigs",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Retrieves a list of provisioned concurrency configurations for a function.
  */
 export const listProvisionedConcurrencyConfigs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisionedConcurrencyConfigsRequest,
     output: ListProvisionedConcurrencyConfigsResponse,
     errors: [
@@ -4298,6 +4363,12 @@ export const listProvisionedConcurrencyConfigs =
       TooManyRequestsException,
       ParseError,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "ProvisionedConcurrencyConfigs",
+      pageSize: "MaxItems",
+    } as const,
   }));
 /**
  * Returns information about the function or function version, with a link to download the deployment package that's valid for 10 minutes. If you specify a function version, only details that are specific to that version are returned.
@@ -4348,7 +4419,7 @@ export const createAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists Lambda layers and shows information about the latest version of each. Specify a runtime identifier to list only layers that indicate that they're compatible with that runtime. Specify a compatible architecture to include only layers that are compatible with that instruction set architecture.
  */
-export const listLayers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLayers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLayersRequest,
   output: ListLayersResponse,
   errors: [
@@ -4356,21 +4427,35 @@ export const listLayers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "NextMarker",
+    items: "Layers",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * Lists the versions of an Lambda layer. Versions that have been deleted aren't listed. Specify a runtime identifier to list only versions that indicate that they're compatible with that runtime. Specify a compatible architecture to include only layer versions that are compatible with that architecture.
  */
-export const listLayerVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLayerVersionsRequest,
-  output: ListLayerVersionsResponse,
-  errors: [
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ServiceException,
-    TooManyRequestsException,
-    ParseError,
-  ],
-}));
+export const listLayerVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLayerVersionsRequest,
+    output: ListLayerVersionsResponse,
+    errors: [
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ServiceException,
+      TooManyRequestsException,
+      ParseError,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "LayerVersions",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Deletes an event source mapping. You can get the identifier of a mapping from the output of ListEventSourceMappings.
  *
@@ -4468,8 +4553,8 @@ export const addLayerVersionPermission = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * The response contains operations ordered by start sequence number in ascending order. Completed operations with children don't include child operation details since they don't need to be replayed.
  */
-export const getDurableExecutionState = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getDurableExecutionState =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetDurableExecutionStateRequest,
     output: GetDurableExecutionStateResponse,
     errors: [
@@ -4477,8 +4562,13 @@ export const getDurableExecutionState = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Operations",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Creates a mapping between an event source and an Lambda function. Lambda reads items from the event source and invokes the function.
  *
@@ -4675,8 +4765,8 @@ export const checkpointDurableExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * The history is available while the execution is running and for a retention period after it completes (1-90 days, default 30 days). You can control whether to include execution data such as step results and callback payloads.
  */
-export const getDurableExecutionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getDurableExecutionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetDurableExecutionHistoryRequest,
     output: GetDurableExecutionHistoryResponse,
     errors: [
@@ -4685,8 +4775,13 @@ export const getDurableExecutionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Events",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Creates a capacity provider that manages compute resources for Lambda functions
  */

@@ -1835,43 +1835,67 @@ export const getDbServer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about the shapes that are available for an Exadata infrastructure.
  */
-export const listDbSystemShapes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDbSystemShapesInput,
-  output: ListDbSystemShapesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDbSystemShapes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDbSystemShapesInput,
+    output: ListDbSystemShapesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dbSystemShapes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about Oracle Grid Infrastructure (GI) software versions that are available for a VM cluster for the specified shape.
  */
-export const listGiVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGiVersionsInput,
-  output: ListGiVersionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGiVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGiVersionsInput,
+    output: ListGiVersionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "giVersions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the system versions that are available for a VM cluster for the specified `giVersion` and `shape`.
  */
-export const listSystemVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSystemVersionsInput,
-  output: ListSystemVersionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSystemVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSystemVersionsInput,
+    output: ListSystemVersionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "systemVersions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about a specific Autonomous VM cluster.
  */
@@ -1892,7 +1916,7 @@ export const getCloudAutonomousVmCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all Autonomous VM clusters in a specified Cloud Exadata infrastructure.
  */
 export const listCloudAutonomousVmClusters =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCloudAutonomousVmClustersInput,
     output: ListCloudAutonomousVmClustersOutput,
     errors: [
@@ -1902,12 +1926,18 @@ export const listCloudAutonomousVmClusters =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cloudAutonomousVmClusters",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all Autonomous VMs in an Autonomous VM cluster.
  */
 export const listAutonomousVirtualMachines =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAutonomousVirtualMachinesInput,
     output: ListAutonomousVirtualMachinesOutput,
     errors: [
@@ -1917,6 +1947,12 @@ export const listAutonomousVirtualMachines =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "autonomousVirtualMachines",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns information about the specified Exadata infrastructure.
@@ -1937,7 +1973,7 @@ export const getCloudExadataInfrastructure =
  * Returns information about the Exadata infrastructures owned by your Amazon Web Services account.
  */
 export const listCloudExadataInfrastructures =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCloudExadataInfrastructuresInput,
     output: ListCloudExadataInfrastructuresOutput,
     errors: [
@@ -1946,35 +1982,56 @@ export const listCloudExadataInfrastructures =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cloudExadataInfrastructures",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns information about the database servers that belong to the specified Exadata infrastructure.
  */
-export const listDbServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDbServersInput,
-  output: ListDbServersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDbServers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDbServersInput,
+    output: ListDbServersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dbServers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the VM clusters owned by your Amazon Web Services account or only the ones on the specified Exadata infrastructure.
  */
-export const listCloudVmClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCloudVmClustersInput,
-  output: ListCloudVmClustersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCloudVmClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCloudVmClustersInput,
+    output: ListCloudVmClustersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cloudVmClusters",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about the specified DB node.
  */
@@ -1992,30 +2049,46 @@ export const getDbNode = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about the DB nodes for the specified VM cluster.
  */
-export const listDbNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDbNodesInput,
-  output: ListDbNodesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDbNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDbNodesInput,
+    output: ListDbNodesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dbNodes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the ODB networks owned by your Amazon Web Services account.
  */
-export const listOdbNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOdbNetworksInput,
-  output: ListOdbNetworksOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listOdbNetworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOdbNetworksInput,
+    output: ListOdbNetworksOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "odbNetworks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about an ODB peering connection.
  */
@@ -2035,8 +2108,8 @@ export const getOdbPeeringConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all ODB peering connections or those associated with a specific ODB network.
  */
-export const listOdbPeeringConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOdbPeeringConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOdbPeeringConnectionsInput,
     output: ListOdbPeeringConnectionsOutput,
     errors: [
@@ -2046,8 +2119,13 @@ export const listOdbPeeringConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "odbPeeringConnections",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the properties of an Exadata infrastructure resource.
  */

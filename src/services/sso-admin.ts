@@ -1581,7 +1581,7 @@ export const describeInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of the IAM Identity Center associated Amazon Web Services accounts that the principal has access to. This action must be called from the management account containing your organization instance of IAM Identity Center. This action is not valid for account instances of IAM Identity Center.
  */
 export const listAccountAssignmentsForPrincipal =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssignmentsForPrincipalRequest,
     output: ListAccountAssignmentsForPrincipalResponse,
     errors: [
@@ -1591,12 +1591,18 @@ export const listAccountAssignmentsForPrincipal =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountAssignments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the applications to which a specified principal is assigned. You must provide a filter when calling this action from a member account against your organization instance of IAM Identity Center. A filter is not required when called from the management account against an organization instance of IAM Identity Center, or from a member account against an account instance of IAM Identity Center in the same account.
  */
 export const listApplicationAssignmentsForPrincipal =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationAssignmentsForPrincipalRequest,
     output: ListApplicationAssignmentsForPrincipalResponse,
     errors: [
@@ -1606,20 +1612,34 @@ export const listApplicationAssignmentsForPrincipal =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationAssignments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all applications associated with the instance of IAM Identity Center. When listing applications for an organization instance in the management account, member accounts must use the `applicationAccount` parameter to filter the list to only applications created from that account. When listing applications for an account instance in the same member account, a filter is not required.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Applications",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a configuration for an application to use grants. Conceptually grants are authorization to request actions related to tokens. This configuration will be used when parties are requesting and receiving tokens during the trusted identity propagation process. For more information on the IAM Identity Center supported grant workflows, see SAML 2.0 and OAuth 2.0.
  *
@@ -1700,7 +1720,7 @@ export const describePermissionSetProvisioningStatus =
  * Lists the status of the Amazon Web Services account assignment creation requests for a specified IAM Identity Center instance.
  */
 export const listAccountAssignmentCreationStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssignmentCreationStatusRequest,
     output: ListAccountAssignmentCreationStatusResponse,
     errors: [
@@ -1710,12 +1730,18 @@ export const listAccountAssignmentCreationStatus =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountAssignmentsCreationStatus",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the status of the Amazon Web Services account assignment deletion requests for a specified IAM Identity Center instance.
  */
 export const listAccountAssignmentDeletionStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssignmentDeletionStatusRequest,
     output: ListAccountAssignmentDeletionStatusResponse,
     errors: [
@@ -1725,12 +1751,18 @@ export const listAccountAssignmentDeletionStatus =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountAssignmentsDeletionStatus",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the assignee of the specified Amazon Web Services account with the specified permission set.
  */
-export const listAccountAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountAssignments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssignmentsRequest,
     output: ListAccountAssignmentsResponse,
     errors: [
@@ -1740,13 +1772,18 @@ export const listAccountAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountAssignments",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists Amazon Web Services account users that are assigned to an application.
  */
-export const listApplicationAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationAssignments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationAssignmentsRequest,
     output: ListApplicationAssignmentsResponse,
     errors: [
@@ -1756,13 +1793,18 @@ export const listApplicationAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationAssignments",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the Amazon Web Services managed policy that is attached to a specified permission set.
  */
 export const listManagedPoliciesInPermissionSet =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedPoliciesInPermissionSetRequest,
     output: ListManagedPoliciesInPermissionSetResponse,
     errors: [
@@ -1772,12 +1814,18 @@ export const listManagedPoliciesInPermissionSet =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AttachedManagedPolicies",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the status of the permission set provisioning requests for a specified IAM Identity Center instance.
  */
 export const listPermissionSetProvisioningStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPermissionSetProvisioningStatusRequest,
     output: ListPermissionSetProvisioningStatusResponse,
     errors: [
@@ -1787,6 +1835,12 @@ export const listPermissionSetProvisioningStatus =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PermissionSetsProvisioningStatus",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Updates the name of the trusted token issuer, or the path of a source attribute or destination attribute for a trusted token issuer configuration.
@@ -1810,8 +1864,8 @@ export const updateTrustedTokenIssuer = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the access scopes and authorized targets associated with an application.
  */
-export const listApplicationAccessScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationAccessScopes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationAccessScopesRequest,
     output: ListApplicationAccessScopesResponse,
     errors: [
@@ -1821,8 +1875,13 @@ export const listApplicationAccessScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Scopes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Adds or updates an authentication method for an application.
  */
@@ -1843,7 +1902,7 @@ export const putApplicationAuthenticationMethod =
  * Lists all of the authentication methods supported by the specified application.
  */
 export const listApplicationAuthenticationMethods =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationAuthenticationMethodsRequest,
     output: ListApplicationAuthenticationMethodsResponse,
     errors: [
@@ -1853,12 +1912,17 @@ export const listApplicationAuthenticationMethods =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AuthenticationMethods",
+    } as const,
   }));
 /**
  * List the grants associated with an application.
  */
-export const listApplicationGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationGrantsRequest,
     output: ListApplicationGrantsResponse,
     errors: [
@@ -1868,8 +1932,12 @@ export const listApplicationGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Grants",
+    } as const,
+  }));
 /**
  * Deletes a principal's access from a specified Amazon Web Services account using a specified permission set.
  *
@@ -2471,7 +2539,7 @@ export const getPermissionsBoundaryForPermissionSet =
  * Lists all the Amazon Web Services accounts where the specified permission set is provisioned.
  */
 export const listAccountsForProvisionedPermissionSet =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountsForProvisionedPermissionSetRequest,
     output: ListAccountsForProvisionedPermissionSetResponse,
     errors: [
@@ -2481,12 +2549,18 @@ export const listAccountsForProvisionedPermissionSet =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountIds",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all customer managed policies attached to a specified PermissionSet.
  */
 export const listCustomerManagedPolicyReferencesInPermissionSet =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomerManagedPolicyReferencesInPermissionSetRequest,
     output: ListCustomerManagedPolicyReferencesInPermissionSetResponse,
     errors: [
@@ -2496,26 +2570,40 @@ export const listCustomerManagedPolicyReferencesInPermissionSet =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomerManagedPolicyReferences",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the PermissionSets in an IAM Identity Center instance.
  */
-export const listPermissionSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPermissionSetsRequest,
-  output: ListPermissionSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPermissionSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPermissionSetsRequest,
+    output: ListPermissionSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PermissionSets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the permission sets that are provisioned to a specified Amazon Web Services account.
  */
 export const listPermissionSetsProvisionedToAccount =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPermissionSetsProvisionedToAccountRequest,
     output: ListPermissionSetsProvisionedToAccountResponse,
     errors: [
@@ -2525,21 +2613,33 @@ export const listPermissionSetsProvisionedToAccount =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PermissionSets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the tags that are attached to a specified resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+    } as const,
+  }));
 /**
  * Retrieves the authorized targets for an IAM Identity Center access scope for an application.
  */
@@ -2685,8 +2785,8 @@ export const createInstanceAccessControlAttributeConfiguration =
 /**
  * Lists the application providers configured in the IAM Identity Center identity store.
  */
-export const listApplicationProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationProvidersRequest,
     output: ListApplicationProvidersResponse,
     errors: [
@@ -2695,26 +2795,39 @@ export const listApplicationProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationProviders",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the details of the organization and account instances of IAM Identity Center that were created in or visible to the account calling this API.
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesRequest,
-  output: ListInstancesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesRequest,
+    output: ListInstancesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the trusted token issuers configured in an instance of IAM Identity Center.
  */
-export const listTrustedTokenIssuers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrustedTokenIssuers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrustedTokenIssuersRequest,
     output: ListTrustedTokenIssuersResponse,
     errors: [
@@ -2723,8 +2836,13 @@ export const listTrustedTokenIssuers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrustedTokenIssuers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes the instance of IAM Identity Center. Only the account that owns the instance can call this API. Neither the delegated administrator nor member account can delete the organization instance, but those roles can delete their own instance.
  */

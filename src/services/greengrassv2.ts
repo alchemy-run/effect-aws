@@ -1424,22 +1424,30 @@ export const getConnectivityInfo = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a paginated list of component summaries. This list includes components that you
  * have permission to view.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsRequest,
-  output: ListComponentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsRequest,
+    output: ListComponentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "components",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of deployment jobs that IoT Greengrass sends to Greengrass core devices.
  */
-export const listEffectiveDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEffectiveDeployments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEffectiveDeploymentsRequest,
     output: ListEffectiveDeploymentsResponse,
     errors: [
@@ -1449,14 +1457,19 @@ export const listEffectiveDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "effectiveDeployments",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of client devices that are associated with a core
  * device.
  */
 export const listClientDevicesAssociatedWithCoreDevice =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClientDevicesAssociatedWithCoreDeviceRequest,
     output: ListClientDevicesAssociatedWithCoreDeviceResponse,
     errors: [
@@ -1466,13 +1479,19 @@ export const listClientDevicesAssociatedWithCoreDevice =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "associatedClientDevices",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves a paginated list of all versions for a component. Greater versions are listed
  * first.
  */
-export const listComponentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComponentVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComponentVersionsRequest,
     output: ListComponentVersionsResponse,
     errors: [
@@ -1482,8 +1501,13 @@ export const listComponentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "componentVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of Greengrass core devices.
  *
@@ -1511,29 +1535,45 @@ export const listComponentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - For IoT Greengrass Core v2.7.0, the core device sends status updates upon local deployment and
  * cloud deployment
  */
-export const listCoreDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCoreDevicesRequest,
-  output: ListCoreDevicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCoreDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCoreDevicesRequest,
+    output: ListCoreDevicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "coreDevices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of deployments.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsRequest,
-  output: ListDeploymentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsRequest,
+    output: ListDeploymentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deployments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of the components that a Greengrass core device runs. By default,
  * this list doesn't include components that are deployed as dependencies of other components. To
@@ -1559,8 +1599,8 @@ export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - For IoT Greengrass Core v2.7.0, the core device sends status updates upon local deployment and
  * cloud deployment
  */
-export const listInstalledComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstalledComponents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstalledComponentsRequest,
     output: ListInstalledComponentsResponse,
     errors: [
@@ -1570,8 +1610,13 @@ export const listInstalledComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "installedComponents",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes a Greengrass core device, which is an IoT thing. This operation removes the core
  * device from the list of core devices. This operation doesn't delete the IoT thing. For more

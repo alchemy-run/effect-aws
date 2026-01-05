@@ -4006,17 +4006,25 @@ export const tagGlobalResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Displays a list of bridges that are associated with this account and an optionally specified Amazon Resource Name (ARN). This request returns a paginated result.
  */
-export const listBridges = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBridgesRequest,
-  output: ListBridgesResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listBridges = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBridgesRequest,
+    output: ListBridgesResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Bridges",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Adds media streams to an existing flow. After you add a media stream to a flow, you can associate it with a source and/or an output that uses the ST 2110 JPEG XS or CDI protocol.
  */
@@ -4224,17 +4232,25 @@ export const describeOffering = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of router inputs in AWS Elemental MediaConnect.
  */
-export const listRouterInputs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRouterInputsRequest,
-  output: ListRouterInputsResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listRouterInputs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRouterInputsRequest,
+    output: ListRouterInputsResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouterInputs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves detailed metadata information about a specific router input source, including stream details and connection state.
  */
@@ -4270,8 +4286,8 @@ export const startRouterInput = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of router network interfaces in AWS Elemental MediaConnect.
  */
-export const listRouterNetworkInterfaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRouterNetworkInterfaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRouterNetworkInterfacesRequest,
     output: ListRouterNetworkInterfacesResponse,
     errors: [
@@ -4281,22 +4297,35 @@ export const listRouterNetworkInterfaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouterNetworkInterfaces",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of router outputs in AWS Elemental MediaConnect.
  */
-export const listRouterOutputs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRouterOutputsRequest,
-  output: ListRouterOutputsResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listRouterOutputs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRouterOutputsRequest,
+    output: ListRouterOutputsResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouterOutputs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a flow. Before you can delete a flow, you must stop the flow.
  */
@@ -4915,7 +4944,7 @@ export const updateFlow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Displays a list of flows that are associated with this account. This request returns a paginated result.
  */
-export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsRequest,
   output: ListFlowsResponse,
   errors: [
@@ -4924,12 +4953,18 @@ export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceUnavailableException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Flows",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Displays a list of instances associated with the Amazon Web Services account. This request returns a paginated result. You can use the filterArn property to display only the instances associated with the selected Gateway Amazon Resource Name (ARN).
  */
-export const listGatewayInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGatewayInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGatewayInstancesRequest,
     output: ListGatewayInstancesResponse,
     errors: [
@@ -4939,22 +4974,35 @@ export const listGatewayInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Displays a list of gateways that are associated with this account. This request returns a paginated result.
  */
-export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewaysRequest,
-  output: ListGatewaysResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewaysRequest,
+    output: ListGatewaysResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Gateways",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about multiple router inputs in AWS Elemental MediaConnect.
  */
@@ -5003,42 +5051,66 @@ export const batchGetRouterOutput = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Displays a list of all offerings that are available to this account in the current Amazon Web Services Region. If you have an active reservation (which means you've purchased an offering that has already started and hasn't expired yet), your account isn't eligible for other offerings.
  */
-export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOfferingsRequest,
-  output: ListOfferingsResponse,
-  errors: [
-    BadRequestException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOfferingsRequest,
+    output: ListOfferingsResponse,
+    errors: [
+      BadRequestException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Offerings",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Displays a list of all reservations that have been purchased by this account in the current Amazon Web Services Region. This list includes all reservations in all states (such as active and expired).
  */
-export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReservationsRequest,
-  output: ListReservationsResponse,
-  errors: [
-    BadRequestException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReservationsRequest,
+    output: ListReservationsResponse,
+    errors: [
+      BadRequestException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Reservations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Displays a list of all entitlements that have been granted to this account. This request returns 20 results per page.
  */
-export const listEntitlements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntitlementsRequest,
-  output: ListEntitlementsResponse,
-  errors: [
-    BadRequestException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-  ],
-}));
+export const listEntitlements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntitlementsRequest,
+    output: ListEntitlementsResponse,
+    errors: [
+      BadRequestException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entitlements",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the configuration of an existing router network interface in AWS Elemental MediaConnect.
  */

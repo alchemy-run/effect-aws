@@ -3847,16 +3847,24 @@ export const disassociateMember = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List members associated with the Amazon Inspector delegated administrator for your
  * organization.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersRequest,
-  output: ListMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersRequest,
+    output: ListMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves Amazon Inspector deep inspection activation status of multiple member accounts within
  * your organization. You must be the delegated administrator of an organization in Amazon Inspector to
@@ -3893,8 +3901,8 @@ export const batchUpdateMemberEc2DeepInspectionStatus =
  * Lists the permissions an account has to configure Amazon Inspector.
  * If the account is a member account or standalone account with resources managed by an Organizations policy, the operation returns fewer permissions.
  */
-export const listAccountPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountPermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountPermissionsRequest,
     output: ListAccountPermissionsResponse,
     errors: [
@@ -3903,8 +3911,13 @@ export const listAccountPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "permissions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all code security integrations in your account.
  */
@@ -3922,18 +3935,22 @@ export const listCodeSecurityIntegrations =
 /**
  * Lists Amazon Inspector coverage statistics for your environment.
  */
-export const listCoverageStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCoverageStatistics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCoverageStatisticsRequest,
     output: ListCoverageStatisticsResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "countsByGroup",
+    } as const,
+  }));
 /**
  * Lists information about the Amazon Inspector delegated administrator of your organization.
  */
-export const listDelegatedAdminAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDelegatedAdminAccounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDelegatedAdminAccountsRequest,
     output: ListDelegatedAdminAccountsResponse,
     errors: [
@@ -3942,21 +3959,34 @@ export const listDelegatedAdminAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "delegatedAdminAccounts",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the filters associated with your account.
  */
-export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFiltersRequest,
-  output: ListFiltersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFilters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFiltersRequest,
+    output: ListFiltersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "filters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Sends a CIS session telemetry. This API is used by the Amazon Inspector SSM plugin to
  * communicate with the Amazon Inspector service. The Amazon Inspector SSM plugin calls
@@ -4167,16 +4197,24 @@ export const createSbomExport = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Amazon Inspector usage totals over the last 30 days.
  */
-export const listUsageTotals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUsageTotalsRequest,
-  output: ListUsageTotalsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listUsageTotals = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUsageTotalsRequest,
+    output: ListUsageTotalsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "totals",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing code security integration.
  *
@@ -4216,8 +4254,8 @@ export const createCisScanConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves CIS scan result details.
  */
-export const getCisScanResultDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCisScanResultDetails =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCisScanResultDetailsRequest,
     output: GetCisScanResultDetailsResponse,
     errors: [
@@ -4226,13 +4264,18 @@ export const getCisScanResultDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scanResultDetails",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists scan results aggregated by a target resource.
  */
 export const listCisScanResultsAggregatedByTargetResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCisScanResultsAggregatedByTargetResourceRequest,
     output: ListCisScanResultsAggregatedByTargetResourceResponse,
     errors: [
@@ -4241,25 +4284,39 @@ export const listCisScanResultsAggregatedByTargetResource =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "targetResourceAggregations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a CIS scan list.
  */
-export const listCisScans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCisScansRequest,
-  output: ListCisScansResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCisScans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCisScansRequest,
+    output: ListCisScansResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scans",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists Amazon Inspector coverage details for a specific vulnerability.
  */
-export const searchVulnerabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchVulnerabilities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchVulnerabilitiesRequest,
     output: SearchVulnerabilitiesResponse,
     errors: [
@@ -4268,13 +4325,17 @@ export const searchVulnerabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "vulnerabilities",
+    } as const,
+  }));
 /**
  * Lists CIS scan configurations.
  */
-export const listCisScanConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCisScanConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCisScanConfigurationsRequest,
     output: ListCisScanConfigurationsResponse,
     errors: [
@@ -4283,13 +4344,18 @@ export const listCisScanConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scanConfigurations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists scan results aggregated by checks.
  */
 export const listCisScanResultsAggregatedByChecks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCisScanResultsAggregatedByChecksRequest,
     output: ListCisScanResultsAggregatedByChecksResponse,
     errors: [
@@ -4298,43 +4364,77 @@ export const listCisScanResultsAggregatedByChecks =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "checkAggregations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists aggregated finding data for your environment based on specific criteria.
  */
-export const listFindingAggregations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFindingAggregations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFindingAggregationsRequest,
     output: ListFindingAggregationsResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "responses",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of clusters and metadata associated with an image.
  */
-export const getClustersForImage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetClustersForImageRequest,
-  output: GetClustersForImageResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getClustersForImage =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetClustersForImageRequest,
+    output: GetClustersForImageResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "cluster",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists findings for your environment.
  */
-export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFindingsRequest,
-  output: ListFindingsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listFindings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFindingsRequest,
+    output: ListFindingsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findings",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists coverage details for your environment.
  */
-export const listCoverage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCoverageRequest,
-  output: ListCoverageResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listCoverage = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCoverageRequest,
+    output: ListCoverageResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "coveredResources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

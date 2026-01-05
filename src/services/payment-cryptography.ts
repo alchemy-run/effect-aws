@@ -997,7 +997,7 @@ export const getKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - GetKey
  */
-export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeysInput,
   output: ListKeysOutput,
   errors: [
@@ -1008,6 +1008,12 @@ export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Keys",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Associates an existing Amazon Web Services Payment Cryptography alias with a different key. Each alias is associated with only one Amazon Web Services Payment Cryptography key at a time, although a key can have multiple aliases. The alias and the Amazon Web Services Payment Cryptography key must be in the same Amazon Web Services account and Amazon Web Services Region
@@ -1136,18 +1142,25 @@ export const deleteAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - UntagResource
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceInput,
-  output: ListTagsForResourceOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceInput,
+    output: ListTagsForResourceOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the Amazon Web Services Payment Cryptography key associated with the alias.
  *
@@ -1192,18 +1205,26 @@ export const getAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - UpdateAlias
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesInput,
-  output: ListAliasesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesInput,
+    output: ListAliasesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Aliases",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a certificate signing request (CSR) from a key pair.
  */

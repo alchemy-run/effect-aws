@@ -1397,19 +1397,31 @@ export const updatePreferences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the input commitment modifications associated with a bill estimate.
  */
 export const listBillEstimateInputCommitmentModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillEstimateInputCommitmentModificationsRequest,
     output: ListBillEstimateInputCommitmentModificationsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the commitment modifications associated with a bill scenario.
  */
 export const listBillScenarioCommitmentModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillScenarioCommitmentModificationsRequest,
     output: ListBillScenarioCommitmentModificationsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Delete commitment that you have created in a Bill Scenario. You can only delete a commitment that you had added and cannot model deletion (or removal) of a existing commitment. If you want model deletion of an existing commitment, see the negate BillScenarioCommitmentModificationAction of BatchCreateBillScenarioCommitmentModification operation.
@@ -1506,38 +1518,65 @@ export const createBillEstimate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all bill estimates for the account.
  */
-export const listBillEstimates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBillEstimatesRequest,
-  output: ListBillEstimatesResponse,
-  errors: [DataUnavailableException],
-}));
+export const listBillEstimates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBillEstimatesRequest,
+    output: ListBillEstimatesResponse,
+    errors: [DataUnavailableException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the commitments associated with a bill estimate.
  */
-export const listBillEstimateCommitments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBillEstimateCommitments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillEstimateCommitmentsRequest,
     output: ListBillEstimateCommitmentsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the input usage modifications associated with a bill estimate.
  */
 export const listBillEstimateInputUsageModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillEstimateInputUsageModificationsRequest,
     output: ListBillEstimateInputUsageModificationsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all bill scenarios for the account.
  */
-export const listBillScenarios = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBillScenariosRequest,
-  output: ListBillScenariosResponse,
-  errors: [DataUnavailableException],
-}));
+export const listBillScenarios = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBillScenariosRequest,
+    output: ListBillScenariosResponse,
+    errors: [DataUnavailableException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Update a newly added or existing commitment. You can update the commitment group based on a commitment ID and a Bill scenario ID.
  *
@@ -1557,10 +1596,16 @@ export const batchUpdateBillScenarioCommitmentModification =
  * Lists the usage modifications associated with a bill scenario.
  */
 export const listBillScenarioUsageModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillScenarioUsageModificationsRequest,
     output: ListBillScenarioUsageModificationsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Update a newly added or existing usage lines. You can update the usage amounts, usage hour, and usage group based on a usage ID and a Bill scenario ID.
@@ -1581,23 +1626,33 @@ export const batchUpdateBillScenarioUsageModification =
 /**
  * Lists all workload estimates for the account.
  */
-export const listWorkloadEstimates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkloadEstimates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkloadEstimatesRequest,
     output: ListWorkloadEstimatesResponse,
     errors: [DataUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the usage associated with a workload estimate.
  */
-export const listWorkloadEstimateUsage = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkloadEstimateUsage =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkloadEstimateUsageRequest,
     output: ListWorkloadEstimateUsageResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Create Amazon Web Services service usage that you want to model in a Workload Estimate.
  *
@@ -1632,13 +1687,18 @@ export const batchUpdateWorkloadEstimateUsage =
 /**
  * Lists the line items associated with a bill estimate.
  */
-export const listBillEstimateLineItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBillEstimateLineItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillEstimateLineItemsRequest,
     output: ListBillEstimateLineItemsResponse,
     errors: [DataUnavailableException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Create Compute Savings Plans, EC2 Instance Savings Plans, or EC2 Reserved Instances commitments that you want to model in a Bill Scenario.
  *

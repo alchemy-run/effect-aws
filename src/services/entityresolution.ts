@@ -1707,8 +1707,8 @@ export const updateSchemaMapping = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the `MatchingWorkflows` that have been created for an Amazon Web Services account.
  */
-export const listMatchingWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMatchingWorkflows =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMatchingWorkflowsInput,
     output: ListMatchingWorkflowsOutput,
     errors: [
@@ -1717,13 +1717,18 @@ export const listMatchingWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the `ProviderServices` that are available in this Amazon Web Services Region.
  */
-export const listProviderServices = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProviderServices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProviderServicesInput,
     output: ListProviderServicesOutput,
     errors: [
@@ -1732,21 +1737,34 @@ export const listProviderServices = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "providerServiceSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the `SchemaMappings` that have been created for an Amazon Web Services account.
  */
-export const listSchemaMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemaMappingsInput,
-  output: ListSchemaMappingsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSchemaMappings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemaMappingsInput,
+    output: ListSchemaMappingsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "schemaList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the `IdNamespace` with a given name.
  */
@@ -1835,17 +1853,25 @@ export const getSchemaMapping = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all jobs for a given workflow.
  */
-export const listMatchingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMatchingJobsInput,
-  output: ListMatchingJobsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMatchingJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMatchingJobsInput,
+    output: ListMatchingJobsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobs",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing `IdMappingWorkflow`. This method is identical to CreateIdMappingWorkflow, except it uses an HTTP `PUT` request instead of a `POST` request, and the `IdMappingWorkflow` must already exist for the method to succeed.
  *
@@ -1943,17 +1969,25 @@ export const getMatchingJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all ID mapping jobs for a given workflow.
  */
-export const listIdMappingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdMappingJobsInput,
-  output: ListIdMappingJobsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIdMappingJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIdMappingJobsInput,
+    output: ListIdMappingJobsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobs",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds a policy statement object. To retrieve a list of existing policy statements, use the `GetPolicy` API.
  */
@@ -2010,8 +2044,8 @@ export const batchDeleteUniqueId = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the `IdMappingWorkflows` that have been created for an Amazon Web Services account.
  */
-export const listIdMappingWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdMappingWorkflows =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdMappingWorkflowsInput,
     output: ListIdMappingWorkflowsOutput,
     errors: [
@@ -2020,21 +2054,34 @@ export const listIdMappingWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all ID namespaces.
  */
-export const listIdNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdNamespacesInput,
-  output: ListIdNamespacesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIdNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIdNamespacesInput,
+    output: ListIdNamespacesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "idNamespaceSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an ID namespace object which will help customers provide metadata explaining their dataset and how to use it. Each ID namespace must have a unique name. To modify an existing ID namespace, use the UpdateIdNamespace API.
  */

@@ -2469,15 +2469,23 @@ export const getDomainName = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists multiple custom domain names.
  */
-export const listDomainNames = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainNamesRequest,
-  output: ListDomainNamesResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    InternalFailureException,
-  ],
-}));
+export const listDomainNames = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainNamesRequest,
+    output: ListDomainNamesResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      InternalFailureException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "domainNameConfigs",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a custom `DomainName` object.
  */
@@ -2851,23 +2859,31 @@ export const getType = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `DeleteApiKey` to manually delete a key before it's automatically
  * deleted.
  */
-export const listApiKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApiKeysRequest,
-  output: ListApiKeysResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    NotFoundException,
-    UnauthorizedException,
-  ],
-}));
+export const listApiKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApiKeysRequest,
+    output: ListApiKeysResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      NotFoundException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "apiKeys",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the APIs in your AppSync account.
  *
  * `ListApis` returns only the high level API details. For more detailed
  * information about an API, use `GetApi`.
  */
-export const listApis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listApis = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListApisRequest,
   output: ListApisResponse,
   errors: [
@@ -2875,6 +2891,12 @@ export const listApis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalFailureException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "apis",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists the channel namespaces for a specified `Api`.
@@ -2882,8 +2904,8 @@ export const listApis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `ListChannelNamespaces` returns only high level details for the channel
  * namespace. To retrieve code handlers, use `GetChannelNamespace`.
  */
-export const listChannelNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChannelNamespaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelNamespacesRequest,
     output: ListChannelNamespacesResponse,
     errors: [
@@ -2892,64 +2914,101 @@ export const listChannelNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "channelNamespaces",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the data sources for a given API.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesRequest,
-  output: ListDataSourcesResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    NotFoundException,
-    UnauthorizedException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesRequest,
+    output: ListDataSourcesResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      NotFoundException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List multiple functions.
  */
-export const listFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFunctionsRequest,
-  output: ListFunctionsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    NotFoundException,
-    UnauthorizedException,
-  ],
-}));
+export const listFunctions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFunctionsRequest,
+    output: ListFunctionsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      NotFoundException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "functions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists your GraphQL APIs.
  */
-export const listGraphqlApis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGraphqlApisRequest,
-  output: ListGraphqlApisResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    UnauthorizedException,
-  ],
-}));
+export const listGraphqlApis = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGraphqlApisRequest,
+    output: ListGraphqlApisResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "graphqlApis",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the resolvers for a given API and type.
  */
-export const listResolvers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResolversRequest,
-  output: ListResolversResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    NotFoundException,
-    UnauthorizedException,
-  ],
-}));
+export const listResolvers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResolversRequest,
+    output: ListResolversResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      NotFoundException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resolvers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the resolvers that are associated with a specific function.
  */
-export const listResolversByFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResolversByFunction =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolversByFunctionRequest,
     output: ListResolversByFunctionResponse,
     errors: [
@@ -2958,12 +3017,17 @@ export const listResolversByFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resolvers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the types for a given API.
  */
-export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesRequest,
   output: ListTypesResponse,
   errors: [
@@ -2973,12 +3037,18 @@ export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "types",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists `Type` objects by the source API association ID.
  */
-export const listTypesByAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTypesByAssociation =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTypesByAssociationRequest,
     output: ListTypesByAssociationResponse,
     errors: [
@@ -2988,8 +3058,13 @@ export const listTypesByAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "types",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds a new schema to your GraphQL API.
  *
@@ -3277,8 +3352,8 @@ export const getGraphqlApi = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the `SourceApiAssociationSummary` data.
  */
-export const listSourceApiAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSourceApiAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourceApiAssociationsRequest,
     output: ListSourceApiAssociationsResponse,
     errors: [
@@ -3287,8 +3362,13 @@ export const listSourceApiAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sourceApiAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a list of environmental variables in an API by its ID value.
  *

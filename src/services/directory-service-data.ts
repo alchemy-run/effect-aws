@@ -881,7 +881,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResult,
   errors: [
@@ -891,6 +891,12 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Groups",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns member information for the specified group.
@@ -903,18 +909,26 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroupMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupMembersRequest,
-  output: ListGroupMembersResult,
-  errors: [
-    AccessDeniedException,
-    DirectoryUnavailableException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGroupMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupMembersRequest,
+    output: ListGroupMembersResult,
+    errors: [
+      AccessDeniedException,
+      DirectoryUnavailableException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Members",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a group.
  */
@@ -1039,18 +1053,25 @@ export const describeUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listGroupsForMember = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupsForMemberRequest,
-  output: ListGroupsForMemberResult,
-  errors: [
-    AccessDeniedException,
-    DirectoryUnavailableException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGroupsForMember =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListGroupsForMemberRequest,
+    output: ListGroupsForMemberResult,
+    errors: [
+      AccessDeniedException,
+      DirectoryUnavailableException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Groups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Adds an existing user, group, or computer as a group member.
  */
@@ -1078,7 +1099,7 @@ export const addGroupMember = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResult,
   errors: [
@@ -1088,6 +1109,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Users",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Searches the specified directory for a group. You can find groups that match the
@@ -1102,17 +1129,25 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const searchGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchGroupsRequest,
-  output: SearchGroupsResult,
-  errors: [
-    AccessDeniedException,
-    DirectoryUnavailableException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchGroupsRequest,
+    output: SearchGroupsResult,
+    errors: [
+      AccessDeniedException,
+      DirectoryUnavailableException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Groups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches the specified directory for a user. You can find users that match the
  * `SearchString` parameter with the value of their attributes included in the
@@ -1126,17 +1161,25 @@ export const searchGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also specify a maximum number of return results with the `MaxResults`
  * parameter.
  */
-export const searchUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchUsersRequest,
-  output: SearchUsersResult,
-  errors: [
-    AccessDeniedException,
-    DirectoryUnavailableException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchUsersRequest,
+    output: SearchUsersResult,
+    errors: [
+      AccessDeniedException,
+      DirectoryUnavailableException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Users",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new user.
  */

@@ -575,57 +575,88 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  *
  * You can apply an optional filter to see the objectives that belong to a specific domain. If you don’t provide a filter, the operation returns all objectives.
  */
-export const listObjectives = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListObjectivesRequest,
-  output: ListObjectivesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listObjectives = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListObjectivesRequest,
+    output: ListObjectivesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Objectives",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a paginated list of domains from the Control Catalog.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Domains",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a paginated list of control mappings from the Control Catalog. Control mappings show relationships between controls and other entities, such as common controls or compliance frameworks.
  */
-export const listControlMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListControlMappingsRequest,
-  output: ListControlMappingsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listControlMappings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListControlMappingsRequest,
+    output: ListControlMappingsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ControlMappings",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of common controls from the Amazon Web Services Control Catalog.
  *
  * You can apply an optional filter to see common controls that have a specific objective. If you don’t provide a filter, the operation returns all common controls.
  */
-export const listCommonControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCommonControlsRequest,
-  output: ListCommonControlsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCommonControls = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCommonControlsRequest,
+    output: ListCommonControlsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CommonControls",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details about a specific control, most notably a list of Amazon Web Services Regions where this control is supported. Input a value for the *ControlArn* parameter, in ARN form. `GetControl` accepts *controltower* or *controlcatalog* control ARNs as input. Returns a *controlcatalog* ARN format.
  *
@@ -645,13 +676,21 @@ export const getControl = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of all available controls in the Control Catalog library. Allows you to discover available controls. The list of controls is given as structures of type *controlSummary*. The ARN is returned in the global *controlcatalog* format, as shown in the examples.
  */
-export const listControls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListControlsRequest,
-  output: ListControlsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listControls = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListControlsRequest,
+    output: ListControlsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Controls",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

@@ -2180,11 +2180,18 @@ export const deleteImagePermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list that describes one or more specified images, if the image names or image ARNs are provided. Otherwise, all images in the account are described.
  */
-export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImagesRequest,
-  output: DescribeImagesResult,
-  errors: [InvalidParameterCombinationException, ResourceNotFoundException],
-}));
+export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeImagesRequest,
+    output: DescribeImagesResult,
+    errors: [InvalidParameterCombinationException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a URL to start a create app block builder streaming session.
  */
@@ -2245,13 +2252,17 @@ export const describeEntitlements = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list that describes the permissions for shared AWS account IDs on a private image that you own.
  */
-export const describeImagePermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImagePermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImagePermissionsRequest,
     output: DescribeImagePermissionsResult,
     errors: [ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list that describes the streaming sessions for a specified stack and fleet. If a UserId is provided for the stack and fleet,
  * only streaming sessions for that user are described. If an authentication type is not provided,
@@ -2625,13 +2636,18 @@ export const createStreamingURL = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list that describes one or more app block builder associations.
  */
 export const describeAppBlockBuilderAppBlockAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAppBlockBuilderAppBlockAssociationsRequest,
     output: DescribeAppBlockBuilderAppBlockAssociationsResult,
     errors: [
       InvalidParameterCombinationException,
       OperationNotPermittedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list that describes one or more application fleet associations. Either ApplicationArn or FleetName must be specified.
@@ -2923,13 +2939,17 @@ export const createUpdatedImage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list that describes one or more app block builders.
  */
-export const describeAppBlockBuilders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAppBlockBuilders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAppBlockBuildersRequest,
     output: DescribeAppBlockBuildersResult,
     errors: [OperationNotPermittedException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list that describes one or more specified fleets, if the fleet names are provided. Otherwise, all fleets in the account are described.
  */

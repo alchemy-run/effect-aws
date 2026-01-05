@@ -2755,19 +2755,26 @@ export const getDirectory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists directories created within an account.
  */
-export const listDirectories = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDirectoriesRequest,
-  output: ListDirectoriesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listDirectories = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDirectoriesRequest,
+    output: ListDirectoriesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Allows a schema to be updated using JSON upload. Only available for development schemas. See JSON Schema Format for more information.
  */
@@ -2839,20 +2846,26 @@ export const updateFacet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * limit of 50 tags per directory. All 50 tags are returned for a given directory with this API
  * call.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidTaggingRequestException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidTaggingRequestException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a directory. Only disabled directories can be deleted. A deleted directory cannot be undone. Exercise extreme
  * caution
@@ -2988,20 +3001,26 @@ export const addFacetToObject = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists indices attached to the specified object.
  */
-export const listAttachedIndices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttachedIndicesRequest,
-  output: ListAttachedIndicesResponse,
-  errors: [
-    AccessDeniedException,
-    DirectoryNotEnabledException,
-    InternalServiceException,
-    InvalidArnException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listAttachedIndices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAttachedIndicesRequest,
+    output: ListAttachedIndicesResponse,
+    errors: [
+      AccessDeniedException,
+      DirectoryNotEnabledException,
+      InternalServiceException,
+      InvalidArnException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a given Facet. All attributes and Rules
  * that are associated with the facet will be deleted. Only development schema facets are allowed
@@ -3190,22 +3209,29 @@ export const getFacet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists parent objects that are associated with a given object in pagination
  * fashion.
  */
-export const listObjectParents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListObjectParentsRequest,
-  output: ListObjectParentsResponse,
-  errors: [
-    AccessDeniedException,
-    CannotListParentOfRootException,
-    DirectoryNotEnabledException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listObjectParents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListObjectParentsRequest,
+    output: ListObjectParentsResponse,
+    errors: [
+      AccessDeniedException,
+      CannotListParentOfRootException,
+      DirectoryNotEnabledException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all policies from the root of the Directory to the object
  * specified. If there are no policies present, an empty list is returned. If policies are
@@ -3214,26 +3240,33 @@ export const listObjectParents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `policyType`. Paths that don't lead to the root from the target object are ignored. For more
  * information, see Policies.
  */
-export const lookupPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: LookupPolicyRequest,
-  output: LookupPolicyResponse,
-  errors: [
-    AccessDeniedException,
-    DirectoryNotEnabledException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const lookupPolicy = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: LookupPolicyRequest,
+    output: LookupPolicyResponse,
+    errors: [
+      AccessDeniedException,
+      DirectoryNotEnabledException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all attributes that are associated with an object.
  */
-export const listObjectAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listObjectAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListObjectAttributesRequest,
     output: ListObjectAttributesResponse,
     errors: [
@@ -3248,8 +3281,12 @@ export const listObjectAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of all the outgoing TypedLinkSpecifier
  * information for an object. It also supports filtering by typed link facet and identity
@@ -3303,8 +3340,8 @@ export const getTypedLinkFacetInformation =
  * objects are deleted or moved. Paths not leading to the directory root are ignored from the
  * target object.
  */
-export const listObjectParentPaths = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listObjectParentPaths =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListObjectParentPathsRequest,
     output: ListObjectParentPathsResponse,
     errors: [
@@ -3318,31 +3355,42 @@ export const listObjectParentPaths = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns policies attached to an object in pagination fashion.
  */
-export const listObjectPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListObjectPoliciesRequest,
-  output: ListObjectPoliciesResponse,
-  errors: [
-    AccessDeniedException,
-    DirectoryNotEnabledException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listObjectPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListObjectPoliciesRequest,
+    output: ListObjectPoliciesResponse,
+    errors: [
+      AccessDeniedException,
+      DirectoryNotEnabledException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists schema major versions applied to a directory. If `SchemaArn` is provided, lists the minor version.
  */
-export const listAppliedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppliedSchemaArns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppliedSchemaArnsRequest,
     output: ListAppliedSchemaArnsResponse,
     errors: [
@@ -3355,14 +3403,18 @@ export const listAppliedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves each Amazon Resource Name (ARN) of schemas in the development
  * state.
  */
-export const listDevelopmentSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDevelopmentSchemaArns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDevelopmentSchemaArnsRequest,
     output: ListDevelopmentSchemaArnsResponse,
     errors: [
@@ -3375,30 +3427,41 @@ export const listDevelopmentSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the names of facets that exist in a schema.
  */
-export const listFacetNames = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFacetNamesRequest,
-  output: ListFacetNamesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listFacetNames = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFacetNamesRequest,
+    output: ListFacetNamesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the major version families of each managed schema. If a major version ARN is provided as SchemaArn, the minor version revisions in that family are listed instead.
  */
-export const listManagedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedSchemaArns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedSchemaArnsRequest,
     output: ListManagedSchemaArnsResponse,
     errors: [
@@ -3409,13 +3472,17 @@ export const listManagedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the major version families of each published schema. If a major version ARN is provided as `SchemaArn`, the minor version revisions in that family are listed instead.
  */
-export const listPublishedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPublishedSchemaArns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPublishedSchemaArnsRequest,
     output: ListPublishedSchemaArnsResponse,
     errors: [
@@ -3428,14 +3495,18 @@ export const listPublishedSchemaArns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of `TypedLink` facet names for a particular schema.
  * For more information, see Typed Links.
  */
-export const listTypedLinkFacetNames = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTypedLinkFacetNames =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTypedLinkFacetNamesRequest,
     output: ListTypedLinkFacetNamesResponse,
     errors: [
@@ -3448,31 +3519,41 @@ export const listTypedLinkFacetNames = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves attributes attached to the facet.
  */
-export const listFacetAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFacetAttributesRequest,
-  output: ListFacetAttributesResponse,
-  errors: [
-    AccessDeniedException,
-    FacetNotFoundException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listFacetAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFacetAttributesRequest,
+    output: ListFacetAttributesResponse,
+    errors: [
+      AccessDeniedException,
+      FacetNotFoundException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of all attribute definitions for a particular TypedLinkFacet. For more information, see Typed Links.
  */
 export const listTypedLinkFacetAttributes =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTypedLinkFacetAttributesRequest,
     output: ListTypedLinkFacetAttributesResponse,
     errors: [
@@ -3486,6 +3567,11 @@ export const listTypedLinkFacetAttributes =
       RetryableConflictException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Upgrades a published schema under a new minor version revision using the current contents of `DevelopmentSchemaArn`.
@@ -3651,7 +3737,7 @@ export const attachObject = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists objects attached to the specified index.
  */
-export const listIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listIndex = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListIndexRequest,
   output: ListIndexResponse,
   errors: [
@@ -3667,6 +3753,11 @@ export const listIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     RetryableConflictException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Attaches the specified object to the specified index.
@@ -3693,22 +3784,29 @@ export const attachToIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a paginated list of child objects that are associated with a given
  * object.
  */
-export const listObjectChildren = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListObjectChildrenRequest,
-  output: ListObjectChildrenResponse,
-  errors: [
-    AccessDeniedException,
-    DirectoryNotEnabledException,
-    InternalServiceException,
-    InvalidArnException,
-    InvalidNextTokenException,
-    LimitExceededException,
-    NotNodeException,
-    ResourceNotFoundException,
-    RetryableConflictException,
-    ValidationException,
-  ],
-}));
+export const listObjectChildren = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListObjectChildrenRequest,
+    output: ListObjectChildrenResponse,
+    errors: [
+      AccessDeniedException,
+      DirectoryNotEnabledException,
+      InternalServiceException,
+      InvalidArnException,
+      InvalidNextTokenException,
+      LimitExceededException,
+      NotNodeException,
+      ResourceNotFoundException,
+      RetryableConflictException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Attaches a policy object to a regular object. An object can have a limited number of attached
  * policies.
@@ -3731,8 +3829,8 @@ export const attachPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns all of the `ObjectIdentifiers` to which a given policy is attached.
  */
-export const listPolicyAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPolicyAttachments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPolicyAttachmentsRequest,
     output: ListPolicyAttachmentsResponse,
     errors: [
@@ -3747,8 +3845,12 @@ export const listPolicyAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RetryableConflictException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Performs all the read operations in a batch.
  */

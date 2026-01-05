@@ -4583,11 +4583,19 @@ export const listProductRestEndpointPages =
 /**
  * Lists routing rules.
  */
-export const listRoutingRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoutingRulesRequest,
-  output: ListRoutingRulesResponse,
-  errors: [BadRequestException, NotFoundException, TooManyRequestsException],
-}));
+export const listRoutingRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRoutingRulesRequest,
+    output: ListRoutingRulesResponse,
+    errors: [BadRequestException, NotFoundException, TooManyRequestsException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an API mapping.
  */

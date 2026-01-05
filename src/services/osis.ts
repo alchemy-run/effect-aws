@@ -1005,7 +1005,7 @@ export const startPipeline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the pipeline endpoints connected to pipelines in your account.
  */
 export const listPipelineEndpointConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineEndpointConnectionsRequest,
     output: ListPipelineEndpointConnectionsResponse,
     errors: [
@@ -1015,12 +1015,18 @@ export const listPipelineEndpointConnections =
       LimitExceededException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineEndpointConnections",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all pipeline endpoints in your account.
  */
-export const listPipelineEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPipelineEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineEndpointsRequest,
     output: ListPipelineEndpointsResponse,
     errors: [
@@ -1030,8 +1036,13 @@ export const listPipelineEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       LimitExceededException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Attaches a resource-based policy to an OpenSearch Ingestion resource. Resource-based
  * policies grant permissions to principals to perform actions on the resource.
@@ -1152,17 +1163,24 @@ export const deletePipelineEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Viewing Amazon OpenSearch
  * Ingestion pipelines.
  */
-export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPipelinesRequest,
-  output: ListPipelinesResponse,
-  errors: [
-    AccessDeniedException,
-    DisabledOperationException,
-    InternalException,
-    InvalidPaginationTokenException,
-    ValidationException,
-  ],
-}));
+export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPipelinesRequest,
+    output: ListPipelinesResponse,
+    errors: [
+      AccessDeniedException,
+      DisabledOperationException,
+      InternalException,
+      InvalidPaginationTokenException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Stops an OpenSearch Ingestion pipeline. For more information, see Stopping
  * an OpenSearch Ingestion pipeline.

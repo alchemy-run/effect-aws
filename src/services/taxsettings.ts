@@ -1134,7 +1134,7 @@ export const getTaxRegistrationDocument = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves supplemental tax registrations for a single account.
  */
 export const listSupplementalTaxRegistrations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSupplementalTaxRegistrationsRequest,
     output: ListSupplementalTaxRegistrationsResponse,
     errors: [
@@ -1142,6 +1142,12 @@ export const listSupplementalTaxRegistrations =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "taxRegistrations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Stores supplemental tax registration for a single account.
@@ -1155,15 +1161,23 @@ export const putSupplementalTaxRegistration =
 /**
  * Retrieves the tax exemption of accounts listed in a consolidated billing family. The IAM action is `tax:GetExemptions`.
  */
-export const listTaxExemptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTaxExemptionsRequest,
-  output: ListTaxExemptionsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listTaxExemptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTaxExemptionsRequest,
+    output: ListTaxExemptionsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "taxExemptionDetailsMap",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes tax registration for a single account.
  *
@@ -1252,8 +1266,8 @@ export const getTaxRegistration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the tax registration of accounts listed in a consolidated billing family. This
  * can be used to retrieve up to 100 accounts' tax registrations in one call (default 50).
  */
-export const listTaxRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTaxRegistrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTaxRegistrationsRequest,
     output: ListTaxRegistrationsResponse,
     errors: [
@@ -1261,8 +1275,13 @@ export const listTaxRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accountDetails",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds the tax exemption for a single account or all accounts listed in a consolidated billing family. The IAM action is `tax:UpdateExemptions`.
  */

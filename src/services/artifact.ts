@@ -582,8 +582,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * List active customer-agreements applicable to calling identity.
  */
-export const listCustomerAgreements = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomerAgreements =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomerAgreementsRequest,
     output: ListCustomerAgreementsResponse,
     errors: [
@@ -592,8 +592,13 @@ export const listCustomerAgreements = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "customerAgreements",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Put the account settings for Artifact.
  */
@@ -660,33 +665,49 @@ export const getReportMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List available reports.
  */
-export const listReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportsRequest,
-  output: ListReportsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportsRequest,
+    output: ListReportsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reports",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List available report versions for a given report.
  */
-export const listReportVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReportVersionsRequest,
-  output: ListReportVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReportVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReportVersionsRequest,
+    output: ListReportVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reports",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get the account settings for Artifact.
  */

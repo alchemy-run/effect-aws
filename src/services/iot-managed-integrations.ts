@@ -2509,16 +2509,23 @@ export class UnauthorizedException extends S.TaggedError<UnauthorizedException>(
 /**
  * Returns a list of connectors filtered by its Lambda Amazon Resource Name (ARN) and `type`.
  */
-export const listCloudConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCloudConnectorsRequest,
-  output: ListCloudConnectorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCloudConnectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCloudConnectorsRequest,
+    output: ListCloudConnectorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the managed thing state for the given device Id.
  */
@@ -2540,8 +2547,8 @@ export const getManagedThingState = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List all of the over-the-air (OTA) task executions.
  */
-export const listOtaTaskExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOtaTaskExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOtaTaskExecutionsRequest,
     output: ListOtaTaskExecutionsResponse,
     errors: [
@@ -2551,8 +2558,13 @@ export const listOtaTaskExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExecutionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Create a credential locker.
  *
@@ -2621,17 +2633,25 @@ export const getOtaTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all of the over-the-air (OTA) tasks.
  */
-export const listOtaTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOtaTasksRequest,
-  output: ListOtaTasksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listOtaTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOtaTasksRequest,
+    output: ListOtaTasksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tasks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Get an account association for an Amazon Web Services account linked to a customer-managed destination.
  */
@@ -3093,8 +3113,8 @@ export const resetRuntimeLogConfiguration =
 /**
  * List information on an existing credential locker.
  */
-export const listCredentialLockers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCredentialLockers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCredentialLockersRequest,
     output: ListCredentialLockersResponse,
     errors: [
@@ -3104,28 +3124,41 @@ export const listCredentialLockers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists schema versions with the provided information.
  */
-export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemaVersionsRequest,
-  output: ListSchemaVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemaVersionsRequest,
+    output: ListSchemaVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all connector destinations, with optional filtering by cloud connector ID.
  */
-export const listConnectorDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConnectorDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectorDestinationsRequest,
     output: ListConnectorDestinationsResponse,
     errors: [
@@ -3134,26 +3167,39 @@ export const listConnectorDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectorDestinationList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all notification destinations.
  */
-export const listDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDestinationsRequest,
-  output: ListDestinationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDestinations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDestinationsRequest,
+    output: ListDestinationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DestinationList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all event log configurations for an account.
  */
-export const listEventLogConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEventLogConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventLogConfigurationsRequest,
     output: ListEventLogConfigurationsResponse,
     errors: [
@@ -3162,13 +3208,18 @@ export const listEventLogConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventLogConfigurationList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all account associations for a specific managed thing.
  */
 export const listManagedThingAccountAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedThingAccountAssociationsRequest,
     output: ListManagedThingAccountAssociationsResponse,
     errors: [
@@ -3177,12 +3228,18 @@ export const listManagedThingAccountAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List all notification configurations.
  */
 export const listNotificationConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotificationConfigurationsRequest,
     output: ListNotificationConfigurationsResponse,
     errors: [
@@ -3191,12 +3248,18 @@ export const listNotificationConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NotificationConfigurationList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List all of the over-the-air (OTA) task configurations.
  */
-export const listOtaTaskConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOtaTaskConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOtaTaskConfigurationsRequest,
     output: ListOtaTaskConfigurationsResponse,
     errors: [
@@ -3205,8 +3268,13 @@ export const listOtaTaskConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Create a notification destination such as Kinesis Data Streams that receive events and notifications from Managed integrations. Managed integrations uses the destination to determine where to deliver notifications.
  */
@@ -3239,8 +3307,8 @@ export const createNotificationConfiguration =
 /**
  * Lists all account associations, with optional filtering by connector destination ID.
  */
-export const listAccountAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssociationsRequest,
     output: ListAccountAssociationsResponse,
     errors: [
@@ -3250,8 +3318,13 @@ export const listAccountAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a C2C (cloud-to-cloud) connector.
  */
@@ -3336,8 +3409,8 @@ export const startDeviceDiscovery = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all devices discovered during a specific device discovery task.
  */
-export const listDiscoveredDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDiscoveredDevices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDiscoveredDevicesRequest,
     output: ListDiscoveredDevicesResponse,
     errors: [
@@ -3349,8 +3422,13 @@ export const listDiscoveredDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Sets the default encryption configuration for the Amazon Web Services account. For more information, see Key management in the AWS IoT SiteWise User Guide.
  */
@@ -3371,8 +3449,8 @@ export const putDefaultEncryptionConfiguration =
 /**
  * List schemas associated with a managed thing.
  */
-export const listManagedThingSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedThingSchemas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedThingSchemasRequest,
     output: ListManagedThingSchemasResponse,
     errors: [
@@ -3384,8 +3462,13 @@ export const listManagedThingSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a new account association via the destination id.
  */
@@ -3681,8 +3764,8 @@ export const getDefaultEncryptionConfiguration =
 /**
  * Lists all device discovery tasks, with optional filtering by type and status.
  */
-export const listDeviceDiscoveries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeviceDiscoveries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeviceDiscoveriesRequest,
     output: ListDeviceDiscoveriesResponse,
     errors: [
@@ -3693,28 +3776,41 @@ export const listDeviceDiscoveries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Listing all managed things with provision for filters.
  */
-export const listManagedThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListManagedThingsRequest,
-  output: ListManagedThingsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listManagedThings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListManagedThingsRequest,
+    output: ListManagedThingsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the provisioning profiles within the Amazon Web Services account.
  */
-export const listProvisioningProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProvisioningProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProvisioningProfilesRequest,
     output: ListProvisioningProfilesResponse,
     errors: [
@@ -3725,8 +3821,13 @@ export const listProvisioningProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Customers can request IoT managed integrations to manage the server trust for them or bring their own external server trusts for the custom domain. Returns an IoT managed integrations endpoint.
  */

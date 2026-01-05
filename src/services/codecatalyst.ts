@@ -1550,18 +1550,31 @@ export const getUserDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all personal access tokens (PATs) associated with the user who calls the API. You can only list PATs associated with your Amazon Web Services Builder ID.
  */
-export const listAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessTokensRequest,
-  output: ListAccessTokensResponse,
-  errors: [],
-}));
+export const listAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessTokensRequest,
+    output: ListAccessTokensResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of spaces.
  */
-export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesRequest,
   output: ListSpacesResponse,
   errors: [],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+  } as const,
 }));
 /**
  * Creates a Dev Environment in Amazon CodeCatalyst, a cloud-based development environment that you can use to quickly work on the code stored
@@ -1588,31 +1601,47 @@ export const getDevEnvironment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of active sessions for a Dev Environment in a project.
  */
-export const listDevEnvironmentSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDevEnvironmentSessions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDevEnvironmentSessionsRequest,
     output: ListDevEnvironmentSessionsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of source repositories in a project.
  */
-export const listSourceRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSourceRepositories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourceRepositoriesRequest,
     output: ListSourceRepositoriesResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of branches in a specified source repository.
  */
 export const listSourceRepositoryBranches =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourceRepositoryBranchesRequest,
     output: ListSourceRepositoryBranchesResponse,
     errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns information about a workflow.
@@ -1625,19 +1654,34 @@ export const getWorkflow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of workflow runs of a specified workflow.
  */
-export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowRunsRequest,
-  output: ListWorkflowRunsResponse,
-  errors: [],
-}));
+export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowRunsRequest,
+    output: ListWorkflowRunsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of Dev Environments in a project.
  */
-export const listDevEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevEnvironmentsRequest,
-  output: ListDevEnvironmentsResponse,
-  errors: [],
-}));
+export const listDevEnvironments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDevEnvironmentsRequest,
+    output: ListDevEnvironmentsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of events that occurred during a specific time in a space. You can
  * use these events to audit user and system activity in a space. For more information, see
@@ -1649,27 +1693,51 @@ export const listDevEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and maintain a record of events that extends past 90 days. For more information, see Working with CloudTrail Event History and Working with
  * CloudTrail trails.
  */
-export const listEventLogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventLogsRequest,
-  output: ListEventLogsResponse,
-  errors: [],
-}));
+export const listEventLogs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventLogsRequest,
+    output: ListEventLogsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of projects.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsRequest,
-  output: ListProjectsResponse,
-  errors: [],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsRequest,
+    output: ListProjectsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of workflows in a specified project.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts a session for a specified Dev Environment.
  */

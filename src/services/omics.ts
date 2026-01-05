@@ -3564,8 +3564,8 @@ export const getReferenceMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Retrieves a list of annotation import jobs.
  */
-export const listAnnotationImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnnotationImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnnotationImportJobsRequest,
     output: ListAnnotationImportJobsResponse,
     errors: [
@@ -3575,15 +3575,20 @@ export const listAnnotationImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "annotationImportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Amazon Web Services HealthOmics variant stores and annotation stores will no longer be open to new customers starting November 7, 2025. If you would like to use variant stores or annotation stores, sign up prior to that date. Existing customers can continue to use the service as normal. For more information, see Amazon Web Services HealthOmics variant store and annotation store availability change.
  *
  * Retrieves a list of annotation stores.
  */
-export const listAnnotationStores = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnnotationStores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnnotationStoresRequest,
     output: ListAnnotationStoresResponse,
     errors: [
@@ -3593,13 +3598,18 @@ export const listAnnotationStores = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "annotationStores",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the versions of an annotation store.
  */
-export const listAnnotationStoreVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnnotationStoreVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnnotationStoreVersionsRequest,
     output: ListAnnotationStoreVersionsResponse,
     errors: [
@@ -3609,8 +3619,13 @@ export const listAnnotationStoreVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "annotationStoreVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Monitors the status of a reference import job. This operation can be called after calling the `StartReferenceImportJob` operation.
  */
@@ -3631,8 +3646,8 @@ export const getReferenceImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves the metadata of one or more reference import jobs for a reference store.
  */
-export const listReferenceImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReferenceImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReferenceImportJobsRequest,
     output: ListReferenceImportJobsResponse,
     errors: [
@@ -3643,46 +3658,67 @@ export const listReferenceImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "importJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the metadata of one or more reference genomes in a reference store.
  *
  * For more information, see Creating a reference store in the *Amazon Web Services HealthOmics User Guide*.
  */
-export const listReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReferencesRequest,
-  output: ListReferencesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReferences = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReferencesRequest,
+    output: ListReferencesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "references",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of sequence stores and returns each sequence store's metadata.
  *
  * For more information, see Creating a HealthOmics sequence store in the *Amazon Web Services HealthOmics User Guide*.
  */
-export const listSequenceStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSequenceStoresRequest,
-  output: ListSequenceStoresResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestTimeoutException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSequenceStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSequenceStoresRequest,
+    output: ListSequenceStoresResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestTimeoutException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sequenceStores",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of read set activation jobs and returns the metadata in a JSON formatted output. To extract metadata from a read set activation job, use the `GetReadSetActivationJob` API operation.
  */
-export const listReadSetActivationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReadSetActivationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReadSetActivationJobsRequest,
     output: ListReadSetActivationJobsResponse,
     errors: [
@@ -3693,13 +3729,18 @@ export const listReadSetActivationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "activationJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of read set export jobs in a JSON formatted response. This API operation is used to check the status of a read set export job initiated by the `StartReadSetExportJob` API operation.
  */
-export const listReadSetExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReadSetExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReadSetExportJobsRequest,
     output: ListReadSetExportJobsResponse,
     errors: [
@@ -3710,13 +3751,18 @@ export const listReadSetExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "exportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of read set import jobs and returns the data in JSON format.
  */
-export const listReadSetImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReadSetImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReadSetImportJobsRequest,
     output: ListReadSetImportJobsResponse,
     errors: [
@@ -3727,30 +3773,43 @@ export const listReadSetImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "importJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of read sets from a sequence store ID and returns the metadata in JSON format.
  */
-export const listReadSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReadSetsRequest,
-  output: ListReadSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReadSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReadSetsRequest,
+    output: ListReadSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "readSets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Amazon Web Services HealthOmics variant stores and annotation stores will no longer be open to new customers starting November 7, 2025. If you would like to use variant stores or annotation stores, sign up prior to that date. Existing customers can continue to use the service as normal. For more information, see Amazon Web Services HealthOmics variant store and annotation store availability change.
  *
  * Retrieves a list of variant import jobs.
  */
-export const listVariantImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVariantImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVariantImportJobsRequest,
     output: ListVariantImportJobsResponse,
     errors: [
@@ -3760,24 +3819,37 @@ export const listVariantImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "variantImportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Amazon Web Services HealthOmics variant stores and annotation stores will no longer be open to new customers starting November 7, 2025. If you would like to use variant stores or annotation stores, sign up prior to that date. Existing customers can continue to use the service as normal. For more information, see Amazon Web Services HealthOmics variant store and annotation store availability change.
  *
  * Retrieves a list of variant stores.
  */
-export const listVariantStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVariantStoresRequest,
-  output: ListVariantStoresResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listVariantStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVariantStoresRequest,
+    output: ListVariantStoresResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "variantStores",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Downloads parts of data from a reference genome and returns the reference file in the same format that it was uploaded.
  *
@@ -4217,17 +4289,24 @@ export const deleteS3AccessPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information, see Creating a reference store in the *Amazon Web Services HealthOmics User Guide*.
  */
-export const listReferenceStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReferenceStoresRequest,
-  output: ListReferenceStoresResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    RequestTimeoutException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listReferenceStores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListReferenceStoresRequest,
+    output: ListReferenceStoresResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      RequestTimeoutException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "referenceStores",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves detailed information from parts of a read set and returns the read set in the same format that it was uploaded. You must have read sets uploaded to your sequence store in order to run this operation.
  */
@@ -4248,8 +4327,8 @@ export const getReadSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all parts in a multipart read set upload for a sequence store and returns the metadata in a JSON formatted output.
  */
-export const listReadSetUploadParts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReadSetUploadParts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReadSetUploadPartsRequest,
     output: ListReadSetUploadPartsResponse,
     errors: [
@@ -4262,8 +4341,13 @@ export const listReadSetUploadParts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "parts",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Imports a read set from the sequence store. Read set import jobs support a maximum of 100 read sets of different types. Monitor the progress of your read set import job by calling the `GetReadSetImportJob` API operation.
  */
@@ -4334,8 +4418,8 @@ export const completeMultipartReadSetUpload =
 /**
  * Lists in-progress multipart read set uploads for a sequence store and returns it in a JSON formatted output. Multipart read set uploads are initiated by the `CreateMultipartReadSetUploads` API operation. This operation returns a response with no body when the upload is complete.
  */
-export const listMultipartReadSetUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMultipartReadSetUploads =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMultipartReadSetUploadsRequest,
     output: ListMultipartReadSetUploadsResponse,
     errors: [
@@ -4348,8 +4432,13 @@ export const listMultipartReadSetUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "uploads",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves details about an access policy on a given store.
  */
@@ -4452,7 +4541,7 @@ export const getShare = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the resource shares associated with an account. Use the filter parameter to retrieve a specific subset of the shares.
  */
-export const listShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSharesRequest,
   output: ListSharesResponse,
   errors: [
@@ -4464,6 +4553,12 @@ export const listShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "shares",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Amazon Web Services HealthOmics variant stores and annotation stores will no longer be open to new customers starting November 7, 2025. If you would like to use variant stores or annotation stores, sign up prior to that date. Existing customers can continue to use the service as normal. For more information, see Amazon Web Services HealthOmics variant store and annotation store availability change.
@@ -4579,37 +4674,53 @@ export const startReferenceImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of your run caches and the metadata for each cache.
  */
-export const listRunCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRunCachesRequest,
-  output: ListRunCachesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRunCaches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRunCachesRequest,
+    output: ListRunCachesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "startingToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of all run groups and returns the metadata for each run group.
  */
-export const listRunGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRunGroupsRequest,
-  output: ListRunGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRunGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRunGroupsRequest,
+    output: ListRunGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "startingToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets detailed information about a specific run using its ID.
  *
@@ -4634,7 +4745,7 @@ export const getRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Amazon Web Services HealthOmics stores a configurable number of runs, as determined by service limits, that are available to the console and API. If the `ListRuns` response doesn't include specific runs that you expected, you can find all run logs in the CloudWatch logs. For more information about viewing the run logs, see CloudWatch logs in the *Amazon Web Services HealthOmics User Guide*.
  */
-export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRunsRequest,
   output: ListRunsResponse,
   errors: [
@@ -4647,6 +4758,12 @@ export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "startingToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets detailed information about a run task using its ID.
@@ -4668,20 +4785,28 @@ export const getRunTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of tasks and status information within their specified run. Use this operation to monitor runs and to identify which specific tasks have failed.
  */
-export const listRunTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRunTasksRequest,
-  output: ListRunTasksResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRunTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRunTasksRequest,
+    output: ListRunTasksResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "startingToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a sequence store and returns its metadata. Sequence stores are used to store sequence data files called read sets that are saved in FASTQ, BAM, uBAM, or CRAM formats. For aligned formats (BAM and CRAM), a sequence store can only use one reference genome. For unaligned formats (FASTQ and uBAM), a reference genome is not required. You can create multiple sequence stores per region per account.
  *
@@ -4775,25 +4900,33 @@ export const getWorkflow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of existing workflows. You can filter for specific workflows by their name and type. Using the type parameter, specify `PRIVATE` to retrieve a list of private workflows or specify `READY2RUN` for a list of all Ready2Run workflows. If you do not specify the type of workflow, this operation returns a list of existing workflows.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "startingToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the workflow versions for the specified workflow. For more information, see Workflow versioning in Amazon Web Services HealthOmics in the *Amazon Web Services HealthOmics User Guide*.
  */
-export const listWorkflowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowVersionsRequest,
     output: ListWorkflowVersionsResponse,
     errors: [
@@ -4806,8 +4939,13 @@ export const listWorkflowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "startingToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a reference store and returns metadata in JSON format. Reference stores are used to store reference genomes in FASTA format. A reference store is created when the first reference genome is imported. To import additional reference genomes from an Amazon S3 bucket, use the `StartReferenceImportJob` API operation.
  *

@@ -819,16 +819,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns the list of channel within a private re:Post with some information about each channel.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsInput,
-  output: ListChannelsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsInput,
+    output: ListChannelsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "channels",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Displays information about a channel in a private re:Post.
  */
@@ -1032,7 +1040,7 @@ export const updateSpace = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of AWS re:Post Private private re:Posts in the account with some information about each private re:Post.
  */
-export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesInput,
   output: ListSpacesOutput,
   errors: [
@@ -1041,6 +1049,12 @@ export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "spaces",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Deletes an AWS re:Post Private private re:Post.

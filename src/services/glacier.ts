@@ -1527,8 +1527,8 @@ export const initiateVaultLock = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * with Archives in Amazon Glacier and List Multipart Uploads
  * in the *Amazon Glacier Developer Guide*.
  */
-export const listMultipartUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMultipartUploads =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMultipartUploadsInput,
     output: ListMultipartUploadsOutput,
     errors: [
@@ -1538,8 +1538,13 @@ export const listMultipartUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "marker",
+      outputToken: "Marker",
+      items: "UploadsList",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * This operation lists the parts of an archive that have been uploaded in a specific
  * multipart upload. You can make this request at any time during an in-progress multipart
@@ -1565,7 +1570,7 @@ export const listMultipartUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * with Archives in Amazon Glacier and List Parts in the
  * *Amazon Glacier Developer Guide*.
  */
-export const listParts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listParts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPartsInput,
   output: ListPartsOutput,
   errors: [
@@ -1575,6 +1580,12 @@ export const listParts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "marker",
+    outputToken: "Marker",
+    items: "Parts",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * You call this operation to inform Amazon Glacier (Glacier) that all the archive parts have been
@@ -1888,7 +1899,7 @@ export const initiateMultipartUpload = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information about using this operation,
  * see the documentation for the underlying REST API List Jobs.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsInput,
   output: ListJobsOutput,
   errors: [
@@ -1898,6 +1909,12 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "marker",
+    outputToken: "Marker",
+    items: "JobList",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * This operation lists all the tags attached to a vault. The operation returns an empty
@@ -1937,7 +1954,7 @@ export const listTagsForVault = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon Glacier and List Vaults in the
  * *Amazon Glacier Developer Guide*.
  */
-export const listVaults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listVaults = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListVaultsInput,
   output: ListVaultsOutput,
   errors: [
@@ -1947,6 +1964,12 @@ export const listVaults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "marker",
+    outputToken: "Marker",
+    items: "VaultList",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * This operation configures an access policy for a vault and will overwrite an existing

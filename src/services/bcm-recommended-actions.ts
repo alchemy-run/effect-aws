@@ -210,8 +210,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of recommended actions that match the filter criteria.
  */
-export const listRecommendedActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendedActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendedActionsRequest,
     output: ListRecommendedActionsResponse,
     errors: [
@@ -220,5 +220,10 @@ export const listRecommendedActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendedActions",
+      pageSize: "maxResults",
+    } as const,
+  }));

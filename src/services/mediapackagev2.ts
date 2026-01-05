@@ -1627,17 +1627,25 @@ export const getOriginEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of harvest jobs that match the specified criteria.
  */
-export const listHarvestJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHarvestJobsRequest,
-  output: ListHarvestJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listHarvestJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHarvestJobsRequest,
+    output: ListHarvestJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Update the specified channel. You can edit if MediaPackage sends ingest or egress access logs to the CloudWatch log group, if content will be encrypted, the description on a channel, and your channel's policy settings. You can't edit the name of the channel or CloudFront distribution details.
  *
@@ -1816,17 +1824,25 @@ export const getChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all channels in a specific channel group that are configured in AWS Elemental MediaPackage.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Delete a channel policy.
  */
@@ -1889,16 +1905,24 @@ export const deleteChannelGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all channel groups that are configured in Elemental MediaPackage.
  */
-export const listChannelGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelGroupsRequest,
-  output: ListChannelGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChannelGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelGroupsRequest,
+    output: ListChannelGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the specified channel policy that's configured in AWS Elemental MediaPackage. With policies, you can specify who has access to AWS resources and what actions they can perform on those resources.
  */
@@ -1916,17 +1940,24 @@ export const getChannelPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all origin endpoints in a specific channel that are configured in AWS Elemental MediaPackage.
  */
-export const listOriginEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOriginEndpointsRequest,
-  output: ListOriginEndpointsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listOriginEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListOriginEndpointsRequest,
+    output: ListOriginEndpointsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a new harvest job to export content from a MediaPackage v2 channel to an S3 bucket.
  */

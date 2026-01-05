@@ -2237,13 +2237,17 @@ export const startMisconfiguredStateRecovery =
  * all DNS aliases that have been associated with and disassociated from the file system is available in the list of AdministrativeAction
  * provided in the DescribeFileSystems operation response.
  */
-export const describeFileSystemAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFileSystemAliases =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFileSystemAliasesRequest,
     output: DescribeFileSystemAliasesResponse,
     errors: [BadRequest, FileSystemNotFound, InternalServerError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the description of specific Amazon FSx file systems, if a
  * `FileSystemIds` value is provided for that file system. Otherwise, it
@@ -2273,11 +2277,17 @@ export const describeFileSystemAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `DescribeFileSystems` call and the order of file systems returned
  * across the responses of a multicall iteration is unspecified.
  */
-export const describeFileSystems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFileSystemsRequest,
-  output: DescribeFileSystemsResponse,
-  errors: [BadRequest, FileSystemNotFound, InternalServerError],
-}));
+export const describeFileSystems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeFileSystemsRequest,
+    output: DescribeFileSystemsResponse,
+    errors: [BadRequest, FileSystemNotFound, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Use this action to associate one or more Domain Name Server (DNS) aliases with an existing Amazon FSx for Windows File Server file system.
  * A file system can have a maximum of 50 DNS aliases associated with it at any one time. If you try to
@@ -2328,11 +2338,18 @@ export const associateFileSystemAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `DescribeFileCaches` call and the order of caches returned
  * across the responses of a multicall iteration is unspecified.
  */
-export const describeFileCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFileCachesRequest,
-  output: DescribeFileCachesResponse,
-  errors: [BadRequest, FileCacheNotFound, InternalServerError],
-}));
+export const describeFileCaches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeFileCachesRequest,
+    output: DescribeFileCachesResponse,
+    errors: [BadRequest, FileCacheNotFound, InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the description of specific Amazon FSx for OpenZFS snapshots, if a
  * `SnapshotIds` value is provided. Otherwise, this operation returns all
@@ -2361,29 +2378,51 @@ export const describeFileCaches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `DescribeSnapshots` call and the order of backups returned across
  * the responses of a multi-call iteration is unspecified.
  */
-export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSnapshotsRequest,
-  output: DescribeSnapshotsResponse,
-  errors: [BadRequest, InternalServerError, SnapshotNotFound],
-}));
+export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSnapshotsRequest,
+    output: DescribeSnapshotsResponse,
+    errors: [BadRequest, InternalServerError, SnapshotNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Snapshots",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more Amazon FSx for NetApp ONTAP storage virtual machines (SVMs).
  */
 export const describeStorageVirtualMachines =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeStorageVirtualMachinesRequest,
     output: DescribeStorageVirtualMachinesResponse,
     errors: [BadRequest, InternalServerError, StorageVirtualMachineNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StorageVirtualMachines",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Amazon FSx for NetApp ONTAP or Amazon FSx for
  * OpenZFS volumes.
  */
-export const describeVolumes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeVolumesRequest,
-  output: DescribeVolumesResponse,
-  errors: [BadRequest, InternalServerError, VolumeNotFound],
-}));
+export const describeVolumes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeVolumesRequest,
+    output: DescribeVolumesResponse,
+    errors: [BadRequest, InternalServerError, VolumeNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Volumes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the configuration of an existing data repository association
  * on an Amazon FSx for Lustre file system. Data repository associations
@@ -2429,17 +2468,24 @@ export const updateDataRepositoryAssociation =
  * `DescribeBackups` call and the order of the backups returned
  * across the responses of a multi-call iteration is unspecified.
  */
-export const describeBackups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeBackupsRequest,
-  output: DescribeBackupsResponse,
-  errors: [
-    BackupNotFound,
-    BadRequest,
-    FileSystemNotFound,
-    InternalServerError,
-    VolumeNotFound,
-  ],
-}));
+export const describeBackups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeBackupsRequest,
+    output: DescribeBackupsResponse,
+    errors: [
+      BackupNotFound,
+      BadRequest,
+      FileSystemNotFound,
+      InternalServerError,
+      VolumeNotFound,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the name of an Amazon FSx for OpenZFS snapshot.
  */
@@ -2727,7 +2773,7 @@ export const deleteBackup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `NextToken` from the last response.
  */
 export const describeDataRepositoryAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataRepositoryAssociationsRequest,
     output: DescribeDataRepositoryAssociationsResponse,
     errors: [
@@ -2737,6 +2783,11 @@ export const describeDataRepositoryAssociations =
       InternalServerError,
       InvalidDataRepositoryType,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns the description of specific Amazon FSx for Lustre or Amazon File Cache data repository tasks, if
@@ -2751,8 +2802,8 @@ export const describeDataRepositoryAssociations =
  * request with the `NextToken` request parameter set to the value of
  * `NextToken` from the last response.
  */
-export const describeDataRepositoryTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDataRepositoryTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataRepositoryTasksRequest,
     output: DescribeDataRepositoryTasksResponse,
     errors: [
@@ -2761,8 +2812,12 @@ export const describeDataRepositoryTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       FileSystemNotFound,
       InternalServerError,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Detaches an S3 access point from an Amazon FSx volume and deletes the S3 access point.
  *
@@ -2996,7 +3051,7 @@ export const createDataRepositoryTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - `fsx:DescribeS3AccessPointAttachments`
  */
 export const describeS3AccessPointAttachments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeS3AccessPointAttachmentsRequest,
     output: DescribeS3AccessPointAttachmentsResponse,
     errors: [
@@ -3005,6 +3060,12 @@ export const describeS3AccessPointAttachments =
       S3AccessPointAttachmentNotFound,
       UnsupportedOperation,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "S3AccessPointAttachments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Creates a new Amazon FSx for NetApp ONTAP volume from an
@@ -3208,17 +3269,23 @@ export const updateFileSystem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `ListTagsForResource` call and the order of tags returned across
  * the responses of a multi-call iteration is unspecified.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    BadRequest,
-    InternalServerError,
-    NotServiceResourceError,
-    ResourceDoesNotSupportTagging,
-    ResourceNotFound,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      BadRequest,
+      InternalServerError,
+      NotServiceResourceError,
+      ResourceDoesNotSupportTagging,
+      ResourceNotFound,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a new Amazon File Cache resource.
  *

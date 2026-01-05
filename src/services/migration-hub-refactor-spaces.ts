@@ -1370,32 +1370,47 @@ export const getService = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists Amazon Web Services Migration Hub Refactor Spaces environments owned by a caller account or shared with the caller
  * account.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: ListEnvironmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: ListEnvironmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EnvironmentSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all Amazon Web Services Migration Hub Refactor Spaces service virtual private clouds (VPCs) that are part of the
  * environment.
  */
-export const listEnvironmentVpcs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentVpcsRequest,
-  output: ListEnvironmentVpcsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEnvironmentVpcs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEnvironmentVpcsRequest,
+    output: ListEnvironmentVpcsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EnvironmentVpcList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets an Amazon Web Services Migration Hub Refactor Spaces application.
  */
@@ -1545,7 +1560,7 @@ export const createService = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the Amazon Web Services Migration Hub Refactor Spaces routes within an application.
  */
-export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoutesRequest,
   output: ListRoutesResponse,
   errors: [
@@ -1557,36 +1572,58 @@ export const listRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "RouteSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all the Amazon Web Services Migration Hub Refactor Spaces applications within an environment.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the Amazon Web Services Migration Hub Refactor Spaces services within an application.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

@@ -2361,8 +2361,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  *
  * New accounts are placed into an SMS or voice sandbox. The sandbox protects both Amazon Web Services end recipients and SMS or voice recipients from fraud and abuse.
  */
-export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAccountAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccountAttributesRequest,
     output: DescribeAccountAttributesResult,
     errors: [
@@ -2371,8 +2371,13 @@ export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountAttributes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified configuration sets or all in your account.
  *
@@ -2380,8 +2385,8 @@ export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * If you specify a configuration set name that isn't valid, an error is returned.
  */
-export const describeConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeConfigurationSets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConfigurationSetsRequest,
     output: DescribeConfigurationSetsResult,
     errors: [
@@ -2391,8 +2396,13 @@ export const describeConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationSets",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified keywords or all keywords on your origination phone number or pool.
  *
@@ -2400,17 +2410,25 @@ export const describeConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * If you specify a keyword that isn't valid, an error is returned.
  */
-export const describeKeywords = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeKeywordsRequest,
-  output: DescribeKeywordsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeKeywords = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeKeywordsRequest,
+    output: DescribeKeywordsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Keywords",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the specified opted out destination numbers or all opted out destination numbers in an opt-out list.
  *
@@ -2418,8 +2436,8 @@ export const describeKeywords = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If you specify an opted out number that isn't valid, an exception is returned.
  */
-export const describeOptedOutNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeOptedOutNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOptedOutNumbersRequest,
     output: DescribeOptedOutNumbersResult,
     errors: [
@@ -2429,8 +2447,13 @@ export const describeOptedOutNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OptedOutNumbers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified origination phone number, or all the phone numbers in your account.
  *
@@ -2438,8 +2461,8 @@ export const describeOptedOutNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * If you specify a phone number ID that isn't valid, an error is returned.
  */
-export const describePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePhoneNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePhoneNumbersRequest,
     output: DescribePhoneNumbersResult,
     errors: [
@@ -2449,8 +2472,13 @@ export const describePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PhoneNumbers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the specified pools or all pools associated with your Amazon Web Services account.
  *
@@ -2460,22 +2488,30 @@ export const describePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * A pool is a collection of phone numbers and SenderIds. A pool can include one or more phone numbers and SenderIds that are associated with your Amazon Web Services account.
  */
-export const describePools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePoolsRequest,
-  output: DescribePoolsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describePools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribePoolsRequest,
+    output: DescribePoolsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Pools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the protect configurations that match any of filters. If a filter isn’t provided then all protect configurations are returned.
  */
 export const describeProtectConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeProtectConfigurationsRequest,
     output: DescribeProtectConfigurationsResult,
     errors: [
@@ -2485,12 +2521,18 @@ export const describeProtectConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProtectConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the specified registration attachments or all registration attachments associated with your Amazon Web Services account.
  */
 export const describeRegistrationAttachments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationAttachmentsRequest,
     output: DescribeRegistrationAttachmentsResult,
     errors: [
@@ -2500,12 +2542,18 @@ export const describeRegistrationAttachments =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationAttachments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the specified registrations.
  */
-export const describeRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRegistrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationsRequest,
     output: DescribeRegistrationsResult,
     errors: [
@@ -2515,13 +2563,18 @@ export const describeRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Registrations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the specified registration section definitions. You can use DescribeRegistrationSectionDefinitions to view the requirements for creating, filling out, and submitting each registration type.
  */
 export const describeRegistrationSectionDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationSectionDefinitionsRequest,
     output: DescribeRegistrationSectionDefinitionsResult,
     errors: [
@@ -2530,6 +2583,12 @@ export const describeRegistrationSectionDefinitions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationSectionDefinitions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified SenderIds or all SenderIds associated with your Amazon Web Services account.
@@ -2538,22 +2597,30 @@ export const describeRegistrationSectionDefinitions =
  *
  * f you specify a sender ID that isn't valid, an error is returned.
  */
-export const describeSenderIds = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSenderIdsRequest,
-  output: DescribeSenderIdsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeSenderIds = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSenderIdsRequest,
+    output: DescribeSenderIdsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SenderIds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the specified verified destination numbers.
  */
 export const describeVerifiedDestinationNumbers =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedDestinationNumbersRequest,
     output: DescribeVerifiedDestinationNumbersResult,
     errors: [
@@ -2563,6 +2630,12 @@ export const describeVerifiedDestinationNumbers =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VerifiedDestinationNumbers",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all associated origination identities in your pool.
@@ -2570,7 +2643,7 @@ export const describeVerifiedDestinationNumbers =
  * If you specify filters, the output includes information for only those origination identities that meet the filter criteria.
  */
 export const listPoolOriginationIdentities =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPoolOriginationIdentitiesRequest,
     output: ListPoolOriginationIdentitiesResult,
     errors: [
@@ -2580,12 +2653,18 @@ export const listPoolOriginationIdentities =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OriginationIdentities",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieve all of the protect configuration rule set number overrides that match the filters.
  */
 export const listProtectConfigurationRuleSetNumberOverrides =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProtectConfigurationRuleSetNumberOverridesRequest,
     output: ListProtectConfigurationRuleSetNumberOverridesResult,
     errors: [
@@ -2595,12 +2674,18 @@ export const listProtectConfigurationRuleSetNumberOverrides =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RuleSetNumberOverrides",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieve all of the origination identities that are associated with a registration.
  */
 export const listRegistrationAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRegistrationAssociationsRequest,
     output: ListRegistrationAssociationsResult,
     errors: [
@@ -2610,6 +2695,12 @@ export const listRegistrationAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Update a country rule set to `ALLOW`, `BLOCK`, `MONITOR`, or `FILTER` messages to be sent to the specified destination counties. You can update one or multiple countries at a time. The updates are only applied to the specified NumberCapability type.
@@ -2684,22 +2775,29 @@ export const deleteKeyword = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If you specify an opt-out list name that isn't valid, an error is returned.
  */
-export const describeOptOutLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeOptOutListsRequest,
-  output: DescribeOptOutListsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeOptOutLists =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeOptOutListsRequest,
+    output: DescribeOptOutListsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OptOutLists",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the specified registration field values.
  */
 export const describeRegistrationFieldValues =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationFieldValuesRequest,
     output: DescribeRegistrationFieldValuesResult,
     errors: [
@@ -2709,6 +2807,12 @@ export const describeRegistrationFieldValues =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationFieldValues",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Before you can send test messages to a verified destination phone number you need to opt-in the verified destination phone number. Creates a new text message with a verification code and send it to a verified destination phone number. Once you have the verification code use VerifyDestinationNumber to opt-in the verified destination phone number to receive messages.
@@ -3553,8 +3657,8 @@ export const createRegistrationVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * When you establish an Amazon Web Services account, the account has initial quotas on the maximum number of configuration sets, opt-out lists, phone numbers, and pools that you can create in a given Region. For more information see Quotas in the *End User Messaging SMS User Guide*.
  */
-export const describeAccountLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAccountLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccountLimitsRequest,
     output: DescribeAccountLimitsResult,
     errors: [
@@ -3563,23 +3667,35 @@ export const describeAccountLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountLimits",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the current monthly spend limits for sending voice and text messages.
  *
  * When you establish an Amazon Web Services account, the account has initial monthly spend limit in a given Region. For more information on increasing your monthly spend limit, see Requesting increases to your monthly SMS, MMS, or Voice spending quota in the *End User Messaging SMS User Guide*.
  */
-export const describeSpendLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSpendLimitsRequest,
-  output: DescribeSpendLimitsResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeSpendLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeSpendLimitsRequest,
+    output: DescribeSpendLimitsResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpendLimits",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Sets an account level monthly spend limit override for sending MMS messages. The requested spend limit must be less than or equal to the `MaxLimit`, which is set by Amazon Web Services.
  */
@@ -3820,7 +3936,7 @@ export const createRegistration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the specified registration type field definitions. You can use DescribeRegistrationFieldDefinitions to view the requirements for creating, filling out, and submitting each registration type.
  */
 export const describeRegistrationFieldDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationFieldDefinitionsRequest,
     output: DescribeRegistrationFieldDefinitionsResult,
     errors: [
@@ -3829,12 +3945,18 @@ export const describeRegistrationFieldDefinitions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationFieldDefinitions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the specified registration type definitions. You can use DescribeRegistrationTypeDefinitions to view the requirements for creating, filling out, and submitting each registration type.
  */
 export const describeRegistrationTypeDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationTypeDefinitionsRequest,
     output: DescribeRegistrationTypeDefinitionsResult,
     errors: [
@@ -3843,12 +3965,18 @@ export const describeRegistrationTypeDefinitions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationTypeDefinitions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the specified registration version.
  */
 export const describeRegistrationVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRegistrationVersionsRequest,
     output: DescribeRegistrationVersionsResult,
     errors: [
@@ -3858,4 +3986,10 @@ export const describeRegistrationVersions =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegistrationVersions",
+      pageSize: "MaxResults",
+    } as const,
   }));

@@ -1834,11 +1834,18 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
  * This API lists only custom connectors registered in this account, not the Amazon Web Services
  * authored connectors.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Enables your application to delete an existing flow. Before deleting the flow, Amazon AppFlow validates the request by checking the flow configuration and status. You can
  * delete flows one at a time.
@@ -1931,18 +1938,30 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * contains a `nextToken` object, which can be be passed in to the next call to the
  * `DescribeConnectors` API operation to retrieve the next page.
  */
-export const describeConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeConnectorsRequest,
-  output: DescribeConnectorsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const describeConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeConnectorsRequest,
+    output: DescribeConnectorsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the flows associated with your account.
  */
-export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsRequest,
   output: ListFlowsResponse,
   errors: [InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Applies a tag to the specified flow.
@@ -1980,13 +1999,17 @@ export const updateConnectorProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * If no names or `connector-types` are provided, returns all connector profiles
  * in a paginated form. If there is no match, this operation returns an empty list.
  */
-export const describeConnectorProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeConnectorProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConnectorProfilesRequest,
     output: DescribeConnectorProfilesResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Provides a description of the specified flow.
  */
@@ -2145,7 +2168,7 @@ export const updateConnectorRegistration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Fetches the execution history of the flow.
  */
 export const describeFlowExecutionRecords =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFlowExecutionRecordsRequest,
     output: DescribeFlowExecutionRecordsResponse,
     errors: [
@@ -2153,6 +2176,11 @@ export const describeFlowExecutionRecords =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Describes the given custom connector registered in your Amazon Web Services account. This

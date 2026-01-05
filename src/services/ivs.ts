@@ -1216,11 +1216,18 @@ export const getChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets summary information about live streams in your account, in the Amazon Web Services
  * region where the API request is processed.
  */
-export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamsRequest,
-  output: ListStreamsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamsRequest,
+    output: ListStreamsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Inserts metadata into the active stream of the specified channel. At most 5 requests per
  * second per channel are allowed, each with a maximum 1 KB payload. (If 5 TPS is not sufficient
@@ -1310,27 +1317,38 @@ export const getRecordingConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * or recording-configuration ARN. Filters are mutually exclusive and cannot be used together. If
  * you try to use both filters, you will get an error (409 ConflictException).
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [AccessDeniedException, ConflictException, ValidationException],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [AccessDeniedException, ConflictException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets summary information about playback key pairs. For more information, see Setting Up Private
  * Channels in the *Amazon IVS User Guide*.
  */
-export const listPlaybackKeyPairs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlaybackKeyPairs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlaybackKeyPairsRequest,
     output: ListPlaybackKeyPairsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets summary information about playback restriction policies.
  */
 export const listPlaybackRestrictionPolicies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlaybackRestrictionPoliciesRequest,
     output: ListPlaybackRestrictionPoliciesResponse,
     errors: [
@@ -1339,13 +1357,18 @@ export const listPlaybackRestrictionPolicies =
       PendingVerification,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets summary information about all recording configurations in your account, in the
  * Amazon Web Services region where the API request is processed.
  */
-export const listRecordingConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecordingConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecordingConfigurationsRequest,
     output: ListRecordingConfigurationsResponse,
     errors: [
@@ -1353,33 +1376,51 @@ export const listRecordingConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets summary information about stream keys for the specified channel.
  */
-export const listStreamKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamKeysRequest,
-  output: ListStreamKeysResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listStreamKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamKeysRequest,
+    output: ListStreamKeysResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a summary of current and previous streams for a specified channel in your account, in
  * the AWS region where the API request is processed.
  */
-export const listStreamSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamSessionsRequest,
-  output: ListStreamSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listStreamSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamSessionsRequest,
+    output: ListStreamSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a channel's configuration. Live channels cannot be updated. You must stop the
  * ongoing stream, update the channel, and restart the stream for the changes to take

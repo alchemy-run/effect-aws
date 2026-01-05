@@ -666,11 +666,19 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the deployments that have been created.
  */
-export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeploymentsInput,
-  output: ListDeploymentsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeploymentsInput,
+    output: ListDeploymentsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deployments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the deployment.
  */
@@ -699,8 +707,8 @@ export const deleteDeployment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the events of a deployment.
  */
-export const listDeploymentEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDeploymentEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDeploymentEventsInput,
     output: ListDeploymentEventsOutput,
     errors: [
@@ -708,8 +716,13 @@ export const listDeploymentEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deploymentEvents",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about a workload.
  */
@@ -725,16 +738,24 @@ export const getWorkload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the available workload names. You can use the ListWorkloadDeploymentPatterns operation to discover the available deployment patterns for a given workload.
  */
-export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkloadsInput,
-  output: ListWorkloadsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listWorkloads = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkloadsInput,
+    output: ListWorkloadsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workloads",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the workload deployment patterns for a given workload name. You can use the ListWorkloads operation to discover the available workload names.
  */
 export const listWorkloadDeploymentPatterns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkloadDeploymentPatternsInput,
     output: ListWorkloadDeploymentPatternsOutput,
     errors: [
@@ -742,6 +763,12 @@ export const listWorkloadDeploymentPatterns =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workloadDeploymentPatterns",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the tags associated with a specified resource.

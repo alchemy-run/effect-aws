@@ -556,21 +556,29 @@ export const getMediaForFragmentList = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see the **Errors** section at
  * the bottom of this topic, as well as Common Errors.
  */
-export const listFragments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFragmentsInput,
-  output: ListFragmentsOutput,
-  errors: [
-    ClientLimitExceededException,
-    InvalidArgumentException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listFragments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFragmentsInput,
+    output: ListFragmentsOutput,
+    errors: [
+      ClientLimitExceededException,
+      InvalidArgumentException,
+      NotAuthorizedException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Fragments",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of images corresponding to each timestamp for a given time range,
  * sampling interval, and image format configuration.
  */
-export const getImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetImagesInput,
   output: GetImagesOutput,
   errors: [
@@ -580,6 +588,12 @@ export const getImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotAuthorizedException,
     ResourceNotFoundException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Images",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves an MPEG Dynamic Adaptive Streaming over HTTP (DASH) URL for the stream. You

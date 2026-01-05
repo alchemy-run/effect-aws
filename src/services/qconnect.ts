@@ -4361,15 +4361,23 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists messages on an Amazon Q in Connect session.
  */
-export const listMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMessagesRequest,
-  output: ListMessagesResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listMessages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMessagesRequest,
+    output: ListMessagesResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "messages",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about the knowledge base.
  */
@@ -4386,11 +4394,19 @@ export const getKnowledgeBase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the knowledge bases.
  */
-export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKnowledgeBasesRequest,
-  output: ListKnowledgeBasesResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKnowledgeBasesRequest,
+    output: ListKnowledgeBasesResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "knowledgeBaseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the started import job.
  */
@@ -4406,24 +4422,40 @@ export const getImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about import jobs.
  */
-export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportJobsRequest,
-  output: ListImportJobsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportJobsRequest,
+    output: ListImportJobsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "importJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for content in a specified knowledge base. Can be used to get a specific content resource by its name.
  */
-export const searchContent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchContentRequest,
-  output: SearchContentResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const searchContent = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchContentRequest,
+    output: SearchContentResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get a URL to upload content to a knowledge base. To upload content, first make a PUT request to the returned URL with your file, making sure to include the required headers. Then use CreateContent to finalize the content creation process or UpdateContent to modify an existing resource. You can only upload content to a knowledge base of type CUSTOM.
  */
@@ -4473,8 +4505,8 @@ export const getContentAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information about content associations--what they are and when they are used--see Integrate Amazon Q in Connect with step-by-step guides in the *Amazon Connect Administrator Guide*.
  */
-export const listContentAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContentAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContentAssociationsRequest,
     output: ListContentAssociationsResponse,
     errors: [
@@ -4483,20 +4515,33 @@ export const listContentAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contentAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists information about quick response.
  */
-export const listQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQuickResponsesRequest,
-  output: ListQuickResponsesResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQuickResponsesRequest,
+    output: ListQuickResponsesResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "quickResponseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds the specified tags to the specified resource.
  */
@@ -4853,15 +4898,23 @@ export const updateKnowledgeBaseTemplateUri =
 /**
  * Lists the content.
  */
-export const listContents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContentsRequest,
-  output: ListContentsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listContents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContentsRequest,
+    output: ListContentsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a URI template from a knowledge base.
  */
@@ -4891,11 +4944,19 @@ export const deleteAssistant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about assistants.
  */
-export const listAssistants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssistantsRequest,
-  output: ListAssistantsResponse,
-  errors: [AccessDeniedException, UnauthorizedException, ValidationException],
-}));
+export const listAssistants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssistantsRequest,
+    output: ListAssistantsResponse,
+    errors: [AccessDeniedException, UnauthorizedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assistantSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes the specified recommendations from the specified assistant's queue of newly available recommendations. You can use this API in conjunction with GetRecommendations and a `waitTimeSeconds` input for long-polling behavior and avoiding duplicate recommendations.
  */
@@ -4912,8 +4973,8 @@ export const notifyRecommendationsReceived =
 /**
  * Lists information about assistant associations.
  */
-export const listAssistantAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssistantAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssistantAssociationsRequest,
     output: ListAssistantAssociationsResponse,
     errors: [
@@ -4921,8 +4982,13 @@ export const listAssistantAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assistantAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes an Amazon Q in Connect AI Agent.
  */
@@ -4998,31 +5064,46 @@ export const updateAIAgent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists AI Agents.
  */
-export const listAIAgents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAIAgentsRequest,
-  output: ListAIAgentsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listAIAgents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAIAgentsRequest,
+    output: ListAIAgentsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiAgentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List AI Agent versions.
  */
-export const listAIAgentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAIAgentVersionsRequest,
-  output: ListAIAgentVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listAIAgentVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAIAgentVersionsRequest,
+    output: ListAIAgentVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiAgentVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets the Amazon Q in Connect AI Guardrail.
  */
@@ -5040,22 +5121,30 @@ export const getAIGuardrail = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the AI Guardrails available on the Amazon Q in Connect assistant.
  */
-export const listAIGuardrails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAIGuardrailsRequest,
-  output: ListAIGuardrailsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listAIGuardrails = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAIGuardrailsRequest,
+    output: ListAIGuardrailsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiGuardrailSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists AI Guardrail versions.
  */
-export const listAIGuardrailVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAIGuardrailVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAIGuardrailVersionsRequest,
     output: ListAIGuardrailVersionsResponse,
     errors: [
@@ -5065,8 +5154,13 @@ export const listAIGuardrailVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiGuardrailVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets and Amazon Q in Connect AI Prompt.
  */
@@ -5084,22 +5178,30 @@ export const getAIPrompt = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the AI Prompts available on the Amazon Q in Connect assistant.
  */
-export const listAIPrompts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAIPromptsRequest,
-  output: ListAIPromptsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listAIPrompts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAIPromptsRequest,
+    output: ListAIPromptsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiPromptSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists AI Prompt versions.
  */
-export const listAIPromptVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAIPromptVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAIPromptVersionsRequest,
     output: ListAIPromptVersionsResponse,
     errors: [
@@ -5109,8 +5211,13 @@ export const listAIPromptVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aiPromptVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the Amazon Q in Connect message template. The message template identifier can contain an optional qualifier, for example, `<message-template-id>:<qualifier>`, which is either an actual version number or an Amazon Q Connect managed qualifier `$ACTIVE_VERSION` | `$LATEST`. If it is not supplied, then `$LATEST` is assumed implicitly.
  */
@@ -5144,8 +5251,8 @@ export const updateMessageTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all the available Amazon Q in Connect message templates for the specified knowledge base.
  */
-export const listMessageTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMessageTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMessageTemplatesRequest,
     output: ListMessageTemplatesResponse,
     errors: [
@@ -5154,13 +5261,18 @@ export const listMessageTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "messageTemplateSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all the available versions for the specified Amazon Q in Connect message template.
  */
-export const listMessageTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMessageTemplateVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMessageTemplateVersionsRequest,
     output: ListMessageTemplateVersionsResponse,
     errors: [
@@ -5169,8 +5281,13 @@ export const listMessageTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "messageTemplateVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about an assistant.
  */
@@ -5460,16 +5577,24 @@ export const createAssistantAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches for sessions.
  */
-export const searchSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchSessionsRequest,
-  output: SearchSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const searchSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchSessionsRequest,
+    output: SearchSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about an assistant association.
  */
@@ -5503,8 +5628,8 @@ export const createSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches for Amazon Q in Connect message templates in the specified knowledge base.
  */
-export const searchMessageTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchMessageTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchMessageTemplatesRequest,
     output: SearchMessageTemplatesResponse,
     errors: [
@@ -5514,8 +5639,13 @@ export const searchMessageTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "results",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Start an asynchronous job to import Amazon Q in Connect resources from an uploaded source file. Before calling this API, use StartContentUpload to upload an asset that contains the resource data.
  *
@@ -5551,16 +5681,24 @@ export const getQuickResponse = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Performs a manual search against the specified assistant. To retrieve recommendations for an assistant, use GetRecommendations.
  */
-export const queryAssistant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: QueryAssistantRequest,
-  output: QueryAssistantResponse,
-  errors: [
-    AccessDeniedException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const queryAssistant = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: QueryAssistantRequest,
+    output: QueryAssistantResponse,
+    errors: [
+      AccessDeniedException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "results",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves content from knowledge sources based on a query.
  */
@@ -5598,8 +5736,8 @@ export const createMessageTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches existing Amazon Q in Connect quick responses in an Amazon Q in Connect knowledge base.
  */
-export const searchQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchQuickResponses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchQuickResponsesRequest,
     output: SearchQuickResponsesResponse,
     errors: [
@@ -5609,8 +5747,13 @@ export const searchQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "results",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * This API will be discontinued starting June 1, 2024. To receive generative responses after March 1, 2024, you will need to create a new Assistant in the Amazon Connect console and integrate the Amazon Q in Connect JavaScript library (amazon-q-connectjs) into your applications.
  *
@@ -5628,7 +5771,7 @@ export const getRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves AI agent execution traces for a session, providing granular visibility into agent orchestration flows, LLM interactions, and tool invocations.
  */
-export const listSpans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSpans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpansRequest,
   output: ListSpansResponse,
   errors: [
@@ -5636,6 +5779,12 @@ export const listSpans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "spans",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Submits a message to the Amazon Q in Connect session.

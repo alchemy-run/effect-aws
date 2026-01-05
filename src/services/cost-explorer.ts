@@ -2336,15 +2336,23 @@ export const deleteCostCategoryDefinition =
  * Retrieves the cost anomaly monitor definitions for your account. You can filter using a
  * list of cost anomaly monitor Amazon Resource Names (ARNs).
  */
-export const getAnomalyMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAnomalyMonitorsRequest,
-  output: GetAnomalyMonitorsResponse,
-  errors: [
-    InvalidNextTokenException,
-    LimitExceededException,
-    UnknownMonitorException,
-  ],
-}));
+export const getAnomalyMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAnomalyMonitorsRequest,
+    output: GetAnomalyMonitorsResponse,
+    errors: [
+      InvalidNextTokenException,
+      LimitExceededException,
+      UnknownMonitorException,
+    ],
+    pagination: {
+      inputToken: "NextPageToken",
+      outputToken: "NextPageToken",
+      items: "AnomalyMonitors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves estimated usage records for hourly granularity or resource-level data at daily
  * granularity.
@@ -2369,7 +2377,7 @@ export const getApproximateUsageRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `SavingsPlansArn`.
  */
 export const getSavingsPlansUtilizationDetails =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSavingsPlansUtilizationDetailsRequest,
     output: GetSavingsPlansUtilizationDetailsResponse,
     errors: [
@@ -2377,6 +2385,11 @@ export const getSavingsPlansUtilizationDetails =
       InvalidNextTokenException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the commitment purchase analyses for your account.
@@ -2395,22 +2408,33 @@ export const listCommitmentPurchaseAnalyses =
  * Retrieves a list of your historical cost allocation tag backfill requests.
  */
 export const listCostAllocationTagBackfillHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCostAllocationTagBackfillHistoryRequest,
     output: ListCostAllocationTagBackfillHistoryResponse,
     errors: [InvalidNextTokenException, LimitExceededException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BackfillRequests",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Get a list of cost allocation tags. All inputs in the API are optional and serve as
  * filters. By default, all cost allocation tags are returned.
  */
-export const listCostAllocationTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCostAllocationTags =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCostAllocationTagsRequest,
     output: ListCostAllocationTagsResponse,
     errors: [InvalidNextTokenException, LimitExceededException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CostAllocationTags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the name, Amazon Resource Name (ARN), `NumberOfRules` and effective
  * dates of all cost categories defined in the account. You have the option to use
@@ -2420,21 +2444,32 @@ export const listCostAllocationTags = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * is omitted in the response. `ListCostCategoryDefinitions` supports pagination. The
  * request can have a `MaxResults` range up to 100.
  */
-export const listCostCategoryDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCostCategoryDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCostCategoryDefinitionsRequest,
     output: ListCostCategoryDefinitionsResponse,
     errors: [LimitExceededException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CostCategoryReferences",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns resource associations of all cost categories defined in the account. You have the option to use `CostCategoryArn` to get the association for a specific cost category. `ListCostCategoryResourceAssociations` supports pagination. The request can have a `MaxResults` range up to 100.
  */
 export const listCostCategoryResourceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCostCategoryResourceAssociationsRequest,
     output: ListCostCategoryResourceAssociationsResponse,
     errors: [LimitExceededException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CostCategoryResourceAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of your historical recommendation generations within the past 30
@@ -2516,8 +2551,8 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the cost anomaly subscription objects for your account. You can filter using a
  * list of cost anomaly monitor Amazon Resource Names (ARNs).
  */
-export const getAnomalySubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getAnomalySubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAnomalySubscriptionsRequest,
     output: GetAnomalySubscriptionsResponse,
     errors: [
@@ -2525,8 +2560,13 @@ export const getAnomalySubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       LimitExceededException,
       UnknownSubscriptionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextPageToken",
+      outputToken: "NextPageToken",
+      items: "AnomalySubscriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a forecast for how much Amazon Web Services predicts that you will spend over
  * the forecast time period that you select, based on your past costs.
@@ -2579,8 +2619,8 @@ export const describeCostCategoryDefinition =
  * 13 months. If you have enabled multi-year data at monthly granularity, you can go back up to
  * 38 months.
  */
-export const getCostAndUsageComparisons = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCostAndUsageComparisons =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCostAndUsageComparisonsRequest,
     output: GetCostAndUsageComparisonsResponse,
     errors: [
@@ -2590,15 +2630,20 @@ export const getCostAndUsageComparisons = /*@__PURE__*/ /*#__PURE__*/ API.make(
       LimitExceededException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextPageToken",
+      outputToken: "NextPageToken",
+      items: "CostAndUsageComparisons",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves key factors driving cost changes between two time periods within the last 13
  * months, such as usage changes, discount changes, and commitment-based savings. If you have
  * enabled multi-year data at monthly granularity, you can go back up to 38 months.
  */
-export const getCostComparisonDrivers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCostComparisonDrivers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCostComparisonDriversRequest,
     output: GetCostComparisonDriversResponse,
     errors: [
@@ -2608,8 +2653,13 @@ export const getCostComparisonDrivers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       LimitExceededException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextPageToken",
+      outputToken: "NextPageToken",
+      items: "CostComparisonDrivers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the reservation coverage for your account, which you can use to see how much
  * of your Amazon Elastic Compute Cloud, Amazon ElastiCache, Amazon Relational Database Service,
@@ -2701,8 +2751,8 @@ export const getSavingsPlanPurchaseRecommendationDetails =
  * To determine valid values for a dimension, use the `GetDimensionValues`
  * operation.
  */
-export const getSavingsPlansCoverage = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getSavingsPlansCoverage =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSavingsPlansCoverageRequest,
     output: GetSavingsPlansCoverageResponse,
     errors: [
@@ -2710,8 +2760,12 @@ export const getSavingsPlansCoverage = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the Savings Plans utilization for your account across date ranges with daily or
  * monthly granularity. Management account in an organization have access to member accounts. You
@@ -2972,11 +3026,19 @@ export const startCommitmentPurchaseAnalysis =
  * specified by the `DateInterval` object. Anomalies are available for up to 90
  * days.
  */
-export const getAnomalies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAnomaliesRequest,
-  output: GetAnomaliesResponse,
-  errors: [InvalidNextTokenException, LimitExceededException],
-}));
+export const getAnomalies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAnomaliesRequest,
+    output: GetAnomaliesResponse,
+    errors: [InvalidNextTokenException, LimitExceededException],
+    pagination: {
+      inputToken: "NextPageToken",
+      outputToken: "NextPageToken",
+      items: "Anomalies",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets recommendations for reservation purchases. These recommendations might help you to
  * reduce your costs. Reservations provide a discounted hourly rate (up to 75%) compared to

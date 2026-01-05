@@ -2275,13 +2275,18 @@ export class LogDestinationPermissionException extends S.TaggedError<LogDestinat
  * your setting for max results and the number of firewall policies, a single call might not
  * return the full list.
  */
-export const listFirewallPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFirewallPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFirewallPoliciesRequest,
     output: ListFirewallPoliciesResponse,
     errors: [InternalServerError, InvalidRequestException, ThrottlingException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallPolicies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Begins capturing the flows in a firewall, according to the filters you define.
  * Captures are similar, but not identical to snapshots. Capture operations provide visibility into flows that are not closed and are tracked by a firewall's flow table.
@@ -2362,16 +2367,23 @@ export const describeFlowOperation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of all traffic analysis reports generated within the last 30 days.
  */
-export const listAnalysisReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAnalysisReportsRequest,
-  output: ListAnalysisReportsResponse,
-  errors: [
-    InternalServerError,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listAnalysisReports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAnalysisReportsRequest,
+    output: ListAnalysisReportsResponse,
+    errors: [
+      InternalServerError,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnalysisReports",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the results of a specific flow operation.
  *
@@ -2380,8 +2392,8 @@ export const listAnalysisReports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * A flow is network traffic that is monitored by a firewall, either by stateful or stateless rules.
  * For traffic to be considered part of a flow, it must share Destination, DestinationPort, Direction, Protocol, Source, and SourcePort.
  */
-export const listFlowOperationResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFlowOperationResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFlowOperationResultsRequest,
     output: ListFlowOperationResultsResponse,
     errors: [
@@ -2390,8 +2402,13 @@ export const listFlowOperationResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Flows",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all flow operations ran in a specific firewall.
  * You can optionally narrow the request scope by specifying the operation type or Availability Zone associated with a firewall's flow operations.
@@ -2401,23 +2418,31 @@ export const listFlowOperationResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * A flow is network traffic that is monitored by a firewall, either by stateful or stateless rules.
  * For traffic to be considered part of a flow, it must share Destination, DestinationPort, Direction, Protocol, Source, and SourcePort.
  */
-export const listFlowOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlowOperationsRequest,
-  output: ListFlowOperationsResponse,
-  errors: [
-    InternalServerError,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listFlowOperations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFlowOperationsRequest,
+    output: ListFlowOperationsResponse,
+    errors: [
+      InternalServerError,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FlowOperations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the metadata for the proxy configuration that you have defined. Depending on
  * your setting for max results and the number of proxy configurations, a single call might not
  * return the full list.
  */
-export const listProxyConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProxyConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProxyConfigurationsRequest,
     output: ListProxyConfigurationsResponse,
     errors: [
@@ -2426,23 +2451,35 @@ export const listProxyConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProxyConfigurations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the metadata for the proxy rule groups that you have defined. Depending on
  * your setting for max results and the number of proxy rule groups, a single call might not
  * return the full list.
  */
-export const listProxyRuleGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProxyRuleGroupsRequest,
-  output: ListProxyRuleGroupsResponse,
-  errors: [
-    InternalServerError,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listProxyRuleGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListProxyRuleGroupsRequest,
+    output: ListProxyRuleGroupsResponse,
+    errors: [
+      InternalServerError,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProxyRuleGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the properties of the specified proxy rule.
  */
@@ -2640,16 +2677,23 @@ export const detachRuleGroupsFromProxyConfiguration =
  * You can tag the Amazon Web Services resources that you manage through Network Firewall: firewalls, firewall
  * policies, and rule groups.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InternalServerError,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InternalServerError,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Rejects a transit gateway attachment request for Network Firewall. When you reject the attachment request, Network Firewall cancels the creation of routing components between the transit gateway and firewall endpoints.
  *
@@ -2893,39 +2937,69 @@ export const deleteTLSInspectionConfiguration =
  * Depending on your setting for max results and the number of firewalls, a single call
  * might not return the full list.
  */
-export const listFirewalls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallsRequest,
-  output: ListFirewallsResponse,
-  errors: [InternalServerError, InvalidRequestException, ThrottlingException],
-}));
+export const listFirewalls = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFirewallsRequest,
+    output: ListFirewallsResponse,
+    errors: [InternalServerError, InvalidRequestException, ThrottlingException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Firewalls",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the metadata for the proxies that you have defined. Depending on
  * your setting for max results and the number of proxies, a single call might not
  * return the full list.
  */
-export const listProxies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProxiesRequest,
-  output: ListProxiesResponse,
-  errors: [InternalServerError, InvalidRequestException, ThrottlingException],
-}));
+export const listProxies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProxiesRequest,
+    output: ListProxiesResponse,
+    errors: [InternalServerError, InvalidRequestException, ThrottlingException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Proxies",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the metadata for the rule groups that you have defined. Depending on your
  * setting for max results and the number of rule groups, a single call might not return the
  * full list.
  */
-export const listRuleGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRuleGroupsRequest,
-  output: ListRuleGroupsResponse,
-  errors: [InternalServerError, InvalidRequestException, ThrottlingException],
-}));
+export const listRuleGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRuleGroupsRequest,
+    output: ListRuleGroupsResponse,
+    errors: [InternalServerError, InvalidRequestException, ThrottlingException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RuleGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the metadata for the TLS inspection configurations that you have defined. Depending on your setting for max results and the number of TLS inspection configurations, a single call might not return the full list.
  */
 export const listTLSInspectionConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTLSInspectionConfigurationsRequest,
     output: ListTLSInspectionConfigurationsResponse,
     errors: [InternalServerError, InvalidRequestException, ThrottlingException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TLSInspectionConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the metadata for the VPC endpoint associations that you have defined. If you specify a fireawll,
@@ -2934,13 +3008,18 @@ export const listTLSInspectionConfigurations =
  * Depending on your setting for max results and the number of associations, a single call
  * might not return the full list.
  */
-export const listVpcEndpointAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVpcEndpointAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVpcEndpointAssociationsRequest,
     output: ListVpcEndpointAssociationsResponse,
     errors: [InternalServerError, InvalidRequestException, ThrottlingException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpcEndpointAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates Network Firewall ProxyRule resources.
  *
@@ -3043,8 +3122,8 @@ export const describeRuleGroupSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information, see AnalysisTypeReportResult.
  */
-export const getAnalysisReportResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getAnalysisReportResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAnalysisReportResultsRequest,
     output: GetAnalysisReportResultsResponse,
     errors: [
@@ -3053,8 +3132,13 @@ export const getAnalysisReportResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnalysisReportResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Enables specific types of firewall analysis on a specific firewall you define.
  */

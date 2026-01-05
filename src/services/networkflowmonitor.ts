@@ -824,16 +824,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * List all monitors in an account. Optionally, you can list only monitors that have a specific status, by using the `STATUS` parameter.
  */
-export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMonitorsInput,
-  output: ListMonitorsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMonitorsInput,
+    output: ListMonitorsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "monitors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * In Network Flow Monitor, you specify a scope for the service to generate metrics for. By using the scope, Network Flow Monitor can generate a topology of all the resources to measure performance metrics for. When you create a scope, you enable permissions for Network Flow Monitor.
  *
@@ -862,7 +870,7 @@ export const createScope = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all the scopes for an account.
  */
-export const listScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listScopes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListScopesInput,
   output: ListScopesOutput,
   errors: [
@@ -872,6 +880,12 @@ export const listScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "scopes",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Return the data for a query with the Network Flow Monitor query interface. You specify the query that you want to return results for by providing a query ID and a monitor name.
@@ -883,7 +897,7 @@ export const listScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Top contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.
  */
 export const getQueryResultsWorkloadInsightsTopContributors =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetQueryResultsWorkloadInsightsTopContributorsInput,
     output: GetQueryResultsWorkloadInsightsTopContributorsOutput,
     errors: [
@@ -894,6 +908,12 @@ export const getQueryResultsWorkloadInsightsTopContributors =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "topContributors",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Return the data for a query with the Network Flow Monitor query interface. Specify the query that you want to return results for by providing a query ID and a scope ID.
@@ -907,7 +927,7 @@ export const getQueryResultsWorkloadInsightsTopContributors =
  * The top contributor network flows overall are for a specific metric type, for example, the number of retransmissions.
  */
 export const getQueryResultsWorkloadInsightsTopContributorsData =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetQueryResultsWorkloadInsightsTopContributorsDataInput,
     output: GetQueryResultsWorkloadInsightsTopContributorsDataOutput,
     errors: [
@@ -918,6 +938,12 @@ export const getQueryResultsWorkloadInsightsTopContributorsData =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datapoints",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Update a scope to add or remove resources that you want to be available for Network Flow Monitor to generate metrics for, when you have active agents on those resources sending metrics reports to the Network Flow Monitor backend.
@@ -1244,7 +1270,7 @@ export const createMonitor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Top contributors in Network Flow Monitor are network flows with the highest values for a specific metric type. Top contributors can be across all workload insights, for a given scope, or for a specific monitor. Use the applicable call for the top contributors that you want to be returned.
  */
 export const getQueryResultsMonitorTopContributors =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetQueryResultsMonitorTopContributorsInput,
     output: GetQueryResultsMonitorTopContributorsOutput,
     errors: [
@@ -1255,4 +1281,10 @@ export const getQueryResultsMonitorTopContributors =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "topContributors",
+      pageSize: "maxResults",
+    } as const,
   }));

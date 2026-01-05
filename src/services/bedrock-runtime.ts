@@ -1457,16 +1457,24 @@ export const getAsyncInvoke = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists asynchronous invocations.
  */
-export const listAsyncInvokes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAsyncInvokesRequest,
-  output: ListAsyncInvokesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAsyncInvokes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAsyncInvokesRequest,
+    output: ListAsyncInvokesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "asyncInvokeSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the token count for a given inference request. This operation helps you estimate token usage before sending requests to foundation models by returning the token count that would be used if the same input were sent to the model in an inference request.
  *

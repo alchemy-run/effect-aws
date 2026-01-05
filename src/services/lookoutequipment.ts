@@ -1485,8 +1485,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Provides a list of all data ingestion jobs, including dataset name and ARN, S3 location
  * of the input data, status, and so on.
  */
-export const listDataIngestionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataIngestionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIngestionJobsRequest,
     output: ListDataIngestionJobsResponse,
     errors: [
@@ -1495,15 +1495,19 @@ export const listDataIngestionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists statistics about the data collected for each of the sensors that have been
  * successfully ingested in the particular dataset. Can also be used to retreive Sensor
  * Statistics for a previous ingestion job.
  */
-export const listSensorStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSensorStatistics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSensorStatisticsRequest,
     output: ListSensorStatisticsResponse,
     errors: [
@@ -1513,8 +1517,12 @@ export const listSensorStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a group of labels.
  */
@@ -1549,23 +1557,29 @@ export const describeModelVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all inference events that have been found for the specified inference scheduler.
  */
-export const listInferenceEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInferenceEventsRequest,
-  output: ListInferenceEventsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInferenceEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListInferenceEventsRequest,
+    output: ListInferenceEventsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all inference executions that have been performed by the specified inference
  * scheduler.
  */
-export const listInferenceExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInferenceExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceExecutionsRequest,
     output: ListInferenceExecutionsResponse,
     errors: [
@@ -1575,24 +1589,35 @@ export const listInferenceExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Generates a list of all model versions for a given model, including the model version,
  * model version ARN, and status. To list a subset of versions, use the
  * `MaxModelVersion` and `MinModelVersion` fields.
  */
-export const listModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelVersionsRequest,
-  output: ListModelVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListModelVersionsRequest,
+    output: ListModelVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Imports a dataset.
  */
@@ -2133,21 +2158,28 @@ export const createModel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all datasets currently available in your account, filtering on the dataset name.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of all inference schedulers currently available for your account.
  */
-export const listInferenceSchedulers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInferenceSchedulers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceSchedulersRequest,
     output: ListInferenceSchedulersResponse,
     errors: [
@@ -2156,25 +2188,36 @@ export const listInferenceSchedulers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the label groups.
  */
-export const listLabelGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLabelGroupsRequest,
-  output: ListLabelGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listLabelGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLabelGroupsRequest,
+    output: ListLabelGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of labels.
  */
-export const listLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLabels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLabelsRequest,
   output: ListLabelsResponse,
   errors: [
@@ -2183,12 +2226,17 @@ export const listLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Generates a list of all models in the account, including model name and ARN, dataset,
  * and status.
  */
-export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelsRequest,
   output: ListModelsResponse,
   errors: [
@@ -2197,13 +2245,18 @@ export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all retraining schedulers in your account, filtering by model name prefix and
  * status.
  */
-export const listRetrainingSchedulers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRetrainingSchedulers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRetrainingSchedulersRequest,
     output: ListRetrainingSchedulersResponse,
     errors: [
@@ -2212,8 +2265,12 @@ export const listRetrainingSchedulers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a JSON description of the data in each time series dataset, including names,
  * column names, and data types.

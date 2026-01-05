@@ -1944,11 +1944,19 @@ export const listConfigurationSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * original call, then continue to not provide it for successive pagination calls.
  * Using this protocol will ensure consistent results.
  */
-export const listIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdentitiesRequest,
-  output: ListIdentitiesResponse,
-  errors: [],
-}));
+export const listIdentities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIdentitiesRequest,
+    output: ListIdentitiesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Identities",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Returns a list of sending authorization policies that are attached to the given
  * identity (an email address or a domain). This operation returns only a list. To get the
@@ -2257,10 +2265,15 @@ export const getTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can execute this operation no more than once per second.
  */
 export const listCustomVerificationEmailTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomVerificationEmailTemplatesRequest,
     output: ListCustomVerificationEmailTemplatesResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the email templates present in your Amazon SES account in the current

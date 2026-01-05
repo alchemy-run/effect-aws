@@ -1988,8 +1988,8 @@ export const getResourceOauth2Token = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * To use this operation, you must have the `bedrock-agentcore:RetrieveMemoryRecords` permission.
  */
-export const retrieveMemoryRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const retrieveMemoryRecords =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: RetrieveMemoryRecordsInput,
     output: RetrieveMemoryRecordsOutput,
     errors: [
@@ -2001,8 +2001,13 @@ export const retrieveMemoryRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memoryRecordSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Starts a memory extraction job that processes events that failed extraction previously in an AgentCore Memory resource and produces structured memory records. When earlier extraction attempts have left events unprocessed, this job will pick up and extract those as well.
  *
@@ -2079,7 +2084,7 @@ export const getMemoryRecord = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * To use this operation, you must have the `bedrock-agentcore:ListActors` permission.
  */
-export const listActors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listActors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActorsInput,
   output: ListActorsOutput,
   errors: [
@@ -2091,43 +2096,65 @@ export const listActors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottledException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "actorSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists memory records in an AgentCore Memory resource based on specified criteria. We recommend using pagination to ensure that the operation returns quickly and successfully.
  *
  * To use this operation, you must have the `bedrock-agentcore:ListMemoryRecords` permission.
  */
-export const listMemoryRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMemoryRecordsInput,
-  output: ListMemoryRecordsOutput,
-  errors: [
-    AccessDeniedException,
-    InvalidInputException,
-    ResourceNotFoundException,
-    ServiceException,
-    ServiceQuotaExceededException,
-    ThrottledException,
-    ValidationException,
-  ],
-}));
+export const listMemoryRecords = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMemoryRecordsInput,
+    output: ListMemoryRecordsOutput,
+    errors: [
+      AccessDeniedException,
+      InvalidInputException,
+      ResourceNotFoundException,
+      ServiceException,
+      ServiceQuotaExceededException,
+      ThrottledException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memoryRecordSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists sessions in an AgentCore Memory resource based on specified criteria. We recommend using pagination to ensure that the operation returns quickly and successfully.
  *
  * To use this operation, you must have the `bedrock-agentcore:ListSessions` permission.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsInput,
-  output: ListSessionsOutput,
-  errors: [
-    AccessDeniedException,
-    InvalidInputException,
-    ResourceNotFoundException,
-    ServiceException,
-    ServiceQuotaExceededException,
-    ThrottledException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsInput,
+    output: ListSessionsOutput,
+    errors: [
+      AccessDeniedException,
+      InvalidInputException,
+      ResourceNotFoundException,
+      ServiceException,
+      ServiceQuotaExceededException,
+      ThrottledException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an event from an AgentCore Memory resource. When you delete an event, it is permanently removed.
  *
@@ -2206,7 +2233,7 @@ export const createEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * To use this operation, you must have the `bedrock-agentcore:ListEvents` permission.
  */
-export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventsInput,
   output: ListEventsOutput,
   errors: [
@@ -2218,14 +2245,20 @@ export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottledException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "events",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists all long-term memory extraction jobs that are eligible to be started with optional filtering.
  *
  * To use this operation, you must have the `bedrock-agentcore:ListMemoryExtractionJobs` permission.
  */
-export const listMemoryExtractionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMemoryExtractionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMemoryExtractionJobsInput,
     output: ListMemoryExtractionJobsOutput,
     errors: [
@@ -2236,8 +2269,13 @@ export const listMemoryExtractionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Performs on-demand evaluation of agent traces using a specified evaluator. This synchronous API accepts traces in OpenTelemetry format and returns immediate scoring results with detailed explanations.
  */

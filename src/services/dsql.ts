@@ -466,11 +466,19 @@ export const getCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves information about a list of clusters.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersInput,
-  output: ListClustersOutput,
-  errors: [ResourceNotFoundException],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersInput,
+    output: ListClustersOutput,
+    errors: [ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Tags a resource with a map of key and value pairs.
  */

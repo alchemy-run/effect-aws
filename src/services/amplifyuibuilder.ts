@@ -1541,52 +1541,93 @@ export const refreshToken = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of components for a specified Amplify app and backend
  * environment.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsRequest,
-  output: ListComponentsResponse,
-  errors: [InternalServerException, InvalidParameterException],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsRequest,
+    output: ListComponentsResponse,
+    errors: [InternalServerException, InvalidParameterException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of forms for a specified Amplify app and backend environment.
  */
-export const listForms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listForms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFormsRequest,
   output: ListFormsResponse,
   errors: [InternalServerException, InvalidParameterException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "entities",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Retrieves a list of themes for a specified Amplify app and backend
  * environment.
  */
-export const listThemes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listThemes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThemesRequest,
   output: ListThemesResponse,
   errors: [InternalServerException, InvalidParameterException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "entities",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Exports component configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ExportComponentsRequest,
-  output: ExportComponentsResponse,
-  errors: [InternalServerException, InvalidParameterException],
-}));
+export const exportComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ExportComponentsRequest,
+    output: ExportComponentsResponse,
+    errors: [InternalServerException, InvalidParameterException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+    } as const,
+  }),
+);
 /**
  * Exports form configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportForms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ExportFormsRequest,
-  output: ExportFormsResponse,
-  errors: [InternalServerException, InvalidParameterException],
-}));
+export const exportForms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ExportFormsRequest,
+    output: ExportFormsResponse,
+    errors: [InternalServerException, InvalidParameterException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+    } as const,
+  }),
+);
 /**
  * Exports theme configurations to code that is ready to integrate into an Amplify app.
  */
-export const exportThemes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ExportThemesRequest,
-  output: ExportThemesResponse,
-  errors: [InternalServerException, InvalidParameterException],
-}));
+export const exportThemes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ExportThemesRequest,
+    output: ExportThemesResponse,
+    errors: [InternalServerException, InvalidParameterException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+    } as const,
+  }),
+);
 /**
  * This is for internal use.
  *
@@ -1610,15 +1651,23 @@ export const putMetadataFlag = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of code generation jobs for a specified Amplify app and backend environment.
  */
-export const listCodegenJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCodegenJobsRequest,
-  output: ListCodegenJobsResponse,
-  errors: [
-    InternalServerException,
-    InvalidParameterException,
-    ThrottlingException,
-  ],
-}));
+export const listCodegenJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCodegenJobsRequest,
+    output: ListCodegenJobsResponse,
+    errors: [
+      InternalServerException,
+      InvalidParameterException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "entities",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an existing component for an Amplify app.
  */

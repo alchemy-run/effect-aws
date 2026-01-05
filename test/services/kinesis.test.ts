@@ -529,3 +529,25 @@ test(
     }),
   ),
 );
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listStreams.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of streams
+    const pages = yield* listStreams
+      .pages({ Limit: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+
+    // Each page should have StreamNames (may be empty)
+    for (const page of pagesArray) {
+      expect(page.StreamNames).toBeDefined();
+    }
+  }),
+);

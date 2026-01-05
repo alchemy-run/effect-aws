@@ -1253,15 +1253,23 @@ export const describeBrokerInstanceOptions =
 /**
  * Returns a list of all brokers.
  */
-export const listBrokers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBrokersRequest,
-  output: ListBrokersResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-  ],
-}));
+export const listBrokers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBrokersRequest,
+    output: ListBrokersResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BrokerSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all configurations.
  */

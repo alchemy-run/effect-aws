@@ -737,31 +737,49 @@ export const deleteEnvironmentHost = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List the hosts within an environment.
  */
-export const listEnvironmentHosts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentHosts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentHostsRequest,
     output: ListEnvironmentHostsResponse,
     errors: [ResourceNotFoundException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environmentHosts",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists environment VLANs that are associated with the specified environment.
  */
-export const listEnvironmentVlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEnvironmentVlans =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEnvironmentVlansRequest,
     output: ListEnvironmentVlansResponse,
     errors: [ResourceNotFoundException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environmentVlans",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the Amazon EVS environments in your Amazon Web Services account in the specified Amazon Web Services Region.
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: ListEnvironmentsResponse,
-  errors: [ValidationException],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: ListEnvironmentsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environmentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Disassociates an Elastic IP address from a public HCX VLAN. This operation is only allowed for public HCX VLANs at this time.
  */

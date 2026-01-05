@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect, Schedule } from "effect";
+import { Effect, Schedule, Stream } from "effect";
 import {
   changeMessageVisibility,
   createQueue,
@@ -728,4 +728,38 @@ test(
       expect(attrs!.ApproximateReceiveCount).toEqual("1");
     }),
   ),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listQueues.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of queues
+    const pages = yield* listQueues
+      .pages({ MaxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listQueues.items() streams queue URLs directly",
+  Effect.gen(function* () {
+    // Stream all queue URLs using .items()
+    const queueUrls = yield* listQueues
+      .items({ MaxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const urlsArray = Array.from(queueUrls);
+
+    // Each item should be a string URL
+    for (const url of urlsArray) {
+      expect(typeof url).toBe("string");
+    }
+  }),
 );

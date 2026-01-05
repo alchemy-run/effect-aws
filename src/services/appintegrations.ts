@@ -980,16 +980,24 @@ export class UnsupportedOperationException extends S.TaggedError<UnsupportedOper
 /**
  * Lists applications in the account.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceError,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceError,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Applications",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the DataIntegration. Only DataIntegrations that don't have any
  * DataIntegrationAssociations can be deleted. Deleting a DataIntegration also deletes the
@@ -1172,8 +1180,8 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of application associations for an application.
  */
-export const listApplicationAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationAssociationsRequest,
     output: ListApplicationAssociationsResponse,
     errors: [
@@ -1183,13 +1191,18 @@ export const listApplicationAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of event integration associations in the account.
  */
 export const listEventIntegrationAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventIntegrationAssociationsRequest,
     output: ListEventIntegrationAssociationsResponse,
     errors: [
@@ -1199,6 +1212,12 @@ export const listEventIntegrationAssociations =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventIntegrationAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a paginated list of DataIntegration associations in the account.
@@ -1208,7 +1227,7 @@ export const listEventIntegrationAssociations =
  * CreateDataIntegration API.
  */
 export const listDataIntegrationAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIntegrationAssociationsRequest,
     output: ListDataIntegrationAssociationsResponse,
     errors: [
@@ -1218,6 +1237,12 @@ export const listDataIntegrationAssociations =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataIntegrationAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a paginated list of DataIntegrations in the account.
@@ -1226,8 +1251,8 @@ export const listDataIntegrationAssociations =
  * Use a different DataIntegration, or recreate the DataIntegration using the
  * CreateDataIntegration API.
  */
-export const listDataIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataIntegrationsRequest,
     output: ListDataIntegrationsResponse,
     errors: [
@@ -1236,13 +1261,18 @@ export const listDataIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataIntegrations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of event integrations in the account.
  */
-export const listEventIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEventIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventIntegrationsRequest,
     output: ListEventIntegrationsResponse,
     errors: [
@@ -1251,8 +1281,13 @@ export const listEventIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventIntegrations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Adds the specified tags to the specified resource.
  */

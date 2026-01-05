@@ -12500,8 +12500,8 @@ export const describeInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * provided `TargetArn` is a traffic distribution group, you can call this API in both Amazon Web Services Regions associated with
  * the traffic distribution group.
  */
-export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchAvailablePhoneNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchAvailablePhoneNumbersRequest,
     output: SearchAvailablePhoneNumbersResponse,
     errors: [
@@ -12510,13 +12510,18 @@ export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AvailableNumbersList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches the flow modules in an Amazon Connect instance, with optional filtering.
  */
-export const searchContactFlowModules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchContactFlowModules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchContactFlowModulesRequest,
     output: SearchContactFlowModulesResponse,
     errors: [
@@ -12526,8 +12531,13 @@ export const searchContactFlowModules = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowModules",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches email address in an instance, with optional filtering.
  */
@@ -12583,7 +12593,7 @@ export const searchEvaluationForms = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Searches the hours of operation overrides.
  */
 export const searchHoursOfOperationOverrides =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchHoursOfOperationOverridesRequest,
     output: SearchHoursOfOperationOverridesResponse,
     errors: [
@@ -12593,6 +12603,12 @@ export const searchHoursOfOperationOverrides =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HoursOfOperationOverrides",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Searches security profiles in an Amazon Connect instance, with optional filtering.
@@ -12601,8 +12617,8 @@ export const searchHoursOfOperationOverrides =
  * profile permissions, see List
  * of security profile permissions.
  */
-export const searchSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchSecurityProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchSecurityProfilesRequest,
     output: SearchSecurityProfilesResponse,
     errors: [
@@ -12612,13 +12628,18 @@ export const searchSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityProfiles",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches for workspace associations with users or routing profiles based on various criteria.
  */
-export const searchWorkspaceAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchWorkspaceAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchWorkspaceAssociationsRequest,
     output: SearchWorkspaceAssociationsResponse,
     errors: [
@@ -12629,23 +12650,36 @@ export const searchWorkspaceAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkspaceAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches workspaces based on name, description, visibility, or tags.
  */
-export const searchWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchWorkspacesRequest,
-  output: SearchWorkspacesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchWorkspacesRequest,
+    output: SearchWorkspacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workspaces",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the specified flow.
  *
@@ -13374,17 +13408,25 @@ export const getAttachedFile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists agent statuses.
  */
-export const listAgentStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAgentStatusRequest,
-  output: ListAgentStatusResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listAgentStatuses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAgentStatusRequest,
+    output: ListAgentStatusResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AgentStatusSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the data lake datasets available to associate with for a given Amazon Connect instance.
  */
@@ -13423,8 +13465,8 @@ export const listAssociatedContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Provides summary information about the authentication profiles in a specified Amazon Connect
  * instance.
  */
-export const listAuthenticationProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAuthenticationProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAuthenticationProfilesRequest,
     output: ListAuthenticationProfilesResponse,
     errors: [
@@ -13434,8 +13476,13 @@ export const listAuthenticationProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AuthenticationProfileSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
@@ -13443,7 +13490,7 @@ export const listAuthenticationProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * currently associated with the instance. Use this API to return both Amazon Lex V1 and V2
  * bots.
  */
-export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -13452,13 +13499,19 @@ export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "LexBots",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all aliases associated with a contact flow module, showing their current version mappings and
  * metadata.
  */
 export const listContactFlowModuleAliases =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactFlowModuleAliasesRequest,
     output: ListContactFlowModuleAliasesResponse,
     errors: [
@@ -13469,12 +13522,18 @@ export const listContactFlowModuleAliases =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowModuleAliasSummaryList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Provides information about the flow modules for the specified Amazon Connect instance.
  */
-export const listContactFlowModules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContactFlowModules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactFlowModulesRequest,
     output: ListContactFlowModulesResponse,
     errors: [
@@ -13485,13 +13544,18 @@ export const listContactFlowModules = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowModulesSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of all versions for a specific contact flow module.
  */
 export const listContactFlowModuleVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactFlowModuleVersionsRequest,
     output: ListContactFlowModuleVersionsResponse,
     errors: [
@@ -13502,6 +13566,12 @@ export const listContactFlowModuleVersions =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowModuleVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Provides information about the flows for the specified Amazon Connect instance.
@@ -13512,22 +13582,30 @@ export const listContactFlowModuleVersions =
  * For more information about flows, see Flows in the Amazon Connect
  * Administrator Guide.
  */
-export const listContactFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactFlowsRequest,
-  output: ListContactFlowsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listContactFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContactFlowsRequest,
+    output: ListContactFlowsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns all the available versions for the specified Amazon Connect instance and flow identifier.
  */
-export const listContactFlowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContactFlowVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactFlowVersionsRequest,
     output: ListContactFlowVersionsResponse,
     errors: [
@@ -13538,29 +13616,42 @@ export const listContactFlowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlowVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all data tables for the specified Amazon Connect instance. Returns summary information for each table
  * including basic metadata and modification details.
  */
-export const listDataTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataTablesRequest,
-  output: ListDataTablesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listDataTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataTablesRequest,
+    output: ListDataTablesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataTableSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the default vocabularies for the specified Amazon Connect instance.
  */
-export const listDefaultVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDefaultVocabularies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDefaultVocabulariesRequest,
     output: ListDefaultVocabulariesResponse,
     errors: [
@@ -13569,16 +13660,21 @@ export const listDefaultVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DefaultVocabularyList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides information about the hours of operation for the specified Amazon Connect instance.
  *
  * For more information about hours of operation, see Set the Hours of Operation for a Queue in the
  * *Amazon Connect Administrator Guide*.
  */
-export const listHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listHoursOfOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHoursOfOperationsRequest,
     output: ListHoursOfOperationsResponse,
     errors: [
@@ -13588,8 +13684,13 @@ export const listHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HoursOfOperationSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
@@ -13597,16 +13698,24 @@ export const listHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * that aren't successfully created (they are in a failed state) are returned only for 24 hours after the CreateInstance
  * API was invoked.
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesRequest,
-  output: ListInstancesResponse,
-  errors: [InternalServiceException, InvalidRequestException],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesRequest,
+    output: ListInstancesResponse,
+    errors: [InternalServiceException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides summary information about the Amazon Web Services resource associations for the specified Amazon Connect instance.
  */
-export const listIntegrationAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIntegrationAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIntegrationAssociationsRequest,
     output: ListIntegrationAssociationsResponse,
     errors: [
@@ -13615,8 +13724,13 @@ export const listIntegrationAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IntegrationAssociationSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides information about the phone numbers for the specified Amazon Connect instance.
  *
@@ -13631,17 +13745,25 @@ export const listIntegrationAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `ResourceNotFoundException`. Instead, use the ListPhoneNumbersV2 API. It returns the new
  * phone number ARN that can be used to tag phone number resources.
  */
-export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPhoneNumbersRequest,
-  output: ListPhoneNumbersResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPhoneNumbersRequest,
+    output: ListPhoneNumbersResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PhoneNumberSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists predefined attributes for the specified Amazon Connect instance. A *predefined attribute* is
  * made up of a name and a value. You can use predefined attributes for:
@@ -13658,8 +13780,8 @@ export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Endpoints**: See Amazon Connect endpoints and quotas.
  */
-export const listPredefinedAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPredefinedAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPredefinedAttributesRequest,
     output: ListPredefinedAttributesResponse,
     errors: [
@@ -13669,27 +13791,40 @@ export const listPredefinedAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PredefinedAttributeSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides information about the prompts for the specified Amazon Connect instance.
  */
-export const listPrompts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPromptsRequest,
-  output: ListPromptsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listPrompts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPromptsRequest,
+    output: ListPromptsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PromptSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the quick connects associated with a queue.
  */
-export const listQueueQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQueueQuickConnects =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQueueQuickConnectsRequest,
     output: ListQueueQuickConnectsResponse,
     errors: [
@@ -13699,8 +13834,13 @@ export const listQueueQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "QuickConnectSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides information about the queues for the specified Amazon Connect instance.
  *
@@ -13711,7 +13851,7 @@ export const listQueueQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information about queues, see Queues: Standard and Agent in the
  * *Amazon Connect Administrator Guide*.
  */
-export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
   output: ListQueuesResponse,
   errors: [
@@ -13721,6 +13861,12 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "QueueSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the manual assignment queues associated with a routing profile.
@@ -13743,7 +13889,7 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Endpoints**: See Amazon Connect endpoints and quotas.
  */
 export const listRoutingProfileManualAssignmentQueues =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRoutingProfileManualAssignmentQueuesRequest,
     output: ListRoutingProfileManualAssignmentQueuesResponse,
     errors: [
@@ -13753,12 +13899,18 @@ export const listRoutingProfileManualAssignmentQueues =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingProfileManualAssignmentQueueConfigSummaryList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the queues associated with a routing profile.
  */
-export const listRoutingProfileQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRoutingProfileQueues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRoutingProfileQueuesRequest,
     output: ListRoutingProfileQueuesResponse,
     errors: [
@@ -13768,40 +13920,60 @@ export const listRoutingProfileQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingProfileQueueConfigSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides summary information about the routing profiles for the specified Amazon Connect instance.
  *
  * For more information about routing profiles, see Routing Profiles and Create a Routing Profile in the *Amazon Connect Administrator Guide*.
  */
-export const listRoutingProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoutingProfilesRequest,
-  output: ListRoutingProfilesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listRoutingProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRoutingProfilesRequest,
+    output: ListRoutingProfilesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingProfileSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
  * Returns a paginated list of all security keys associated with the instance.
  */
-export const listSecurityKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSecurityKeysRequest,
-  output: ListSecurityKeysResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listSecurityKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSecurityKeysRequest,
+    output: ListSecurityKeysResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityKeys",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides summary information about the security profiles for the specified Amazon Connect instance.
  *
@@ -13809,8 +13981,8 @@ export const listSecurityKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * profile permissions, see List
  * of security profile permissions.
  */
-export const listSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfilesRequest,
     output: ListSecurityProfilesResponse,
     errors: [
@@ -13820,27 +13992,40 @@ export const listSecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityProfileSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists task templates for the specified Amazon Connect instance.
  */
-export const listTaskTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTaskTemplatesRequest,
-  output: ListTaskTemplatesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listTaskTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTaskTemplatesRequest,
+    output: ListTaskTemplatesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskTemplates",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists traffic distribution groups.
  */
 export const listTrafficDistributionGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrafficDistributionGroupsRequest,
     output: ListTrafficDistributionGroupsResponse,
     errors: [
@@ -13849,12 +14034,18 @@ export const listTrafficDistributionGroups =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficDistributionGroupSummaryList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists traffic distribution group users.
  */
 export const listTrafficDistributionGroupUsers =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrafficDistributionGroupUsersRequest,
     output: ListTrafficDistributionGroupUsersResponse,
     errors: [
@@ -13864,27 +14055,41 @@ export const listTrafficDistributionGroupUsers =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficDistributionGroupUserSummaryList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the use cases for the integration association.
  */
-export const listUseCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUseCasesRequest,
-  output: ListUseCasesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listUseCases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUseCasesRequest,
+    output: ListUseCasesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UseCaseSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides summary information about the hierarchy groups for the specified Amazon Connect instance.
  *
  * For more information about agent hierarchies, see Set Up Agent Hierarchies in the *Amazon Connect Administrator Guide*.
  */
-export const listUserHierarchyGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listUserHierarchyGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUserHierarchyGroupsRequest,
     output: ListUserHierarchyGroupsResponse,
     errors: [
@@ -13894,12 +14099,17 @@ export const listUserHierarchyGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserHierarchyGroupSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides summary information about the users for the specified Amazon Connect instance.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -13909,6 +14119,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "UserSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists media assets (such as logos) associated with a workspace.
@@ -13928,54 +14144,78 @@ export const listWorkspaceMedia = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the page configurations in a workspace, including the views assigned to each page.
  */
-export const listWorkspacePages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkspacePagesRequest,
-  output: ListWorkspacePagesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listWorkspacePages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkspacePagesRequest,
+    output: ListWorkspacePagesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkspacePageList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the workspaces in an Amazon Connect instance.
  */
-export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkspacesRequest,
-  output: ListWorkspacesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkspacesRequest,
+    output: ListWorkspacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkspaceSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for data tables based on the table's ID, name, and description. In the future, this operation can
  * support searching on attribute names and possibly primary values. Follows other search operations closely and
  * supports both search criteria and filters.
  */
-export const searchDataTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchDataTablesRequest,
-  output: SearchDataTablesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchDataTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchDataTablesRequest,
+    output: SearchDataTablesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataTables",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches the hours of operation in an Amazon Connect instance, with optional filtering.
  */
-export const searchHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchHoursOfOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchHoursOfOperationsRequest,
     output: SearchHoursOfOperationsResponse,
     errors: [
@@ -13985,8 +14225,13 @@ export const searchHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HoursOfOperations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches predefined attributes that meet certain criteria. A *predefined attribute* is made
  * up of a name and a value. You can use predefined attributes for:
@@ -14003,8 +14248,8 @@ export const searchHoursOfOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * **Endpoints**: See Amazon Connect endpoints and quotas.
  */
-export const searchPredefinedAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchPredefinedAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchPredefinedAttributesRequest,
     output: SearchPredefinedAttributesResponse,
     errors: [
@@ -14014,58 +14259,86 @@ export const searchPredefinedAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PredefinedAttributes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches prompts in an Amazon Connect instance, with optional filtering.
  */
-export const searchPrompts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchPromptsRequest,
-  output: SearchPromptsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchPrompts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchPromptsRequest,
+    output: SearchPromptsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Prompts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches queues in an Amazon Connect instance, with optional filtering.
  */
-export const searchQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchQueuesRequest,
-  output: SearchQueuesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchQueuesRequest,
+    output: SearchQueuesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Queues",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches quick connects in an Amazon Connect instance, with optional filtering.
  */
-export const searchQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchQuickConnectsRequest,
-  output: SearchQuickConnectsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchQuickConnects =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: SearchQuickConnectsRequest,
+    output: SearchQuickConnectsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "QuickConnects",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches routing profiles in an Amazon Connect instance, with optional filtering.
  *
  * `SearchRoutingProfiles` does not populate LastModifiedRegion, LastModifiedTime,
  * MediaConcurrencies.CrossChannelBehavior, and AgentAvailabilityTimer in its response, but DescribeRoutingProfile does.
  */
-export const searchRoutingProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchRoutingProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchRoutingProfilesRequest,
     output: SearchRoutingProfilesResponse,
     errors: [
@@ -14075,16 +14348,21 @@ export const searchRoutingProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RoutingProfiles",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches UserHierarchyGroups in an Amazon Connect instance, with optional filtering.
  *
  * The UserHierarchyGroup with `"LevelId": "0"` is the foundation for building levels on top of an
  * instance. It is not user-definable, nor is it visible in the UI.
  */
-export const searchUserHierarchyGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchUserHierarchyGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchUserHierarchyGroupsRequest,
     output: SearchUserHierarchyGroupsResponse,
     errors: [
@@ -14094,37 +14372,58 @@ export const searchUserHierarchyGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserHierarchyGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches views based on name, description, or tags.
  */
-export const searchViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchViewsRequest,
-  output: SearchViewsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchViewsRequest,
+    output: SearchViewsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Views",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for vocabularies within a specific Amazon Connect instance using `State`,
  * `NameStartsWith`, and `LanguageCode`.
  */
-export const searchVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchVocabulariesRequest,
-  output: SearchVocabulariesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const searchVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchVocabulariesRequest,
+    output: SearchVocabulariesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VocabularySummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Processes chat integration events from Amazon Web Services or external integrations to Amazon Connect. A chat
  * integration event includes:
@@ -14522,24 +14821,31 @@ export const listAnalyticsDataAssociations =
  *
  * Returns a paginated list of all approved origins associated with the instance.
  */
-export const listApprovedOrigins = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApprovedOriginsRequest,
-  output: ListApprovedOriginsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listApprovedOrigins =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListApprovedOriginsRequest,
+    output: ListApprovedOriginsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Origins",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns all attributes for a specified data table. A maximum of 100 attributes per data table is allowed.
  * Customers can request an increase by using Amazon Web Services Service Quotas. The response can be filtered by specific attribute IDs
  * for CloudFormation integration.
  */
-export const listDataTableAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataTableAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataTableAttributesRequest,
     output: ListDataTableAttributesResponse,
     errors: [
@@ -14550,13 +14856,18 @@ export const listDataTableAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Attributes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all security profiles attached to a Q in Connect AIAgent Entity in an Amazon Connect instance.
  */
-export const listEntitySecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEntitySecurityProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEntitySecurityProfilesRequest,
     output: ListEntitySecurityProfilesResponse,
     errors: [
@@ -14566,13 +14877,18 @@ export const listEntitySecurityProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityProfiles",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the flow association based on the filters.
  */
-export const listFlowAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFlowAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFlowAssociationsRequest,
     output: ListFlowAssociationsResponse,
     errors: [
@@ -14583,13 +14899,18 @@ export const listFlowAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FlowAssociationSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the hours of operation overrides.
  */
 export const listHoursOfOperationOverrides =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHoursOfOperationOverridesRequest,
     output: ListHoursOfOperationOverridesResponse,
     errors: [
@@ -14599,14 +14920,20 @@ export const listHoursOfOperationOverrides =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HoursOfOperationOverrideList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
  * Returns a paginated list of all attribute types for the given instance.
  */
-export const listInstanceAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceAttributes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceAttributesRequest,
     output: ListInstanceAttributesResponse,
     errors: [
@@ -14616,15 +14943,20 @@ export const listInstanceAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Attributes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
  * Returns a paginated list of storage configs for the identified instance and resource type.
  */
-export const listInstanceStorageConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceStorageConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceStorageConfigsRequest,
     output: ListInstanceStorageConfigsResponse,
     errors: [
@@ -14634,61 +14966,89 @@ export const listInstanceStorageConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StorageConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
  * Returns a paginated list of all Lambda functions that display in the dropdown options in the relevant flow
  * blocks.
  */
-export const listLambdaFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLambdaFunctionsRequest,
-  output: ListLambdaFunctionsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listLambdaFunctions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListLambdaFunctionsRequest,
+    output: ListLambdaFunctionsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LambdaFunctions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
  * Returns a paginated list of all the Amazon Lex V1 bots currently associated with the instance. To return
  * both Amazon Lex V1 and V2 bots, use the ListBots API.
  */
-export const listLexBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLexBotsRequest,
-  output: ListLexBotsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listLexBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLexBotsRequest,
+    output: ListLexBotsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LexBots",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides information about the quick connects for the specified Amazon Connect instance.
  */
-export const listQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQuickConnectsRequest,
-  output: ListQuickConnectsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listQuickConnects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQuickConnectsRequest,
+    output: ListQuickConnectsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "QuickConnectSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of third-party applications or MCP Servers in a specific security profile.
  */
 export const listSecurityProfileApplications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfileApplicationsRequest,
     output: ListSecurityProfileApplicationsResponse,
     errors: [
@@ -14698,12 +15058,18 @@ export const listSecurityProfileApplications =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Applications",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * A list of Flow Modules an AI Agent can invoke as a tool
  */
 export const listSecurityProfileFlowModules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfileFlowModulesRequest,
     output: ListSecurityProfileFlowModulesResponse,
     errors: [
@@ -14713,6 +15079,12 @@ export const listSecurityProfileFlowModules =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AllowedFlowModules",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the permissions granted to a security profile.
@@ -14722,7 +15094,7 @@ export const listSecurityProfileFlowModules =
  * of security profile permissions.
  */
 export const listSecurityProfilePermissions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityProfilePermissionsRequest,
     output: ListSecurityProfilePermissionsResponse,
     errors: [
@@ -14732,6 +15104,12 @@ export const listSecurityProfilePermissions =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Permissions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the tags for the specified resource.
@@ -14753,8 +15131,8 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists proficiencies associated with a user.
  */
-export const listUserProficiencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listUserProficiencies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUserProficienciesRequest,
     output: ListUserProficienciesResponse,
     errors: [
@@ -14764,8 +15142,13 @@ export const listUserProficiencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserProficiencyList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Update the hours of operation override.
  */
@@ -16385,21 +16768,28 @@ export const describeEvaluationForm = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists evaluation forms in the specified Amazon Connect instance.
  */
-export const listEvaluationForms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEvaluationFormsRequest,
-  output: ListEvaluationFormsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listEvaluationForms =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEvaluationFormsRequest,
+    output: ListEvaluationFormsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EvaluationFormSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists versions of an evaluation form in the specified Amazon Connect instance.
  */
-export const listEvaluationFormVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEvaluationFormVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEvaluationFormVersionsRequest,
     output: ListEvaluationFormVersionsResponse,
     errors: [
@@ -16408,8 +16798,13 @@ export const listEvaluationFormVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EvaluationFormVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists phone numbers claimed to your Amazon Connect instance or traffic distribution group. If the provided `TargetArn`
  * is a traffic distribution group, you can call this API in both Amazon Web Services Regions associated with traffic distribution group.
@@ -16423,17 +16818,25 @@ export const listEvaluationFormVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - When given a traffic distribution group ARN `ListPhoneNumbersV2` returns only the phone numbers claimed to the
  * traffic distribution group.
  */
-export const listPhoneNumbersV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPhoneNumbersV2Request,
-  output: ListPhoneNumbersV2Response,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listPhoneNumbersV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPhoneNumbersV2Request,
+    output: ListPhoneNumbersV2Response,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ListPhoneNumbersSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Associates a flow with a phone number claimed to your Amazon Connect instance.
  *
@@ -16719,8 +17122,8 @@ export const describeUserHierarchyStructure =
  * not included in the operation name since it does not meet all the criteria for a batch operation as specified in
  * Batch Operations: Amazon Web Services API Standards.
  */
-export const evaluateDataTableValues = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const evaluateDataTableValues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: EvaluateDataTableValuesRequest,
     output: EvaluateDataTableValuesResponse,
     errors: [
@@ -16731,8 +17134,12 @@ export const evaluateDataTableValues = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Get the hours of operations with the effective override applied.
  */
@@ -16751,8 +17158,8 @@ export const getEffectiveHoursOfOperations =
 /**
  * Lists contact evaluations in the specified Amazon Connect instance.
  */
-export const listContactEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContactEvaluations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactEvaluationsRequest,
     output: ListContactEvaluationsResponse,
     errors: [
@@ -16761,8 +17168,12 @@ export const listContactEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EvaluationSummaryList",
+    } as const,
+  }));
 /**
  * This API is in preview release for Amazon Connect and is subject to change.
  *
@@ -16770,8 +17181,8 @@ export const listContactEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * *References* are links to documents that are related to a contact, such as emails, attachments,
  * or URLs.
  */
-export const listContactReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContactReferences =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContactReferencesRequest,
     output: ListContactReferencesResponse,
     errors: [
@@ -16781,14 +17192,18 @@ export const listContactReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReferenceSummaryList",
+    } as const,
+  }));
 /**
  * Lists all primary value combinations for a given data table. Returns the unique combinations of primary
  * attribute values that identify records in the table. Up to 100 records are returned per request.
  */
-export const listDataTablePrimaryValues = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataTablePrimaryValues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataTablePrimaryValuesRequest,
     output: ListDataTablePrimaryValuesResponse,
     errors: [
@@ -16799,28 +17214,40 @@ export const listDataTablePrimaryValues = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PrimaryValuesList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists values stored in a data table with optional filtering by record IDs or primary attribute values. Returns
  * the raw stored values along with metadata such as lock versions and modification timestamps.
  */
-export const listDataTableValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataTableValuesRequest,
-  output: ListDataTableValuesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listDataTableValues =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDataTableValuesRequest,
+    output: ListDataTableValuesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Values",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all rules for the specified Amazon Connect instance.
  */
-export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [
@@ -16830,6 +17257,12 @@ export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "RuleSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Deactivates an evaluation form in the specified Amazon Connect instance. After a form is deactivated, it is no longer
@@ -17197,31 +17630,46 @@ export const getContactMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches AgentStatuses in an Amazon Connect instance, with optional filtering.
  */
-export const searchAgentStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchAgentStatusesRequest,
-  output: SearchAgentStatusesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchAgentStatuses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: SearchAgentStatusesRequest,
+    output: SearchAgentStatusesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AgentStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches the flows in an Amazon Connect instance, with optional filtering.
  */
-export const searchContactFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchContactFlowsRequest,
-  output: SearchContactFlowsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchContactFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchContactFlowsRequest,
+    output: SearchContactFlowsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContactFlows",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Submits a contact evaluation in the specified Amazon Connect instance. Answers included in the request are
  * merged with existing answers for the given evaluation. If no answers or notes are passed, the evaluation is submitted
@@ -17300,7 +17748,7 @@ export const getFederationToken = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Results are sorted primarily by type, and secondarily by name.
  */
-export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListViewsRequest,
   output: ListViewsResponse,
   errors: [
@@ -17311,6 +17759,12 @@ export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "ViewsSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates hours of operation.
@@ -17810,18 +18264,26 @@ export const createContactFlow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Results will be sorted from highest to lowest.
  */
-export const listViewVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListViewVersionsRequest,
-  output: ListViewVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listViewVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListViewVersionsRequest,
+    output: ListViewVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ViewVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the view for the specified Amazon Connect instance and view identifier.
  *
@@ -18067,8 +18529,8 @@ export const describeContact = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Add filters to reduce the amount of data returned
  */
-export const getCurrentMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCurrentMetricData =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCurrentMetricDataRequest,
     output: GetCurrentMetricDataResponse,
     errors: [
@@ -18078,8 +18540,12 @@ export const getCurrentMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets historical metric data from the specified Amazon Connect instance.
  *
@@ -18091,17 +18557,24 @@ export const getCurrentMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For example, you can track the number of incoming contacts for the last 7 days, with data split by day, to see how
  * contact volume changed per day of the week.
  */
-export const getMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMetricDataRequest,
-  output: GetMetricDataResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getMetricData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMetricDataRequest,
+    output: GetMetricDataResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets metric data from the specified Amazon Connect instance.
  *
@@ -18136,17 +18609,24 @@ export const getMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Add filters to reduce the amount of data returned
  */
-export const getMetricDataV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMetricDataV2Request,
-  output: GetMetricDataV2Response,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getMetricDataV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMetricDataV2Request,
+    output: GetMetricDataV2Response,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches contact evaluations in an Amazon Connect instance, with optional filtering.
  *
@@ -18183,18 +18663,26 @@ export const searchContactEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches tags used in an Amazon Connect instance using optional search criteria.
  */
-export const searchResourceTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchResourceTagsRequest,
-  output: SearchResourceTagsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    MaximumResultReturnedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchResourceTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchResourceTagsRequest,
+    output: SearchResourceTagsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      MaximumResultReturnedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts an empty evaluation in the specified Amazon Connect instance, using the given evaluation form for the
  * particular contact. The evaluation form version used for the contact evaluation corresponds to the currently
@@ -18874,33 +19362,48 @@ export const replicateInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets the real-time active user data from the specified Amazon Connect instance.
  */
-export const getCurrentUserData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCurrentUserDataRequest,
-  output: GetCurrentUserDataResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getCurrentUserData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCurrentUserDataRequest,
+    output: GetCurrentUserDataResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches users in an Amazon Connect instance, with optional filtering.
  *
  * `AfterContactWorkTimeLimit` is returned in milliseconds.
  */
-export const searchUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchUsersRequest,
-  output: SearchUsersResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchUsersRequest,
+    output: SearchUsersResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Users",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Places an inbound in-app, web, or video call to a contact, and then initiates the flow. It performs the actions
  * in the flow that are specified (in ContactFlowId) and present in the Amazon Connect instance (specified as
@@ -18970,7 +19473,7 @@ export const createEvaluationForm = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * occurs.
  */
 export const listRealtimeContactAnalysisSegmentsV2 =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRealtimeContactAnalysisSegmentsV2Request,
     output: ListRealtimeContactAnalysisSegmentsV2Response,
     errors: [
@@ -18981,21 +19484,34 @@ export const listRealtimeContactAnalysisSegmentsV2 =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Searches contacts in an Amazon Connect instance.
  */
-export const searchContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchContactsRequest,
-  output: SearchContactsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchContacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchContactsRequest,
+    output: SearchContactsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Contacts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Places an outbound call to a contact, and then initiates the flow. It performs the actions in the flow that's
  * specified (in `ContactFlowId`).

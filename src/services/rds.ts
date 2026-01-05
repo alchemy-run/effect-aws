@@ -5932,13 +5932,18 @@ export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This action only applies to Aurora DB clusters.
  */
-export const describeDBClusterEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterEndpointsMessage,
     output: DBClusterEndpointMessage,
     errors: [DBClusterNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterEndpoints",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of `DBClusterParameterGroup` descriptions. If a
  * `DBClusterParameterGroupName` parameter is specified,
@@ -5953,10 +5958,16 @@ export const describeDBClusterEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Guide.
  */
 export const describeDBClusterParameterGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterParameterGroupsMessage,
     output: DBClusterParameterGroupsMessage,
     errors: [DBParameterGroupNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterParameterGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns the detailed parameter list for a particular DB cluster parameter group.
@@ -5969,13 +5980,18 @@ export const describeDBClusterParameterGroups =
  * cluster deployments in the Amazon RDS User
  * Guide.
  */
-export const describeDBClusterParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterParameters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterParametersMessage,
     output: DBClusterParameterGroupDetails,
     errors: [DBParameterGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Parameters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes existing Amazon Aurora DB clusters and Multi-AZ DB clusters. This API supports pagination.
  *
@@ -5989,60 +6005,98 @@ export const describeDBClusterParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This operation can also return information for Amazon Neptune DB instances and Amazon DocumentDB instances.
  */
-export const describeDBClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBClustersMessage,
-  output: DBClusterMessage,
-  errors: [DBClusterNotFoundFault],
-}));
+export const describeDBClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDBClustersMessage,
+    output: DBClusterMessage,
+    errors: [DBClusterNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Describes the properties of specific versions of DB engines.
  */
-export const describeDBEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBEngineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBEngineVersionsMessage,
     output: DBEngineVersionMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBEngineVersions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes provisioned RDS instances. This API supports pagination.
  *
  * This operation can also return information for Amazon Neptune DB instances and Amazon DocumentDB instances.
  */
-export const describeDBInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBInstancesMessage,
-  output: DBInstanceMessage,
-  errors: [DBInstanceNotFoundFault],
-}));
+export const describeDBInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDBInstancesMessage,
+    output: DBInstanceMessage,
+    errors: [DBInstanceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBInstances",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of `DBParameterGroup` descriptions. If a `DBParameterGroupName` is specified,
  * the list will contain only the description of the specified DB parameter group.
  */
-export const describeDBParameterGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBParameterGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBParameterGroupsMessage,
     output: DBParameterGroupsMessage,
     errors: [DBParameterGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBParameterGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns the detailed parameter list for a particular DB parameter group.
  */
-export const describeDBParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBParameters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBParametersMessage,
     output: DBParameterGroupDetails,
     errors: [DBParameterGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Parameters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about DB proxies.
  */
-export const describeDBProxies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBProxiesRequest,
-  output: DescribeDBProxiesResponse,
-  errors: [DBProxyNotFoundFault],
-}));
+export const describeDBProxies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDBProxiesRequest,
+    output: DescribeDBProxiesResponse,
+    errors: [DBProxyNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBProxies",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Returns a list of `DBSecurityGroup` descriptions. If a `DBSecurityGroupName` is specified,
  * the list will contain only the descriptions of the specified DB security group.
@@ -6053,13 +6107,18 @@ export const describeDBProxies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Here’s How to Prepare, and Moving a DB instance not in a VPC
  * into a VPC in the *Amazon RDS User Guide*.
  */
-export const describeDBSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBSecurityGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBSecurityGroupsMessage,
     output: DBSecurityGroupMessage,
     errors: [DBSecurityGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBSecurityGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes existing Aurora Limitless Database DB shard groups.
  */
@@ -6076,33 +6135,49 @@ export const describeDBShardGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For an overview of CIDR ranges, go to the
  * Wikipedia Tutorial.
  */
-export const describeDBSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBSubnetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBSubnetGroupsMessage,
     output: DBSubnetGroupMessage,
     errors: [DBSubnetGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBSubnetGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns the default engine and system parameter information for the specified database engine.
  */
 export const describeEngineDefaultParameters =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEngineDefaultParametersMessage,
     output: DescribeEngineDefaultParametersResult,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "EngineDefaults.Marker",
+      items: "EngineDefaults.Parameters",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Describes the tenant databases in a DB instance that uses the multi-tenant
  * configuration. Only RDS for Oracle CDB instances are supported.
  */
-export const describeTenantDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTenantDatabases =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTenantDatabasesMessage,
     output: TenantDatabasesMessage,
     errors: [DBInstanceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TenantDatabases",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Backtracks a DB cluster to a specific time, without creating a new DB cluster.
  *
@@ -6217,10 +6292,16 @@ export const deleteOptionGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * User Guide.
  */
 export const describeBlueGreenDeployments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBlueGreenDeploymentsRequest,
     output: DescribeBlueGreenDeploymentsResponse,
     errors: [BlueGreenDeploymentNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "BlueGreenDeployments",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Displays backups for both current and deleted DB clusters. For example, use this operation to find details
@@ -6230,10 +6311,16 @@ export const describeBlueGreenDeployments =
  * All parameters are optional.
  */
 export const describeDBClusterAutomatedBackups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterAutomatedBackupsMessage,
     output: DBClusterAutomatedBackupMessage,
     errors: [DBClusterAutomatedBackupNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterAutomatedBackups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about backtracks for a DB cluster.
@@ -6244,13 +6331,18 @@ export const describeDBClusterAutomatedBackups =
  *
  * This action only applies to Aurora MySQL DB clusters.
  */
-export const describeDBClusterBacktracks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterBacktracks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterBacktracksMessage,
     output: DBClusterBacktrackMessage,
     errors: [DBClusterBacktrackNotFoundFault, DBClusterNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterBacktracks",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Displays backups for both current and deleted
  * instances. For example, use this operation to
@@ -6262,10 +6354,16 @@ export const describeDBClusterBacktracks = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * All parameters are optional.
  */
 export const describeDBInstanceAutomatedBackups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBInstanceAutomatedBackupsMessage,
     output: DBInstanceAutomatedBackupMessage,
     errors: [DBInstanceAutomatedBackupNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBInstanceAutomatedBackups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Describes the tenant databases that exist in a DB snapshot. This command only applies
@@ -6277,10 +6375,16 @@ export const describeDBInstanceAutomatedBackups =
  * configuration, you restore all its tenant databases.
  */
 export const describeDBSnapshotTenantDatabases =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBSnapshotTenantDatabasesMessage,
     output: DBSnapshotTenantDatabasesMessage,
     errors: [DBSnapshotNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBSnapshotTenantDatabases",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns the default engine and system parameter information for the cluster database engine.
@@ -6321,34 +6425,52 @@ export const describeEventCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * By default, RDS returns events that were generated in the past hour.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: EventsMessage,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: EventsMessage,
+    errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Events",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists all the subscription descriptions for a customer account. The description for a subscription includes
  * `SubscriptionName`, `SNSTopicARN`, `CustomerID`, `SourceType`, `SourceID`, `CreationTime`, and `Status`.
  *
  * If you specify a `SubscriptionName`, lists the description for that subscription.
  */
-export const describeEventSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEventSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventSubscriptionsMessage,
     output: EventSubscriptionsMessage,
     errors: [SubscriptionNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EventSubscriptionsList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describe one or more zero-ETL integrations with Amazon Redshift.
  */
-export const describeIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIntegrationsMessage,
     output: DescribeIntegrationsResponse,
     errors: [IntegrationNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Integrations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of resources (for example, DB instances) that have at least one pending maintenance action.
  *
@@ -6359,10 +6481,16 @@ export const describeIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * API command such as `ApplyPendingMaintenanceActions`.
  */
 export const describePendingMaintenanceActions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePendingMaintenanceActionsMessage,
     output: PendingMaintenanceActionsMessage,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PendingMaintenanceActions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of the source Amazon Web Services Regions where the current Amazon Web Services Region can create a read replica,
@@ -6376,13 +6504,18 @@ export const describePendingMaintenanceActions =
  *
  * DescribeRegions in the *Amazon EC2 API Reference*.
  */
-export const describeSourceRegions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSourceRegions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSourceRegionsMessage,
     output: SourceRegionMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SourceRegions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Disables the HTTP endpoint for the specified DB cluster. Disabling this endpoint disables RDS Data API.
  *
@@ -6666,11 +6799,18 @@ export const stopActivityStream = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns information about a snapshot or cluster export to Amazon S3. This API operation supports
  * pagination.
  */
-export const describeExportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeExportTasksMessage,
-  output: ExportTasksMessage,
-  errors: [ExportTaskNotFoundFault],
-}));
+export const describeExportTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeExportTasksMessage,
+    output: ExportTasksMessage,
+    errors: [ExportTaskNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ExportTasks",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Modifies the status of a custom engine version (CEV). You can find CEVs to modify by calling
  * `DescribeDBEngineVersions`.
@@ -6824,23 +6964,33 @@ export const resetDBParameterGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * cluster deployments in the Amazon RDS User
  * Guide.
  */
-export const describeDBClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterSnapshotsMessage,
     output: DBClusterSnapshotMessage,
     errors: [DBClusterSnapshotNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterSnapshots",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about DB proxy endpoints.
  */
-export const describeDBProxyEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBProxyEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBProxyEndpointsRequest,
     output: DescribeDBProxyEndpointsResponse,
     errors: [DBProxyEndpointNotFoundFault, DBProxyNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBProxyEndpoints",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * You might need to reboot your DB shard group, usually for maintenance reasons. For example, if you make certain modifications, reboot
  * the DB shard group for the changes to take effect.
@@ -6855,11 +7005,18 @@ export const rebootDBShardGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about DB snapshots. This API action supports pagination.
  */
-export const describeDBSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBSnapshotsMessage,
-  output: DBSnapshotMessage,
-  errors: [DBSnapshotNotFoundFault],
-}));
+export const describeDBSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDBSnapshotsMessage,
+    output: DBSnapshotMessage,
+    errors: [DBSnapshotNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBSnapshots",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about Aurora global database clusters. This API supports pagination.
  *
@@ -6868,23 +7025,33 @@ export const describeDBSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This action only applies to Aurora DB clusters.
  */
-export const describeGlobalClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGlobalClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGlobalClustersMessage,
     output: GlobalClustersMessage,
     errors: [GlobalClusterNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "GlobalClusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Describes the available option groups.
  */
-export const describeOptionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeOptionGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOptionGroupsMessage,
     output: OptionGroups,
     errors: [OptionGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "OptionGroupsList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Deletes an RDS event notification subscription.
  */
@@ -6919,11 +7086,19 @@ export const enableHttpEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This command doesn't apply to RDS Custom.
  */
-export const describeDBLogFiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBLogFilesMessage,
-  output: DescribeDBLogFilesResponse,
-  errors: [DBInstanceNotFoundFault, DBInstanceNotReadyFault],
-}));
+export const describeDBLogFiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDBLogFilesMessage,
+    output: DescribeDBLogFilesResponse,
+    errors: [DBInstanceNotFoundFault, DBInstanceNotReadyFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DescribeDBLogFiles",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Promotes a read replica DB instance to a standalone DB instance.
  *
@@ -6977,13 +7152,18 @@ export const switchoverReadReplica = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Using SSL/TLS to encrypt a connection to a DB cluster in the Amazon Aurora
  * User Guide.
  */
-export const describeCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCertificatesMessage,
     output: CertificateMessage,
     errors: [CertificateNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Certificates",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Adds a source identifier to an existing RDS event notification subscription.
  */
@@ -7263,10 +7443,16 @@ export const describeDBClusterSnapshotAttributes =
  * Describes the properties of specific major versions of DB engines.
  */
 export const describeDBMajorEngineVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBMajorEngineVersionsRequest,
     output: DescribeDBMajorEngineVersionsResponse,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBMajorEngineVersions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of DB snapshot attribute names and values for a manual DB snapshot.
@@ -7290,19 +7476,31 @@ export const describeDBSnapshotAttributes =
  * Describes the orderable DB instance options for a specified DB engine.
  */
 export const describeOrderableDBInstanceOptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrderableDBInstanceOptionsMessage,
     output: OrderableDBInstanceOptionsMessage,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "OrderableDBInstanceOptions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Lists available reserved DB instance offerings.
  */
 export const describeReservedDBInstancesOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedDBInstancesOfferingsMessage,
     output: ReservedDBInstancesOfferingMessage,
     errors: [ReservedDBInstancesOfferingNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedDBInstancesOfferings",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Downloads all or a portion of the specified log file, up to 1 MB in size.
@@ -7313,8 +7511,8 @@ export const describeReservedDBInstancesOfferings =
  * using the GetLogEvents operation. For more information,
  * see GetLogEvents in the *Amazon CloudWatch Logs API Reference*.
  */
-export const downloadDBLogFilePortion = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const downloadDBLogFilePortion =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DownloadDBLogFilePortionMessage,
     output: DownloadDBLogFilePortionDetails,
     errors: [
@@ -7322,8 +7520,12 @@ export const downloadDBLogFilePortion = /*@__PURE__*/ /*#__PURE__*/ API.make(
       DBInstanceNotReadyFault,
       DBLogFileNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "NumberOfLines",
+    } as const,
+  }));
 /**
  * Changes the settings for an existing DB proxy.
  */
@@ -7777,8 +7979,8 @@ export const deregisterDBProxyTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns information about DB proxy target groups, represented by `DBProxyTargetGroup` data structures.
  */
-export const describeDBProxyTargetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBProxyTargetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBProxyTargetGroupsRequest,
     output: DescribeDBProxyTargetGroupsResponse,
     errors: [
@@ -7786,13 +7988,18 @@ export const describeDBProxyTargetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       DBProxyTargetGroupNotFoundFault,
       InvalidDBProxyStateFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "TargetGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about `DBProxyTarget` objects. This API supports pagination.
  */
-export const describeDBProxyTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBProxyTargets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBProxyTargetsRequest,
     output: DescribeDBProxyTargetsResponse,
     errors: [
@@ -7801,8 +8008,13 @@ export const describeDBProxyTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       DBProxyTargetNotFoundFault,
       InvalidDBProxyStateFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Targets",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * You might need to reboot your DB instance, usually for maintenance reasons.
  * For example, if you make certain modifications,
@@ -8137,23 +8349,33 @@ export const deleteDBClusterAutomatedBackup =
 /**
  * Describes all available options for the specified engine.
  */
-export const describeOptionGroupOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeOptionGroupOptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOptionGroupOptionsMessage,
     output: OptionGroupOptionsMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "OptionGroupOptions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about reserved DB instances for this account, or about a specified reserved DB instance.
  */
-export const describeReservedDBInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReservedDBInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedDBInstancesMessage,
     output: ReservedDBInstanceMessage,
     errors: [ReservedDBInstanceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "ReservedDBInstances",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * You can call `DescribeValidDBInstanceModifications` to learn what modifications you can make to
  * your DB instance. You can use this information when you call `ModifyDBInstance`.
@@ -9107,10 +9329,15 @@ export const restoreDBInstanceToPointInTime =
 /**
  * Describes the recommendations to resolve the issues for your DB instances, DB clusters, and DB parameter groups.
  */
-export const describeDBRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBRecommendationsMessage,
     output: DBRecommendationsMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBRecommendations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));

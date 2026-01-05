@@ -690,29 +690,50 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about the event types available for configuring notifications.
  */
-export const listEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventTypesRequest,
-  output: ListEventTypesResult,
-  errors: [InvalidNextTokenException, ValidationException],
-}));
-/**
- * Returns a list of the notification rules for an Amazon Web Services account.
- */
-export const listNotificationRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listEventTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListNotificationRulesRequest,
-    output: ListNotificationRulesResult,
+    input: ListEventTypesRequest,
+    output: ListEventTypesResult,
     errors: [InvalidNextTokenException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventTypes",
+      pageSize: "MaxResults",
+    } as const,
   }),
 );
 /**
+ * Returns a list of the notification rules for an Amazon Web Services account.
+ */
+export const listNotificationRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListNotificationRulesRequest,
+    output: ListNotificationRulesResult,
+    errors: [InvalidNextTokenException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NotificationRules",
+      pageSize: "MaxResults",
+    } as const,
+  }));
+/**
  * Returns a list of the notification rule targets for an Amazon Web Services account.
  */
-export const listTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTargetsRequest,
-  output: ListTargetsResult,
-  errors: [InvalidNextTokenException, ValidationException],
-}));
+export const listTargets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTargetsRequest,
+    output: ListTargetsResult,
+    errors: [InvalidNextTokenException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Targets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a notification rule for a resource. The rule specifies the events you want
  * notifications about and the targets (such as Amazon Q Developer in chat applications topics or Amazon Q Developer in chat applications clients configured for Slack) where you want to receive

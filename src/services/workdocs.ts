@@ -1805,7 +1805,7 @@ export class StorageLimitWillExceedException extends S.TaggedError<StorageLimitW
  * Lists the specified notification subscriptions.
  */
 export const describeNotificationSubscriptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNotificationSubscriptionsRequest,
     output: DescribeNotificationSubscriptionsResponse,
     errors: [
@@ -1813,6 +1813,12 @@ export const describeNotificationSubscriptions =
       ServiceUnavailableException,
       UnauthorizedResourceAccessException,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Subscriptions",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Deletes custom metadata from the specified resource.
@@ -1870,8 +1876,8 @@ export const deleteNotificationSubscription =
  * use to request the next set of results. You can also request initialized
  * documents.
  */
-export const describeFolderContents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFolderContents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFolderContentsRequest,
     output: DescribeFolderContentsResponse,
     errors: [
@@ -1882,8 +1888,12 @@ export const describeFolderContents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnauthorizedResourceAccessException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Removes all the permissions from the specified resource.
  */
@@ -1990,16 +2000,24 @@ export const getFolderPath = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes the groups specified by the query. Groups are defined by the underlying
  * Active Directory.
  */
-export const describeGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeGroupsRequest,
-  output: DescribeGroupsResponse,
-  errors: [
-    FailedDependencyException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const describeGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeGroupsRequest,
+    output: DescribeGroupsResponse,
+    errors: [
+      FailedDependencyException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Groups",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Describes the current user's special folders; the `RootFolder` and the
  * `RecycleBin`. `RootFolder` is the root of user's files and
@@ -2012,17 +2030,24 @@ export const describeGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon
  * WorkDocs Developer Guide.
  */
-export const describeRootFolders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeRootFoldersRequest,
-  output: DescribeRootFoldersResponse,
-  errors: [
-    FailedDependencyException,
-    InvalidArgumentException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const describeRootFolders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeRootFoldersRequest,
+    output: DescribeRootFoldersResponse,
+    errors: [
+      FailedDependencyException,
+      InvalidArgumentException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Folders",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Retrieves version metadata for the specified document.
  */
@@ -2226,18 +2251,26 @@ export const deleteFolderContents = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List all the comments for the specified document version.
  */
-export const describeComments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeCommentsRequest,
-  output: DescribeCommentsResponse,
-  errors: [
-    EntityNotExistsException,
-    FailedDependencyException,
-    ProhibitedStateException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const describeComments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeCommentsRequest,
+    output: DescribeCommentsResponse,
+    errors: [
+      EntityNotExistsException,
+      FailedDependencyException,
+      ProhibitedStateException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Comments",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Adds one or more custom properties to the specified resource (a folder, document,
  * or version).
@@ -2414,24 +2447,32 @@ export const createComment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes the user activities in a specified time period.
  */
-export const describeActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeActivitiesRequest,
-  output: DescribeActivitiesResponse,
-  errors: [
-    FailedDependencyException,
-    InvalidArgumentException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const describeActivities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeActivitiesRequest,
+    output: DescribeActivitiesResponse,
+    errors: [
+      FailedDependencyException,
+      InvalidArgumentException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "UserActivities",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Retrieves the document versions for the specified document.
  *
  * By default, only active versions are returned.
  */
-export const describeDocumentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDocumentVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDocumentVersionsRequest,
     output: DescribeDocumentVersionsResponse,
     errors: [
@@ -2444,13 +2485,18 @@ export const describeDocumentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedOperationException,
       UnauthorizedResourceAccessException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DocumentVersions",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Describes the permissions of a specified resource.
  */
-export const describeResourcePermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeResourcePermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeResourcePermissionsRequest,
     output: DescribeResourcePermissionsResponse,
     errors: [
@@ -2460,8 +2506,13 @@ export const describeResourcePermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedOperationException,
       UnauthorizedResourceAccessException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Principals",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Retrieves the path information (the hierarchy from the root folder) for the
  * requested document.
@@ -2509,19 +2560,27 @@ export const updateUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * are more results, the response includes a marker that you can use to request the next
  * set of results.
  */
-export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeUsersRequest,
-  output: DescribeUsersResponse,
-  errors: [
-    EntityNotExistsException,
-    FailedDependencyException,
-    InvalidArgumentException,
-    RequestedEntityTooLargeException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const describeUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeUsersRequest,
+    output: DescribeUsersResponse,
+    errors: [
+      EntityNotExistsException,
+      FailedDependencyException,
+      InvalidArgumentException,
+      RequestedEntityTooLargeException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Users",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Configure Amazon WorkDocs to use Amazon SNS notifications. The endpoint receives a
  * confirmation message, and must confirm the subscription.
@@ -2543,16 +2602,24 @@ export const createNotificationSubscription =
 /**
  * Searches metadata and the content of folders, documents, document versions, and comments.
  */
-export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchResourcesRequest,
-  output: SearchResourcesResponse,
-  errors: [
-    InvalidArgumentException,
-    ServiceUnavailableException,
-    UnauthorizedOperationException,
-    UnauthorizedResourceAccessException,
-  ],
-}));
+export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchResourcesRequest,
+    output: SearchResourcesResponse,
+    errors: [
+      InvalidArgumentException,
+      ServiceUnavailableException,
+      UnauthorizedOperationException,
+      UnauthorizedResourceAccessException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Items",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Creates a new document object and version object.
  *

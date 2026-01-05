@@ -461,8 +461,8 @@ export const importApplicationUsage = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * The maximum number of reports is one.
  */
-export const listReportDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listReportDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReportDefinitionsRequest,
     output: ListReportDefinitionsResult,
     errors: [
@@ -471,8 +471,13 @@ export const listReportDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "reportDefinitions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the definition of a report already configured in AWS Application Cost Profiler.
  */

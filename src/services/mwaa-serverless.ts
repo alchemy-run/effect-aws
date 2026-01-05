@@ -646,17 +646,25 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists all runs for a specified workflow, with optional pagination and filtering support.
  */
-export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowRunsRequest,
-  output: ListWorkflowRunsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    OperationTimeoutException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowRunsRequest,
+    output: ListWorkflowRunsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      OperationTimeoutException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkflowRuns",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new workflow in Amazon Managed Workflows for Apache Airflow Serverless. This operation initializes a workflow with the specified configuration including the workflow definition, execution role, and optional settings for encryption, logging, and networking. You must provide the workflow definition as a YAML file stored in Amazon S3 that defines the DAG structure using supported Amazon Web Services operators. Amazon Managed Workflows for Apache Airflow Serverless automatically creates the first version of the workflow and sets up the necessary execution environment with multi-tenant isolation and security controls.
  */
@@ -815,36 +823,52 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all task instances for a specific workflow run, with optional pagination support.
  */
-export const listTaskInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTaskInstancesRequest,
-  output: ListTaskInstancesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    OperationTimeoutException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTaskInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTaskInstancesRequest,
+    output: ListTaskInstancesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      OperationTimeoutException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskInstances",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all workflows in your account, with optional pagination support. This operation returns summary information for workflows, showing only the most recently created version of each workflow. Amazon Managed Workflows for Apache Airflow Serverless maintains workflow metadata in a highly available, distributed storage system that enables efficient querying and filtering. The service implements proper access controls to ensure you can only view workflows that you have permissions to access, supporting both individual and team-based workflow management scenarios.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    OperationTimeoutException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      OperationTimeoutException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workflows",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all versions of a specified workflow, with optional pagination support.
  */
-export const listWorkflowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowVersionsRequest,
     output: ListWorkflowVersionsResponse,
     errors: [
@@ -854,8 +878,13 @@ export const listWorkflowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkflowVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Removes tags from an Amazon Managed Workflows for Apache Airflow Serverless resource. This operation removes the specified tags from the resource.
  */

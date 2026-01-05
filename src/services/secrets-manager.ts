@@ -1275,16 +1275,23 @@ export const rotateSecret = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const listSecrets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSecretsRequest,
-  output: ListSecretsResponse,
-  errors: [
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidRequestException,
-  ],
-}));
+export const listSecrets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSecretsRequest,
+    output: ListSecretsResponse,
+    errors: [
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidRequestException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Attaches tags to a secret. Tags consist of a key name and a value. Tags are part of
  * the secret's metadata. They are not associated with specific versions of the secret.
@@ -1331,8 +1338,8 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const listSecretVersionIds = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecretVersionIds =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecretVersionIdsRequest,
     output: ListSecretVersionIdsResponse,
     errors: [
@@ -1341,8 +1348,12 @@ export const listSecretVersionIds = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the contents of the encrypted fields `SecretString` or
  * `SecretBinary` for up to 20 secrets. To retrieve a single secret, call
@@ -1368,18 +1379,24 @@ export const listSecretVersionIds = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * IAM policy actions for Secrets Manager and Authentication
  * and access control in Secrets Manager.
  */
-export const batchGetSecretValue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: BatchGetSecretValueRequest,
-  output: BatchGetSecretValueResponse,
-  errors: [
-    DecryptionFailure,
-    InternalServiceError,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const batchGetSecretValue =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: BatchGetSecretValueRequest,
+    output: BatchGetSecretValueResponse,
+    errors: [
+      DecryptionFailure,
+      InternalServiceError,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Validates that a resource policy does not grant a wide range of principals access to
  * your secret. A resource-based policy is optional for secrets.

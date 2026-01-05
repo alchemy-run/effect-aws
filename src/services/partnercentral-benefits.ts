@@ -750,8 +750,8 @@ export const getBenefitAllocation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a paginated list of benefit applications based on specified filter criteria.
  */
-export const listBenefitApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBenefitApplications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBenefitApplicationsInput,
     output: ListBenefitApplicationsOutput,
     errors: [
@@ -761,8 +761,13 @@ export const listBenefitApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BenefitApplicationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Adds or updates tags for a specified resource.
  */
@@ -799,8 +804,8 @@ export const getBenefitApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a paginated list of benefit allocations based on specified filter criteria.
  */
-export const listBenefitAllocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBenefitAllocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBenefitAllocationsInput,
     output: ListBenefitAllocationsOutput,
     errors: [
@@ -810,22 +815,35 @@ export const listBenefitAllocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BenefitAllocationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of available benefits based on specified filter criteria.
  */
-export const listBenefits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBenefitsInput,
-  output: ListBenefitsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBenefits = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBenefitsInput,
+    output: ListBenefitsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BenefitSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes the association between an AWS resource and a benefit application.
  */

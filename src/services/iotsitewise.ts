@@ -4211,16 +4211,23 @@ export const listActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you update properties associated with the model before you finish listing all the properties,
  * you need to start all over again.
  */
-export const listAssetProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetPropertiesRequest,
-  output: ListAssetPropertiesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listAssetProperties =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAssetPropertiesRequest,
+    output: ListAssetPropertiesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetPropertySummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of asset summaries.
  *
@@ -4234,7 +4241,7 @@ export const listAssetProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * assets, use ListAssetModels to get all of your asset model IDs. Then, use ListAssets to get all
  * assets for each asset model.
  */
-export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssetsRequest,
   output: ListAssetsResponse,
   errors: [
@@ -4243,6 +4250,12 @@ export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "assetSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Retrieves a paginated list of associated assets.
@@ -4253,8 +4266,8 @@ export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - `PARENT` - List the asset's parent asset.
  */
-export const listAssociatedAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssociatedAssets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedAssetsRequest,
     output: ListAssociatedAssetsResponse,
     errors: [
@@ -4263,28 +4276,41 @@ export const listAssociatedAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of bulk import job requests. For more information, see List bulk
  * import jobs (CLI) in the *IoT SiteWise User Guide*.
  */
-export const listBulkImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBulkImportJobsRequest,
-  output: ListBulkImportJobsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listBulkImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBulkImportJobsRequest,
+    output: ListBulkImportJobsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of composition relationships for an asset model of type
  * `COMPONENT_MODEL`.
  */
 export const listCompositionRelationships =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCompositionRelationshipsRequest,
     output: ListCompositionRelationshipsResponse,
     errors: [
@@ -4293,13 +4319,19 @@ export const listCompositionRelationships =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "compositionRelationshipSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all distinct resources that are resolved from the executed actions of the
  * computation model.
  */
 export const listComputationModelResolveToResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComputationModelResolveToResourcesRequest,
     output: ListComputationModelResolveToResourcesResponse,
     errors: [
@@ -4308,26 +4340,40 @@ export const listComputationModelResolveToResources =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "computationModelResolveToResourceSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves a paginated list of summaries of all executions.
  */
-export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutionsRequest,
-  output: ListExecutionsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutionsRequest,
+    output: ListExecutionsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "executionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of asset models that have a specific interface asset model
  * applied to them.
  */
-export const listInterfaceRelationships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInterfaceRelationships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInterfaceRelationshipsRequest,
     output: ListInterfaceRelationshipsResponse,
     errors: [
@@ -4336,21 +4382,34 @@ export const listInterfaceRelationships = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "interfaceRelationshipSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of time series (data streams).
  */
-export const listTimeSeries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTimeSeriesRequest,
-  output: ListTimeSeriesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listTimeSeries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTimeSeriesRequest,
+    output: ListTimeSeriesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "TimeSeriesSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an IoT SiteWise Monitor portal.
  */
@@ -4568,7 +4627,7 @@ export const describeTimeSeries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a paginated list of composite models associated with the asset model
  */
 export const listAssetModelCompositeModels =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssetModelCompositeModelsRequest,
     output: ListAssetModelCompositeModelsResponse,
     errors: [
@@ -4577,6 +4636,12 @@ export const listAssetModelCompositeModels =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetModelCompositeModelSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Associates a time series (data stream) with an asset property.
@@ -4811,32 +4876,48 @@ export const describeDefaultEncryptionConfiguration =
  * Retrieves a paginated list of access policies for an identity (an IAM Identity Center user, an IAM Identity Center
  * group, or an IAM user) or an IoT SiteWise Monitor resource (a portal or project).
  */
-export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessPoliciesRequest,
-  output: ListAccessPoliciesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessPoliciesRequest,
+    output: ListAccessPoliciesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accessPolicySummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of summaries of all asset models.
  */
-export const listAssetModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetModelsRequest,
-  output: ListAssetModelsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listAssetModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssetModelsRequest,
+    output: ListAssetModelsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetModelSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of summaries of all computation models.
  */
-export const listComputationModels = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComputationModels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComputationModelsRequest,
     output: ListComputationModelsResponse,
     errors: [
@@ -4844,80 +4925,133 @@ export const listComputationModels = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "computationModelSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of dashboards for an IoT SiteWise Monitor project.
  */
-export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDashboardsRequest,
-  output: ListDashboardsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDashboardsRequest,
+    output: ListDashboardsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dashboardSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of datasets for a specific target resource.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasetSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of gateways.
  */
-export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewaysRequest,
-  output: ListGatewaysResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewaysRequest,
+    output: ListGatewaysResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "gatewaySummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of IoT SiteWise Monitor portals.
  */
-export const listPortals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPortalsRequest,
-  output: ListPortalsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listPortals = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPortalsRequest,
+    output: ListPortalsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "portalSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of projects for an IoT SiteWise Monitor portal.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsRequest,
-  output: ListProjectsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsRequest,
+    output: ListProjectsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projectSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of assets associated with an IoT SiteWise Monitor project.
  */
-export const listProjectAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectAssetsRequest,
-  output: ListProjectAssetsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listProjectAssets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectAssetsRequest,
+    output: ListProjectAssetsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetIds",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an access policy that grants the specified identity (IAM Identity Center user, IAM Identity Center group, or
  * IAM user) access to the specified IoT SiteWise Monitor portal or project resource.
@@ -5002,8 +5136,8 @@ export const describeAssetModelCompositeModel =
  * If you update properties associated with the model before you finish listing all the properties,
  * you need to start all over again.
  */
-export const listAssetModelProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssetModelProperties =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssetModelPropertiesRequest,
     output: ListAssetModelPropertiesResponse,
     errors: [
@@ -5012,15 +5146,20 @@ export const listAssetModelProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetModelPropertySummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of asset relationships for an asset. You can use this operation
  * to identify an asset's root asset and all associated assets between that asset and its
  * root.
  */
-export const listAssetRelationships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssetRelationships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssetRelationshipsRequest,
     output: ListAssetRelationshipsResponse,
     errors: [
@@ -5029,8 +5168,13 @@ export const listAssetRelationships = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetRelationshipSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates or updates an interface relationship between an asset model and an interface asset
  * model. This operation applies an interface to an asset model.
@@ -5328,7 +5472,7 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
 export const getInterpolatedAssetPropertyValues =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetInterpolatedAssetPropertyValuesRequest,
     output: GetInterpolatedAssetPropertyValuesResponse,
     errors: [
@@ -5338,6 +5482,12 @@ export const getInterpolatedAssetPropertyValues =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "interpolatedAssetPropertyValues",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Removes a tag from an IoT SiteWise resource.
@@ -5391,7 +5541,7 @@ export const getAssetPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
 export const getAssetPropertyValueHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAssetPropertyValueHistoryRequest,
     output: GetAssetPropertyValueHistoryResponse,
     errors: [
@@ -5401,6 +5551,12 @@ export const getAssetPropertyValueHistory =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assetPropertyValueHistory",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets aggregated values for an asset property. For more information, see Querying
@@ -5413,8 +5569,8 @@ export const getAssetPropertyValueHistory =
  * - A `propertyAlias`, which is a data stream alias (for example,
  * `/company/windfarm/3/turbine/7/temperature`). To define an asset property's alias, see UpdateAssetProperty.
  */
-export const getAssetPropertyAggregates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getAssetPropertyAggregates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAssetPropertyAggregatesRequest,
     output: GetAssetPropertyAggregatesResponse,
     errors: [
@@ -5424,15 +5580,20 @@ export const getAssetPropertyAggregates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aggregatedValues",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets aggregated values (for example, average, minimum, and maximum) for one or more asset
  * properties. For more information, see Querying aggregates in the
  * *IoT SiteWise User Guide*.
  */
 export const batchGetAssetPropertyAggregates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: BatchGetAssetPropertyAggregatesRequest,
     output: BatchGetAssetPropertyAggregatesResponse,
     errors: [
@@ -5441,13 +5602,18 @@ export const batchGetAssetPropertyAggregates =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets the current value for one or more asset properties. For more information, see Querying
  * current values in the *IoT SiteWise User Guide*.
  */
-export const batchGetAssetPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const batchGetAssetPropertyValue =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: BatchGetAssetPropertyValueRequest,
     output: BatchGetAssetPropertyValueResponse,
     errors: [
@@ -5456,14 +5622,14 @@ export const batchGetAssetPropertyValue = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }));
 /**
  * Gets the historical values for one or more asset properties. For more information, see
  * Querying historical values in the *IoT SiteWise User Guide*.
  */
 export const batchGetAssetPropertyValueHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: BatchGetAssetPropertyValueHistoryRequest,
     output: BatchGetAssetPropertyValueHistoryResponse,
     errors: [
@@ -5472,6 +5638,11 @@ export const batchGetAssetPropertyValueHistory =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates an asset from an existing asset model. For more information, see Creating assets in the
@@ -5557,19 +5728,27 @@ export const createDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Run SQL queries to retrieve metadata and time-series data from asset models, assets,
  * measurements, metrics, transforms, and aggregates.
  */
-export const executeQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ExecuteQueryRequest,
-  output: ExecuteQueryResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidRequestException,
-    QueryTimeoutException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const executeQuery = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ExecuteQueryRequest,
+    output: ExecuteQueryResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidRequestException,
+      QueryTimeoutException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "rows",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an asset model from specified property and hierarchy definitions. You create
  * assets from asset models. With asset models, you can easily create assets of the same type
@@ -5610,7 +5789,7 @@ export const createAssetModel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * dependencies between data sources and computation models.
  */
 export const listComputationModelDataBindingUsages =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComputationModelDataBindingUsagesRequest,
     output: ListComputationModelDataBindingUsagesResponse,
     errors: [
@@ -5618,6 +5797,12 @@ export const listComputationModelDataBindingUsages =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataBindingUsageSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Sends a list of asset property values to IoT SiteWise. Each value is a timestamp-quality-value

@@ -1492,7 +1492,7 @@ export const getTelemetryEvaluationStatusForOrganization =
  * Lists all telemetry rules in your organization. This operation can only be called by the organization's management account or a delegated administrator account.
  */
 export const listTelemetryRulesForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTelemetryRulesForOrganizationInput,
     output: ListTelemetryRulesForOrganizationOutput,
     errors: [
@@ -1501,12 +1501,18 @@ export const listTelemetryRulesForOrganization =
       TooManyRequestsException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TelemetryRuleSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all centralization rules in your organization. This operation can only be called by the organization's management account or a delegated administrator account.
  */
 export const listCentralizationRulesForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCentralizationRulesForOrganizationInput,
     output: ListCentralizationRulesForOrganizationOutput,
     errors: [
@@ -1515,12 +1521,18 @@ export const listCentralizationRulesForOrganization =
       TooManyRequestsException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CentralizationRuleSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of telemetry configurations for Amazon Web Services resources supported by telemetry config. For more information, see Auditing CloudWatch telemetry configurations.
  */
-export const listResourceTelemetry = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceTelemetry =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceTelemetryInput,
     output: ListResourceTelemetryOutput,
     errors: [
@@ -1529,13 +1541,18 @@ export const listResourceTelemetry = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TelemetryConfigurations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of telemetry configurations for Amazon Web Services resources supported by telemetry config in the organization.
  */
 export const listResourceTelemetryForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceTelemetryForOrganizationInput,
     output: ListResourceTelemetryForOrganizationOutput,
     errors: [
@@ -1544,12 +1561,18 @@ export const listResourceTelemetryForOrganization =
       TooManyRequestsException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TelemetryConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all S3 Table integrations in your account. We recommend using pagination to ensure that the operation returns quickly and successfully.
  */
-export const listS3TableIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listS3TableIntegrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListS3TableIntegrationsInput,
     output: ListS3TableIntegrationsOutput,
     errors: [
@@ -1558,21 +1581,34 @@ export const listS3TableIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IntegrationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all telemetry rules in your account. You can filter the results by specifying a rule name prefix.
  */
-export const listTelemetryRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTelemetryRulesInput,
-  output: ListTelemetryRulesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    TooManyRequestsException,
-    ValidationException,
-  ],
-}));
+export const listTelemetryRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTelemetryRulesInput,
+    output: ListTelemetryRulesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      TooManyRequestsException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TelemetryRuleSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing telemetry rule in your account. If multiple users attempt to modify the same telemetry rule simultaneously, a ConflictException is returned to provide specific error information for concurrent modification scenarios.
  */
@@ -1900,8 +1936,8 @@ export const testTelemetryPipeline = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of telemetry pipelines in your account. Returns up to 100 results. If more than 100 telemetry pipelines exist, include the `NextToken` value from the response to retrieve the next set of results.
  */
-export const listTelemetryPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTelemetryPipelines =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTelemetryPipelinesInput,
     output: ListTelemetryPipelinesOutput,
     errors: [
@@ -1910,8 +1946,13 @@ export const listTelemetryPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a centralization rule that applies across an Amazon Web Services Organization. This operation can only be called by the organization's management account or a delegated administrator account.
  */

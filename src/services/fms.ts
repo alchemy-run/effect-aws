@@ -1611,7 +1611,7 @@ export const getPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation can be called only from the organization's management account.
  */
 export const listAdminAccountsForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAdminAccountsForOrganizationRequest,
     output: ListAdminAccountsForOrganizationResponse,
     errors: [
@@ -1620,20 +1620,34 @@ export const listAdminAccountsForOrganization =
       LimitExceededException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AdminAccounts",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns an array of `AppsListDataSummary` objects.
  */
-export const listAppsLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppsListsRequest,
-  output: ListAppsListsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidOperationException,
-    LimitExceededException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listAppsLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppsListsRequest,
+    output: ListAppsListsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidOperationException,
+      LimitExceededException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AppsLists",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of resources in the organization's accounts that are available to be associated with a resource set.
  */
@@ -1651,28 +1665,44 @@ export const listDiscoveredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns an array of `PolicySummary` objects.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [
-    InternalErrorException,
-    InvalidOperationException,
-    LimitExceededException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [
+      InternalErrorException,
+      InvalidOperationException,
+      LimitExceededException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PolicyList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of `ProtocolsListDataSummary` objects.
  */
-export const listProtocolsLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProtocolsListsRequest,
-  output: ListProtocolsListsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidOperationException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listProtocolsLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProtocolsListsRequest,
+    output: ListProtocolsListsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidOperationException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProtocolsLists",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns an array of resources that are currently associated to a resource set.
  */
@@ -1704,7 +1734,7 @@ export const listResourceSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of all of the third-party firewall policies that are associated with the third-party firewall administrator's account.
  */
 export const listThirdPartyFirewallFirewallPolicies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListThirdPartyFirewallFirewallPoliciesRequest,
     output: ListThirdPartyFirewallFirewallPoliciesResponse,
     errors: [
@@ -1713,6 +1743,12 @@ export const listThirdPartyFirewallFirewallPolicies =
       InvalidOperationException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ThirdPartyFirewallFirewallPolicies",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Creates or updates an Firewall Manager administrator account. The account must be a member of the organization that was onboarded to Firewall Manager by AssociateAdminAccount. Only the organization's management account can create an Firewall Manager administrator account. When you create an Firewall Manager administrator account, the service checks to see if the account is already a delegated administrator within Organizations. If the account isn't a delegated administrator, Firewall Manager calls Organizations to delegate the account within Organizations. For more information about administrator accounts within Organizations, see
@@ -1824,8 +1860,8 @@ export const getThirdPartyFirewallAssociationStatus =
 /**
  * Lists the accounts that are managing the specified Organizations member account. This is useful for any member account so that they can view the accounts who are managing their account. This operation only returns the managing administrators that have the requested account within their AdminScope.
  */
-export const listAdminsManagingAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAdminsManagingAccount =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAdminsManagingAccountRequest,
     output: ListAdminsManagingAccountResponse,
     errors: [
@@ -1833,19 +1869,32 @@ export const listAdminsManagingAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AdminAccounts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a `MemberAccounts` object that lists the member accounts in the
  * administrator's Amazon Web Services organization.
  *
  * Either an Firewall Manager administrator or the organization's management account can make this request.
  */
-export const listMemberAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMemberAccountsRequest,
-  output: ListMemberAccountsResponse,
-  errors: [InternalErrorException, ResourceNotFoundException],
-}));
+export const listMemberAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMemberAccountsRequest,
+    output: ListMemberAccountsResponse,
+    errors: [InternalErrorException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MemberAccounts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the list of tags for the specified Amazon Web Services resource.
  */
@@ -2069,13 +2118,18 @@ export const batchAssociateResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `PolicyComplianceStatus` to get a summary of which member accounts are protected
  * by the specified policy.
  */
-export const listComplianceStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComplianceStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComplianceStatusRequest,
     output: ListComplianceStatusResponse,
     errors: [InternalErrorException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PolicyComplianceStatusList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates an Firewall Manager applications list.
  */

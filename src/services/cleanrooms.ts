@@ -4003,7 +4003,7 @@ export const getCollaborationIdNamespaceAssociation =
  * Returns a list of the ID namespace associations in a collaboration.
  */
 export const listCollaborationIdNamespaceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationIdNamespaceAssociationsInput,
     output: ListCollaborationIdNamespaceAssociationsOutput,
     errors: [
@@ -4013,6 +4013,12 @@ export const listCollaborationIdNamespaceAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationIdNamespaceAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Provides the details necessary to create a configured audience model association.
@@ -4067,8 +4073,8 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists analysis templates that the caller owns.
  */
-export const listAnalysisTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnalysisTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnalysisTemplatesInput,
     output: ListAnalysisTemplatesOutput,
     errors: [
@@ -4078,8 +4084,13 @@ export const listAnalysisTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "analysisTemplateSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns metadata about a collaboration.
  */
@@ -4096,16 +4107,24 @@ export const getCollaboration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists collaborations the caller owns, is active in, or has been invited to.
  */
-export const listCollaborations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCollaborationsInput,
-  output: ListCollaborationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCollaborations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCollaborationsInput,
+    output: ListCollaborationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves multiple analysis templates within a collaboration by their Amazon Resource Names (ARNs).
  */
@@ -4140,7 +4159,7 @@ export const getCollaborationConfiguredAudienceModelAssociation =
  * Lists analysis templates within a collaboration.
  */
 export const listCollaborationAnalysisTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationAnalysisTemplatesInput,
     output: ListCollaborationAnalysisTemplatesOutput,
     errors: [
@@ -4150,12 +4169,18 @@ export const listCollaborationAnalysisTemplates =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationAnalysisTemplateSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all change requests for a collaboration with pagination support. Returns change requests sorted by creation time.
  */
 export const listCollaborationChangeRequests =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationChangeRequestsInput,
     output: ListCollaborationChangeRequestsOutput,
     errors: [
@@ -4165,12 +4190,18 @@ export const listCollaborationChangeRequests =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationChangeRequestSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists configured audience model associations within a collaboration.
  */
 export const listCollaborationConfiguredAudienceModelAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationConfiguredAudienceModelAssociationsInput,
     output: ListCollaborationConfiguredAudienceModelAssociationsOutput,
     errors: [
@@ -4180,12 +4211,18 @@ export const listCollaborationConfiguredAudienceModelAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationConfiguredAudienceModelAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns an array that summarizes each privacy budget template in a specified collaboration.
  */
 export const listCollaborationPrivacyBudgetTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationPrivacyBudgetTemplatesInput,
     output: ListCollaborationPrivacyBudgetTemplatesOutput,
     errors: [
@@ -4195,35 +4232,57 @@ export const listCollaborationPrivacyBudgetTemplates =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationPrivacyBudgetTemplateSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all members within a collaboration.
  */
-export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembersInput,
-  output: ListMembersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembersInput,
+    output: ListMembersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memberSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the schemas for relations within a collaboration.
  */
-export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemasInput,
-  output: ListSchemasOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemasInput,
+    output: ListSchemasOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "schemaSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing collaboration change request. This operation allows approval actions for pending change requests in collaborations (APPROVE, DENY, CANCEL, COMMIT).
  *
@@ -4246,7 +4305,7 @@ export const updateCollaborationChangeRequest =
  * Lists information about requested configured audience model associations.
  */
 export const listConfiguredAudienceModelAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredAudienceModelAssociationsInput,
     output: ListConfiguredAudienceModelAssociationsOutput,
     errors: [
@@ -4256,12 +4315,18 @@ export const listConfiguredAudienceModelAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredAudienceModelAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists configured table associations for a membership.
  */
 export const listConfiguredTableAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredTableAssociationsInput,
     output: ListConfiguredTableAssociationsOutput,
     errors: [
@@ -4271,6 +4336,12 @@ export const listConfiguredTableAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredTableAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves the analysis rule for a configured table association.
@@ -4304,8 +4375,8 @@ export const getConfiguredTable = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists configured tables.
  */
-export const listConfiguredTables = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfiguredTables =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredTablesInput,
     output: ListConfiguredTablesOutput,
     errors: [
@@ -4314,8 +4385,13 @@ export const listConfiguredTables = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredTableSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a configured table analysis rule.
  */
@@ -4334,17 +4410,24 @@ export const getConfiguredTableAnalysisRule =
 /**
  * Returns a list of ID mapping tables.
  */
-export const listIdMappingTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdMappingTablesInput,
-  output: ListIdMappingTablesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIdMappingTables =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListIdMappingTablesInput,
+    output: ListIdMappingTablesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "idMappingTableSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves an ID namespace association.
  */
@@ -4364,8 +4447,8 @@ export const getIdNamespaceAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of ID namespace associations.
  */
-export const listIdNamespaceAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdNamespaceAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdNamespaceAssociationsInput,
     output: ListIdNamespaceAssociationsOutput,
     errors: [
@@ -4375,8 +4458,13 @@ export const listIdNamespaceAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "idNamespaceAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a specified membership for an identifier.
  */
@@ -4394,30 +4482,46 @@ export const getMembership = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all memberships resources within the caller's account.
  */
-export const listMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembershipsInput,
-  output: ListMembershipsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMemberships = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembershipsInput,
+    output: ListMembershipsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "membershipSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns detailed information about the privacy budgets in a specified membership.
  */
-export const listPrivacyBudgets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPrivacyBudgetsInput,
-  output: ListPrivacyBudgetsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPrivacyBudgets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPrivacyBudgetsInput,
+    output: ListPrivacyBudgetsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "privacyBudgetSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details for a specified privacy budget template.
  */
@@ -4437,8 +4541,8 @@ export const getPrivacyBudgetTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns detailed information about the privacy budget templates in a specified membership.
  */
-export const listPrivacyBudgetTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrivacyBudgetTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrivacyBudgetTemplatesInput,
     output: ListPrivacyBudgetTemplatesOutput,
     errors: [
@@ -4448,8 +4552,13 @@ export const listPrivacyBudgetTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "privacyBudgetTemplateSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates collaboration metadata and can only be called by the collaboration owner.
  */
@@ -5127,7 +5236,7 @@ export const getAnalysisTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns an array that summarizes each privacy budget in a specified collaboration. The summary includes the collaboration ARN, creation time, creating account, and privacy budget details.
  */
 export const listCollaborationPrivacyBudgets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationPrivacyBudgetsInput,
     output: ListCollaborationPrivacyBudgetsOutput,
     errors: [
@@ -5137,6 +5246,12 @@ export const listCollaborationPrivacyBudgets =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationPrivacyBudgetSummaries",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a new configured table resource.
@@ -5187,22 +5302,30 @@ export const getProtectedQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists protected jobs, sorted by most recent job.
  */
-export const listProtectedJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProtectedJobsInput,
-  output: ListProtectedJobsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProtectedJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProtectedJobsInput,
+    output: ListProtectedJobsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "protectedJobs",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists protected queries, sorted by the most recent query.
  */
-export const listProtectedQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProtectedQueries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProtectedQueriesInput,
     output: ListProtectedQueriesOutput,
     errors: [
@@ -5212,8 +5335,13 @@ export const listProtectedQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "protectedQueries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a protected query that is started by Clean Rooms.
  */

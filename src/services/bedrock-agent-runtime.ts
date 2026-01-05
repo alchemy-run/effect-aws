@@ -2709,17 +2709,25 @@ export const getFlowExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Flow executions is in preview release for Amazon Bedrock and is subject to change.
  */
-export const listFlowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlowExecutionsRequest,
-  output: ListFlowExecutionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFlowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFlowExecutionsRequest,
+    output: ListFlowExecutionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flowExecutionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Ends the session. After you end a session, you can still access its content but you can’t add to it. To delete the session and it's content, you use the DeleteSession API operation. For more information about sessions, see Store and retrieve conversation history and context with Amazon Bedrock sessions.
  */
@@ -2853,17 +2861,25 @@ export const updateSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all invocations associated with a specific session. For more information about sessions, see Store and retrieve conversation history and context with Amazon Bedrock sessions.
  */
-export const listInvocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvocationsRequest,
-  output: ListInvocationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInvocations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvocationsRequest,
+    output: ListInvocationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "invocationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the details of a specific invocation step within an invocation in a session. For more information about sessions, see Store and retrieve conversation history and context with Amazon Bedrock sessions.
  */
@@ -2881,30 +2897,45 @@ export const getInvocationStep = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all invocation steps associated with a session and optionally, an invocation within the session. For more information about sessions, see Store and retrieve conversation history and context with Amazon Bedrock sessions.
  */
-export const listInvocationSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvocationStepsRequest,
-  output: ListInvocationStepsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInvocationSteps =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListInvocationStepsRequest,
+    output: ListInvocationStepsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "invocationStepSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all sessions in your Amazon Web Services account. For more information about sessions, see Store and retrieve conversation history and context with Amazon Bedrock sessions.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts an execution of an Amazon Bedrock flow. Unlike flows that run until completion or time out after five minutes, flow executions let you run flows asynchronously for longer durations. Flow executions also yield control so that your application can perform other tasks.
  *
@@ -2930,21 +2961,29 @@ export const startFlowExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets the sessions stored in the memory of the agent.
  */
-export const getAgentMemory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAgentMemoryRequest,
-  output: GetAgentMemoryResponse,
-  errors: [
-    AccessDeniedException,
-    BadGatewayException,
-    ConflictException,
-    DependencyFailedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getAgentMemory = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAgentMemoryRequest,
+    output: GetAgentMemoryResponse,
+    errors: [
+      AccessDeniedException,
+      BadGatewayException,
+      ConflictException,
+      DependencyFailedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memoryContents",
+      pageSize: "maxItems",
+    } as const,
+  }),
+);
 /**
  * Generates an SQL query from a natural language query. For more information, see Generate a query for structured data in the Amazon Bedrock User Guide.
  */
@@ -2981,7 +3020,7 @@ export const optimizePrompt = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Reranks the relevance of sources based on queries. For more information, see Improve the relevance of query responses with a reranker model.
  */
-export const rerank = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const rerank = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: RerankRequest,
   output: RerankResponse,
   errors: [
@@ -2995,6 +3034,11 @@ export const rerank = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "results",
+  } as const,
 }));
 /**
  * Queries a knowledge base and generates responses based on the retrieved results, with output in streaming format.
@@ -3115,7 +3159,7 @@ export const invokeInlineAgent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Queries a knowledge base and retrieves information from it.
  */
-export const retrieve = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const retrieve = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: RetrieveRequest,
   output: RetrieveResponse,
   errors: [
@@ -3129,6 +3173,11 @@ export const retrieve = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "retrievalResults",
+  } as const,
 }));
 /**
  * Sends a prompt for the agent to process and respond to. Note the following fields for the request:
@@ -3174,8 +3223,8 @@ export const invokeAgent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Flow executions is in preview release for Amazon Bedrock and is subject to change.
  */
-export const listFlowExecutionEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFlowExecutionEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFlowExecutionEventsRequest,
     output: ListFlowExecutionEventsResponse,
     errors: [
@@ -3185,5 +3234,10 @@ export const listFlowExecutionEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flowExecutionEvents",
+      pageSize: "maxResults",
+    } as const,
+  }));

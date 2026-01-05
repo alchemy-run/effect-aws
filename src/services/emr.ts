@@ -2435,13 +2435,17 @@ export const getStudioSessionMapping = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Provides information about the bootstrap actions associated with a cluster.
  */
-export const listBootstrapActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBootstrapActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBootstrapActionsInput,
     output: ListBootstrapActionsOutput,
     errors: [InternalServerException, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "BootstrapActions",
+    } as const,
+  }));
 /**
  * Provides the status of all clusters visible to this Amazon Web Services account. Allows
  * you to filter the list of clusters based on certain criteria; for example, filtering by
@@ -2449,46 +2453,68 @@ export const listBootstrapActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * unsorted order per call, but returns a marker to track the paging of the cluster list
  * across multiple ListClusters calls.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersInput,
-  output: ListClustersOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersInput,
+    output: ListClustersOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Clusters",
+    } as const,
+  }),
+);
 /**
  * Provides summaries of all notebook executions. You can filter the list based on multiple
  * criteria such as status, time range, and editor id. Returns a maximum of 50 notebook
  * executions and a marker to track the paging of a longer notebook execution list across
  * multiple `ListNotebookExecutions` calls.
  */
-export const listNotebookExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNotebookExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotebookExecutionsInput,
     output: ListNotebookExecutionsOutput,
     errors: [InternalServerError, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "NotebookExecutions",
+    } as const,
+  }));
 /**
  * Retrieves release labels of Amazon EMR services in the Region where the API is
  * called.
  */
-export const listReleaseLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReleaseLabelsInput,
-  output: ListReleaseLabelsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listReleaseLabels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReleaseLabelsInput,
+    output: ListReleaseLabelsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the security configurations visible to this account, providing their creation
  * dates and times, and their names. This call returns a maximum of 50 clusters per call, but
  * returns a marker to track the paging of the cluster list across multiple
  * ListSecurityConfigurations calls.
  */
-export const listSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityConfigurationsInput,
     output: ListSecurityConfigurationsOutput,
     errors: [InternalServerException, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SecurityConfigurations",
+    } as const,
+  }));
 /**
  * Provides a list of steps for the cluster in reverse order unless you specify
  * `stepIds` with the request or filter by `StepStates`. You can
@@ -2497,42 +2523,58 @@ export const listSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * using the CLI, specify a `Marker`, which is a pagination token
  * that indicates the next set of steps to retrieve.
  */
-export const listSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSteps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStepsInput,
   output: ListStepsOutput,
   errors: [InternalServerException, InvalidRequestException],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "Marker",
+    items: "Steps",
+  } as const,
 }));
 /**
  * Returns a list of all Amazon EMR Studios associated with the Amazon Web Services account. The list includes details such as ID, Studio Access URL, and
  * creation time for each Studio.
  */
-export const listStudios = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStudiosInput,
-  output: ListStudiosOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listStudios = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStudiosInput,
+    output: ListStudiosOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Studios",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all user or group session mappings for the Amazon EMR Studio
  * specified by `StudioId`.
  */
-export const listStudioSessionMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStudioSessionMappings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStudioSessionMappingsInput,
     output: ListStudioSessionMappingsOutput,
     errors: [InternalServerError, InvalidRequestException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "SessionMappings",
+    } as const,
+  }));
 /**
  * A list of the instance types that Amazon EMR supports. You can filter the
  * list by Amazon Web Services Region and Amazon EMR release.
  */
-export const listSupportedInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSupportedInstanceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSupportedInstanceTypesInput,
     output: ListSupportedInstanceTypesOutput,
     errors: [InternalServerException, InvalidRequestException],
-  }),
-);
+    pagination: { inputToken: "Marker", outputToken: "Marker" } as const,
+  }));
 /**
  * Creates or updates a managed scaling policy for an Amazon EMR cluster. The
  * managed scaling policy defines the limits for resources, such as Amazon EC2
@@ -2669,22 +2711,36 @@ export const describeStep = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The instance fleet configuration is available only in Amazon EMR releases
  * 4.8.0 and later, excluding 5.0.x versions.
  */
-export const listInstanceFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstanceFleetsInput,
-  output: ListInstanceFleetsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listInstanceFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstanceFleetsInput,
+    output: ListInstanceFleetsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "InstanceFleets",
+    } as const,
+  }),
+);
 /**
  * Provides information for all active Amazon EC2 instances and Amazon EC2
  * instances terminated in the last 30 days, up to a maximum of 2,000. Amazon EC2
  * instances in any of the following states are considered active: AWAITING_FULFILLMENT,
  * PROVISIONING, BOOTSTRAPPING, RUNNING.
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesInput,
-  output: ListInstancesOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesInput,
+    output: ListInstancesOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Instances",
+    } as const,
+  }),
+);
 /**
  * RunJobFlow creates and starts running a new cluster (job flow). The cluster runs the
  * steps specified. After the steps complete, the cluster stops and the HDFS partition is
@@ -2739,11 +2795,18 @@ export const addInstanceGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Provides all available details about the instance groups in a cluster.
  */
-export const listInstanceGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstanceGroupsInput,
-  output: ListInstanceGroupsOutput,
-  errors: [InternalServerException, InvalidRequestException],
-}));
+export const listInstanceGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstanceGroupsInput,
+    output: ListInstanceGroupsOutput,
+    errors: [InternalServerException, InvalidRequestException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "InstanceGroups",
+    } as const,
+  }),
+);
 /**
  * Creates or updates an automatic scaling policy for a core instance group or task
  * instance group in an Amazon EMR cluster. The automatic scaling policy defines how

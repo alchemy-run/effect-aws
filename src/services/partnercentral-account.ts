@@ -845,8 +845,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists connection invitations for the partner account, with optional filtering by status, type, and other criteria.
  */
-export const listConnectionInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConnectionInvitations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConnectionInvitationsRequest,
     output: ListConnectionInvitationsResponse,
     errors: [
@@ -855,8 +855,13 @@ export const listConnectionInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectionInvitationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Initiates a profile update task to modify partner profile information asynchronously.
  */
@@ -1175,16 +1180,23 @@ export const createPartner = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists partner accounts in the catalog, providing a summary view of all partners.
  */
-export const listPartners = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPartnersRequest,
-  output: ListPartnersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPartners = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPartnersRequest,
+    output: ListPartnersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PartnerSummaryList",
+    } as const,
+  }),
+);
 /**
  * Retrieves the connection preferences for a partner account, including access settings and exclusions.
  */
@@ -1265,16 +1277,24 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists active connections for the partner account, with optional filtering by connection type and participant.
  */
-export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectionsRequest,
-  output: ListConnectionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectionsRequest,
+    output: ListConnectionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves detailed information about a specific connection between partners.
  */

@@ -688,16 +688,24 @@ export const getAlternateContact = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the Regions for a given account and their respective opt-in statuses. Optionally, this list can be filtered by the `region-opt-status-contains` parameter.
  */
-export const listRegions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRegionsRequest,
-  output: ListRegionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    TooManyRequestsException,
-    ValidationException,
-  ],
-}));
+export const listRegions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRegionsRequest,
+    output: ListRegionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      TooManyRequestsException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Regions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about the specified account including its account name, account ID, and account creation date and time. To use this API, an IAM user or role must have the `account:GetAccountInformation` IAM permission.
  */

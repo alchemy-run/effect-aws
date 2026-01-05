@@ -3381,10 +3381,16 @@ export const describeTable = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * output from `ListTables` is paginated, with each page returning a maximum of
  * 100 table names.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesInput,
   output: ListTablesOutput,
   errors: [InternalServerError, InvalidEndpointException],
+  pagination: {
+    inputToken: "ExclusiveStartTableName",
+    outputToken: "LastEvaluatedTableName",
+    items: "TableNames",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * List all tags on an Amazon DynamoDB resource. You can call ListTagsOfResource up to 10
@@ -3457,13 +3463,17 @@ export const describeTimeToLive = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of ContributorInsightsSummary for a table and all its global secondary
  * indexes.
  */
-export const listContributorInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContributorInsights =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContributorInsightsInput,
     output: ListContributorInsightsOutput,
     errors: [InternalServerError, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns information about the specified global table.
  *
@@ -3491,11 +3501,18 @@ export const describeImport = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists completed exports within the past 90 days.
  */
-export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportsInput,
-  output: ListExportsOutput,
-  errors: [InternalServerError, LimitExceededException],
-}));
+export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportsInput,
+    output: ListExportsOutput,
+    errors: [InternalServerError, LimitExceededException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the resource-based policy document attached to the resource, which can be a
  * table or stream, in JSON format.
@@ -3544,11 +3561,18 @@ export const getResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists completed imports within the past 90 days.
  */
-export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportsInput,
-  output: ListImportsOutput,
-  errors: [LimitExceededException],
-}));
+export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportsInput,
+    output: ListImportsOutput,
+    errors: [LimitExceededException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Describes an existing table export.
  */
@@ -4440,7 +4464,7 @@ export const batchWriteItem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * operation does not guarantee that all reads in a scan see a consistent snapshot of
  * the table when the scan operation was requested.
  */
-export const scan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const scan = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ScanInput,
   output: ScanOutput,
   errors: [
@@ -4451,6 +4475,12 @@ export const scan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "ExclusiveStartKey",
+    outputToken: "LastEvaluatedKey",
+    items: "Items",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * The `GetItem` operation returns a set of attributes for the item with the
@@ -4528,7 +4558,7 @@ export const getItem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * do not specify `ConsistentRead` when querying a global secondary
  * index.
  */
-export const query = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const query = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: QueryInput,
   output: QueryOutput,
   errors: [
@@ -4539,6 +4569,12 @@ export const query = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "ExclusiveStartKey",
+    outputToken: "LastEvaluatedKey",
+    items: "Items",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * The `BatchGetItem` operation returns the attributes of one or more items

@@ -13988,7 +13988,7 @@ export const describeSelfUpgradeConfiguration =
 /**
  * Lists all brands in an Quick Sight account.
  */
-export const listBrands = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBrands = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBrandsRequest,
   output: ListBrandsResponse,
   errors: [
@@ -13997,6 +13997,12 @@ export const listBrands = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidRequestException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Brands",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Describes a dataset. This operation doesn't support datasets that include uploaded
@@ -14052,17 +14058,25 @@ export const describeIAMPolicyAssignment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The permissions resource is
  * `arn:aws:quicksight:region:aws-account-id:dataset/*`.
  */
-export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSetsRequest,
-  output: ListDataSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ThrottlingException,
-  ],
-}));
+export const listDataSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSetsRequest,
+    output: ListDataSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataSetSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Predicts existing visuals or generates new visuals to answer a given query.
  *
@@ -14084,18 +14098,26 @@ export const predictQAResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Use the `SearchDataSources` operation to search for data sources that
  * belong to an account.
  */
-export const searchDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchDataSourcesRequest,
-  output: SearchDataSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchDataSourcesRequest,
+    output: SearchDataSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataSourceSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a customer managed key in a Quick Sight account.
  */
@@ -14161,7 +14183,7 @@ export const describeTopicRefresh = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists flows in an Amazon Web Services account.
  */
-export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsInput,
   output: ListFlowsOutput,
   errors: [
@@ -14170,6 +14192,12 @@ export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidParameterValueException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "FlowSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all services and authorized targets that the Quick Sight IAM Identity Center application can access.
@@ -14207,16 +14235,24 @@ export const listTopicReviewedAnswers = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Search for the flows in an Amazon Web Services account.
  */
-export const searchFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchFlowsInput,
-  output: SearchFlowsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidParameterValueException,
-    ThrottlingException,
-  ],
-}));
+export const searchFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchFlowsInput,
+    output: SearchFlowsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidParameterValueException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FlowSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates permissions against principals on a flow.
  */
@@ -14854,8 +14890,8 @@ export const deleteDefaultQBusinessApplication =
 /**
  * Lists all action connectors in the specified Amazon Web Services account. Returns summary information for each connector including its name, type, creation time, and status.
  */
-export const listActionConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listActionConnectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListActionConnectorsRequest,
     output: ListActionConnectorsResponse,
     errors: [
@@ -14865,15 +14901,20 @@ export const listActionConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActionConnectorSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the
  * IAM policy assignments in the current Amazon Quick Sight
  * account.
  */
-export const listIAMPolicyAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIAMPolicyAssignments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIAMPolicyAssignmentsRequest,
     output: ListIAMPolicyAssignmentsResponse,
     errors: [
@@ -14884,12 +14925,17 @@ export const listIAMPolicyAssignments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IAMPolicyAssignments",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all of the topics within an account.
  */
-export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsRequest,
   output: ListTopicsResponse,
   errors: [
@@ -14899,12 +14945,17 @@ export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidParameterValueException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Searches for action connectors in the specified Amazon Web Services account using filters. You can search by connector name, type, or user permissions.
  */
-export const searchActionConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchActionConnectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchActionConnectorsRequest,
     output: SearchActionConnectorsResponse,
     errors: [
@@ -14913,38 +14964,59 @@ export const searchActionConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActionConnectorSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Use the `SearchDataSets` operation to search for datasets that belong to an
  * account.
  */
-export const searchDataSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchDataSetsRequest,
-  output: SearchDataSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchDataSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchDataSetsRequest,
+    output: SearchDataSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataSetSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists data sources in current Amazon Web Services Region that belong to this Amazon Web Services account.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesRequest,
-  output: ListDataSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ThrottlingException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesRequest,
+    output: ListDataSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataSources",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of
  * the IAM policy assignments, including the Amazon
@@ -14955,7 +15027,7 @@ export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * or groups that the user belongs to.
  */
 export const listIAMPolicyAssignmentsForUser =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIAMPolicyAssignmentsForUserRequest,
     output: ListIAMPolicyAssignmentsForUserResponse,
     errors: [
@@ -14967,6 +15039,12 @@ export const listIAMPolicyAssignmentsForUser =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActiveAssignments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Deletes an existing IAM policy assignment.
@@ -15222,19 +15300,27 @@ export const createIAMPolicyAssignment = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the history of SPICE ingestions for a dataset. Limited to 5 TPS per user and 25 TPS per account.
  */
-export const listIngestions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIngestionsRequest,
-  output: ListIngestionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceExistsException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listIngestions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIngestionsRequest,
+    output: ListIngestionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceExistsException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Ingestions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a data source.
  */
@@ -15820,8 +15906,8 @@ export const describeRoleCustomPermission =
 /**
  * Returns a list of all the custom permissions profiles.
  */
-export const listCustomPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomPermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomPermissionsRequest,
     output: ListCustomPermissionsResponse,
     errors: [
@@ -15833,24 +15919,37 @@ export const listCustomPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomPermissionsList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the Amazon Quick Sight groups that an Amazon Quick Sight user is a member of.
  */
-export const listUserGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserGroupsRequest,
-  output: ListUserGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidParameterValueException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    ResourceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listUserGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserGroupsRequest,
+    output: ListUserGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidParameterValueException,
+      PreconditionNotMetException,
+      ResourceNotFoundException,
+      ResourceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an Amazon Quick Sight user whose identity is associated with the Identity and Access Management (IAM) identity or role specified in the request. When you register a new user from the Quick Sight API, Quick Sight generates a registration URL. The user accesses this registration URL to create their account. Quick Sight doesn't send a registration email to users who are registered from the Quick Sight API. If you want new users to receive a registration email, then add those users in the Quick Sight console. For more information on registering a new user in the Quick Sight console, see Inviting users to access Quick Sight.
  */
@@ -16105,25 +16204,33 @@ export const listSelfUpgrades = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Use the `SearchGroups` operation to search groups in a specified Quick Sight namespace using the supplied filters.
  */
-export const searchGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchGroupsRequest,
-  output: SearchGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    ResourceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const searchGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchGroupsRequest,
+    output: SearchGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      PreconditionNotMetException,
+      ResourceNotFoundException,
+      ResourceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists member users in a group.
  */
-export const listGroupMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGroupMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGroupMembershipsRequest,
     output: ListGroupMembershipsResponse,
     errors: [
@@ -16136,12 +16243,17 @@ export const listGroupMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupMemberList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all user groups in Amazon Quick Sight.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [
@@ -16154,46 +16266,67 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceUnavailableException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "GroupList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the namespaces for the specified Amazon Web Services account. This operation doesn't list deleted namespaces.
  */
-export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNamespacesRequest,
-  output: ListNamespacesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    ResourceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNamespacesRequest,
+    output: ListNamespacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      PreconditionNotMetException,
+      ResourceNotFoundException,
+      ResourceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Namespaces",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all groups that are associated with a role.
  */
-export const listRoleMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoleMembershipsRequest,
-  output: ListRoleMembershipsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    LimitExceededException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    ResourceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listRoleMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRoleMembershipsRequest,
+    output: ListRoleMembershipsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      LimitExceededException,
+      PreconditionNotMetException,
+      ResourceNotFoundException,
+      ResourceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MembersList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all of the Amazon Quick Sight users belonging to this account.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -16206,6 +16339,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceUnavailableException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "UserList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Updates a self-upgrade request for a Quick Suite user by approving, denying, or verifying the request.
@@ -17147,24 +17286,32 @@ export const describeAnalysisPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists Amazon Quick Sight analyses that exist in the specified Amazon Web Services account.
  */
-export const listAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAnalysesRequest,
-  output: ListAnalysesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAnalysesRequest,
+    output: ListAnalysesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnalysisSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all asset bundle export jobs that have been taken place in the last 14 days. Jobs
  * created more than 14 days ago are deleted forever and are not returned. If you are using
  * the same job ID for multiple jobs, `ListAssetBundleExportJobs` only returns the
  * most recent job that uses the repeated job ID.
  */
-export const listAssetBundleExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssetBundleExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssetBundleExportJobsRequest,
     output: ListAssetBundleExportJobsResponse,
     errors: [
@@ -17174,16 +17321,21 @@ export const listAssetBundleExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssetBundleExportJobSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all asset bundle import jobs that have taken place in the last 14 days. Jobs
  * created more than 14 days ago are deleted forever and are not returned. If you are using
  * the same job ID for multiple jobs, `ListAssetBundleImportJobs` only returns the
  * most recent job that uses the repeated job ID.
  */
-export const listAssetBundleImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssetBundleImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssetBundleImportJobsRequest,
     output: ListAssetBundleImportJobsResponse,
     errors: [
@@ -17193,26 +17345,39 @@ export const listAssetBundleImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssetBundleImportJobSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists dashboards in an Amazon Web Services account.
  */
-export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDashboardsRequest,
-  output: ListDashboardsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDashboardsRequest,
+    output: ListDashboardsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DashboardSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the versions of the dashboards in the Amazon Quick Sight subscription.
  */
-export const listDashboardVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDashboardVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDashboardVersionsRequest,
     output: ListDashboardVersionsResponse,
     errors: [
@@ -17223,60 +17388,89 @@ export const listDashboardVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DashboardVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all assets (`DASHBOARD`, `ANALYSIS`, and `DATASET`) in a folder.
  */
-export const listFolderMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFolderMembersRequest,
-  output: ListFolderMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listFolderMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFolderMembersRequest,
+    output: ListFolderMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FolderMemberList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all folders in an account.
  */
-export const listFolders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFoldersRequest,
-  output: ListFoldersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listFolders = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFoldersRequest,
+    output: ListFoldersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FolderSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the templates in the current Amazon Quick Sight account.
  */
-export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplatesRequest,
-  output: ListTemplatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTemplatesRequest,
+    output: ListTemplatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TemplateSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the versions of the templates in the current Amazon Quick Sight account.
  */
-export const listTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTemplateVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTemplateVersionsRequest,
     output: ListTemplateVersionsResponse,
     errors: [
@@ -17287,12 +17481,17 @@ export const listTemplateVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TemplateVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the themes in the current Amazon Web Services account.
  */
-export const listThemes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listThemes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListThemesRequest,
   output: ListThemesResponse,
   errors: [
@@ -17304,94 +17503,139 @@ export const listThemes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     UnsupportedUserEditionException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "ThemeSummaryList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all the versions of the themes in the current Amazon Web Services account.
  */
-export const listThemeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThemeVersionsRequest,
-  output: ListThemeVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listThemeVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListThemeVersionsRequest,
+    output: ListThemeVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ThemeVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the VPC connections in the current set Amazon Web Services Region of an
  * Amazon Web Services account.
  */
-export const listVPCConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVPCConnectionsRequest,
-  output: ListVPCConnectionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listVPCConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVPCConnectionsRequest,
+    output: ListVPCConnectionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for analyses that belong to the user specified in the filter.
  *
  * This operation is eventually consistent. The results are best effort and may not reflect very recent updates and changes.
  */
-export const searchAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchAnalysesRequest,
-  output: SearchAnalysesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const searchAnalyses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchAnalysesRequest,
+    output: SearchAnalysesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnalysisSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for dashboards that belong to a user.
  *
  * This operation is eventually consistent. The results are best effort and may not
  * reflect very recent updates and changes.
  */
-export const searchDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchDashboardsRequest,
-  output: SearchDashboardsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const searchDashboards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchDashboardsRequest,
+    output: SearchDashboardsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DashboardSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for any Q topic that exists in an Quick Suite account.
  */
-export const searchTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchTopicsRequest,
-  output: SearchTopicsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const searchTopics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchTopicsRequest,
+    output: SearchTopicsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TopicSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes permissions for a folder.
  */
-export const describeFolderPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFolderPermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFolderPermissionsRequest,
     output: DescribeFolderPermissionsResponse,
     errors: [
@@ -17403,13 +17647,18 @@ export const describeFolderPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Permissions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the folder resolved permissions. Permissions consists of both folder direct permissions and the inherited permissions from the ancestor folders.
  */
 export const describeFolderResolvedPermissions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFolderResolvedPermissionsRequest,
     output: DescribeFolderResolvedPermissionsResponse,
     errors: [
@@ -17421,12 +17670,18 @@ export const describeFolderResolvedPermissions =
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Permissions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List all folders that a resource is a member of.
  */
-export const listFoldersForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFoldersForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFoldersForResourceRequest,
     output: ListFoldersForResourceResponse,
     errors: [
@@ -17438,8 +17693,13 @@ export const listFoldersForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnsupportedUserEditionException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Folders",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the aliases of a theme.
  */
@@ -17459,17 +17719,24 @@ export const listThemeAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the aliases of a template.
  */
-export const listTemplateAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplateAliasesRequest,
-  output: ListTemplateAliasesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidNextTokenException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const listTemplateAliases =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTemplateAliasesRequest,
+    output: ListTemplateAliasesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidNextTokenException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TemplateAliasList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts an Asset Bundle export job.
  *
@@ -17843,20 +18110,28 @@ export const restoreAnalysis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches the subfolders in a folder.
  */
-export const searchFolders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchFoldersRequest,
-  output: SearchFoldersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalFailureException,
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnsupportedUserEditionException,
-  ],
-}));
+export const searchFolders = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchFoldersRequest,
+    output: SearchFoldersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalFailureException,
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnsupportedUserEditionException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FolderSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a template either from a `TemplateDefinition` or from an existing Quick Sight analysis or template. You can use the resulting
  * template to create additional dashboards, templates, or analyses.

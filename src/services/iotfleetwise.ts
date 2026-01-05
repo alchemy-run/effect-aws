@@ -2175,18 +2175,26 @@ export const updateDecoderManifest = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCampaignsRequest,
-  output: ListCampaignsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCampaignsRequest,
+    output: ListCampaignsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "campaignSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists decoder manifests.
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listDecoderManifests = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDecoderManifests =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDecoderManifestsRequest,
     output: ListDecoderManifestsResponse,
     errors: [
@@ -2195,14 +2203,19 @@ export const listDecoderManifests = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information for each created fleet in an Amazon Web Services account.
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsRequest,
   output: ListFleetsResponse,
   errors: [
@@ -2212,22 +2225,36 @@ export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "fleetSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Retrieves a list of vehicle models (model manifests).
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listModelManifests = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelManifestsRequest,
-  output: ListModelManifestsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listModelManifests = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListModelManifestsRequest,
+    output: ListModelManifestsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about a signal catalog.
  */
@@ -2249,46 +2276,70 @@ export const getSignalCatalog = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listSignalCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSignalCatalogsRequest,
-  output: ListSignalCatalogsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSignalCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSignalCatalogsRequest,
+    output: ListSignalCatalogsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists information about created state templates.
  *
  * Access to certain Amazon Web Services IoT FleetWise features is currently gated. For more information, see Amazon Web Services Region and feature availability in the *Amazon Web Services IoT FleetWise Developer Guide*.
  */
-export const listStateTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStateTemplatesRequest,
-  output: ListStateTemplatesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listStateTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStateTemplatesRequest,
+    output: ListStateTemplatesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of summaries of created vehicles.
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listVehicles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVehiclesRequest,
-  output: ListVehiclesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listVehicles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVehiclesRequest,
+    output: ListVehiclesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "vehicleSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about the status of registering your Amazon Web Services account, IAM, and
  * Amazon Timestream resources so that Amazon Web Services IoT FleetWise can transfer your vehicle data to the Amazon Web Services
@@ -2346,7 +2397,7 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
 export const listDecoderManifestNetworkInterfaces =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDecoderManifestNetworkInterfacesRequest,
     output: ListDecoderManifestNetworkInterfacesResponse,
     errors: [
@@ -2356,14 +2407,20 @@ export const listDecoderManifestNetworkInterfaces =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "networkInterfaces",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * A list of information about signal decoders specified in a decoder manifest.
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listDecoderManifestSignals = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDecoderManifestSignals =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDecoderManifestSignalsRequest,
     output: ListDecoderManifestSignalsResponse,
     errors: [
@@ -2373,8 +2430,13 @@ export const listDecoderManifestSignals = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "signalDecoders",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about a fleet.
  */
@@ -2409,17 +2471,24 @@ export const deleteFleet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listVehiclesInFleet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVehiclesInFleetRequest,
-  output: ListVehiclesInFleetResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listVehiclesInFleet =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVehiclesInFleetRequest,
+    output: ListVehiclesInFleetResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "vehicles",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about a state template.
  *
@@ -2481,8 +2550,8 @@ export const deleteVehicle = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listFleetsForVehicle = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFleetsForVehicle =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFleetsForVehicleRequest,
     output: ListFleetsForVehicleResponse,
     errors: [
@@ -2492,8 +2561,13 @@ export const listFleetsForVehicle = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "fleets",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Removes the given tags (metadata) from the resource.
  */
@@ -2673,16 +2747,24 @@ export const getEncryptionConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves information about the status of campaigns, decoder manifests, or state templates
  * associated with a vehicle.
  */
-export const getVehicleStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetVehicleStatusRequest,
-  output: GetVehicleStatusResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getVehicleStatus = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetVehicleStatusRequest,
+    output: GetVehicleStatusResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "campaigns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates or updates the encryption configuration. Amazon Web Services IoT FleetWise can encrypt your data and
  * resources using an Amazon Web Services managed key. Or, you can use a KMS key that you own and
@@ -2745,8 +2827,8 @@ export const registerAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listModelManifestNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelManifestNodes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelManifestNodesRequest,
     output: ListModelManifestNodesResponse,
     errors: [
@@ -2757,15 +2839,20 @@ export const listModelManifestNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "nodes",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists of information about the signals (nodes) specified in a signal catalog.
  *
  * This API operation uses pagination. Specify the `nextToken` parameter in the request to return more results.
  */
-export const listSignalCatalogNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSignalCatalogNodes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSignalCatalogNodesRequest,
     output: ListSignalCatalogNodesResponse,
     errors: [
@@ -2776,8 +2863,13 @@ export const listSignalCatalogNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "nodes",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Adds, or associates, a vehicle with a fleet.
  */

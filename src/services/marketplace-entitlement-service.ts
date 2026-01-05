@@ -438,12 +438,19 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
  *
  * These parameters are mutually exclusive. You can't specify both `CustomerIdentifier` and `CustomerAWSAccountID` in the same request.
  */
-export const getEntitlements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetEntitlementsRequest,
-  output: GetEntitlementsResult,
-  errors: [
-    InternalServiceErrorException,
-    InvalidParameterException,
-    ThrottlingException,
-  ],
-}));
+export const getEntitlements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetEntitlementsRequest,
+    output: GetEntitlementsResult,
+    errors: [
+      InternalServiceErrorException,
+      InvalidParameterException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

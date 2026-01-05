@@ -647,11 +647,19 @@ export const getVectorBucket = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must have the `s3vectors:ListVectorBuckets` permission to use this operation.
  */
-export const listVectorBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVectorBucketsInput,
-  output: ListVectorBucketsOutput,
-  errors: [ServiceUnavailableException],
-}));
+export const listVectorBuckets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVectorBucketsInput,
+    output: ListVectorBucketsOutput,
+    errors: [ServiceUnavailableException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "vectorBuckets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns vector index attributes. To specify the vector index, you can either use both the vector bucket name and the vector index name, or use the vector index Amazon Resource Name (ARN).
  *
@@ -671,11 +679,19 @@ export const getIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must have the `s3vectors:ListIndexes` permission to use this operation.
  */
-export const listIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIndexesInput,
-  output: ListIndexesOutput,
-  errors: [NotFoundException, ServiceUnavailableException],
-}));
+export const listIndexes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIndexesInput,
+    output: ListIndexesOutput,
+    errors: [NotFoundException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "indexes",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List vectors in the specified vector index. To specify the vector index, you can either use both the vector bucket name and the vector index name, or use the vector index Amazon Resource Name (ARN).
  *
@@ -689,15 +705,23 @@ export const listIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - If you set `returnData` or `returnMetadata` to true, you must have both `s3vectors:ListVectors` and `s3vectors:GetVectors` permissions. The request fails with a `403 Forbidden` error if you request vector data or metadata without the `s3vectors:GetVectors` permission.
  */
-export const listVectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVectorsInput,
-  output: ListVectorsOutput,
-  errors: [
-    AccessDeniedException,
-    NotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listVectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVectorsInput,
+    output: ListVectorsOutput,
+    errors: [
+      AccessDeniedException,
+      NotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "vectors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets details about a vector bucket policy. To specify the bucket, you must use either the vector bucket name or the vector bucket Amazon Resource Name (ARN).
  *

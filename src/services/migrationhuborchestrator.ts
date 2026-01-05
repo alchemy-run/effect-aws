@@ -1310,11 +1310,23 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List AWS Migration Hub Orchestrator plugins.
  */
-export const listPlugins = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPluginsRequest,
-  output: ListPluginsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listPlugins = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPluginsRequest,
+    output: ListPluginsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "plugins",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the tags added to a resource.
  */
@@ -1361,11 +1373,23 @@ export const createWorkflowStep = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the templates available in Migration Hub Orchestrator to create a migration workflow.
  */
-export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMigrationWorkflowTemplatesRequest,
-  output: ListMigrationWorkflowTemplatesResponse,
-  errors: [AccessDeniedException, InternalServerException, ThrottlingException],
-}));
+export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMigrationWorkflowTemplatesRequest,
+    output: ListMigrationWorkflowTemplatesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templateSummary",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get a specific step in a template.
  */
@@ -1383,22 +1407,30 @@ export const getTemplateStep = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the steps in a template.
  */
-export const listTemplateSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplateStepsRequest,
-  output: ListTemplateStepsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTemplateSteps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTemplateStepsRequest,
+    output: ListTemplateStepsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templateStepSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the step groups in a template.
  */
-export const listTemplateStepGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTemplateStepGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTemplateStepGroupsRequest,
     output: ListTemplateStepGroupsResponse,
     errors: [
@@ -1407,26 +1439,39 @@ export const listTemplateStepGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "templateStepGroupSummary",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List the steps in a workflow.
  */
-export const listWorkflowSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowStepsRequest,
-  output: ListWorkflowStepsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflowSteps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowStepsRequest,
+    output: ListWorkflowStepsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowStepsSummary",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the step groups in a migration workflow.
  */
-export const listWorkflowStepGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowStepGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowStepGroupsRequest,
     output: ListWorkflowStepGroupsResponse,
     errors: [
@@ -1436,8 +1481,13 @@ export const listWorkflowStepGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowStepGroupsSummary",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get a step group in a template.
  */
@@ -1659,17 +1709,25 @@ export const getWorkflow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the migration workflows.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMigrationWorkflowsRequest,
-  output: ListMigrationWorkflowsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMigrationWorkflowsRequest,
+    output: ListMigrationWorkflowsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "migrationWorkflowSummary",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get the template you want to use for creating a migration workflow.
  */

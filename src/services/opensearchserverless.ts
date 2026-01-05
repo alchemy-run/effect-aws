@@ -1396,11 +1396,14 @@ export const updateVpcEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about a list of OpenSearch Serverless access policies.
  */
-export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessPoliciesRequest,
-  output: ListAccessPoliciesResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessPoliciesRequest,
+    output: ListAccessPoliciesResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }),
+);
 /**
  * Updates an OpenSearch Serverless collection.
  */
@@ -1424,13 +1427,13 @@ export const updateIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of OpenSearch Serverless lifecycle policies. For more information, see Viewing data lifecycle policies.
  */
-export const listLifecyclePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLifecyclePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLifecyclePoliciesRequest,
     output: ListLifecyclePoliciesResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }));
 /**
  * Updates a security configuration for OpenSearch Serverless. For more information, see SAML authentication for Amazon OpenSearch Serverless.
  */
@@ -1449,21 +1452,23 @@ export const updateSecurityConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns information about configured OpenSearch Serverless security configurations. For more information, see SAML authentication for Amazon OpenSearch Serverless.
  */
-export const listSecurityConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSecurityConfigsRequest,
-  output: ListSecurityConfigsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listSecurityConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSecurityConfigsRequest,
+    output: ListSecurityConfigsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }));
 /**
  * Returns information about configured OpenSearch Serverless security policies.
  */
-export const listSecurityPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityPoliciesRequest,
     output: ListSecurityPoliciesResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }));
 /**
  * Deletes an OpenSearch Serverless-managed interface endpoint. For more information, see Access Amazon OpenSearch Serverless using an interface endpoint.
  */
@@ -1524,11 +1529,14 @@ export const createLifecyclePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Make sure to include an empty request body {} if you don't include any collection filters in the request.
  */
-export const listCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCollectionsRequest,
-  output: ListCollectionsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listCollections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCollectionsRequest,
+    output: ListCollectionsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }),
+);
 /**
  * Returns information about an OpenSearch Serverless security configuration. For more information, see SAML authentication for Amazon OpenSearch Serverless.
  */
@@ -1544,11 +1552,14 @@ export const getSecurityConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns the OpenSearch Serverless-managed interface VPC endpoints associated with the current account. For more information, see Access Amazon OpenSearch Serverless using an interface endpoint.
  */
-export const listVpcEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVpcEndpointsRequest,
-  output: ListVpcEndpointsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listVpcEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVpcEndpointsRequest,
+    output: ListVpcEndpointsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }),
+);
 /**
  * Creates a security policy to be used by one or more OpenSearch Serverless collections. Security policies provide access to a collection and its OpenSearch Dashboards endpoint from public networks or specific VPC endpoints. They also allow you to secure a collection with a KMS encryption key. For more information, see Network access for Amazon OpenSearch Serverless and Encryption at rest for Amazon OpenSearch Serverless.
  */

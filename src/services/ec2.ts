@@ -42097,40 +42097,67 @@ export const describeBundleTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes the IP address ranges that were provisioned for use with Amazon Web Services resources
  * through through bring your own IP addresses (BYOIP).
  */
-export const describeByoipCidrs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeByoipCidrsRequest,
-  output: DescribeByoipCidrsResult,
-  errors: [],
-}));
+export const describeByoipCidrs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeByoipCidrsRequest,
+    output: DescribeByoipCidrsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ByoipCidrs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more of your Capacity Reservations. The results describe only the
  * Capacity Reservations in the Amazon Web Services Region that you're currently
  * using.
  */
 export const describeCapacityReservations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityReservationsRequest,
     output: DescribeCapacityReservationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityReservations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more of your carrier gateways.
  */
-export const describeCarrierGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCarrierGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCarrierGatewaysRequest,
     output: DescribeCarrierGatewaysResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CarrierGateways",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified customer-owned address pools or all of your customer-owned address pools.
  */
-export const describeCoipPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeCoipPoolsRequest,
-  output: DescribeCoipPoolsResult,
-  errors: [],
-}));
+export const describeCoipPools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeCoipPoolsRequest,
+    output: DescribeCoipPoolsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CoipPools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more of your VPN customer gateways.
  *
@@ -42150,10 +42177,16 @@ export const describeCustomerGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * include only the egress-only internet gateways that match specific criteria.
  */
 export const describeEgressOnlyInternetGateways =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEgressOnlyInternetGatewaysRequest,
     output: DescribeEgressOnlyInternetGatewaysResult,
     errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EgressOnlyInternetGateways",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the ID format settings for resources for the specified IAM user, IAM role, or root
@@ -42218,10 +42251,16 @@ export const describeIdFormat = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes the specified EC2 Instance Connect Endpoints or all EC2 Instance Connect Endpoints.
  */
 export const describeInstanceConnectEndpoints =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceConnectEndpointsRequest,
     output: DescribeInstanceConnectEndpointsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceConnectEndpoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the SQL Server High Availability states for Amazon EC2 instances that are
@@ -42239,13 +42278,18 @@ export const describeInstanceSqlHaStates = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Alternatively, you can specify specific internet gateway IDs or filter the results to
  * include only the internet gateways that match specific criteria.
  */
-export const describeInternetGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInternetGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInternetGatewaysRequest,
     output: DescribeInternetGatewaysResult,
     errors: [InvalidInternetGatewayIDNotFound, ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InternetGateways",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes your Autonomous System Numbers (ASNs), their provisioning statuses, and the BYOIP CIDRs with which they are associated. For more information, see Tutorial: Bring your ASN to IPAM in the *Amazon VPC IPAM guide*.
  */
@@ -42280,75 +42324,128 @@ export const describeIpamPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Get information about your IPAM pools.
  */
-export const describeIpamPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeIpamPoolsRequest,
-  output: DescribeIpamPoolsResult,
-  errors: [],
-}));
+export const describeIpamPools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeIpamPoolsRequest,
+    output: DescribeIpamPoolsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more IPAM prefix list resolvers. Use this operation to view the configuration, status, and properties of your resolvers.
  */
 export const describeIpamPrefixListResolvers =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIpamPrefixListResolversRequest,
     output: DescribeIpamPrefixListResolversResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPrefixListResolvers",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more IPAM prefix list resolver Targets. Use this operation to view the configuration and status of resolver targets.
  */
 export const describeIpamPrefixListResolverTargets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIpamPrefixListResolverTargetsRequest,
     output: DescribeIpamPrefixListResolverTargetsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPrefixListResolverTargets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes IPAM resource discoveries. A resource discovery is an IPAM component that enables IPAM to manage and monitor resources that belong to the owning account.
  */
 export const describeIpamResourceDiscoveries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIpamResourceDiscoveriesRequest,
     output: DescribeIpamResourceDiscoveriesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamResourceDiscoveries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes resource discovery association with an Amazon VPC IPAM. An associated resource discovery is a resource discovery that has been associated with an IPAM..
  */
 export const describeIpamResourceDiscoveryAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIpamResourceDiscoveryAssociationsRequest,
     output: DescribeIpamResourceDiscoveryAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamResourceDiscoveryAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Get information about your IPAM pools.
  *
  * For more information, see What is IPAM? in the *Amazon VPC IPAM User Guide*.
  */
-export const describeIpams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeIpamsRequest,
-  output: DescribeIpamsResult,
-  errors: [],
-}));
+export const describeIpams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeIpamsRequest,
+    output: DescribeIpamsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Ipams",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Get information about your IPAM scopes.
  */
-export const describeIpamScopes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeIpamScopesRequest,
-  output: DescribeIpamScopesResult,
-  errors: [],
-}));
+export const describeIpamScopes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeIpamScopesRequest,
+    output: DescribeIpamScopesResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamScopes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more launch templates.
  */
-export const describeLaunchTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLaunchTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLaunchTemplatesRequest,
     output: DescribeLaunchTemplatesResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LaunchTemplates",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more versions of a specified launch template. You can describe all
  * versions, individual versions, or a range of versions. You can also describe all the
@@ -42356,58 +42453,94 @@ export const describeLaunchTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * account.
  */
 export const describeLaunchTemplateVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLaunchTemplateVersionsRequest,
     output: DescribeLaunchTemplateVersionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LaunchTemplateVersions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more local gateway route tables. By default, all local gateway route tables are described.
  * Alternatively, you can filter the results.
  */
 export const describeLocalGatewayRouteTables =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLocalGatewayRouteTablesRequest,
     output: DescribeLocalGatewayRouteTablesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGatewayRouteTables",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the associations between virtual interface groups and local gateway route tables.
  */
 export const describeLocalGatewayRouteTableVirtualInterfaceGroupAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input:
       DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsRequest,
     output:
       DescribeLocalGatewayRouteTableVirtualInterfaceGroupAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGatewayRouteTableVirtualInterfaceGroupAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified associations between VPCs and local gateway route tables.
  */
 export const describeLocalGatewayRouteTableVpcAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLocalGatewayRouteTableVpcAssociationsRequest,
     output: DescribeLocalGatewayRouteTableVpcAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGatewayRouteTableVpcAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified local gateway virtual interface groups.
  */
 export const describeLocalGatewayVirtualInterfaceGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLocalGatewayVirtualInterfaceGroupsRequest,
     output: DescribeLocalGatewayVirtualInterfaceGroupsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGatewayVirtualInterfaceGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified local gateway virtual interfaces.
  */
 export const describeLocalGatewayVirtualInterfaces =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLocalGatewayVirtualInterfacesRequest,
     output: DescribeLocalGatewayVirtualInterfacesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGatewayVirtualInterfaces",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes a System Integrity Protection (SIP) modification task or volume ownership delegation
@@ -42415,21 +42548,32 @@ export const describeLocalGatewayVirtualInterfaces =
  * SIP for Amazon EC2 instances in the *Amazon EC2 User Guide*.
  */
 export const describeMacModificationTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMacModificationTasksRequest,
     output: DescribeMacModificationTasksResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MacModificationTasks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your managed prefix lists and any Amazon Web Services-managed prefix lists.
  */
-export const describeManagedPrefixLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeManagedPrefixLists =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeManagedPrefixListsRequest,
     output: DescribeManagedPrefixListsResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PrefixLists",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes your network ACLs. The default is to describe all your network ACLs.
  * Alternatively, you can specify specific network ACL IDs or filter the results to
@@ -42438,19 +42582,32 @@ export const describeManagedPrefixLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Network ACLs in the
  * *Amazon VPC User Guide*.
  */
-export const describeNetworkAcls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeNetworkAclsRequest,
-  output: DescribeNetworkAclsResult,
-  errors: [InvalidRouteTableIDNotFound],
-}));
+export const describeNetworkAcls =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeNetworkAclsRequest,
+    output: DescribeNetworkAclsResult,
+    errors: [InvalidRouteTableIDNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkAcls",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the permissions for your network interfaces.
  */
 export const describeNetworkInterfacePermissions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInterfacePermissionsRequest,
     output: DescribeNetworkInterfacePermissionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInterfacePermissions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified placement groups or all of your placement groups.
@@ -42476,10 +42633,16 @@ export const describePlacementGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Replace a root volume in the *Amazon EC2 User Guide*.
  */
 export const describeReplaceRootVolumeTasks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplaceRootVolumeTasksRequest,
     output: DescribeReplaceRootVolumeTasksResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReplaceRootVolumeTasks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your account's Reserved Instance listings in the Reserved Instance
@@ -42520,10 +42683,16 @@ export const describeReservedInstancesListings =
  * For more information see Dynamic routing in your VPC with VPC Route Server in the *Amazon VPC User Guide*.
  */
 export const describeRouteServerEndpoints =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRouteServerEndpointsRequest,
     output: DescribeRouteServerEndpointsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouteServerEndpoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more route server peers.
@@ -42538,13 +42707,18 @@ export const describeRouteServerEndpoints =
  *
  * For more information see Dynamic routing in your VPC with VPC Route Server in the *Amazon VPC User Guide*.
  */
-export const describeRouteServerPeers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRouteServerPeers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRouteServerPeersRequest,
     output: DescribeRouteServerPeersResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouteServerPeers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more route servers.
  *
@@ -42563,13 +42737,18 @@ export const describeRouteServerPeers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information see Dynamic routing in your VPC with VPC Route Server in the *Amazon VPC User Guide*.
  */
-export const describeRouteServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRouteServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRouteServersRequest,
     output: DescribeRouteServersResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouteServers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes your route tables. The default is to describe all your route tables.
  * Alternatively, you can specify specific route table IDs or filter the results to
@@ -42580,21 +42759,33 @@ export const describeRouteServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Route tables in the
  * *Amazon VPC User Guide*.
  */
-export const describeRouteTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeRouteTablesRequest,
-  output: DescribeRouteTablesResult,
-  errors: [InvalidRouteTableIDNotFound, ParseError],
-}));
+export const describeRouteTables =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeRouteTablesRequest,
+    output: DescribeRouteTablesResult,
+    errors: [InvalidRouteTableIDNotFound, ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RouteTables",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of your security group rules.
  */
-export const describeSecurityGroupRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSecurityGroupRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSecurityGroupRulesRequest,
     output: DescribeSecurityGroupRulesResult,
     errors: [InvalidSecurityGroupRuleIdNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityGroupRules",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified attribute of the specified snapshot. You can specify only one
  * attribute at a time.
@@ -42655,11 +42846,19 @@ export const describeSnapshotAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * We strongly recommend using only paginated requests. Unpaginated requests are
  * susceptible to throttling and timeouts.
  */
-export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSnapshotsRequest,
-  output: DescribeSnapshotsResult,
-  errors: [InvalidSnapshotNotFound],
-}));
+export const describeSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSnapshotsRequest,
+    output: DescribeSnapshotsResult,
+    errors: [InvalidSnapshotNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Snapshots",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the data feed for Spot Instances. For more information, see Spot
  * Instance data feed in the *Amazon EC2 User Guide*.
@@ -42688,55 +42887,93 @@ export const describeSpotFleetInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Subnets in the
  * *Amazon VPC User Guide*.
  */
-export const describeSubnets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSubnetsRequest,
-  output: DescribeSubnetsResult,
-  errors: [InvalidSubnetIDNotFound, ParseError],
-}));
+export const describeSubnets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSubnetsRequest,
+    output: DescribeSubnetsResult,
+    errors: [InvalidSubnetIDNotFound, ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subnets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more Traffic Mirror filters.
  */
 export const describeTrafficMirrorFilters =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrafficMirrorFiltersRequest,
     output: DescribeTrafficMirrorFiltersResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficMirrorFilters",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Traffic Mirror sessions. By default, all Traffic Mirror sessions are described. Alternatively, you can filter the results.
  */
 export const describeTrafficMirrorSessions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrafficMirrorSessionsRequest,
     output: DescribeTrafficMirrorSessionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficMirrorSessions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Information about one or more Traffic Mirror targets.
  */
 export const describeTrafficMirrorTargets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrafficMirrorTargetsRequest,
     output: DescribeTrafficMirrorTargetsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficMirrorTargets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Connect peers.
  */
 export const describeTransitGatewayConnectPeers =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayConnectPeersRequest,
     output: DescribeTransitGatewayConnectPeersResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayConnectPeers",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Connect attachments.
  */
 export const describeTransitGatewayConnects =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayConnectsRequest,
     output: DescribeTransitGatewayConnectsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayConnects",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more transit gateway metering policies.
@@ -42751,113 +42988,184 @@ export const describeTransitGatewayMeteringPolicies =
  * Describes one or more transit gateway multicast domains.
  */
 export const describeTransitGatewayMulticastDomains =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayMulticastDomainsRequest,
     output: DescribeTransitGatewayMulticastDomainsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayMulticastDomains",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your transit gateway peering attachments.
  */
 export const describeTransitGatewayPeeringAttachments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayPeeringAttachmentsRequest,
     output: DescribeTransitGatewayPeeringAttachmentsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayPeeringAttachments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more transit gateway route policy tables.
  */
 export const describeTransitGatewayPolicyTables =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayPolicyTablesRequest,
     output: DescribeTransitGatewayPolicyTablesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayPolicyTables",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more transit gateway route table advertisements.
  */
 export const describeTransitGatewayRouteTableAnnouncements =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayRouteTableAnnouncementsRequest,
     output: DescribeTransitGatewayRouteTableAnnouncementsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayRouteTableAnnouncements",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more transit gateway route tables. By default, all transit gateway route tables are described.
  * Alternatively, you can filter the results.
  */
 export const describeTransitGatewayRouteTables =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayRouteTablesRequest,
     output: DescribeTransitGatewayRouteTablesResult,
     errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayRouteTables",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more transit gateways. By default, all transit gateways are described. Alternatively, you can
  * filter the results.
  */
-export const describeTransitGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTransitGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewaysRequest,
     output: DescribeTransitGatewaysResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGateways",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more VPC attachments. By default, all VPC attachments are described.
  * Alternatively, you can filter the results.
  */
 export const describeTransitGatewayVpcAttachments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayVpcAttachmentsRequest,
     output: DescribeTransitGatewayVpcAttachmentsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayVpcAttachments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more network interface trunk associations.
  */
 export const describeTrunkInterfaceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrunkInterfaceAssociationsRequest,
     output: DescribeTrunkInterfaceAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InterfaceAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Amazon Web Services Verified Access endpoints.
  */
 export const describeVerifiedAccessEndpoints =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedAccessEndpointsRequest,
     output: DescribeVerifiedAccessEndpointsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VerifiedAccessEndpoints",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Verified Access groups.
  */
 export const describeVerifiedAccessGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedAccessGroupsRequest,
     output: DescribeVerifiedAccessGroupsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VerifiedAccessGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Amazon Web Services Verified Access instances.
  */
 export const describeVerifiedAccessInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedAccessInstancesRequest,
     output: DescribeVerifiedAccessInstancesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VerifiedAccessInstances",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Amazon Web Services Verified Access trust providers.
  */
 export const describeVerifiedAccessTrustProviders =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedAccessTrustProvidersRequest,
     output: DescribeVerifiedAccessTrustProvidersResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VerifiedAccessTrustProviders",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified attribute of the specified volume. You can specify only one
@@ -42887,11 +43195,19 @@ export const describeVolumeAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * structures, might vary. Applications should not assume the elements appear in a
  * particular order.
  */
-export const describeVolumes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeVolumesRequest,
-  output: DescribeVolumesResult,
-  errors: [InvalidVolumeNotFound, ParseError],
-}));
+export const describeVolumes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeVolumesRequest,
+    output: DescribeVolumesResult,
+    errors: [InvalidVolumeNotFound, ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Volumes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the specified attribute of the specified VPC. You can specify only one attribute at a time.
  */
@@ -42927,19 +43243,31 @@ export const describeVpcEncryptionControls =
  * services.
  */
 export const describeVpcEndpointConnectionNotifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcEndpointConnectionNotificationsRequest,
     output: DescribeVpcEndpointConnectionNotificationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectionNotificationSet",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the VPC endpoint service configurations in your account (your services).
  */
 export const describeVpcEndpointServiceConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcEndpointServiceConfigurationsRequest,
     output: DescribeVpcEndpointServiceConfigurationsResult,
     errors: [InvalidVpcEndpointServiceIdNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your VPC peering connections. The default is to describe all your VPC peering connections.
@@ -42947,31 +43275,50 @@ export const describeVpcEndpointServiceConfigurations =
  * include only the VPC peering connections that match specific criteria.
  */
 export const describeVpcPeeringConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcPeeringConnectionsRequest,
     output: DescribeVpcPeeringConnectionsResult,
     errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpcPeeringConnections",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your VPCs. The default is to describe all your VPCs.
  * Alternatively, you can specify specific VPC IDs or filter the results to
  * include only the VPCs that match specific criteria.
  */
-export const describeVpcs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeVpcsRequest,
-  output: DescribeVpcsResult,
-  errors: [InvalidVpcIDNotFound, ParseError],
-}));
+export const describeVpcs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeVpcsRequest,
+    output: DescribeVpcsResult,
+    errors: [InvalidVpcIDNotFound, ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Vpcs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more of your VPN concentrators.
  */
-export const describeVpnConcentrators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeVpnConcentrators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpnConcentratorsRequest,
     output: DescribeVpnConcentratorsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpnConcentrators",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of your virtual private gateways.
  *
@@ -43865,21 +44212,34 @@ export const getInstanceUefiData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If you use this action after AllocateIpamPoolCidr or ReleaseIpamPoolAllocation, note that all EC2 API actions follow an eventual consistency model.
  */
-export const getIpamPoolAllocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getIpamPoolAllocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamPoolAllocationsRequest,
     output: GetIpamPoolAllocationsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPoolAllocations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Get the CIDRs provisioned to an IPAM pool.
  */
-export const getIpamPoolCidrs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetIpamPoolCidrsRequest,
-  output: GetIpamPoolCidrsResult,
-  errors: [],
-}));
+export const getIpamPoolCidrs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetIpamPoolCidrsRequest,
+    output: GetIpamPoolCidrsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPoolCidrs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the encrypted administrator password for a running Windows instance.
  *
@@ -43991,19 +44351,31 @@ export const getTransitGatewayMeteringPolicyEntries =
  * Gets a list of the transit gateway policy table associations.
  */
 export const getTransitGatewayPolicyTableAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayPolicyTableAssociationsRequest,
     output: GetTransitGatewayPolicyTableAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Associations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about the prefix list references in a specified transit gateway route table.
  */
 export const getTransitGatewayPrefixListReferences =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayPrefixListReferencesRequest,
     output: GetTransitGatewayPrefixListReferencesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayPrefixListReferences",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Get the Verified Access policy associated with the endpoint.
@@ -45198,13 +45570,18 @@ export const revokeSecurityGroupIngress = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches for routes in the specified local gateway route table.
  */
-export const searchLocalGatewayRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchLocalGatewayRoutes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchLocalGatewayRoutesRequest,
     output: SearchLocalGatewayRoutesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Routes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches for routes in the specified transit gateway route table.
  */
@@ -46834,13 +47211,18 @@ export const deregisterTransitGatewayMulticastGroupSources =
  * account. Accepted transfers are visible to the source account for 14 days
  * after the transfers have been accepted.
  */
-export const describeAddressTransfers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAddressTransfers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAddressTransfersRequest,
     output: DescribeAddressTransfersResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AddressTransfers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the longer ID format settings for all resource types in a specific
  * Region. This request is useful for performing a quick audit to determine whether a
@@ -46873,30 +47255,48 @@ export const describeAggregateIdFormat = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Describes the current Infrastructure Performance metric subscriptions.
  */
 export const describeAwsNetworkPerformanceMetricSubscriptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAwsNetworkPerformanceMetricSubscriptionsRequest,
     output: DescribeAwsNetworkPerformanceMetricSubscriptionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscriptions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the events for the specified Capacity Block extension during the specified
  * time.
  */
 export const describeCapacityBlockExtensionHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityBlockExtensionHistoryRequest,
     output: DescribeCapacityBlockExtensionHistoryResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityBlockExtensions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes Capacity Block extension offerings available for purchase in the Amazon Web Services
  * Region that you're currently using.
  */
 export const describeCapacityBlockExtensionOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityBlockExtensionOfferingsRequest,
     output: DescribeCapacityBlockExtensionOfferingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityBlockExtensionOfferings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes Capacity Block offerings available for purchase in the Amazon Web Services Region that you're currently using. With Capacity Blocks, you can
@@ -46906,29 +47306,46 @@ export const describeCapacityBlockExtensionOfferings =
  * and instance count.
  */
 export const describeCapacityBlockOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityBlockOfferingsRequest,
     output: DescribeCapacityBlockOfferingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityBlockOfferings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes details about Capacity Blocks in the Amazon Web Services Region that you're currently using.
  */
-export const describeCapacityBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCapacityBlocks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityBlocksRequest,
     output: DescribeCapacityBlocksResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityBlocks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more Capacity Manager data export configurations. Returns information about export settings, delivery status, and recent export activity.
  */
 export const describeCapacityManagerDataExports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityManagerDataExportsRequest,
     output: DescribeCapacityManagerDataExportsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityManagerDataExports",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes a tree-based hierarchy that represents the physical host placement of your
@@ -46968,38 +47385,61 @@ export const describeCapacityReservationTopology =
  * use this request to return information about other instances.
  */
 export const describeClassicLinkInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClassicLinkInstancesRequest,
     output: DescribeClassicLinkInstancesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the authorization rules for a specified Client VPN endpoint.
  */
 export const describeClientVpnAuthorizationRules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientVpnAuthorizationRulesRequest,
     output: DescribeClientVpnAuthorizationRulesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AuthorizationRules",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the routes for the specified Client VPN endpoint.
  */
-export const describeClientVpnRoutes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClientVpnRoutes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientVpnRoutesRequest,
     output: DescribeClientVpnRoutesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Routes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the target networks associated with the specified Client VPN endpoint.
  */
 export const describeClientVpnTargetNetworks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientVpnTargetNetworksRequest,
     output: DescribeClientVpnTargetNetworksResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClientVpnTargetNetworks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the metadata of an account status report, including the status of the
@@ -47024,21 +47464,32 @@ export const describeDeclarativePoliciesReports =
 /**
  * Describe details for Windows AMIs that are configured for Windows fast launch.
  */
-export const describeFastLaunchImages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFastLaunchImages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFastLaunchImagesRequest,
     output: DescribeFastLaunchImagesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FastLaunchImages",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the state of fast snapshot restores for your snapshots.
  */
 export const describeFastSnapshotRestores =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFastSnapshotRestoresRequest,
     output: DescribeFastSnapshotRestoresResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FastSnapshotRestores",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the running instances for the specified EC2 Fleet.
@@ -47068,22 +47519,33 @@ export const describeFleetInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * in the *Amazon EC2 User Guide*.
  */
 export const describeHostReservationOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeHostReservationOfferingsRequest,
     output: DescribeHostReservationOfferingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OfferingSet",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes reservations that are associated with Dedicated Hosts in your
  * account.
  */
-export const describeHostReservations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeHostReservations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeHostReservationsRequest,
     output: DescribeHostReservationsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HostReservationSet",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified attribute of the specified AMI. You can specify only one attribute
  * at a time.
@@ -47129,11 +47591,19 @@ export const describeImageAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The order of the elements in the response, including those within nested structures,
  * might vary. Applications should not assume the elements appear in a particular order.
  */
-export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImagesRequest,
-  output: DescribeImagesResult,
-  errors: [InvalidAMIIDNotFound],
-}));
+export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeImagesRequest,
+    output: DescribeImagesResult,
+    errors: [InvalidAMIIDNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Images",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the entries in image usage reports, showing how your images are used across
  * other Amazon Web Services accounts.
@@ -47142,10 +47612,16 @@ export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * *Amazon EC2 User Guide*.
  */
 export const describeImageUsageReportEntries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImageUsageReportEntriesRequest,
     output: DescribeImageUsageReportEntriesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImageUsageReportEntries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the credit option for CPU usage of the specified burstable performance
@@ -47175,10 +47651,16 @@ export const describeImageUsageReportEntries =
  * performance instances in the *Amazon EC2 User Guide*.
  */
 export const describeInstanceCreditSpecifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceCreditSpecificationsRequest,
     output: DescribeInstanceCreditSpecificationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceCreditSpecifications",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the tag keys that are registered to appear in scheduled event notifications
@@ -47223,23 +47705,34 @@ export const describeInstanceSqlHaHistoryStates =
  * For more information, see Amazon EC2 topology in
  * the *Amazon EC2 User Guide*.
  */
-export const describeInstanceTopology = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceTopology =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceTopologyRequest,
     output: DescribeInstanceTopologyResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the instance types that are offered for the specified location. If no location is
  * specified, the default is to list the instance types that are offered in the current
  * Region.
  */
 export const describeInstanceTypeOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceTypeOfferingsRequest,
     output: DescribeInstanceTypeOfferingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypeOfferings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified key pairs or all of your key pairs.
@@ -47256,13 +47749,18 @@ export const describeKeyPairs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes one or more local gateways. By default, all local gateways are described.
  * Alternatively, you can filter the results.
  */
-export const describeLocalGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLocalGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLocalGatewaysRequest,
     output: DescribeLocalGatewaysResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LocalGateways",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the lock status for a snapshot.
  */
@@ -47276,41 +47774,66 @@ export const describeLockedSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes the specified EC2 Mac Dedicated Host or all of your EC2 Mac Dedicated Hosts.
  */
-export const describeMacHosts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeMacHostsRequest,
-  output: DescribeMacHostsResult,
-  errors: [],
-}));
+export const describeMacHosts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeMacHostsRequest,
+    output: DescribeMacHostsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MacHosts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This action is deprecated.
  *
  * Describes your Elastic IP addresses that are being moved from or being restored to the EC2-Classic platform.
  * This request does not return information about any other Elastic IP addresses in your account.
  */
-export const describeMovingAddresses = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMovingAddresses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMovingAddressesRequest,
     output: DescribeMovingAddressesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MovingAddressStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified Network Access Scope analyses.
  */
 export const describeNetworkInsightsAccessScopeAnalyses =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInsightsAccessScopeAnalysesRequest,
     output: DescribeNetworkInsightsAccessScopeAnalysesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInsightsAccessScopeAnalyses",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Network Access Scopes.
  */
 export const describeNetworkInsightsAccessScopes =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInsightsAccessScopesRequest,
     output: DescribeNetworkInsightsAccessScopesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInsightsAccessScopes",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the Outposts link aggregation groups (LAGs).
@@ -47326,11 +47849,18 @@ export const describeOutpostLags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes available Amazon Web Services services in a prefix list format, which includes the prefix list
  * name and prefix list ID of the service and the IP address range for the service.
  */
-export const describePrefixLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePrefixListsRequest,
-  output: DescribePrefixListsResult,
-  errors: [],
-}));
+export const describePrefixLists =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribePrefixListsRequest,
+    output: DescribePrefixListsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PrefixLists",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the ID format settings for the root user and all IAM roles and IAM users
  * that have explicitly specified a longer ID (17-character ID) preference.
@@ -47353,23 +47883,33 @@ export const describePrefixLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * | `vpc-cidr-block-association` | `vpc-endpoint` |
  * `vpc-peering-connection` | `vpn-connection` | `vpn-gateway`.
  */
-export const describePrincipalIdFormat = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePrincipalIdFormat =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePrincipalIdFormatRequest,
     output: DescribePrincipalIdFormatResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Principals",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified IPv4 address pools.
  */
-export const describePublicIpv4Pools = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describePublicIpv4Pools =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePublicIpv4PoolsRequest,
     output: DescribePublicIpv4PoolsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PublicIpv4Pools",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the Regions that are enabled for your account, or all Regions.
  *
@@ -47398,21 +47938,32 @@ export const describeSecurityGroupReferences =
 /**
  * Describes the specified security groups or all of your security groups.
  */
-export const describeSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSecurityGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSecurityGroupsRequest,
     output: DescribeSecurityGroupsResult,
     errors: [InvalidGroupNotFound, ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes security group VPC associations made with AssociateSecurityGroupVpc.
  */
 export const describeSecurityGroupVpcAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSecurityGroupVpcAssociationsRequest,
     output: DescribeSecurityGroupVpcAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityGroupVpcAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the Outpost service link virtual interfaces.
@@ -47426,13 +47977,18 @@ export const describeServiceLinkVirtualInterfaces =
 /**
  * Describes the storage tier status of one or more Amazon EBS snapshots.
  */
-export const describeSnapshotTierStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSnapshotTierStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSnapshotTierStatusRequest,
     output: DescribeSnapshotTierStatusResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SnapshotTierStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the events for the specified Spot Fleet request during the specified
  * time.
@@ -47456,13 +48012,18 @@ export const describeSpotFleetRequestHistory =
  * Spot Fleet requests are deleted 48 hours after they are canceled and their instances
  * are terminated.
  */
-export const describeSpotFleetRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSpotFleetRequests =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSpotFleetRequestsRequest,
     output: DescribeSpotFleetRequestsResponse,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpotFleetRequestConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the Spot price history. For more information, see Spot Instance pricing history in the
  * *Amazon EC2 User Guide*.
@@ -47471,13 +48032,18 @@ export const describeSpotFleetRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * instance types within that time range. It also returns the last price change before the
  * start time, which is the effective price as of the start time.
  */
-export const describeSpotPriceHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSpotPriceHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSpotPriceHistoryRequest,
     output: DescribeSpotPriceHistoryResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpotPriceHistory",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the progress of the AMI store tasks. You can describe the store tasks for
  * specified AMIs. If you don't specify the AMIs, you get a paginated list of store tasks from
@@ -47496,13 +48062,18 @@ export const describeSpotPriceHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see Store and restore an AMI using
  * S3 in the *Amazon EC2 User Guide*.
  */
-export const describeStoreImageTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeStoreImageTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeStoreImageTasksRequest,
     output: DescribeStoreImageTasksResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StoreImageTaskResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified tags for your EC2 resources.
  *
@@ -47516,11 +48087,19 @@ export const describeStoreImageTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * structures, might vary. Applications should not assume the elements appear in a
  * particular order.
  */
-export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTagsRequest,
-  output: DescribeTagsResult,
-  errors: [ParseError],
-}));
+export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTagsRequest,
+    output: DescribeTagsResult,
+    errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the most recent volume modification request for the specified EBS volumes.
  *
@@ -47528,10 +48107,16 @@ export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Monitor the progress of volume modifications in the *Amazon EBS User Guide*.
  */
 export const describeVolumesModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVolumesModificationsRequest,
     output: DescribeVolumesModificationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VolumesModifications",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describe VPC Block Public Access (BPA) options. VPC Block Public Access (BPA) enables you to block resources in VPCs and subnets that you own in a Region from reaching or being reached from the internet through internet gateways and egress-only internet gateways. To learn more about VPC BPA, see Block public access to VPCs and subnets in the *Amazon VPC User Guide*.
@@ -47564,30 +48149,48 @@ export const describeVpcClassicLink = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * EC2-Classic instance.
  */
 export const describeVpcClassicLinkDnsSupport =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcClassicLinkDnsSupportRequest,
     output: DescribeVpcClassicLinkDnsSupportResult,
     errors: [InvalidVpcIDNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Vpcs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the VPC endpoint connections to your VPC endpoint services, including any
  * endpoints that are pending your acceptance.
  */
 export const describeVpcEndpointConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcEndpointConnectionsRequest,
     output: DescribeVpcEndpointConnectionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpcEndpointConnections",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the principals (service consumers) that are permitted to discover your VPC
  * endpoint service. Principal ARNs with path components aren't supported.
  */
 export const describeVpcEndpointServicePermissions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcEndpointServicePermissionsRequest,
     output: DescribeVpcEndpointServicePermissionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AllowedPrincipals",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Discontinue Windows fast launch for a Windows AMI, and clean up existing pre-provisioned
@@ -47711,22 +48314,33 @@ export const getAssociatedEnclaveCertificateIamRoles =
 /**
  * Gets information about the IPv6 CIDR block associations for a specified IPv6 address pool.
  */
-export const getAssociatedIpv6PoolCidrs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getAssociatedIpv6PoolCidrs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAssociatedIpv6PoolCidrsRequest,
     output: GetAssociatedIpv6PoolCidrsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Ipv6CidrAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the available dimension values for capacity metrics within a specified time range. This is useful for discovering what accounts,
  * regions, instance families, and other dimensions have data available for filtering and grouping.
  */
 export const getCapacityManagerMetricDimensions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCapacityManagerMetricDimensionsRequest,
     output: GetCapacityManagerMetricDimensionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MetricDimensionResults",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets usage information about a Capacity Reservation. If the Capacity Reservation is
@@ -47765,10 +48379,16 @@ export const getDefaultCreditSpecification =
  * Lists the resource groups to which a Capacity Reservation has been added.
  */
 export const getGroupsForCapacityReservation =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetGroupsForCapacityReservationRequest,
     output: GetGroupsForCapacityReservationResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityReservationGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Preview a reservation purchase with configurations that match those of your Dedicated
@@ -47812,21 +48432,32 @@ export const getInstanceMetadataDefaults = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieve historical information about a CIDR within an IPAM scope. For more information, see View the history of IP addresses in the *Amazon VPC IPAM User Guide*.
  */
-export const getIpamAddressHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getIpamAddressHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamAddressHistoryRequest,
     output: GetIpamAddressHistoryResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HistoryRecords",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the resource CIDRs that are monitored as part of a resource discovery. A discovered resource is a resource CIDR monitored under a resource discovery. The following resources can be discovered: VPCs, Public IPv4 pools, VPC subnets, and Elastic IP addresses.
  */
 export const getIpamDiscoveredResourceCidrs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamDiscoveredResourceCidrsRequest,
     output: GetIpamDiscoveredResourceCidrsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamDiscoveredResourceCidrs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the Amazon Web Services Organizations targets for an IPAM policy.
@@ -47845,10 +48476,16 @@ export const getIpamPolicyOrganizationTargets =
  * Retrieves the CIDR entries for a specific version of an IPAM prefix list resolver. This shows the actual CIDRs that were selected and synchronized at a particular point in time.
  */
 export const getIpamPrefixListResolverVersionEntries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamPrefixListResolverVersionEntriesRequest,
     output: GetIpamPrefixListResolverVersionEntriesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves version information for an IPAM prefix list resolver.
@@ -47881,94 +48518,151 @@ export const getIpamPrefixListResolverVersionEntries =
  * **Version 2 CIDRs:** 10.1.0.0/16, 10.2.0.0/16, 10.3.0.0/16
  */
 export const getIpamPrefixListResolverVersions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamPrefixListResolverVersionsRequest,
     output: GetIpamPrefixListResolverVersionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamPrefixListResolverVersions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns resource CIDRs managed by IPAM in a given scope. If an IPAM is associated with more than one resource discovery, the resource CIDRs across all of the resource discoveries is returned. A resource discovery is an IPAM component that enables IPAM to manage and monitor resources that belong to the owning account.
  */
-export const getIpamResourceCidrs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getIpamResourceCidrs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamResourceCidrsRequest,
     output: GetIpamResourceCidrsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamResourceCidrs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets information about the resources that are associated with the specified managed prefix list.
  */
 export const getManagedPrefixListAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetManagedPrefixListAssociationsRequest,
     output: GetManagedPrefixListAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PrefixListAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about the entries for a specified managed prefix list.
  */
-export const getManagedPrefixListEntries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getManagedPrefixListEntries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetManagedPrefixListEntriesRequest,
     output: GetManagedPrefixListEntriesResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the findings for the specified Network Access Scope analysis.
  */
 export const getNetworkInsightsAccessScopeAnalysisFindings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetNetworkInsightsAccessScopeAnalysisFindingsRequest,
     output: GetNetworkInsightsAccessScopeAnalysisFindingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnalysisFindings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets security groups that can be associated by the Amazon Web Services account making the request with network interfaces in the specified VPC.
  */
-export const getSecurityGroupsForVpc = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getSecurityGroupsForVpc =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSecurityGroupsForVpcRequest,
     output: GetSecurityGroupsForVpcResult,
     errors: [ParseError],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityGroupForVpcs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the route tables to which the specified resource attachment propagates routes.
  */
 export const getTransitGatewayAttachmentPropagations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayAttachmentPropagationsRequest,
     output: GetTransitGatewayAttachmentPropagationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayAttachmentPropagations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about the associations for the transit gateway multicast domain.
  */
 export const getTransitGatewayMulticastDomainAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayMulticastDomainAssociationsRequest,
     output: GetTransitGatewayMulticastDomainAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MulticastDomainAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about the associations for the specified transit gateway route table.
  */
 export const getTransitGatewayRouteTableAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayRouteTableAssociationsRequest,
     output: GetTransitGatewayRouteTableAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Associations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about the route table propagations for the specified transit gateway route table.
  */
 export const getTransitGatewayRouteTablePropagations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetTransitGatewayRouteTablePropagationsRequest,
     output: GetTransitGatewayRouteTablePropagationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayRouteTablePropagations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the targets for the specified network CIDR endpoint for Verified Access.
@@ -47996,13 +48690,18 @@ export const getVpcResourcesBlockingEncryptionEnforcement =
  * list of device types with sample configuration files available under Your customer gateway
  * device in the *Amazon Web Services Site-to-Site VPN User Guide*.
  */
-export const getVpnConnectionDeviceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getVpnConnectionDeviceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetVpnConnectionDeviceTypesRequest,
     output: GetVpnConnectionDeviceTypesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpnConnectionDeviceTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Get details of available tunnel endpoint maintenance.
  */
@@ -48044,23 +48743,33 @@ export const importVolume = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Recycle
  * Bin in the *Amazon EC2 User Guide*.
  */
-export const listImagesInRecycleBin = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImagesInRecycleBin =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImagesInRecycleBinRequest,
     output: ListImagesInRecycleBinResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Images",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists one or more snapshots that are currently in the Recycle Bin.
  */
-export const listSnapshotsInRecycleBin = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSnapshotsInRecycleBin =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSnapshotsInRecycleBinRequest,
     output: ListSnapshotsInRecycleBinResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Snapshots",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists one or more volumes that are currently in the Recycle Bin.
  */
@@ -48443,10 +49152,16 @@ export const revokeSecurityGroupEgress = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Searches one or more transit gateway multicast groups and returns the group membership information.
  */
 export const searchTransitGatewayMulticastGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchTransitGatewayMulticastGroupsRequest,
     output: SearchTransitGatewayMulticastGroupsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MulticastGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Starts an Amazon EBS-backed instance that you've previously stopped.
@@ -49268,13 +49983,18 @@ export const describeAddresses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes the attributes of the specified Elastic IP addresses. For requirements, see Using reverse DNS for email applications.
  */
-export const describeAddressesAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAddressesAttribute =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAddressesAttributeRequest,
     output: DescribeAddressesAttributeResult,
     errors: [InvalidAllocationIDNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Addresses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the Availability Zones, Local Zones, and Wavelength Zones that are available to
  * you.
@@ -49297,42 +50017,65 @@ export const describeAvailabilityZones = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes the availability of capacity for the specified Capacity blocks, or all of your Capacity Blocks.
  */
-export const describeCapacityBlockStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCapacityBlockStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityBlockStatusRequest,
     output: DescribeCapacityBlockStatusResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityBlockStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes a request to assign the billing of the unused capacity of a Capacity
  * Reservation. For more information, see Billing assignment for shared
  * Amazon EC2 Capacity Reservations.
  */
 export const describeCapacityReservationBillingRequests =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityReservationBillingRequestsRequest,
     output: DescribeCapacityReservationBillingRequestsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityReservationBillingRequests",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Capacity Reservation Fleets.
  */
 export const describeCapacityReservationFleets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCapacityReservationFleetsRequest,
     output: DescribeCapacityReservationFleetsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityReservationFleets",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes active client connections and connections that have been terminated within the last 60
  * minutes for the specified Client VPN endpoint.
  */
 export const describeClientVpnConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientVpnConnectionsRequest,
     output: DescribeClientVpnConnectionsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Connections",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your DHCP option sets. The default is to describe all your DHCP option sets.
@@ -49342,11 +50085,18 @@ export const describeClientVpnConnections =
  * For more information, see DHCP option sets in the
  * *Amazon VPC User Guide*.
  */
-export const describeDhcpOptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDhcpOptionsRequest,
-  output: DescribeDhcpOptionsResult,
-  errors: [InvalidDhcpOptionIDNotFound, ParseError],
-}));
+export const describeDhcpOptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDhcpOptionsRequest,
+    output: DescribeDhcpOptionsResult,
+    errors: [InvalidDhcpOptionIDNotFound, ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DhcpOptions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Amazon Elastic Graphics reached end of life on January 8, 2024.
  *
@@ -49360,13 +50110,18 @@ export const describeElasticGpus = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes the specified export image tasks or all of your export image tasks.
  */
-export const describeExportImageTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeExportImageTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeExportImageTasksRequest,
     output: DescribeExportImageTasksResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExportImageTasks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified export instance tasks or all of your export instance tasks.
  */
@@ -49398,11 +50153,19 @@ export const describeFleetHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To view the published flow log records, you must view the log destination. For example,
  * the CloudWatch Logs log group, the Amazon S3 bucket, or the Kinesis Data Firehose delivery stream.
  */
-export const describeFlowLogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFlowLogsRequest,
-  output: DescribeFlowLogsResult,
-  errors: [ParseError],
-}));
+export const describeFlowLogs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeFlowLogsRequest,
+    output: DescribeFlowLogsResult,
+    errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FlowLogs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the specified attribute of the specified Amazon FPGA Image (AFI).
  */
@@ -49418,30 +50181,49 @@ export const describeFpgaImageAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * private AFIs that you own, and AFIs owned by other Amazon Web Services accounts for which you have load
  * permissions.
  */
-export const describeFpgaImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFpgaImagesRequest,
-  output: DescribeFpgaImagesResult,
-  errors: [],
-}));
+export const describeFpgaImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeFpgaImagesRequest,
+    output: DescribeFpgaImagesResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FpgaImages",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes your IAM instance profile associations.
  */
 export const describeIamInstanceProfileAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeIamInstanceProfileAssociationsRequest,
     output: DescribeIamInstanceProfileAssociationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IamInstanceProfileAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your import snapshot tasks.
  */
-export const describeImportSnapshotTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImportSnapshotTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImportSnapshotTasksRequest,
     output: DescribeImportSnapshotTasksResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImportSnapshotTasks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified attribute of the specified instance. You can specify only one
  * attribute at a time. Available attributes include SQL license exemption configuration
@@ -49468,10 +50250,16 @@ export const describeInstanceAttribute = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * events in the *Amazon EC2 User Guide*.
  */
 export const describeInstanceEventWindows =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceEventWindowsRequest,
     output: DescribeInstanceEventWindowsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceEventWindows",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the AMI that was used to launch an instance, even if the AMI is deprecated,
@@ -49499,29 +50287,50 @@ export const describeInstanceEventWindows =
  * might vary. Applications should not assume the elements appear in a particular order.
  */
 export const describeInstanceImageMetadata =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceImageMetadataRequest,
     output: DescribeInstanceImageMetadataResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceImageMetadata",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes your IPv6 address pools.
  */
-export const describeIpv6Pools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeIpv6PoolsRequest,
-  output: DescribeIpv6PoolsResult,
-  errors: [],
-}));
+export const describeIpv6Pools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeIpv6PoolsRequest,
+    output: DescribeIpv6PoolsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Ipv6Pools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes your NAT gateways. The default is to describe all your NAT gateways.
  * Alternatively, you can specify specific NAT gateway IDs or filter the results to
  * include only the NAT gateways that match specific criteria.
  */
-export const describeNatGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeNatGatewaysRequest,
-  output: DescribeNatGatewaysResult,
-  errors: [ParseError],
-}));
+export const describeNatGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeNatGatewaysRequest,
+    output: DescribeNatGatewaysResult,
+    errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NatGateways",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified network interfaces or all your network interfaces.
  *
@@ -49534,13 +50343,18 @@ export const describeNatGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * We strongly recommend using only paginated requests. Unpaginated requests are
  * susceptible to throttling and timeouts.
  */
-export const describeNetworkInterfaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeNetworkInterfaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInterfacesRequest,
     output: DescribeNetworkInterfacesResult,
     errors: [InvalidNetworkInterfaceIDNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInterfaces",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of the Reserved Instances that you purchased.
  *
@@ -49570,10 +50384,15 @@ export const describeReservedInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * might vary. Applications should not assume the elements appear in a particular order.
  */
 export const describeReservedInstancesModifications =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedInstancesModificationsRequest,
     output: DescribeReservedInstancesModificationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReservedInstancesModifications",
+    } as const,
   }));
 /**
  * Describes Reserved Instance offerings that are available for purchase. With Reserved
@@ -49592,21 +50411,32 @@ export const describeReservedInstancesModifications =
  * might vary. Applications should not assume the elements appear in a particular order.
  */
 export const describeReservedInstancesOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedInstancesOfferingsRequest,
     output: DescribeReservedInstancesOfferingsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ReservedInstancesOfferings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Scheduled Instances or all your Scheduled Instances.
  */
-export const describeScheduledInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeScheduledInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScheduledInstancesRequest,
     output: DescribeScheduledInstancesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledInstanceSet",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified Spot Instance requests.
  *
@@ -49629,10 +50459,16 @@ export const describeScheduledInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * terminated.
  */
 export const describeSpotInstanceRequests =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSpotInstanceRequestsRequest,
     output: DescribeSpotInstanceRequestsResult,
     errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpotInstanceRequests",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the stale security group rules for security groups referenced across a VPC
@@ -49644,13 +50480,18 @@ export const describeSpotInstanceRequests =
  * gateway security group referencing feature has been disabled), or if a
  * security group VPC association has been disassociated.
  */
-export const describeStaleSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeStaleSecurityGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeStaleSecurityGroupsRequest,
     output: DescribeStaleSecurityGroupsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StaleSecurityGroupSet",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describe traffic mirror filters that determine the traffic that is mirrored.
  */
@@ -49665,10 +50506,16 @@ export const describeTrafficMirrorFilterRules =
  * Alternatively, you can filter the results by attachment ID, attachment state, resource ID, or resource owner.
  */
 export const describeTransitGatewayAttachments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTransitGatewayAttachmentsRequest,
     output: DescribeTransitGatewayAttachmentsResult,
     errors: [ParseError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransitGatewayAttachments",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the VPC resources, VPC endpoint services, Amazon Lattice services, or service networks
@@ -49685,13 +50532,18 @@ export const describeVpcEndpointAssociations =
  * Alternatively, you can specify specific VPC endpoint IDs or filter the results to
  * include only the VPC endpoints that match specific criteria.
  */
-export const describeVpcEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeVpcEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVpcEndpointsRequest,
     output: DescribeVpcEndpointsResult,
     errors: [InvalidVpcEndpointIdNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpcEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes available services to which you can create a VPC endpoint.
  *
@@ -49783,13 +50635,18 @@ export const getFlowLogsIntegrationTemplate =
 /**
  * Gets IPAM discovered accounts. A discovered account is an Amazon Web Services account that is monitored under a resource discovery. If you have integrated IPAM with Amazon Web Services Organizations, all accounts in the organization are discovered accounts. Only the IPAM account can get all discovered accounts in the organization.
  */
-export const getIpamDiscoveredAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getIpamDiscoveredAccounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamDiscoveredAccountsRequest,
     output: GetIpamDiscoveredAccountsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpamDiscoveredAccounts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the allocation rules for an IPAM policy.
  *
@@ -49807,10 +50664,16 @@ export const getIpamPolicyAllocationRules =
  * Retrieves the CIDR selection rules for an IPAM prefix list resolver. Use this operation to view the business logic that determines which CIDRs are selected for synchronization with prefix lists.
  */
 export const getIpamPrefixListResolverRules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetIpamPrefixListResolverRulesRequest,
     output: GetIpamPrefixListResolverRulesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Rules",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a quote and exchange information for exchanging one or more specified Convertible
@@ -49857,13 +50720,18 @@ export const getRouteServerRoutingDatabase =
  * For more information, see Spot placement score in
  * the *Amazon EC2 User Guide*.
  */
-export const getSpotPlacementScores = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getSpotPlacementScores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSpotPlacementScoresRequest,
     output: GetSpotPlacementScoresResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SpotPlacementScores",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * To import your virtual machines (VMs) with a console-based experience, you can use the
  * *Import virtual machine images to Amazon Web Services* template in the Migration Hub Orchestrator console. For more
@@ -50189,13 +51057,18 @@ export const deleteVerifiedAccessEndpoint =
 /**
  * Describes one or more Client VPN endpoints in the account.
  */
-export const describeClientVpnEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClientVpnEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClientVpnEndpointsRequest,
     output: DescribeClientVpnEndpointsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClientVpnEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the specified conversion tasks or all your conversion tasks. For more information, see the
  * VM Import/Export User Guide.
@@ -50216,24 +51089,37 @@ export const describeConversionTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * All listed instances consume capacity on your Dedicated Host. Dedicated Hosts that have
  * recently been released are listed with the state `released`.
  */
-export const describeHosts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeHostsRequest,
-  output: DescribeHostsResult,
-  errors: [],
-}));
+export const describeHosts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeHostsRequest,
+    output: DescribeHostsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Hosts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes your Amazon Web Services resources that are referencing the specified images.
  *
  * For more information, see Identify your resources referencing
  * specified AMIs in the *Amazon EC2 User Guide*.
  */
-export const describeImageReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImageReferences =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImageReferencesRequest,
     output: DescribeImageReferencesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImageReferences",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the configuration and status of image usage reports, filtered by report IDs or
  * image IDs.
@@ -50241,23 +51127,33 @@ export const describeImageReferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information, see View your AMI usage in the
  * *Amazon EC2 User Guide*.
  */
-export const describeImageUsageReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImageUsageReports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImageUsageReportsRequest,
     output: DescribeImageUsageReportsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImageUsageReports",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Displays details about an import virtual machine or import snapshot tasks that are already created.
  */
-export const describeImportImageTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImportImageTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImportImageTasksRequest,
     output: DescribeImportImageTasksResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImportImageTasks",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the status of the specified instances or all of your instances. By default,
  * only running instances are described, unless you specifically indicate to return the
@@ -50293,21 +51189,32 @@ export const describeImportImageTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * structures, might vary. Applications should not assume the elements appear in a
  * particular order.
  */
-export const describeInstanceStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceStatusRequest,
     output: DescribeInstanceStatusResult,
     errors: [InvalidInstanceIDNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of your paths.
  */
 export const describeNetworkInsightsPaths =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInsightsPathsRequest,
     output: DescribeNetworkInsightsPathsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInsightsPaths",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes a network interface attribute. You can specify only one attribute at a
@@ -50328,10 +51235,16 @@ export const describeNetworkInterfaceAttribute =
  * to purchase Scheduled Instances with that schedule.
  */
 export const describeScheduledInstanceAvailability =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeScheduledInstanceAvailabilityRequest,
     output: DescribeScheduledInstanceAvailabilityResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduledInstanceAvailabilitySet",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the status of the specified volumes. Volume status provides the result of the
@@ -50375,13 +51288,18 @@ export const describeScheduledInstanceAvailability =
  * structures, might vary. Applications should not assume the elements appear in a
  * particular order.
  */
-export const describeVolumeStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeVolumeStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVolumeStatusRequest,
     output: DescribeVolumeStatusResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VolumeStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Disables fast snapshot restores for the specified snapshots in the specified Availability Zones.
  */
@@ -50411,10 +51329,16 @@ export const enableFastSnapshotRestores = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets network performance data.
  */
 export const getAwsNetworkPerformanceData =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAwsNetworkPerformanceDataRequest,
     output: GetAwsNetworkPerformanceDataResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DataResponses",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the public IP addresses that have been discovered by IPAM.
@@ -50482,40 +51406,63 @@ export const runScheduledInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Describes the specified instance types. By default, all instance types for the current
  * Region are described. Alternatively, you can filter the results.
  */
-export const describeInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceTypesRequest,
     output: DescribeInstanceTypesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of your network insights analyses.
  */
 export const describeNetworkInsightsAnalyses =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeNetworkInsightsAnalysesRequest,
     output: DescribeNetworkInsightsAnalysesResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NetworkInsightsAnalyses",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified Amazon Web Services Verified Access instances.
  */
 export const describeVerifiedAccessInstanceLoggingConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeVerifiedAccessInstanceLoggingConfigurationsRequest,
     output: DescribeVerifiedAccessInstanceLoggingConfigurationsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LoggingConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves capacity usage metrics for your EC2 resources. Returns time-series data for metrics like unused capacity, utilization rates, and costs
  * across On-Demand, Spot, and Capacity Reservations. Data can be grouped and filtered by various dimensions such as region, account, and instance family.
  */
 export const getCapacityManagerMetricData =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCapacityManagerMetricDataRequest,
     output: GetCapacityManagerMetricDataResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MetricDataResults",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the configuration data of the specified instance. You can use this data to
@@ -50606,11 +51553,19 @@ export const createFleet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information, see Describe your
  * EC2 Fleet in the *Amazon EC2 User Guide*.
  */
-export const describeFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFleetsRequest,
-  output: DescribeFleetsResult,
-  errors: [],
-}));
+export const describeFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeFleetsRequest,
+    output: DescribeFleetsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Fleets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more of your VPN connections.
  *
@@ -50639,10 +51594,16 @@ export const describeVpnConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * *Amazon EC2 Auto Scaling User Guide*.
  */
 export const getInstanceTypesFromInstanceRequirements =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetInstanceTypesFromInstanceRequirementsRequest,
     output: GetInstanceTypesFromInstanceRequirementsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypes",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes the specified instances or all instances.
@@ -50683,11 +51644,19 @@ export const getInstanceTypesFromInstanceRequirements =
  * structures, might vary. Applications should not assume the elements appear in a
  * particular order.
  */
-export const describeInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeInstancesRequest,
-  output: DescribeInstancesResult,
-  errors: [InvalidInstanceIDNotFound],
-}));
+export const describeInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeInstancesRequest,
+    output: DescribeInstancesResult,
+    errors: [InvalidInstanceIDNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Reservations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Modifies the specified Spot Fleet request.
  *

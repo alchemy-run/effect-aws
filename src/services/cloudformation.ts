@@ -3080,21 +3080,32 @@ export const getTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about importing an exported output value, see the Fn::ImportValue function.
  */
-export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportsInput,
-  output: ListImportsOutput,
-  errors: [],
-}));
+export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportsInput,
+    output: ListImportsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Imports",
+    } as const,
+  }),
+);
 /**
  * Returns a list of registration tokens for the specified extension(s).
  */
-export const listTypeRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTypeRegistrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTypeRegistrationsInput,
     output: ListTypeRegistrationsOutput,
     errors: [CFNRegistryException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Registers your account as a publisher of public extensions in the CloudFormation registry.
  * Public extensions are available for use by all CloudFormation users. This publisher ID applies to
@@ -3277,13 +3288,17 @@ export const deleteStackSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves your account's CloudFormation limits, such as the maximum number of stacks that you
  * can create in your account. For more information about account limits, see Understand CloudFormation quotas in the *CloudFormation User Guide*.
  */
-export const describeAccountLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAccountLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccountLimitsInput,
     output: DescribeAccountLimitsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccountLimits",
+    } as const,
+  }));
 /**
  * Describes details of a resource scan.
  */
@@ -3302,11 +3317,17 @@ export const describeResourceScan = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can list events for stacks that have failed to create or have been deleted by
  * specifying the unique stack identifier (stack ID).
  */
-export const describeStackEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeStackEventsInput,
-  output: DescribeStackEventsOutput,
-  errors: [],
-}));
+export const describeStackEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeStackEventsInput,
+    output: DescribeStackEventsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StackEvents",
+    } as const,
+  }));
 /**
  * Describes the stack refactor status.
  */
@@ -3431,11 +3452,18 @@ export const executeChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * lists change sets that are in the `CREATE_IN_PROGRESS` or
  * `CREATE_PENDING` state.
  */
-export const listChangeSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChangeSetsInput,
-  output: ListChangeSetsOutput,
-  errors: [],
-}));
+export const listChangeSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChangeSetsInput,
+    output: ListChangeSetsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+    } as const,
+  }),
+);
 /**
  * Lists all exported output values in the account and Region in which you call this action.
  * Use this action to see the exported output values that you can import into other stacks. To
@@ -3444,48 +3472,81 @@ export const listChangeSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information, see Get exported outputs
  * from a deployed CloudFormation stack.
  */
-export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportsInput,
-  output: ListExportsOutput,
-  errors: [],
-}));
+export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportsInput,
+    output: ListExportsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Exports",
+    } as const,
+  }),
+);
 /**
  * Lists your generated templates in this Region.
  */
-export const listGeneratedTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGeneratedTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGeneratedTemplatesInput,
     output: ListGeneratedTemplatesOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the resource scans from newest to oldest. By default it will return up to 10 resource
  * scans.
  */
-export const listResourceScans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceScansInput,
-  output: ListResourceScansOutput,
-  errors: [],
-}));
-/**
- * Lists the stack refactor actions that will be taken after calling the ExecuteStackRefactor action.
- */
-export const listStackRefactorActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listResourceScans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListStackRefactorActionsInput,
-    output: ListStackRefactorActionsOutput,
+    input: ListResourceScansInput,
+    output: ListResourceScansOutput,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceScanSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }),
 );
 /**
+ * Lists the stack refactor actions that will be taken after calling the ExecuteStackRefactor action.
+ */
+export const listStackRefactorActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListStackRefactorActionsInput,
+    output: ListStackRefactorActionsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StackRefactorActions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
+/**
  * Lists all account stack refactor operations and their statuses.
  */
-export const listStackRefactors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStackRefactorsInput,
-  output: ListStackRefactorsOutput,
-  errors: [],
-}));
+export const listStackRefactors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStackRefactorsInput,
+    output: ListStackRefactorsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StackRefactorSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns summary information about deployment targets for a StackSet.
  */
@@ -3501,13 +3562,18 @@ export const listStackSetAutoDeploymentTargets =
  * This API provides *eventually consistent* reads meaning it may take
  * some time but will eventually return the most up-to-date data.
  */
-export const listStackSetOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStackSetOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStackSetOperationsInput,
     output: ListStackSetOperationsOutput,
     errors: [StackSetNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns summary information about StackSets that are associated with the user.
  *
@@ -3527,19 +3593,34 @@ export const listStackSetOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `ListStackSets` returns all StackSets with service-managed permissions in the
  * management account.
  */
-export const listStackSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStackSetsInput,
-  output: ListStackSetsOutput,
-  errors: [],
-}));
+export const listStackSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStackSetsInput,
+    output: ListStackSetsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns summary information about the versions of an extension.
  */
-export const listTypeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTypeVersionsInput,
-  output: ListTypeVersionsOutput,
-  errors: [CFNRegistryException],
-}));
+export const listTypeVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTypeVersionsInput,
+    output: ListTypeVersionsOutput,
+    errors: [CFNRegistryException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Reports progress of a resource handler to CloudFormation.
  *
@@ -3861,11 +3942,18 @@ export const createStackRefactor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * One of `ChangeSetName`, `OperationId` or `StackName`
  * must be specified as input.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsInput,
-  output: DescribeEventsOutput,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsInput,
+    output: DescribeEventsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OperationEvents",
+    } as const,
+  }),
+);
 /**
  * Returns a description of the specified resource in the specified stack.
  *
@@ -3894,13 +3982,17 @@ export const describeStackResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * DetectStackDrift to detect drift on all supported resources for a given
  * stack.
  */
-export const describeStackResourceDrifts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeStackResourceDrifts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeStackResourceDriftsInput,
     output: DescribeStackResourceDriftsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the description for the specified stack; if no stack name was specified, then it
  * returns the description for all the stacks created. For more information about a stack's event
@@ -3909,11 +4001,18 @@ export const describeStackResourceDrifts = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * If the stack doesn't exist, a `ValidationError` is returned.
  */
-export const describeStacks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeStacksInput,
-  output: DescribeStacksOutput,
-  errors: [],
-}));
+export const describeStacks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeStacksInput,
+    output: DescribeStacksOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Stacks",
+    } as const,
+  }),
+);
 /**
  * Returns the description of the specified StackSet.
  *
@@ -3959,13 +4058,18 @@ export const getHookResult = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * specified filters are returned. The response indicates whether each returned resource is
  * already managed by CloudFormation.
  */
-export const listResourceScanResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceScanResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceScanResourcesInput,
     output: ListResourceScanResourcesOutput,
     errors: [ResourceScanInProgressException, ResourceScanNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Resources",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns drift information for resources in a stack instance.
  *
@@ -3988,22 +4092,37 @@ export const listStackInstanceResourceDrifts =
  * StackSet. You can filter for stack instances that are associated with a specific Amazon Web Services account
  * name or Region, or that have a specific status.
  */
-export const listStackInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStackInstancesInput,
-  output: ListStackInstancesOutput,
-  errors: [StackSetNotFoundException],
-}));
+export const listStackInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStackInstancesInput,
+    output: ListStackInstancesOutput,
+    errors: [StackSetNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns descriptions of all resources of the specified stack.
  *
  * For deleted stacks, ListStackResources returns resource information for up to 90 days
  * after the stack has been deleted.
  */
-export const listStackResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStackResourcesInput,
-  output: ListStackResourcesOutput,
-  errors: [],
-}));
+export const listStackResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStackResourcesInput,
+    output: ListStackResourcesOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StackResourceSummaries",
+    } as const,
+  }),
+);
 /**
  * Returns the summary information for stacks whose status matches the specified
  * `StackStatusFilter`. Summary information for stacks that have been deleted is
@@ -4011,20 +4130,31 @@ export const listStackResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * specified, summary information for all stacks is returned (including existing stacks and
  * stacks that have been deleted).
  */
-export const listStacks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listStacks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStacksInput,
   output: ListStacksOutput,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "StackSummaries",
+  } as const,
 }));
 /**
  * Returns summary information about all extensions, including your private resource types,
  * modules, and Hooks as well as all public extensions from Amazon Web Services and third-party
  * publishers.
  */
-export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTypesInput,
   output: ListTypesOutput,
   errors: [CFNRegistryException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "TypeSummaries",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Deletes stack instances for the specified accounts, in the specified Amazon Web Services Regions.
@@ -4080,10 +4210,16 @@ export const listHookResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * indicates whether each returned resource is already managed by CloudFormation.
  */
 export const listResourceScanRelatedResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceScanRelatedResourcesInput,
     output: ListResourceScanRelatedResourcesOutput,
     errors: [ResourceScanInProgressException, ResourceScanNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RelatedResources",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Updates the parameter values for stack instances for the specified accounts, within the
@@ -4303,10 +4439,16 @@ export const getTemplateSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * some time but will eventually return the most up-to-date data.
  */
 export const listStackSetOperationResults =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStackSetOperationResultsInput,
     output: ListStackSetOperationResultsOutput,
     errors: [OperationNotFoundException, StackSetNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Starts a scan of the resources in this account in this Region. You can the status of a
@@ -4323,8 +4465,15 @@ export const startResourceScan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * CloudFormation stacks using change sets in the
  * *CloudFormation User Guide*.
  */
-export const describeChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeChangeSetInput,
-  output: DescribeChangeSetOutput,
-  errors: [ChangeSetNotFoundException],
-}));
+export const describeChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeChangeSetInput,
+    output: DescribeChangeSetOutput,
+    errors: [ChangeSetNotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Changes",
+    } as const,
+  }),
+);

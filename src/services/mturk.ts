@@ -1091,11 +1091,18 @@ export const getQualificationScore = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * operation retrieves the amounts of bonuses you have paid to Workers
  * for a given HIT or assignment.
  */
-export const listBonusPayments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBonusPaymentsRequest,
-  output: ListBonusPaymentsResponse,
-  errors: [RequestError, ServiceFault],
-}));
+export const listBonusPayments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBonusPaymentsRequest,
+    output: ListBonusPaymentsResponse,
+    errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * The
  * `ListQualificationRequests`
@@ -1104,21 +1111,32 @@ export const listBonusPayments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * operation to poll for pending requests, and accepts them using the
  * AcceptQualification operation.
  */
-export const listQualificationRequests = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQualificationRequests =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQualificationRequestsRequest,
     output: ListQualificationRequestsResponse,
     errors: [RequestError, ServiceFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The `ListWorkersBlocks` operation retrieves a list of Workers who are blocked from working on your HITs.
  */
-export const listWorkerBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkerBlocksRequest,
-  output: ListWorkerBlocksResponse,
-  errors: [RequestError, ServiceFault],
-}));
+export const listWorkerBlocks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkerBlocksRequest,
+    output: ListWorkerBlocksResponse,
+    errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * The
  * `NotifyWorkers`
@@ -1212,13 +1230,17 @@ export const getQualificationType = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * parameters
  * of the operation to control sorting and pagination.
  */
-export const listAssignmentsForHIT = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssignmentsForHIT =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssignmentsForHITRequest,
     output: ListAssignmentsForHITResponse,
     errors: [RequestError, ServiceFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The
  * `ListHITs`
@@ -1226,10 +1248,15 @@ export const listAssignmentsForHIT = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * HITs of any status, except for HITs that have been deleted of with
  * the DeleteHIT operation or that have been auto-deleted.
  */
-export const listHITs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listHITs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListHITsRequest,
   output: ListHITsResponse,
   errors: [RequestError, ServiceFault],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * The `ListHITsForQualificationType` operation returns the HITs that use
@@ -1238,10 +1265,15 @@ export const listHITs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * with the `DeleteHIT` operation or that have been auto-deleted.
  */
 export const listHITsForQualificationType =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHITsForQualificationTypeRequest,
     output: ListHITsForQualificationTypeResponse,
     errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * The
@@ -1249,31 +1281,47 @@ export const listHITsForQualificationType =
  * operation returns a list of Qualification types, filtered by
  * an optional search term.
  */
-export const listQualificationTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQualificationTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQualificationTypesRequest,
     output: ListQualificationTypesResponse,
     errors: [RequestError, ServiceFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * The `ListReviewableHITs` operation retrieves the HITs with Status equal to
  * Reviewable or Status equal to Reviewing that belong to the Requester calling the operation.
  */
-export const listReviewableHITs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReviewableHITsRequest,
-  output: ListReviewableHITsResponse,
-  errors: [RequestError, ServiceFault],
-}));
+export const listReviewableHITs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReviewableHITsRequest,
+    output: ListReviewableHITsResponse,
+    errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * The `ListWorkersWithQualificationType` operation returns all of the Workers
  * that have been associated with a given Qualification type.
  */
 export const listWorkersWithQualificationType =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkersWithQualificationTypeRequest,
     output: ListWorkersWithQualificationTypeResponse,
     errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * The `SendTestEventNotification` operation causes Amazon Mechanical Turk to send
@@ -1604,10 +1652,15 @@ export const updateNotificationSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Assignment-level and HIT-level review results.
  */
 export const listReviewPolicyResultsForHIT =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReviewPolicyResultsForHITRequest,
     output: ListReviewPolicyResultsForHITResponse,
     errors: [RequestError, ServiceFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * The `CreateHIT` operation creates a new Human Intelligence Task (HIT).

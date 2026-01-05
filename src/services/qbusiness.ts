@@ -3362,8 +3362,8 @@ export class ExternalResourceException extends S.TaggedError<ExternalResourceExc
 /**
  * Lists metadata for all Amazon Q Business plugin types.
  */
-export const listPluginTypeMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPluginTypeMetadata =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPluginTypeMetadataRequest,
     output: ListPluginTypeMetadataResponse,
     errors: [
@@ -3372,13 +3372,18 @@ export const listPluginTypeMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for relevant content in a Amazon Q Business application based on a query. This operation takes a search query text, the Amazon Q Business application identifier, and optional filters (such as content source and maximum results) as input. It returns a list of relevant content items, where each item includes the content text, the unique document identifier, the document title, the document URI, any relevant document attributes, and score attributes indicating the confidence level of the relevance.
  */
-export const searchRelevantContent = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchRelevantContent =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchRelevantContentRequest,
     output: SearchRelevantContentResponse,
     errors: [
@@ -3389,8 +3394,13 @@ export const searchRelevantContent = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "relevantContent",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates a set of chat controls configured for an existing Amazon Q Business application.
  */
@@ -3425,33 +3435,49 @@ export const getIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of attachments associated with an Amazon Q Business web experience or a list of attachements associated with a specific Amazon Q Business conversation.
  */
-export const listAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttachmentsRequest,
-  output: ListAttachmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    LicenseNotFoundException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAttachments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttachmentsRequest,
+    output: ListAttachmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      LicenseNotFoundException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "attachments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists one or more Amazon Q Business conversations.
  */
-export const listConversations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConversationsRequest,
-  output: ListConversationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    LicenseNotFoundException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConversations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConversationsRequest,
+    output: ListConversationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      LicenseNotFoundException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "conversations",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an Amazon Q Business web experience conversation.
  */
@@ -3502,7 +3528,7 @@ export const getUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves a list of all chat response configurations available in a specified Amazon Q Business application. This operation returns summary information about each configuration to help administrators manage and select appropriate response settings.
  */
 export const listChatResponseConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChatResponseConfigurationsRequest,
     output: ListChatResponseConfigurationsResponse,
     errors: [
@@ -3512,25 +3538,39 @@ export const listChatResponseConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "chatResponseConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * A list of documents attached to an index.
  */
-export const listDocuments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDocumentsRequest,
-  output: ListDocumentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDocuments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDocumentsRequest,
+    output: ListDocumentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "documentDetailList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of groups that are mapped to users.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [
@@ -3541,36 +3581,58 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists configured Amazon Q Business actions for a specific plugin in an Amazon Q Business application.
  */
-export const listPluginActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPluginActionsRequest,
-  output: ListPluginActionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPluginActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPluginActionsRequest,
+    output: ListPluginActionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all subscriptions created in an Amazon Q Business application.
  */
-export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubscriptionsRequest,
-  output: ListSubscriptionsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSubscriptionsRequest,
+    output: ListSubscriptionsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "subscriptions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about an existing Amazon Q Business application.
  */
@@ -3588,73 +3650,113 @@ export const getApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the data accessors for a Amazon Q Business application. This operation returns a paginated list of data accessor summaries, including the friendly name, unique identifier, ARN, associated IAM role, and creation/update timestamps for each data accessor.
  */
-export const listDataAccessors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataAccessorsRequest,
-  output: ListDataAccessorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataAccessors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataAccessorsRequest,
+    output: ListDataAccessorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataAccessors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon Q Business indices you have created.
  */
-export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIndicesRequest,
-  output: ListIndicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIndicesRequest,
+    output: ListIndicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "indices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon Q Business data source connectors that you have created.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesRequest,
-  output: ListDataSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesRequest,
+    output: ListDataSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSources",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists configured Amazon Q Business plugins.
  */
-export const listPlugins = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPluginsRequest,
-  output: ListPluginsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPlugins = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPluginsRequest,
+    output: ListPluginsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "plugins",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the retriever used by an Amazon Q Business application.
  */
-export const listRetrievers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRetrieversRequest,
-  output: ListRetrieversResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRetrievers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRetrieversRequest,
+    output: ListRetrieversResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "retrievers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an Amazon Q Business web experience.
  */
@@ -3673,17 +3775,25 @@ export const updateWebExperience = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists one or more Amazon Q Business Web Experiences.
  */
-export const listWebExperiences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWebExperiencesRequest,
-  output: ListWebExperiencesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWebExperiences = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWebExperiencesRequest,
+    output: ListWebExperiencesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "webExperiences",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the content of a document that was ingested into Amazon Q Business. This API validates user authorization against document ACLs before returning a pre-signed URL for secure document access. You can download or view source documents referenced in chat responses through the URL.
  */
@@ -4206,21 +4316,29 @@ export const deleteAttachment = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Amazon Q Business applications may securely transmit data for processing across Amazon Web Services Regions within your geography. For more information, see Cross region inference in Amazon Q Business.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists configured Amazon Q Business actions for any plugin type—both built-in and custom.
  */
-export const listPluginTypeActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPluginTypeActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPluginTypeActionsRequest,
     output: ListPluginTypeActionsResponse,
     errors: [
@@ -4229,13 +4347,18 @@ export const listPluginTypeActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about chat controls configured for an existing Amazon Q Business application.
  */
 export const getChatControlsConfiguration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetChatControlsConfigurationRequest,
     output: GetChatControlsConfigurationResponse,
     errors: [
@@ -4245,12 +4368,18 @@ export const getChatControlsConfiguration =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "topicConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Get information about an Amazon Q Business data source connector synchronization.
  */
-export const listDataSourceSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSourceSyncJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSourceSyncJobsRequest,
     output: ListDataSourceSyncJobsResponse,
     errors: [
@@ -4261,8 +4390,13 @@ export const listDataSourceSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "history",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates an Amazon Q Business plugin.
  */
@@ -4616,18 +4750,26 @@ export const chat = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of messages associated with an Amazon Q Business web experience.
  */
-export const listMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMessagesRequest,
-  output: ListMessagesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    LicenseNotFoundException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMessages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMessagesRequest,
+    output: ListMessagesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      LicenseNotFoundException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "messages",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts or continues a non-streaming Amazon Q Business conversation.
  */

@@ -1238,18 +1238,26 @@ export const getLendingAnalysis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all adapters that match the specified filtration criteria.
  */
-export const listAdapters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAdaptersRequest,
-  output: ListAdaptersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAdapters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAdaptersRequest,
+    output: ListAdaptersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Adapters",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * `AnalyzeExpense` synchronously analyzes an input document for financially
  * related relationships between text.
@@ -1300,19 +1308,26 @@ export const getAdapterVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List all version of an adapter that meet the specified filtration criteria.
  */
-export const listAdapterVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAdapterVersionsRequest,
-  output: ListAdapterVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAdapterVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAdapterVersionsRequest,
+    output: ListAdapterVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AdapterVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Update the configuration for an adapter. FeatureTypes configurations cannot be updated.
  * At least one new parameter must be specified as an argument.

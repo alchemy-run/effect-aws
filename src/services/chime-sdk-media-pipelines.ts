@@ -1568,8 +1568,8 @@ export const getMediaPipeline = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of media pipelines.
  */
-export const listMediaCapturePipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMediaCapturePipelines =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMediaCapturePipelinesRequest,
     output: ListMediaCapturePipelinesResponse,
     errors: [
@@ -1581,8 +1581,12 @@ export const listMediaCapturePipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets an existing media pipeline.
  */
@@ -1933,7 +1937,7 @@ export const startSpeakerSearchTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the available media insights pipeline configurations.
  */
 export const listMediaInsightsPipelineConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMediaInsightsPipelineConfigurationsRequest,
     output: ListMediaInsightsPipelineConfigurationsResponse,
     errors: [
@@ -1945,12 +1949,17 @@ export const listMediaInsightsPipelineConfigurations =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the video stream pools in the media pipeline.
  */
 export const listMediaPipelineKinesisVideoStreamPools =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMediaPipelineKinesisVideoStreamPoolsRequest,
     output: ListMediaPipelineKinesisVideoStreamPoolsResponse,
     errors: [
@@ -1962,23 +1971,35 @@ export const listMediaPipelineKinesisVideoStreamPools =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of media pipelines.
  */
-export const listMediaPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMediaPipelinesRequest,
-  output: ListMediaPipelinesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ResourceLimitExceededException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listMediaPipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMediaPipelinesRequest,
+    output: ListMediaPipelinesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ResourceLimitExceededException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an Amazon Kinesis Video Stream pool for use with media stream
  * pipelines.

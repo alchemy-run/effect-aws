@@ -2635,29 +2635,43 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  * Retrieves search metrics data. The data provides a snapshot of how your users interact
  * with your search application and how effective the application is.
  */
-export const getSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSnapshotsRequest,
-  output: GetSnapshotsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-  ],
-}));
+export const getSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetSnapshotsRequest,
+    output: GetSnapshotsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon Kendra indexes that you created.
  */
-export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIndicesRequest,
-  output: ListIndicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIndices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIndicesRequest,
+    output: ListIndicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves relevant passages or text excerpts given an input query.
  *
@@ -2897,7 +2911,7 @@ export const disassociateEntitiesFromExperience =
  * documents.
  */
 export const listAccessControlConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessControlConfigurationsRequest,
     output: ListAccessControlConfigurationsResponse,
     errors: [
@@ -2907,57 +2921,83 @@ export const listAccessControlConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the data source connectors that you have created.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesRequest,
-  output: ListDataSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesRequest,
+    output: ListDataSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists specific permissions of users and groups with access to your
  * Amazon Kendra experience.
  */
-export const listEntityPersonas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntityPersonasRequest,
-  output: ListEntityPersonasResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEntityPersonas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntityPersonasRequest,
+    output: ListEntityPersonasResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists one or more Amazon Kendra experiences. You can create an Amazon Kendra experience such
  * as a search application. For more information on creating a search application
  * experience, see Building a
  * search experience with no code.
  */
-export const listExperiences = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExperiencesRequest,
-  output: ListExperiencesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listExperiences = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExperiencesRequest,
+    output: ListExperiencesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of FAQs associated with an index.
  */
-export const listFaqs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFaqs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFaqsRequest,
   output: ListFaqsResponse,
   errors: [
@@ -2967,6 +3007,11 @@ export const listFaqs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all your sets of featured results for a given index. Features results
@@ -2993,7 +3038,7 @@ export const listFeaturedResultsSets = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `ListGroupsOlderThanOrderingId` is currently not supported in the Amazon Web Services GovCloud (US-West) region.
  */
 export const listGroupsOlderThanOrderingId =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGroupsOlderThanOrderingIdRequest,
     output: ListGroupsOlderThanOrderingIdResponse,
     errors: [
@@ -3004,6 +3049,11 @@ export const listGroupsOlderThanOrderingId =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the block lists used for query suggestions for an index.
@@ -3016,7 +3066,7 @@ export const listGroupsOlderThanOrderingId =
  * Amazon Web Services GovCloud (US-West) region.
  */
 export const listQuerySuggestionsBlockLists =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQuerySuggestionsBlockListsRequest,
     output: ListQuerySuggestionsBlockListsResponse,
     errors: [
@@ -3026,21 +3076,33 @@ export const listQuerySuggestionsBlockLists =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the thesauri for an index.
  */
-export const listThesauri = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListThesauriRequest,
-  output: ListThesauriResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listThesauri = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListThesauriRequest,
+    output: ListThesauriResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the settings of query suggestions for an index.
  *
@@ -3535,8 +3597,8 @@ export const describeIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * application experience, see Building
  * a search experience with no code.
  */
-export const listExperienceEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExperienceEntities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExperienceEntitiesRequest,
     output: ListExperienceEntitiesResponse,
     errors: [
@@ -3546,8 +3608,8 @@ export const listExperienceEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }));
 /**
  * Adds the specified tag to the specified index, FAQ, data source, or other resource. If
  * the tag already exists, the existing value is replaced with the new value.
@@ -3626,8 +3688,8 @@ export const createFeaturedResultsSet = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets statistics about synchronizing a data source connector.
  */
-export const listDataSourceSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataSourceSyncJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataSourceSyncJobsRequest,
     output: ListDataSourceSyncJobsResponse,
     errors: [
@@ -3638,8 +3700,12 @@ export const listDataSourceSyncJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Maps users to their groups so that you only need to provide the user ID when you issue
  * the query.

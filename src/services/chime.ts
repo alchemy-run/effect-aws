@@ -2066,23 +2066,30 @@ export const getUserSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * by account name prefix. To find out which Amazon Chime account a user belongs to, you can
  * filter by the user's email address, which returns one account result.
  */
-export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountsRequest,
-  output: ListAccountsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountsRequest,
+    output: ListAccountsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the bots associated with the administrator's Amazon Chime Enterprise account ID.
  */
-export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -2094,44 +2101,62 @@ export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottledClientException,
     UnauthorizedClientException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the phone numbers for the specified Amazon Chime account, Amazon Chime user, Amazon Chime Voice Connector, or Amazon Chime Voice Connector group.
  */
-export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPhoneNumbersRequest,
-  output: ListPhoneNumbersResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listPhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPhoneNumbersRequest,
+    output: ListPhoneNumbersResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the membership details for the specified room in an Amazon Chime Enterprise account,
  * such as the members' IDs, email addresses, and names.
  */
-export const listRoomMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRoomMembershipsRequest,
-  output: ListRoomMembershipsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listRoomMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRoomMembershipsRequest,
+    output: ListRoomMembershipsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the room details for the specified Amazon Chime Enterprise account. Optionally, filter the results by a member ID (user ID or bot ID) to see a list of rooms that the member belongs to.
  */
-export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRoomsRequest,
   output: ListRoomsResponse,
   errors: [
@@ -2143,12 +2168,17 @@ export const listRooms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottledClientException,
     UnauthorizedClientException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the users that belong to the specified Amazon Chime account. You can specify an email
  * address to list only the user that the email address belongs to.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -2160,6 +2190,11 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottledClientException,
     UnauthorizedClientException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Regenerates the security token for a bot.
@@ -2722,8 +2757,8 @@ export const getGlobalSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the phone number orders for the administrator's Amazon Chime account.
  */
-export const listPhoneNumberOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPhoneNumberOrders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPhoneNumberOrdersRequest,
     output: ListPhoneNumberOrdersResponse,
     errors: [
@@ -2734,8 +2769,12 @@ export const listPhoneNumberOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches for phone numbers that can be ordered. For US numbers, provide at least one of
  * the following search filters: `AreaCode`, `City`,
@@ -2743,8 +2782,8 @@ export const listPhoneNumberOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `City`, you must also provide `State`. Numbers outside the US only
  * support the `PhoneNumberType` filter, which you must use.
  */
-export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchAvailablePhoneNumbers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchAvailablePhoneNumbersRequest,
     output: SearchAvailablePhoneNumbersResponse,
     errors: [
@@ -2756,8 +2795,12 @@ export const searchAvailablePhoneNumbers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the phone number settings for the administrator's AWS account, such as the default outbound calling name.
  */

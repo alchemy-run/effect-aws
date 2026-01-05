@@ -857,8 +857,8 @@ export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all workflow definitions in your account with optional filtering and pagination.
  */
-export const listWorkflowDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowDefinitionsRequest,
     output: ListWorkflowDefinitionsResponse,
     errors: [
@@ -867,8 +867,13 @@ export const listWorkflowDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowDefinitionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Terminates and cleans up a workflow run, stopping all associated acts and sessions.
  */
@@ -950,18 +955,26 @@ export const getWorkflowRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all sessions within a specific workflow run.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new execution instance of a workflow definition with specified parameters.
  */
@@ -995,18 +1008,26 @@ export const updateWorkflowRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all workflow runs for a specific workflow definition with optional filtering and pagination.
  */
-export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowRunsRequest,
-  output: ListWorkflowRunsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowRunsRequest,
+    output: ListWorkflowRunsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowRunSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new AI task (act) within a session that can interact with tools and perform specific actions.
  */
@@ -1026,7 +1047,7 @@ export const createAct = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all acts within a specific session with their current status and execution details.
  */
-export const listActs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listActs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListActsRequest,
   output: ListActsResponse,
   errors: [
@@ -1037,6 +1058,12 @@ export const listActs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "actSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Retrieves the details and configuration of a specific workflow definition.

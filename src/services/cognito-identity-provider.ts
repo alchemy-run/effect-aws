@@ -3066,8 +3066,8 @@ export const getUICustomization = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdentityProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdentityProvidersRequest,
     output: ListIdentityProvidersResponse,
     errors: [
@@ -3077,8 +3077,13 @@ export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Providers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns details about all terms documents for the requested user pool.
  *
@@ -3117,17 +3122,24 @@ export const listTerms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listUserPoolClients = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserPoolClientsRequest,
-  output: ListUserPoolClientsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listUserPoolClients =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListUserPoolClientsRequest,
+    output: ListUserPoolClientsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidParameterException,
+      NotAuthorizedException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserPoolClients",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists user pools and their details in the current Amazon Web Services account.
  *
@@ -3141,16 +3153,24 @@ export const listUserPoolClients = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listUserPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserPoolsRequest,
-  output: ListUserPoolsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    TooManyRequestsException,
-  ],
-}));
+export const listUserPools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserPoolsRequest,
+    output: ListUserPoolsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidParameterException,
+      NotAuthorizedException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserPools",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Given a user pool ID, returns a list of users and their basic details in a user
  * pool.
@@ -3165,7 +3185,7 @@ export const listUserPools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -3175,6 +3195,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "PaginationToken",
+    outputToken: "PaginationToken",
+    items: "Users",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Given the ID of a user pool app client, returns detailed information about the style
@@ -3332,7 +3358,7 @@ export const getUserPoolMfaConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [
@@ -3342,6 +3368,12 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Groups",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Given a user pool ID, returns all resource servers and their details. For more
@@ -3357,17 +3389,24 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listResourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceServersRequest,
-  output: ListResourceServersResponse,
-  errors: [
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listResourceServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListResourceServersRequest,
+    output: ListResourceServersResponse,
+    errors: [
+      InternalErrorException,
+      InvalidParameterException,
+      NotAuthorizedException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceServers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the tags that are assigned to an Amazon Cognito user pool. For more information, see
  * Tagging
@@ -3424,17 +3463,25 @@ export const listUserImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const listUsersInGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUsersInGroupRequest,
-  output: ListUsersInGroupResponse,
-  errors: [
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listUsersInGroup = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUsersInGroupRequest,
+    output: ListUsersInGroupResponse,
+    errors: [
+      InternalErrorException,
+      InvalidParameterException,
+      NotAuthorizedException,
+      ResourceNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Users",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Configures UI branding settings for domains with the hosted UI (classic) branding
  * version. Your user pool must have a domain. Configure a domain with .
@@ -4064,8 +4111,8 @@ export const setLogDeliveryConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const adminListGroupsForUser = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const adminListGroupsForUser =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: AdminListGroupsForUserRequest,
     output: AdminListGroupsForUserResponse,
     errors: [
@@ -4076,8 +4123,13 @@ export const adminListGroupsForUser = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UserNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Groups",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Given an app client or user pool ID where threat protection is configured, describes
  * the risk configuration. This operation returns details about adaptive authentication,
@@ -4956,8 +5008,8 @@ export const adminAddUserToGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Using the Amazon Cognito user pools API and user pool endpoints
  */
-export const adminListUserAuthEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const adminListUserAuthEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: AdminListUserAuthEventsRequest,
     output: AdminListUserAuthEventsResponse,
     errors: [
@@ -4969,8 +5021,13 @@ export const adminListUserAuthEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UserNotFoundException,
       UserPoolAddOnNotEnabledException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AuthEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Configures threat protection for a user pool or app client. Sets configuration for the
  * following.

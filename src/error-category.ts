@@ -6,6 +6,7 @@ export const ERROR_CATEGORIES = {
   COMMON_ERROR: "COMMON_ERROR",
   THROTTLING_ERROR: "THROTTLING_ERROR",
   SERVER_ERROR: "SERVER_ERROR",
+  NETWORK_ERROR: "NETWORK_ERROR",
 } as const;
 
 export type ERROR_CATEGORY =
@@ -153,7 +154,7 @@ export interface TransientError {}
  * Check if an error is a transient error that should be automatically retried.
  * Checks for:
  * 1. Smithy's @retryable trait (via withRetryable)
- * 2. THROTTLING_ERROR or SERVER_ERROR categories (legacy)
+ * 2. THROTTLING_ERROR, SERVER_ERROR, or NETWORK_ERROR categories
  */
 export const isTransientError = <E>(error: E): error is E & TransientError => {
   // Check for retryable trait first (Smithy's @retryable)
@@ -161,9 +162,10 @@ export const isTransientError = <E>(error: E): error is E & TransientError => {
     return true;
   }
 
-  // Fall back to category-based checking (legacy)
+  // Fall back to category-based checking
   return (
     hasCategory(error, ERROR_CATEGORIES.THROTTLING_ERROR) ||
-    hasCategory(error, ERROR_CATEGORIES.SERVER_ERROR)
+    hasCategory(error, ERROR_CATEGORIES.SERVER_ERROR) ||
+    hasCategory(error, ERROR_CATEGORIES.NETWORK_ERROR)
   );
 };

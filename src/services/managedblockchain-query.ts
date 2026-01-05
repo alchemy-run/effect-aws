@@ -709,17 +709,25 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * The Bitcoin blockchain networks do not support this
  * operation.
  */
-export const listAssetContracts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetContractsInput,
-  output: ListAssetContractsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAssetContracts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssetContractsInput,
+    output: ListAssetContractsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contracts",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the details of a transaction.
  *
@@ -794,38 +802,54 @@ export const getAssetContract = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You must always specify the network property of
  * the `tokenFilter` when using this operation.
  */
-export const listTokenBalances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTokenBalancesInput,
-  output: ListTokenBalancesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTokenBalances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTokenBalancesInput,
+    output: ListTokenBalancesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tokenBalances",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the transaction events for a transaction.
  */
-export const listTransactions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTransactionsInput,
-  output: ListTransactionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTransactions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTransactionsInput,
+    output: ListTransactionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "transactions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the transaction events for an address on the blockchain.
  *
  * This operation is only supported on the Bitcoin networks.
  */
 export const listFilteredTransactionEvents =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFilteredTransactionEventsInput,
     output: ListFilteredTransactionEventsOutput,
     errors: [
@@ -835,6 +859,12 @@ export const listFilteredTransactionEvents =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all the transaction events for a transaction
@@ -843,8 +873,8 @@ export const listFilteredTransactionEvents =
  * that are *confirmed* on the blockchain, even if they have not reached
  * finality.
  */
-export const listTransactionEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTransactionEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTransactionEventsInput,
     output: ListTransactionEventsOutput,
     errors: [
@@ -854,8 +884,13 @@ export const listTransactionEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets the balance of a specific token, including native tokens, for a given address (wallet or contract) on the blockchain.
  *

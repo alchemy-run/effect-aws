@@ -1632,28 +1632,52 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  * Lists the versions of a particular DataBrew recipe, except for
  * `LATEST_WORKING`.
  */
-export const listRecipeVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecipeVersionsRequest,
-  output: ListRecipeVersionsResponse,
-  errors: [ValidationException],
-}));
+export const listRecipeVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecipeVersionsRequest,
+    output: ListRecipeVersionsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Recipes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all rulesets available in the current account or rulesets associated
  * with a specific resource (dataset).
  */
-export const listRulesets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRulesetsRequest,
-  output: ListRulesetsResponse,
-  errors: [ResourceNotFoundException, ValidationException],
-}));
+export const listRulesets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRulesetsRequest,
+    output: ListRulesetsResponse,
+    errors: [ResourceNotFoundException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Rulesets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the DataBrew schedules that are defined.
  */
-export const listSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchedulesRequest,
-  output: ListSchedulesResponse,
-  errors: [ValidationException],
-}));
+export const listSchedules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchedulesRequest,
+    output: ListSchedulesResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schedules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Performs a recipe step within an interactive DataBrew session that's currently
  * open.
@@ -1893,43 +1917,81 @@ export const deleteSchedule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all of the DataBrew datasets.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [ValidationException],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Datasets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the previous runs of a particular DataBrew job.
  */
-export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobRunsRequest,
-  output: ListJobRunsResponse,
-  errors: [ResourceNotFoundException, ValidationException],
-}));
+export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobRunsRequest,
+    output: ListJobRunsResponse,
+    errors: [ResourceNotFoundException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobRuns",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the DataBrew jobs that are defined.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Jobs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all of the DataBrew projects that are defined.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsRequest,
-  output: ListProjectsResponse,
-  errors: [ValidationException],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsRequest,
+    output: ListProjectsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Projects",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the DataBrew recipes that are defined.
  */
-export const listRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecipesRequest,
-  output: ListRecipesResponse,
-  errors: [ValidationException],
-}));
+export const listRecipes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRecipesRequest,
+    output: ListRecipesResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Recipes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Modifies the definition of an existing profile job.
  */

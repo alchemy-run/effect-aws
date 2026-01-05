@@ -837,11 +837,23 @@ export const deleteCampaign = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Provides summary information about the campaigns under the specified Amazon Connect account.
  */
-export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCampaignsRequest,
-  output: ListCampaignsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listCampaigns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCampaignsRequest,
+    output: ListCampaignsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "campaignSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates dials requests for the specified campaign Amazon Connect account. This API is idempotent.
  */

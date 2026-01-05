@@ -748,17 +748,25 @@ export const getConfigurationManager = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns configurations deployed by Quick Setup in the requesting Amazon Web Services account and Amazon Web Services Region.
  */
-export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConfigurationsInput,
-  output: ListConfigurationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConfigurationsInput,
+    output: ListConfigurationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "StartingToken",
+      outputToken: "NextToken",
+      items: "ConfigurationsList",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Returns tags assigned to the resource.
  */
@@ -891,8 +899,8 @@ export const deleteConfigurationManager = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns Quick Setup configuration managers.
  */
-export const listConfigurationManagers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationManagers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationManagersInput,
     output: ListConfigurationManagersOutput,
     errors: [
@@ -902,5 +910,10 @@ export const listConfigurationManagers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "StartingToken",
+      outputToken: "NextToken",
+      items: "ConfigurationManagersList",
+      pageSize: "MaxItems",
+    } as const,
+  }));

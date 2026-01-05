@@ -668,16 +668,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of all of your monitors.
  */
-export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMonitorsInput,
-  output: ListMonitorsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMonitorsInput,
+    output: ListMonitorsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "monitors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a monitor between a source subnet and destination IP address. Within a monitor you'll create one or more probes that monitor network traffic between your source Amazon Web Services VPC subnets and your destination IP addresses. Each probe then aggregates and sends metrics to Amazon CloudWatch.
  *

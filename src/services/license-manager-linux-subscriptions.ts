@@ -636,31 +636,48 @@ export const getServiceSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * subscriptions.
  */
 export const listLinuxSubscriptionInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLinuxSubscriptionInstancesRequest,
     output: ListLinuxSubscriptionInstancesResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Instances",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the Linux subscriptions that have been discovered. If you have linked your
  * organization, the returned results will include data aggregated across your accounts in
  * Organizations.
  */
-export const listLinuxSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLinuxSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLinuxSubscriptionsRequest,
     output: ListLinuxSubscriptionsResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List Bring Your Own License (BYOL) subscription registration resources for your account.
  */
 export const listRegisteredSubscriptionProviders =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRegisteredSubscriptionProvidersRequest,
     output: ListRegisteredSubscriptionProvidersResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RegisteredSubscriptionProviders",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Register the supported third-party subscription provider for your Bring Your Own License (BYOL) subscription.

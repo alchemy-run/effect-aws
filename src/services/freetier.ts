@@ -466,13 +466,18 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of activities that are available. This operation supports pagination and filtering by status.
  */
-export const listAccountActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountActivities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountActivitiesRequest,
     output: ListAccountActivitiesResponse,
     errors: [InternalServerException, ThrottlingException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "activities",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * This returns all of the information related to the state of the account plan related to Free Tier.
  */
@@ -517,8 +522,16 @@ export const getAccountActivity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all Free Tier usage objects that match your filters.
  */
-export const getFreeTierUsage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFreeTierUsageRequest,
-  output: GetFreeTierUsageResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const getFreeTierUsage = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFreeTierUsageRequest,
+    output: GetFreeTierUsageResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "freeTierUsages",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

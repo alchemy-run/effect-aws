@@ -1754,18 +1754,25 @@ export const describeOrganizationalUnit = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listChildren = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChildrenRequest,
-  output: ListChildrenResponse,
-  errors: [
-    AccessDeniedException,
-    AWSOrganizationsNotInUseException,
-    InvalidInputException,
-    ParentNotFoundException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listChildren = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChildrenRequest,
+    output: ListChildrenResponse,
+    errors: [
+      AccessDeniedException,
+      AWSOrganizationsNotInUseException,
+      InvalidInputException,
+      ParentNotFoundException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the root or organizational units (OUs) that serve as the immediate parent of the
  * specified child OU or account. This operation, along with ListChildren
@@ -1779,18 +1786,25 @@ export const listChildren = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * In the current release, a child can have only a single parent.
  */
-export const listParents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListParentsRequest,
-  output: ListParentsResponse,
-  errors: [
-    AccessDeniedException,
-    AWSOrganizationsNotInUseException,
-    ChildNotFoundException,
-    InvalidInputException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listParents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListParentsRequest,
+    output: ListParentsResponse,
+    errors: [
+      AccessDeniedException,
+      AWSOrganizationsNotInUseException,
+      ChildNotFoundException,
+      InvalidInputException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an Amazon Web Services organization. The account whose user is calling the
  * `CreateOrganization` operation automatically becomes the management account of the new organization.
@@ -1961,8 +1975,8 @@ export const removeAccountFromOrganization =
  * These operations can occasionally return an empty set of results even when more results are available.
  * Continue making requests until `NextToken` returns null. A null `NextToken` value indicates that you have retrieved all available results.
  */
-export const listHandshakesForAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listHandshakesForAccount =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHandshakesForAccountRequest,
     output: ListHandshakesForAccountResponse,
     errors: [
@@ -1972,8 +1986,12 @@ export const listHandshakesForAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the recent handshakes that you have sent.
  *
@@ -1988,7 +2006,7 @@ export const listHandshakesForAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Continue making requests until `NextToken` returns null. A null `NextToken` value indicates that you have retrieved all available results.
  */
 export const listHandshakesForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHandshakesForOrganizationRequest,
     output: ListHandshakesForOrganizationResponse,
     errors: [
@@ -1999,6 +2017,11 @@ export const listHandshakesForOrganization =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all the accounts in the organization. To request only the accounts in a
@@ -2010,17 +2033,24 @@ export const listHandshakesForOrganization =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccountsRequest,
-  output: ListAccountsResponse,
-  errors: [
-    AccessDeniedException,
-    AWSOrganizationsNotInUseException,
-    InvalidInputException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccountsRequest,
+    output: ListAccountsResponse,
+    errors: [
+      AccessDeniedException,
+      AWSOrganizationsNotInUseException,
+      InvalidInputException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the roots that are defined in the current organization.
  *
@@ -2036,7 +2066,7 @@ export const listAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * enabled and disabled in a root. To see the availability of a policy type in an
  * organization, use DescribeOrganization.
  */
-export const listRoots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRoots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRootsRequest,
   output: ListRootsResponse,
   errors: [
@@ -2046,6 +2076,11 @@ export const listRoots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves Organizations-related information about the specified account.
@@ -2121,8 +2156,8 @@ export const enableAllFeatures = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listAccountsForParent = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountsForParent =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountsForParentRequest,
     output: ListAccountsForParentResponse,
     errors: [
@@ -2133,8 +2168,12 @@ export const listAccountsForParent = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the organizational units (OUs) in a parent organizational unit or root.
  *
@@ -2145,7 +2184,7 @@ export const listAccountsForParent = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
 export const listOrganizationalUnitsForParent =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationalUnitsForParentRequest,
     output: ListOrganizationalUnitsForParentResponse,
     errors: [
@@ -2156,6 +2195,11 @@ export const listOrganizationalUnitsForParent =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Sends an invitation to another account to join your organization as a member account.
@@ -2402,18 +2446,24 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    AccessDeniedException,
-    AWSOrganizationsNotInUseException,
-    InvalidInputException,
-    ServiceException,
-    TargetNotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      AccessDeniedException,
+      AWSOrganizationsNotInUseException,
+      InvalidInputException,
+      ServiceException,
+      TargetNotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+    } as const,
+  }));
 /**
  * Ends a transfer. A *transfer* is an arrangement between two
  * management accounts where one account designates the other with specified
@@ -2522,7 +2572,7 @@ export const updatePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
 export const listAccountsWithInvalidEffectivePolicy =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountsWithInvalidEffectivePolicyRequest,
     output: ListAccountsWithInvalidEffectivePolicyResponse,
     errors: [
@@ -2535,6 +2585,12 @@ export const listAccountsWithInvalidEffectivePolicy =
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Accounts",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all the roots, organizational units (OUs), and accounts that the specified
@@ -2546,8 +2602,8 @@ export const listAccountsWithInvalidEffectivePolicy =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listTargetsForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTargetsForPolicy =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTargetsForPolicyRequest,
     output: ListTargetsForPolicyResponse,
     errors: [
@@ -2559,8 +2615,12 @@ export const listTargetsForPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Closes an Amazon Web Services member account within an organization. You can close an account when
  * all
@@ -2672,7 +2732,7 @@ export const deleteResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
 export const listAWSServiceAccessForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAWSServiceAccessForOrganizationRequest,
     output: ListAWSServiceAccessForOrganizationResponse,
     errors: [
@@ -2684,6 +2744,11 @@ export const listAWSServiceAccessForOrganization =
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the Amazon Web Services accounts that are designated as delegated administrators in this
@@ -2691,8 +2756,8 @@ export const listAWSServiceAccessForOrganization =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listDelegatedAdministrators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDelegatedAdministrators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDelegatedAdministratorsRequest,
     output: ListDelegatedAdministratorsResponse,
     errors: [
@@ -2704,8 +2769,13 @@ export const listDelegatedAdministrators = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DelegatedAdministrators",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the Amazon Web Services services for which the specified account is a delegated
  * administrator.
@@ -2713,7 +2783,7 @@ export const listDelegatedAdministrators = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
 export const listDelegatedServicesForAccount =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDelegatedServicesForAccountRequest,
     output: ListDelegatedServicesForAccountResponse,
     errors: [
@@ -2727,6 +2797,12 @@ export const listDelegatedServicesForAccount =
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DelegatedServices",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the list of all policies in an organization of a specified type.
@@ -2737,18 +2813,25 @@ export const listDelegatedServicesForAccount =
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [
-    AccessDeniedException,
-    AWSOrganizationsNotInUseException,
-    InvalidInputException,
-    ServiceException,
-    TooManyRequestsException,
-    UnsupportedAPIEndpointException,
-  ],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [
+      AccessDeniedException,
+      AWSOrganizationsNotInUseException,
+      InvalidInputException,
+      ServiceException,
+      TooManyRequestsException,
+      UnsupportedAPIEndpointException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates or updates a resource policy.
  *
@@ -2917,8 +3000,8 @@ export const enableAWSServiceAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listCreateAccountStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCreateAccountStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCreateAccountStatusRequest,
     output: ListCreateAccountStatusResponse,
     errors: [
@@ -2929,8 +3012,12 @@ export const listCreateAccountStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the current status of an asynchronous request to create an account.
  *
@@ -3119,7 +3206,7 @@ export const createAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
 export const listEffectivePolicyValidationErrors =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEffectivePolicyValidationErrorsRequest,
     output: ListEffectivePolicyValidationErrorsResponse,
     errors: [
@@ -3133,6 +3220,12 @@ export const listEffectivePolicyValidationErrors =
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EffectivePolicyValidationErrors",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves information about a policy.
@@ -3411,8 +3504,8 @@ export const detachPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You can only call this operation from the management account or a member account that is a delegated administrator.
  */
-export const listPoliciesForTarget = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPoliciesForTarget =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPoliciesForTargetRequest,
     output: ListPoliciesForTargetResponse,
     errors: [
@@ -3424,8 +3517,12 @@ export const listPoliciesForTarget = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnsupportedAPIEndpointException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the contents of the effective policy for specified policy type and account.
  * The effective policy is the aggregation of any policies of the specified type that the

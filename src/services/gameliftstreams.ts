@@ -879,16 +879,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Retrieves a list of all Amazon GameLift Streams applications that are associated with the Amazon Web Services account in use. This operation returns applications in all statuses, in no particular order. You can paginate the results as needed.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsInput,
-  output: ListApplicationsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsInput,
+    output: ListApplicationsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves properties for a Amazon GameLift Streams stream session resource. Specify the Amazon Resource Name (ARN) of the stream session that you want to retrieve and its stream group ARN. If the operation is successful, it returns properties for the requested resource.
  */
@@ -910,17 +918,25 @@ export const getStreamSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation returns the requested stream sessions in no particular order.
  */
-export const listStreamSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamSessionsInput,
-  output: ListStreamSessionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listStreamSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamSessionsInput,
+    output: ListStreamSessionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves properties for an Amazon GameLift Streams application resource. Specify the ID of the application that you want to retrieve. If the operation is successful, it returns properties for the requested application.
  */
@@ -1175,16 +1191,24 @@ export const startStreamSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of all Amazon GameLift Streams stream groups that are associated with the Amazon Web Services account in use. This operation returns stream groups in all statuses, in no particular order. You can paginate the results as needed.
  */
-export const listStreamGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamGroupsInput,
-  output: ListStreamGroupsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listStreamGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamGroupsInput,
+    output: ListStreamGroupsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of Amazon GameLift Streams stream sessions that this user account has access to.
  *
@@ -1192,8 +1216,8 @@ export const listStreamGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * We don't recommend using this operation to regularly check stream session statuses because it's costly. Instead, to check status updates for a specific stream session, use GetStreamSession.
  */
-export const listStreamSessionsByAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStreamSessionsByAccount =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStreamSessionsByAccountInput,
     output: ListStreamSessionsByAccountOutput,
     errors: [
@@ -1202,8 +1226,13 @@ export const listStreamSessionsByAccount = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves all tags assigned to a Amazon GameLift Streams resource. To list tags for a resource, specify the ARN value for the resource.
  *

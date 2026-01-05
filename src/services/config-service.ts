@@ -3001,10 +3001,15 @@ export const describeRemediationConfigurations =
  * complies with each rule.
  */
 export const getComplianceDetailsByResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetComplianceDetailsByResourceRequest,
     output: GetComplianceDetailsByResourceResponse,
     errors: [InvalidParameterValueException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EvaluationResults",
+    } as const,
   }));
 /**
  * Returns the policy definition containing the logic for your Config Custom Policy rule.
@@ -3749,10 +3754,16 @@ export const deleteRemediationConfiguration =
  * the rule's scope.
  */
 export const describeComplianceByResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeComplianceByResourceRequest,
     output: DescribeComplianceByResourceResponse,
     errors: [InvalidNextTokenException, InvalidParameterValueException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComplianceByResources",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the current status of the specified delivery channel.
@@ -3791,7 +3802,7 @@ export const describeDeliveryChannelStatus =
  * those APIs.
  */
 export const describeOrganizationConfigRules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationConfigRulesRequest,
     output: DescribeOrganizationConfigRulesResponse,
     errors: [
@@ -3800,13 +3811,19 @@ export const describeOrganizationConfigRules =
       NoSuchOrganizationConfigRuleException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConfigRules",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Provides a detailed view of a Remediation Execution for a set of resources including state, timestamps for when steps for the remediation execution occur, and any error messages for steps that have failed.
  * When you specify the limit and the next token, you receive a paginated response.
  */
 export const describeRemediationExecutionStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRemediationExecutionStatusRequest,
     output: DescribeRemediationExecutionStatusResponse,
     errors: [
@@ -3814,6 +3831,12 @@ export const describeRemediationExecutionStatus =
       InvalidParameterValueException,
       NoSuchRemediationConfigurationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RemediationExecutionStatuses",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the number of compliant and noncompliant rules for one
@@ -3824,7 +3847,7 @@ export const describeRemediationExecutionStatus =
  * page.
  */
 export const getAggregateConfigRuleComplianceSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAggregateConfigRuleComplianceSummaryRequest,
     output: GetAggregateConfigRuleComplianceSummaryResponse,
     errors: [
@@ -3833,6 +3856,11 @@ export const getAggregateConfigRuleComplianceSummary =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the resource counts across accounts and regions that are present in your Config aggregator. You can request the resource counts by providing filters and GroupByKey.
@@ -3841,7 +3869,7 @@ export const getAggregateConfigRuleComplianceSummary =
  * If the input contains ACCOUNT_ID as a GroupByKey, the API returns resource counts for all source accounts that are present in your aggregator.
  */
 export const getAggregateDiscoveredResourceCounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAggregateDiscoveredResourceCountsRequest,
     output: GetAggregateDiscoveredResourceCountsResponse,
     errors: [
@@ -3850,12 +3878,17 @@ export const getAggregateDiscoveredResourceCounts =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns detailed status for each member account within an organization for a given organization Config rule.
  */
 export const getOrganizationConfigRuleDetailedStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetOrganizationConfigRuleDetailedStatusRequest,
     output: GetOrganizationConfigRuleDetailedStatusResponse,
     errors: [
@@ -3864,12 +3897,18 @@ export const getOrganizationConfigRuleDetailedStatus =
       NoSuchOrganizationConfigRuleException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConfigRuleDetailedStatus",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns detailed status for each member account within an organization for a given organization conformance pack.
  */
 export const getOrganizationConformancePackDetailedStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetOrganizationConformancePackDetailedStatusRequest,
     output: GetOrganizationConformancePackDetailedStatusResponse,
     errors: [
@@ -3878,17 +3917,28 @@ export const getOrganizationConformancePackDetailedStatus =
       NoSuchOrganizationConformancePackException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConformancePackDetailedStatuses",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns a list of configuration recorders depending on the filters you specify.
  */
-export const listConfigurationRecorders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationRecorders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationRecordersRequest,
     output: ListConfigurationRecordersResponse,
     errors: [ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationRecorderSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of conformance pack compliance scores.
  * A compliance score is the percentage of the number of compliant rule-resource combinations in a conformance pack compared to the number of total possible rule-resource combinations in the conformance pack.
@@ -3898,7 +3948,7 @@ export const listConfigurationRecorders = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Conformance packs with no evaluation results will have a compliance score of `INSUFFICIENT_DATA`.
  */
 export const listConformancePackComplianceScores =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConformancePackComplianceScoresRequest,
     output: ListConformancePackComplianceScoresResponse,
     errors: [
@@ -3906,6 +3956,11 @@ export const listConformancePackComplianceScores =
       InvalidNextTokenException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Used by an Lambda function to deliver evaluation results to
@@ -3955,7 +4010,7 @@ export const putStoredQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and do not specify the `MaxResults` or the `Limit` query parameters, the default page size is set to 25.
  */
 export const selectAggregateResourceConfig =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SelectAggregateResourceConfigRequest,
     output: SelectAggregateResourceConfigResponse,
     errors: [
@@ -3964,6 +4019,12 @@ export const selectAggregateResourceConfig =
       InvalidNextTokenException,
       NoSuchConfigurationAggregatorException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Runs an on-demand evaluation for the specified resource to determine whether the resource details will comply with configured Config rules.
@@ -3991,7 +4052,7 @@ export const startResourceEvaluation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * the rule, and the related error for the last failure.
  */
 export const describeConfigRuleEvaluationStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConfigRuleEvaluationStatusRequest,
     output: DescribeConfigRuleEvaluationStatusResponse,
     errors: [
@@ -3999,19 +4060,31 @@ export const describeConfigRuleEvaluationStatus =
       InvalidParameterValueException,
       NoSuchConfigRuleException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigRulesEvaluationStatus",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns details about your Config rules.
  */
-export const describeConfigRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeConfigRulesRequest,
-  output: DescribeConfigRulesResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterValueException,
-    NoSuchConfigRuleException,
-  ],
-}));
+export const describeConfigRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeConfigRulesRequest,
+    output: DescribeConfigRulesResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterValueException,
+      NoSuchConfigRuleException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigRules",
+    } as const,
+  }));
 /**
  * Returns the details of one or more remediation exceptions. A detailed view of a remediation exception for a set of resources that includes an explanation of an exception and the time when the exception will be deleted.
  * When you specify the limit and the next token, you receive a paginated response.
@@ -4024,10 +4097,15 @@ export const describeConfigRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Limit and next token are not applicable if you request resources in batch. It is only applicable, when you request all resources.
  */
 export const describeRemediationExceptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRemediationExceptionsRequest,
     output: DescribeRemediationExceptionsResponse,
     errors: [InvalidNextTokenException, InvalidParameterValueException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the details of one or more retention configurations. If
@@ -4039,7 +4117,7 @@ export const describeRemediationExceptions =
  * configuration per region in your account.
  */
 export const describeRetentionConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRetentionConfigurationsRequest,
     output: DescribeRetentionConfigurationsResponse,
     errors: [
@@ -4047,6 +4125,11 @@ export const describeRetentionConfigurations =
       InvalidParameterValueException,
       NoSuchRetentionConfigurationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RetentionConfigurations",
+    } as const,
   }));
 /**
  * Returns the evaluation results for the specified Config
@@ -4055,7 +4138,7 @@ export const describeRetentionConfigurations =
  * resource complies with the rule.
  */
 export const getComplianceDetailsByConfigRule =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetComplianceDetailsByConfigRuleRequest,
     output: GetComplianceDetailsByConfigRuleResponse,
     errors: [
@@ -4063,6 +4146,12 @@ export const getComplianceDetailsByConfigRule =
       InvalidParameterValueException,
       NoSuchConfigRuleException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EvaluationResults",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Accepts a resource type and returns a list of resource identifiers that are aggregated for a specific resource type across accounts and regions.
@@ -4072,7 +4161,7 @@ export const getComplianceDetailsByConfigRule =
  * For example, if the input consists of accountID 12345678910 and the region is us-east-1 for resource type `AWS::EC2::Instance` then the API returns all the EC2 instance identifiers of accountID 12345678910 and region us-east-1.
  */
 export const listAggregateDiscoveredResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAggregateDiscoveredResourcesRequest,
     output: ListAggregateDiscoveredResourcesResponse,
     errors: [
@@ -4081,6 +4170,12 @@ export const listAggregateDiscoveredResources =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceIdentifiers",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns a list of resource
@@ -4118,8 +4213,8 @@ export const listAggregateDiscoveredResources =
  * for that stack in Config, even after the stack is deleted. This helps make sure that Config only
  * tracks resources that were successfully provisioned.
  */
-export const listDiscoveredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDiscoveredResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDiscoveredResourcesRequest,
     output: ListDiscoveredResourcesResponse,
     errors: [
@@ -4128,16 +4223,28 @@ export const listDiscoveredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NoAvailableConfigurationRecorderException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resourceIdentifiers",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Lists the stored queries for a single Amazon Web Services account and a single Amazon Web Services Region. The default is 100.
  */
-export const listStoredQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStoredQueriesRequest,
-  output: ListStoredQueriesResponse,
-  errors: [InvalidNextTokenException, ValidationException],
-}));
+export const listStoredQueries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStoredQueriesRequest,
+    output: ListStoredQueriesResponse,
+    errors: [InvalidNextTokenException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Accepts a structured query language (SQL) `SELECT` command, performs the corresponding search, and returns resource configurations matching the properties.
  *
@@ -4146,8 +4253,8 @@ export const listStoredQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Query Components**
  * section in the *Config Developer Guide*.
  */
-export const selectResourceConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const selectResourceConfig =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SelectResourceConfigRequest,
     output: SelectResourceConfigResponse,
     errors: [
@@ -4155,27 +4262,39 @@ export const selectResourceConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidLimitException,
       InvalidNextTokenException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * List the tags for Config resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InvalidLimitException,
-    InvalidNextTokenException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InvalidLimitException,
+      InvalidNextTokenException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a list of authorizations granted to various aggregator
  * accounts and regions.
  */
 export const describeAggregationAuthorizations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAggregationAuthorizationsRequest,
     output: DescribeAggregationAuthorizationsResponse,
     errors: [
@@ -4183,6 +4302,12 @@ export const describeAggregationAuthorizations =
       InvalidNextTokenException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AggregationAuthorizations",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the details of one or more configuration aggregators.
@@ -4191,7 +4316,7 @@ export const describeAggregationAuthorizations =
  * with the account.
  */
 export const describeConfigurationAggregators =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConfigurationAggregatorsRequest,
     output: DescribeConfigurationAggregatorsResponse,
     errors: [
@@ -4200,13 +4325,19 @@ export const describeConfigurationAggregators =
       InvalidParameterValueException,
       NoSuchConfigurationAggregatorException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationAggregators",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns status information for sources within an aggregator.
  * The status includes information about the last time Config verified authorization between the source account and an aggregator account. In case of a failure, the status contains the related error code or message.
  */
 export const describeConfigurationAggregatorSourcesStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConfigurationAggregatorSourcesStatusRequest,
     output: DescribeConfigurationAggregatorSourcesStatusResponse,
     errors: [
@@ -4215,12 +4346,18 @@ export const describeConfigurationAggregatorSourcesStatus =
       InvalidParameterValueException,
       NoSuchConfigurationAggregatorException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AggregatedSourceStatusList",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns a list of one or more conformance packs.
  */
-export const describeConformancePacks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeConformancePacks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConformancePacksRequest,
     output: DescribeConformancePacksResponse,
     errors: [
@@ -4229,15 +4366,20 @@ export const describeConformancePacks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       NoSuchConformancePackException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConformancePackDetails",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Provides one or more conformance packs deployment status.
  *
  * If there are no conformance packs then you will see an empty result.
  */
 export const describeConformancePackStatus =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConformancePackStatusRequest,
     output: DescribeConformancePackStatusResponse,
     errors: [
@@ -4245,6 +4387,12 @@ export const describeConformancePackStatus =
       InvalidNextTokenException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConformancePackStatusDetails",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Provides organization Config rule deployment status for an organization.
@@ -4257,7 +4405,7 @@ export const describeConformancePackStatus =
  * It is only applicable, when you request all the organization Config rules.
  */
 export const describeOrganizationConfigRuleStatuses =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationConfigRuleStatusesRequest,
     output: DescribeOrganizationConfigRuleStatusesResponse,
     errors: [
@@ -4266,6 +4414,12 @@ export const describeOrganizationConfigRuleStatuses =
       NoSuchOrganizationConfigRuleException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConfigRuleStatuses",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns a list of organization conformance packs.
@@ -4289,7 +4443,7 @@ export const describeOrganizationConfigRuleStatuses =
  * those APIs.
  */
 export const describeOrganizationConformancePacks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationConformancePacksRequest,
     output: DescribeOrganizationConformancePacksResponse,
     errors: [
@@ -4298,6 +4452,12 @@ export const describeOrganizationConformancePacks =
       NoSuchOrganizationConformancePackException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConformancePacks",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Provides organization conformance pack deployment status for an organization.
@@ -4310,7 +4470,7 @@ export const describeOrganizationConformancePacks =
  * They are only applicable, when you request all the organization conformance packs.
  */
 export const describeOrganizationConformancePackStatuses =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationConformancePackStatusesRequest,
     output: DescribeOrganizationConformancePackStatusesResponse,
     errors: [
@@ -4319,12 +4479,18 @@ export const describeOrganizationConformancePackStatuses =
       NoSuchOrganizationConformancePackException,
       OrganizationAccessDeniedException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OrganizationConformancePackStatuses",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns a list of all pending aggregation requests.
  */
 export const describePendingAggregationRequests =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePendingAggregationRequestsRequest,
     output: DescribePendingAggregationRequestsResponse,
     errors: [
@@ -4332,12 +4498,18 @@ export const describePendingAggregationRequests =
       InvalidNextTokenException,
       InvalidParameterValueException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PendingAggregationRequests",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns compliance details for the conformance pack based on the cumulative compliance results of all the rules in that conformance pack.
  */
 export const getConformancePackComplianceSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetConformancePackComplianceSummaryRequest,
     output: GetConformancePackComplianceSummaryResponse,
     errors: [
@@ -4345,6 +4517,12 @@ export const getConformancePackComplianceSummary =
       InvalidNextTokenException,
       NoSuchConformancePackException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConformancePackComplianceSummaryList",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the resource types, the number of each resource type,
@@ -4391,8 +4569,8 @@ export const getConformancePackComplianceSummary =
  * count your resources. Wait a few minutes and then retry the
  * GetDiscoveredResourceCounts action.
  */
-export const getDiscoveredResourceCounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getDiscoveredResourceCounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetDiscoveredResourceCountsRequest,
     output: GetDiscoveredResourceCountsResponse,
     errors: [
@@ -4400,8 +4578,12 @@ export const getDiscoveredResourceCounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidNextTokenException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Returns a list of compliant and noncompliant rules with the
  * number of resources for compliant and noncompliant rules. Does not display rules that do not have compliance results.
@@ -4411,7 +4593,7 @@ export const getDiscoveredResourceCounts = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * page.
  */
 export const describeAggregateComplianceByConfigRules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAggregateComplianceByConfigRulesRequest,
     output: DescribeAggregateComplianceByConfigRulesResponse,
     errors: [
@@ -4420,6 +4602,11 @@ export const describeAggregateComplianceByConfigRules =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Indicates whether the specified Config rules are compliant.
@@ -4454,7 +4641,7 @@ export const describeAggregateComplianceByConfigRules =
  * the rule's scope.
  */
 export const describeComplianceByConfigRule =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeComplianceByConfigRuleRequest,
     output: DescribeComplianceByConfigRuleResponse,
     errors: [
@@ -4462,6 +4649,11 @@ export const describeComplianceByConfigRule =
       InvalidParameterValueException,
       NoSuchConfigRuleException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComplianceByConfigRules",
+    } as const,
   }));
 /**
  * Deletes one or more remediation exceptions mentioned in the resource keys.
@@ -4483,7 +4675,7 @@ export const deleteRemediationExceptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The results can return an empty result page, but if you have a `nextToken`, the results are displayed on the next page.
  */
 export const describeAggregateComplianceByConformancePacks =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAggregateComplianceByConformancePacksRequest,
     output: DescribeAggregateComplianceByConformancePacksResponse,
     errors: [
@@ -4492,6 +4684,12 @@ export const describeAggregateComplianceByConformancePacks =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AggregateComplianceByConformancePacks",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns compliance details for each rule in that conformance pack.
@@ -4499,7 +4697,7 @@ export const describeAggregateComplianceByConformancePacks =
  * You must provide exact rule names.
  */
 export const describeConformancePackCompliance =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConformancePackComplianceRequest,
     output: DescribeConformancePackComplianceResponse,
     errors: [
@@ -4509,6 +4707,11 @@ export const describeConformancePackCompliance =
       NoSuchConfigRuleInConformancePackException,
       NoSuchConformancePackException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the evaluation results for the specified Config
@@ -4521,7 +4724,7 @@ export const describeConformancePackCompliance =
  * page.
  */
 export const getAggregateComplianceDetailsByConfigRule =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAggregateComplianceDetailsByConfigRuleRequest,
     output: GetAggregateComplianceDetailsByConfigRuleResponse,
     errors: [
@@ -4530,6 +4733,12 @@ export const getAggregateComplianceDetailsByConfigRule =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AggregateEvaluationResults",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Returns the count of compliant and noncompliant conformance packs across all Amazon Web Services accounts and Amazon Web Services Regions in an aggregator. You can filter based on Amazon Web Services account ID or Amazon Web Services Region.
@@ -4537,7 +4746,7 @@ export const getAggregateComplianceDetailsByConfigRule =
  * The results can return an empty result page, but if you have a nextToken, the results are displayed on the next page.
  */
 export const getAggregateConformancePackComplianceSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetAggregateConformancePackComplianceSummaryRequest,
     output: GetAggregateConformancePackComplianceSummaryResponse,
     errors: [
@@ -4546,6 +4755,11 @@ export const getAggregateConformancePackComplianceSummary =
       NoSuchConfigurationAggregatorException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Adds or updates an Config rule to evaluate if your
@@ -4650,7 +4864,7 @@ export const putConformancePack = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns compliance details of a conformance pack for all Amazon Web Services resources that are monitered by conformance pack.
  */
 export const getConformancePackComplianceDetails =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetConformancePackComplianceDetailsRequest,
     output: GetConformancePackComplianceDetailsResponse,
     errors: [
@@ -4660,6 +4874,11 @@ export const getConformancePackComplianceDetails =
       NoSuchConfigRuleInConformancePackException,
       NoSuchConformancePackException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "Limit",
+    } as const,
   }));
 /**
  * Adds or updates an Config rule for your entire organization to evaluate if your Amazon Web Services resources comply with your
@@ -4762,8 +4981,8 @@ export const putConfigurationAggregator = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of proactive resource evaluations.
  */
-export const listResourceEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceEvaluations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceEvaluationsRequest,
     output: ListResourceEvaluationsResponse,
     errors: [
@@ -4771,8 +4990,13 @@ export const listResourceEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       InvalidTimeRangeException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceEvaluations",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns configuration item that is aggregated for your specific resource in a specific source account and region.
  *
@@ -4873,8 +5097,8 @@ export const putOrganizationConformancePack =
  * you can make another call, using the
  * `nextToken`.
  */
-export const getResourceConfigHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getResourceConfigHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourceConfigHistoryRequest,
     output: GetResourceConfigHistoryResponse,
     errors: [
@@ -4885,8 +5109,13 @@ export const getResourceConfigHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotDiscoveredException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configurationItems",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Creates or updates the customer managed configuration recorder.
  *

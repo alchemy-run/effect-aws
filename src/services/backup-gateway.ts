@@ -678,11 +678,19 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists backup gateways owned by an Amazon Web Services account in an Amazon Web Services Region. The returned list is ordered by gateway Amazon Resource Name (ARN).
  */
-export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGatewaysInput,
-  output: ListGatewaysOutput,
-  errors: [],
-}));
+export const listGateways = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGatewaysInput,
+    output: ListGatewaysOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Gateways",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This action sets the bandwidth rate limit schedule for a specified gateway.
  * By default, gateways do not have a bandwidth rate limit schedule, which means
@@ -717,11 +725,19 @@ export const getHypervisor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists your hypervisors.
  */
-export const listHypervisors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHypervisorsInput,
-  output: ListHypervisorsOutput,
-  errors: [],
-}));
+export const listHypervisors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHypervisorsInput,
+    output: ListHypervisorsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Hypervisors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This action sets the property mappings for the specified hypervisor.
  * A hypervisor property mapping displays the relationship of entity properties
@@ -740,11 +756,18 @@ export const putHypervisorPropertyMappings =
 /**
  * Lists your virtual machines.
  */
-export const listVirtualMachines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVirtualMachinesInput,
-  output: ListVirtualMachinesOutput,
-  errors: [],
-}));
+export const listVirtualMachines =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListVirtualMachinesInput,
+    output: ListVirtualMachinesOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VirtualMachines",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Removes tags from the resource.
  */

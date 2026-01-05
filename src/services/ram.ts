@@ -1423,23 +1423,30 @@ export const enableSharingWithAwsOrganization =
  * Retrieves a list of available RAM permissions that you can use for the supported
  * resource types.
  */
-export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPermissionsRequest,
-  output: ListPermissionsResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    OperationNotPermittedException,
-    ServerInternalException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPermissionsRequest,
+    output: ListPermissionsResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      OperationNotPermittedException,
+      ServerInternalException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the current status of the asynchronous tasks performed by RAM when you
  * perform the ReplacePermissionAssociationsWork operation.
  */
 export const listReplacePermissionAssociationsWork =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListReplacePermissionAssociationsWorkRequest,
     output: ListReplacePermissionAssociationsWorkResponse,
     errors: [
@@ -1448,27 +1455,39 @@ export const listReplacePermissionAssociationsWork =
       ServerInternalException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the resource types that can be shared by RAM.
  */
-export const listResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceTypesRequest,
-  output: ListResourceTypesResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ServerInternalException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourceTypesRequest,
+    output: ListResourceTypesResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ServerInternalException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists information about the managed permission and its associations to any resource shares that use
  * this managed permission. This lets you see which resource shares use which versions of the specified
  * managed permission.
  */
-export const listPermissionAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPermissionAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPermissionAssociationsRequest,
     output: ListPermissionAssociationsResponse,
     errors: [
@@ -1478,24 +1497,34 @@ export const listPermissionAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServerInternalException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the resource policies for the specified resources that you own and have
  * shared.
  */
-export const getResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcePoliciesRequest,
-  output: GetResourcePoliciesResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    MalformedArnException,
-    ResourceArnNotFoundException,
-    ServerInternalException,
-    ServiceUnavailableException,
-  ],
-}));
+export const getResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetResourcePoliciesRequest,
+    output: GetResourcePoliciesResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      MalformedArnException,
+      ResourceArnNotFoundException,
+      ServerInternalException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Modifies some of the properties of the specified resource share.
  */
@@ -1595,7 +1624,7 @@ export const setDefaultPermissionVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * own.
  */
 export const getResourceShareAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourceShareAssociationsRequest,
     output: GetResourceShareAssociationsResponse,
     errors: [
@@ -1607,12 +1636,17 @@ export const getResourceShareAssociations =
       ServiceUnavailableException,
       UnknownResourceException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the available versions of the specified RAM permission.
  */
-export const listPermissionVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPermissionVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPermissionVersionsRequest,
     output: ListPermissionVersionsResponse,
     errors: [
@@ -1624,13 +1658,17 @@ export const listPermissionVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnknownResourceException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the RAM permissions that are associated with a resource share.
  */
 export const listResourceSharePermissions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceSharePermissionsRequest,
     output: ListResourceSharePermissionsResponse,
     errors: [
@@ -1642,6 +1680,11 @@ export const listResourceSharePermissions =
       ServiceUnavailableException,
       UnknownResourceException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Removes the specified tag key and value pairs from the specified resource share or managed permission.
@@ -1713,34 +1756,48 @@ export const deletePermission = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves details about the resource shares that you own or that are shared with you.
  */
-export const getResourceShares = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourceSharesRequest,
-  output: GetResourceSharesResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    MalformedArnException,
-    ServerInternalException,
-    ServiceUnavailableException,
-    UnknownResourceException,
-  ],
-}));
+export const getResourceShares = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetResourceSharesRequest,
+    output: GetResourceSharesResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      MalformedArnException,
+      ServerInternalException,
+      ServiceUnavailableException,
+      UnknownResourceException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the principals that you are sharing resources with or that are sharing resources
  * with you.
  */
-export const listPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPrincipalsRequest,
-  output: ListPrincipalsResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    MalformedArnException,
-    ServerInternalException,
-    ServiceUnavailableException,
-    UnknownResourceException,
-  ],
-}));
+export const listPrincipals = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPrincipalsRequest,
+    output: ListPrincipalsResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      MalformedArnException,
+      ServerInternalException,
+      ServiceUnavailableException,
+      UnknownResourceException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a managed permission from a resource share. Permission changes take effect immediately. You can
  * remove a managed permission from a resource share only if there are currently no resources of the relevant
@@ -1786,24 +1843,31 @@ export const deleteResourceShare = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the resources that you added to a resource share or the resources that are shared with
  * you.
  */
-export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourcesRequest,
-  output: ListResourcesResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidResourceTypeException,
-    MalformedArnException,
-    ServerInternalException,
-    ServiceUnavailableException,
-    UnknownResourceException,
-  ],
-}));
+export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourcesRequest,
+    output: ListResourcesResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidResourceTypeException,
+      MalformedArnException,
+      ServerInternalException,
+      ServiceUnavailableException,
+      UnknownResourceException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves details about invitations that you have received for resource shares.
  */
-export const getResourceShareInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getResourceShareInvitations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourceShareInvitationsRequest,
     output: GetResourceShareInvitationsResponse,
     errors: [
@@ -1816,8 +1880,12 @@ export const getResourceShareInvitations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnknownResourceException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * When you attach a resource-based policy to a resource, RAM automatically creates
  * a resource share of `featureSet`=`CREATED_FROM_POLICY` with a managed permission that
@@ -2002,7 +2070,7 @@ export const acceptResourceShareInvitation =
  * invitation and the invitation hasn't expired.
  */
 export const listPendingInvitationResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPendingInvitationResourcesRequest,
     output: ListPendingInvitationResourcesResponse,
     errors: [
@@ -2016,6 +2084,11 @@ export const listPendingInvitationResources =
       ServerInternalException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * When you attach a resource-based policy to a resource, RAM automatically creates

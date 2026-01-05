@@ -1030,10 +1030,16 @@ export class IllegalArgumentException extends S.TaggedError<IllegalArgumentExcep
 /**
  * Lists all Region switch plans in your Amazon Web Services account.
  */
-export const listPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listPlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPlansRequest,
   output: ListPlansResponse,
   errors: [],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "plans",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Approves a step in a plan execution that requires manual approval. When you create a plan, you can include approval steps that require manual intervention before the execution can proceed. This operation allows you to provide that approval.
@@ -1050,34 +1056,55 @@ export const approvePlanExecutionStep = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the events that occurred during a plan execution. These events provide a detailed timeline of the execution process.
  */
-export const listPlanExecutionEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPlanExecutionEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPlanExecutionEventsRequest,
     output: ListPlanExecutionEventsResponse,
     errors: [AccessDeniedException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the executions of a Region switch plan. This operation returns information about both current and historical executions.
  */
-export const listPlanExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPlanExecutionsRequest,
-  output: ListPlanExecutionsResponse,
-  errors: [AccessDeniedException, ResourceNotFoundException],
-}));
+export const listPlanExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPlanExecutionsRequest,
+    output: ListPlanExecutionsResponse,
+    errors: [AccessDeniedException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all Region switch plans in your Amazon Web Services account that are available in the current Amazon Web Services Region.
  */
-export const listPlansInRegion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPlansInRegionRequest,
-  output: ListPlansInRegionResponse,
-  errors: [AccessDeniedException],
-}));
+export const listPlansInRegion = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPlansInRegionRequest,
+    output: ListPlansInRegionResponse,
+    errors: [AccessDeniedException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "plans",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the Amazon Route 53 health checks.
  */
-export const listRoute53HealthChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRoute53HealthChecks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRoute53HealthChecksRequest,
     output: ListRoute53HealthChecksResponse,
     errors: [
@@ -1085,13 +1112,18 @@ export const listRoute53HealthChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "healthChecks",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List the Amazon Route 53 health checks in a specific Amazon Web Services Region.
  */
 export const listRoute53HealthChecksInRegion =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRoute53HealthChecksInRegionRequest,
     output: ListRoute53HealthChecksInRegionResponse,
     errors: [
@@ -1100,6 +1132,12 @@ export const listRoute53HealthChecksInRegion =
       InternalServerException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "healthChecks",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves information about a Region switch plan in a specific Amazon Web Services Region. This operation is useful for getting Region-specific information about a plan.
@@ -1209,21 +1247,34 @@ export const startPlanExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the evaluation status of a Region switch plan. The evaluation status provides information about the last time the plan was evaluated and any warnings or issues detected.
  */
-export const getPlanEvaluationStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getPlanEvaluationStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetPlanEvaluationStatusRequest,
     output: GetPlanEvaluationStatusResponse,
     errors: [AccessDeniedException, ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "warnings",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves detailed information about a specific plan execution. You must specify the plan ARN and execution ID.
  */
-export const getPlanExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetPlanExecutionRequest,
-  output: GetPlanExecutionResponse,
-  errors: [AccessDeniedException, ResourceNotFoundException],
-}));
+export const getPlanExecution = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetPlanExecutionRequest,
+    output: GetPlanExecutionResponse,
+    errors: [AccessDeniedException, ResourceNotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "stepStates",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new Region switch plan. A plan defines the steps required to shift traffic from one Amazon Web Services Region to another.
  *

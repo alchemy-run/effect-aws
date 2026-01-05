@@ -971,13 +971,20 @@ export const createParticipantConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The Amazon Connect Participant Service APIs do not use Signature Version 4
  * authentication.
  */
-export const getTranscript = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTranscriptRequest,
-  output: GetTranscriptResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getTranscript = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTranscriptRequest,
+    output: GetTranscriptResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

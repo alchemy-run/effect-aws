@@ -1018,22 +1018,30 @@ export const updateDbCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of Timestream for InfluxDB DB clusters.
  */
-export const listDbClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDbClustersInput,
-  output: ListDbClustersOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDbClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDbClustersInput,
+    output: ListDbClustersOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Timestream for InfluxDB clusters.
  */
-export const listDbInstancesForCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDbInstancesForCluster =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDbInstancesForClusterInput,
     output: ListDbInstancesForClusterOutput,
     errors: [
@@ -1043,27 +1051,40 @@ export const listDbInstancesForCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of Timestream for InfluxDB DB instances.
  */
-export const listDbInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDbInstancesInput,
-  output: ListDbInstancesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDbInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDbInstancesInput,
+    output: ListDbInstancesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Timestream for InfluxDB DB parameter groups.
  */
-export const listDbParameterGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDbParameterGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDbParameterGroupsInput,
     output: ListDbParameterGroupsOutput,
     errors: [
@@ -1073,8 +1094,13 @@ export const listDbParameterGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a Timestream for InfluxDB DB instance.
  */

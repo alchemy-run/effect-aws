@@ -1376,8 +1376,8 @@ export const getNotificationsAccessForOrganization =
 /**
  * Returns a list of organizational units associated with a notification configuration.
  */
-export const listOrganizationalUnits = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOrganizationalUnits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationalUnitsRequest,
     output: ListOrganizationalUnitsResponse,
     errors: [
@@ -1387,8 +1387,13 @@ export const listOrganizationalUnits = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "organizationalUnits",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Associates an organizational unit with a notification configuration.
  */
@@ -1659,17 +1664,25 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of Channels for a `NotificationConfiguration`.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "channels",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a specified `EventRule`.
  */
@@ -1735,7 +1748,7 @@ export const enableNotificationsAccessForOrganization =
  * Returns a list of Account contacts and Channels associated with a `ManagedNotificationConfiguration`, in paginated format.
  */
 export const listManagedNotificationChannelAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedNotificationChannelAssociationsRequest,
     output: ListManagedNotificationChannelAssociationsResponse,
     errors: [
@@ -1745,35 +1758,57 @@ export const listManagedNotificationChannelAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "channelAssociations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of member accounts associated with a notification configuration.
  */
-export const listMemberAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMemberAccountsRequest,
-  output: ListMemberAccountsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMemberAccounts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMemberAccountsRequest,
+    output: ListMemberAccountsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "memberAccounts",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of `EventRules` according to specified filters, in reverse chronological order (newest first).
  */
-export const listEventRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventRulesRequest,
-  output: ListEventRulesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEventRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEventRulesRequest,
+    output: ListEventRulesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "eventRules",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Registers a `NotificationConfiguration` in the specified Region.
  *
@@ -1797,7 +1832,7 @@ export const registerNotificationHub = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of Managed Notification Configurations according to specified filters, ordered by creation time in reverse chronological order (newest first).
  */
 export const listManagedNotificationConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedNotificationConfigurationsRequest,
     output: ListManagedNotificationConfigurationsResponse,
     errors: [
@@ -1806,12 +1841,18 @@ export const listManagedNotificationConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedNotificationConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of abbreviated `NotificationConfigurations` according to specified filters, in reverse chronological order (newest first).
  */
 export const listNotificationConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotificationConfigurationsRequest,
     output: ListNotificationConfigurationsResponse,
     errors: [
@@ -1820,12 +1861,18 @@ export const listNotificationConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "notificationConfigurations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of `NotificationHubs`.
  */
-export const listNotificationHubs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNotificationHubs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotificationHubsRequest,
     output: ListNotificationHubsResponse,
     errors: [
@@ -1834,8 +1881,13 @@ export const listNotificationHubs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "notificationHubs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Removes the association between an organizational unit and a notification configuration.
  */
@@ -1887,7 +1939,7 @@ export const createEventRule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of Managed Notification Events according to specified filters, ordered by creation time in reverse chronological order (newest first).
  */
 export const listManagedNotificationEvents =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedNotificationEventsRequest,
     output: ListManagedNotificationEventsResponse,
     errors: [
@@ -1896,12 +1948,18 @@ export const listManagedNotificationEvents =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedNotificationEvents",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of `ManagedNotificationChildEvents` for a specified aggregate `ManagedNotificationEvent`, ordered by creation time in reverse chronological order (newest first).
  */
 export const listManagedNotificationChildEvents =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedNotificationChildEventsRequest,
     output: ListManagedNotificationChildEventsResponse,
     errors: [
@@ -1910,6 +1968,12 @@ export const listManagedNotificationChildEvents =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "managedNotificationChildEvents",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a specified `ManagedNotificationEvent`.
@@ -1950,8 +2014,8 @@ export const getNotificationEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * User Notifications stores notifications in the individual Regions you register as notification hubs and the Region of the source event rule. ListNotificationEvents only returns notifications stored in the same Region in which the action is called. User Notifications doesn't backfill notifications to new Regions selected as notification hubs. For this reason, we recommend that you make calls in your oldest registered notification hub. For more information, see Notification hubs in the *Amazon Web Services User Notifications User Guide*.
  */
-export const listNotificationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNotificationEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotificationEventsRequest,
     output: ListNotificationEventsResponse,
     errors: [
@@ -1960,8 +2024,13 @@ export const listNotificationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "notificationEvents",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns the child event of a specific given `ManagedNotificationEvent`.
  */

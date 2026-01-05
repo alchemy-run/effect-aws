@@ -1006,11 +1006,23 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * Returns a list of Amazon Managed Grafana workspaces in the account, with some information
  * about each workspace. For more complete information about one workspace, use DescribeWorkspace.
  */
-export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkspacesRequest,
-  output: ListWorkspacesResponse,
-  errors: [AccessDeniedException, InternalServerException, ThrottlingException],
-}));
+export const listWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkspacesRequest,
+    output: ListWorkspacesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workspaces",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the current configuration string for the given workspace.
  */
@@ -1056,17 +1068,25 @@ export const createWorkspaceApiKey = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * only the roles for that user or group are returned. If you do this, you can specify only
  * one `userId` or one `groupId`.
  */
-export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPermissionsRequest,
-  output: ListPermissionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPermissionsRequest,
+    output: ListPermissionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "permissions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of service accounts for a workspace.
  *
@@ -1074,7 +1094,7 @@ export const listPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * version 9 and above.
  */
 export const listWorkspaceServiceAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkspaceServiceAccountsRequest,
     output: ListWorkspaceServiceAccountsResponse,
     errors: [
@@ -1085,6 +1105,12 @@ export const listWorkspaceServiceAccounts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceAccounts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a token that can be used to authenticate and authorize Grafana HTTP API
@@ -1126,7 +1152,7 @@ export const createWorkspaceServiceAccountToken =
  * version 9 and above.
  */
 export const listWorkspaceServiceAccountTokens =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkspaceServiceAccountTokensRequest,
     output: ListWorkspaceServiceAccountTokensResponse,
     errors: [
@@ -1137,6 +1163,12 @@ export const listWorkspaceServiceAccountTokens =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceAccountTokens",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Removes the Grafana Enterprise license from a workspace.
@@ -1188,17 +1220,25 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `CreateWorkspace`. Optionally, include a workspace to list the versions
  * to which it can be upgraded.
  */
-export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVersionsRequest,
-  output: ListVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVersionsRequest,
+    output: ListVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "grafanaVersions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The `TagResource` operation associates tags with an Amazon Managed Grafana
  * resource. Currently, the only resource that can be tagged is workspaces.

@@ -791,27 +791,41 @@ export const stopTextTranslationJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Provides a list of your parallel data resources in Amazon Translate.
  */
-export const listParallelData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListParallelDataRequest,
-  output: ListParallelDataResponse,
-  errors: [
-    InternalServerException,
-    InvalidParameterValueException,
-    TooManyRequestsException,
-  ],
-}));
+export const listParallelData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListParallelDataRequest,
+    output: ListParallelDataResponse,
+    errors: [
+      InternalServerException,
+      InvalidParameterValueException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of custom terminologies associated with your account.
  */
-export const listTerminologies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTerminologiesRequest,
-  output: ListTerminologiesResponse,
-  errors: [
-    InternalServerException,
-    InvalidParameterValueException,
-    TooManyRequestsException,
-  ],
-}));
+export const listTerminologies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTerminologiesRequest,
+    output: ListTerminologiesResponse,
+    errors: [
+      InternalServerException,
+      InvalidParameterValueException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a parallel data resource in Amazon Translate.
  */
@@ -943,8 +957,8 @@ export const createParallelData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of the batch translation jobs that you have submitted.
  */
-export const listTextTranslationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTextTranslationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTextTranslationJobsRequest,
     output: ListTextTranslationJobsResponse,
     errors: [
@@ -953,21 +967,32 @@ export const listTextTranslationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of languages (RFC-5646 codes and names) that Amazon Translate supports.
  */
-export const listLanguages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLanguagesRequest,
-  output: ListLanguagesResponse,
-  errors: [
-    InternalServerException,
-    InvalidParameterValueException,
-    TooManyRequestsException,
-    UnsupportedDisplayLanguageCodeException,
-  ],
-}));
+export const listLanguages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLanguagesRequest,
+    output: ListLanguagesResponse,
+    errors: [
+      InternalServerException,
+      InvalidParameterValueException,
+      TooManyRequestsException,
+      UnsupportedDisplayLanguageCodeException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts an asynchronous batch translation job. Use batch translation jobs to
  * translate large volumes of text across multiple documents at once.

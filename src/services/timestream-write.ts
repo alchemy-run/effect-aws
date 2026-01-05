@@ -840,17 +840,24 @@ export const describeBatchLoadTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * resumable until, and other details. See code
  * sample for details.
  */
-export const listBatchLoadTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBatchLoadTasksRequest,
-  output: ListBatchLoadTasksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    InvalidEndpointException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBatchLoadTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBatchLoadTasksRequest,
+    output: ListBatchLoadTasksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      InvalidEndpointException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Associates a set of tags with a Timestream resource. You can then activate
  * these user-defined tags so that they appear on the Billing and Cost Management console for
@@ -896,23 +903,30 @@ export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * code sample for
  * details.
  */
-export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatabasesRequest,
-  output: ListDatabasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    InvalidEndpointException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatabasesRequest,
+    output: ListDatabasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      InvalidEndpointException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of tables, along with the name, status, and retention properties of each
  * table. See code sample
  * for details.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [
@@ -923,6 +937,11 @@ export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Modifies the retention duration of the memory store and magnetic store for your Timestream table. Note that the change in retention duration takes effect immediately.

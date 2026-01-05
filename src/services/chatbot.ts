@@ -1299,7 +1299,7 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
  * Lists Slack channel configurations optionally filtered by ChatConfigurationArn
  */
 export const describeSlackChannelConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSlackChannelConfigurationsRequest,
     output: DescribeSlackChannelConfigurationsResult,
     errors: [
@@ -1307,6 +1307,12 @@ export const describeSlackChannelConfigurations =
       InvalidParameterException,
       InvalidRequestException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SlackChannelConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns AWS Chatbot account preferences.
@@ -1334,11 +1340,19 @@ export const getMicrosoftTeamsChannelConfiguration =
 /**
  * Lists resources associated with a channel configuration.
  */
-export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssociationsRequest,
-  output: ListAssociationsResult,
-  errors: [],
-}));
+export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssociationsRequest,
+    output: ListAssociationsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Associations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a Microsoft Teams channel configuration for AWS Chatbot
  */
@@ -1444,7 +1458,7 @@ export const associateToConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists Amazon Chime webhook configurations optionally filtered by ChatConfigurationArn
  */
 export const describeChimeWebhookConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeChimeWebhookConfigurationsRequest,
     output: DescribeChimeWebhookConfigurationsResult,
     errors: [
@@ -1452,12 +1466,18 @@ export const describeChimeWebhookConfigurations =
       InvalidParameterException,
       InvalidRequestException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WebhookConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all Slack user identities with a mapped role.
  */
-export const describeSlackUserIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSlackUserIdentities =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSlackUserIdentitiesRequest,
     output: DescribeSlackUserIdentitiesResult,
     errors: [
@@ -1465,13 +1485,18 @@ export const describeSlackUserIdentities = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       InvalidRequestException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SlackUserIdentities",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all authorized Slack workspaces connected to the AWS Account onboarded with AWS Chatbot.
  */
-export const describeSlackWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSlackWorkspaces =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSlackWorkspacesRequest,
     output: DescribeSlackWorkspacesResult,
     errors: [
@@ -1479,13 +1504,18 @@ export const describeSlackWorkspaces = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       InvalidRequestException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SlackWorkspaces",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all authorized Microsoft Teams for an AWS Account
  */
 export const listMicrosoftTeamsConfiguredTeams =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMicrosoftTeamsConfiguredTeamsRequest,
     output: ListMicrosoftTeamsConfiguredTeamsResult,
     errors: [
@@ -1493,12 +1523,18 @@ export const listMicrosoftTeamsConfiguredTeams =
       InvalidRequestException,
       ListMicrosoftTeamsConfiguredTeamsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfiguredTeams",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * A list all Microsoft Teams user identities with a mapped role.
  */
 export const listMicrosoftTeamsUserIdentities =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMicrosoftTeamsUserIdentitiesRequest,
     output: ListMicrosoftTeamsUserIdentitiesResult,
     errors: [
@@ -1506,6 +1542,12 @@ export const listMicrosoftTeamsUserIdentities =
       InvalidRequestException,
       ListMicrosoftTeamsUserIdentitiesException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TeamsUserIdentities",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all of the tags associated with the Amazon Resource Name (ARN) that you specify. The resource can be a user, server, or role.
@@ -1548,15 +1590,23 @@ export const updateCustomAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists custom actions defined in this account.
  */
-export const listCustomActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCustomActionsRequest,
-  output: ListCustomActionsResult,
-  errors: [
-    InternalServiceError,
-    InvalidRequestException,
-    UnauthorizedException,
-  ],
-}));
+export const listCustomActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCustomActionsRequest,
+    output: ListCustomActionsResult,
+    errors: [
+      InternalServiceError,
+      InvalidRequestException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomActions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Unlink a resource, for example a custom action, from a channel configuration.
  */
@@ -1587,7 +1637,7 @@ export const deleteCustomAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all AWS Chatbot Microsoft Teams channel configurations in an AWS account.
  */
 export const listMicrosoftTeamsChannelConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTeamsChannelConfigurationsRequest,
     output: ListTeamsChannelConfigurationsResult,
     errors: [
@@ -1595,6 +1645,12 @@ export const listMicrosoftTeamsChannelConfigurations =
       InvalidRequestException,
       ListTeamsChannelConfigurationsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TeamChannelConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Updates AWS Chatbot account preferences.

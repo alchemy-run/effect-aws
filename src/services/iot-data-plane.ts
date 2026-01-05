@@ -749,8 +749,8 @@ export const listNamedShadowsForThing = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For more information about messaging costs, see Amazon Web Services IoT Core
  * pricing - Messaging.
  */
-export const listRetainedMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRetainedMessages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRetainedMessagesRequest,
     output: ListRetainedMessagesResponse,
     errors: [
@@ -761,8 +761,13 @@ export const listRetainedMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "retainedTopics",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes the shadow for the specified thing.
  *

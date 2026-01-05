@@ -768,8 +768,8 @@ export const getProfileResourceAssociation =
 /**
  * Lists all the VPCs that the specified Route 53 Profile is associated with.
  */
-export const listProfileAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProfileAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProfileAssociationsRequest,
     output: ListProfileAssociationsResponse,
     errors: [
@@ -779,13 +779,18 @@ export const listProfileAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProfileAssociations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the resource associations for the specified Route 53 Profile.
  */
 export const listProfileResourceAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProfileResourceAssociationsRequest,
     output: ListProfileResourceAssociationsResponse,
     errors: [
@@ -797,6 +802,12 @@ export const listProfileResourceAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProfileResourceAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Deletes the specified Route 53 Profile. Before you can delete a profile, you must first disassociate it from all VPCs.
@@ -871,17 +882,25 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the Route 53 Profiles associated with your Amazon Web Services account.
  */
-export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProfilesRequest,
-  output: ListProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProfilesRequest,
+    output: ListProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProfileSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Dissoaciated a specified resource, from the Route 53 Profile.
  */

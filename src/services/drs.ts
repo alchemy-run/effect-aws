@@ -2095,17 +2095,25 @@ export const startRecovery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists resource launch actions.
  */
-export const listLaunchActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLaunchActionsRequest,
-  output: ListLaunchActionsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    UninitializedAccountException,
-  ],
-}));
+export const listLaunchActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLaunchActionsRequest,
+    output: ListLaunchActionsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      UninitializedAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts replication for a Source Network. This action would make the Source Network protected.
  */
@@ -2196,7 +2204,7 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all Launch Configuration Templates, filtered by Launch Configuration Template IDs
  */
 export const describeLaunchConfigurationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLaunchConfigurationTemplatesRequest,
     output: DescribeLaunchConfigurationTemplatesResponse,
     errors: [
@@ -2206,6 +2214,12 @@ export const describeLaunchConfigurationTemplates =
       UninitializedAccountException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Start replication to origin / target region - applies only to protected instances that originated in EC2.
@@ -2245,7 +2259,7 @@ export const updateReplicationConfigurationTemplate =
  * Lists all ReplicationConfigurationTemplates, filtered by Source Server IDs.
  */
 export const describeReplicationConfigurationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationConfigurationTemplatesRequest,
     output: DescribeReplicationConfigurationTemplatesResponse,
     errors: [
@@ -2255,6 +2269,12 @@ export const describeReplicationConfigurationTemplates =
       UninitializedAccountException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Create a new Source Network resource for a provided VPC ID.
@@ -2442,8 +2462,8 @@ export const deleteLaunchAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * a. The source server is not already extended into this Account.
  * b. The source server on the Account we’re reading from is not an extension of another source server.
  */
-export const listExtensibleSourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listExtensibleSourceServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListExtensibleSourceServersRequest,
     output: ListExtensibleSourceServersResponse,
     errors: [
@@ -2453,35 +2473,55 @@ export const listExtensibleSourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UninitializedAccountException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns an array of staging accounts for existing extended source servers.
  */
-export const listStagingAccounts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStagingAccountsRequest,
-  output: ListStagingAccountsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    UninitializedAccountException,
-    ValidationException,
-  ],
-}));
+export const listStagingAccounts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListStagingAccountsRequest,
+    output: ListStagingAccountsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      UninitializedAccountException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accounts",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of Jobs. Use the JobsID and fromDate and toDate filters to limit which jobs are returned. The response is sorted by creationDataTime - latest date first. Jobs are created by the StartRecovery, TerminateRecoveryInstances and StartFailbackLaunch APIs. Jobs are also created by DiagnosticLaunch and TerminateDiagnosticInstances, which are APIs available only to *Support* and only used in response to relevant support tickets.
  */
-export const describeJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeJobsRequest,
-  output: DescribeJobsResponse,
-  errors: [
-    InternalServerException,
-    ThrottlingException,
-    UninitializedAccountException,
-    ValidationException,
-  ],
-}));
+export const describeJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeJobsRequest,
+    output: DescribeJobsResponse,
+    errors: [
+      InternalServerException,
+      ThrottlingException,
+      UninitializedAccountException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing Launch Configuration Template by ID.
  */
@@ -2501,8 +2541,8 @@ export const updateLaunchConfigurationTemplate =
 /**
  * Lists all Source Networks or multiple Source Networks filtered by ID.
  */
-export const describeSourceNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSourceNetworks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSourceNetworksRequest,
     output: DescribeSourceNetworksResponse,
     errors: [
@@ -2511,8 +2551,13 @@ export const describeSourceNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UninitializedAccountException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deploy VPC for the specified Source Network and modify launch templates to use this network. The VPC will be deployed using a dedicated CloudFormation stack.
  */
@@ -2533,8 +2578,8 @@ export const startSourceNetworkRecovery = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all Source Servers or multiple Source Servers filtered by ID.
  */
-export const describeSourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSourceServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSourceServersRequest,
     output: DescribeSourceServersResponse,
     errors: [
@@ -2543,8 +2588,13 @@ export const describeSourceServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UninitializedAccountException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Puts a resource launch action.
  */
@@ -2563,8 +2613,8 @@ export const putLaunchAction = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Recovery Snapshots for a single Source Server.
  */
-export const describeRecoverySnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRecoverySnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRecoverySnapshotsRequest,
     output: DescribeRecoverySnapshotsResponse,
     errors: [
@@ -2574,8 +2624,13 @@ export const describeRecoverySnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UninitializedAccountException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Initiates a Job for launching the machine that is being failed back to from the specified Recovery Instance. This will run conversion on the failback client and will reboot your machine, thus completing the failback process.
  */
@@ -2594,21 +2649,28 @@ export const startFailbackLaunch = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a detailed Job log with pagination.
  */
-export const describeJobLogItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeJobLogItemsRequest,
-  output: DescribeJobLogItemsResponse,
-  errors: [
-    InternalServerException,
-    ThrottlingException,
-    UninitializedAccountException,
-    ValidationException,
-  ],
-}));
+export const describeJobLogItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeJobLogItemsRequest,
+    output: DescribeJobLogItemsResponse,
+    errors: [
+      InternalServerException,
+      ThrottlingException,
+      UninitializedAccountException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all Recovery Instances or multiple Recovery Instances by ID.
  */
-export const describeRecoveryInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRecoveryInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRecoveryInstancesRequest,
     output: DescribeRecoveryInstancesResponse,
     errors: [
@@ -2617,5 +2679,10 @@ export const describeRecoveryInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       UninitializedAccountException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));

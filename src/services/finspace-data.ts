@@ -1194,46 +1194,70 @@ export const getDataView = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the FinSpace Changesets for a Dataset.
  */
-export const listChangesets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChangesetsRequest,
-  output: ListChangesetsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChangesets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChangesetsRequest,
+    output: ListChangesetsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "changesets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of the active Datasets that a user has access to.
  */
-export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetsRequest,
-  output: ListDatasetsResponse,
-  errors: [
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDatasets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetsRequest,
+    output: ListDatasetsResponse,
+    errors: [
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "datasets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all available Dataviews for a Dataset.
  */
-export const listDataViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataViewsRequest,
-  output: ListDataViewsResponse,
-  errors: [
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataViewsRequest,
+    output: ListDataViewsResponse,
+    errors: [
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataViews",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Denies access to the FinSpace web application and API for the specified user.
  */
@@ -1549,7 +1573,7 @@ export const createDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all available users in FinSpace.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -1558,6 +1582,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "users",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * A temporary Amazon S3 location, where you can copy your files from a source location to stage or use
@@ -1576,8 +1606,8 @@ export const getWorkingLocation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all available permission groups in FinSpace.
  */
-export const listPermissionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPermissionGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPermissionGroupsRequest,
     output: ListPermissionGroupsResponse,
     errors: [
@@ -1586,8 +1616,13 @@ export const listPermissionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "permissionGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns the credentials to access the external Dataview from an S3 location. To call this API:
  *

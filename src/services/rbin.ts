@@ -543,10 +543,16 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Lists the Recycle Bin retention rules in the Region.
  */
-export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRulesRequest,
   output: ListRulesResponse,
   errors: [InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Rules",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Assigns tags to the specified retention rule.

@@ -347,7 +347,7 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
  * Provides a list of analysis segments for a real-time analysis session.
  */
 export const listRealtimeContactAnalysisSegments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRealtimeContactAnalysisSegmentsRequest,
     output: ListRealtimeContactAnalysisSegmentsResponse,
     errors: [
@@ -357,4 +357,9 @@ export const listRealtimeContactAnalysisSegments =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));

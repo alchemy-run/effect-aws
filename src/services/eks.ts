@@ -2725,16 +2725,24 @@ export const describeUpdate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Hybrid Nodes setup that could impair functionality of your cluster or
  * workloads. These are called configuration insights.
  */
-export const listInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInsightsRequest,
-  output: ListInsightsResponse,
-  errors: [
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServerException,
-  ],
-}));
+export const listInsights = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInsightsRequest,
+    output: ListInsightsResponse,
+    errors: [
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "insights",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a EKS Pod Identity association.
  *
@@ -2782,8 +2790,8 @@ export const describeAddonConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists available Kubernetes versions for Amazon EKS clusters.
  */
-export const describeClusterVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeClusterVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeClusterVersionsRequest,
     output: DescribeClusterVersionsResponse,
     errors: [
@@ -2791,21 +2799,34 @@ export const describeClusterVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusterVersions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the available access policies.
  */
-export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessPoliciesRequest,
-  output: ListAccessPoliciesResponse,
-  errors: [ServerException],
-}));
+export const listAccessPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessPoliciesRequest,
+    output: ListAccessPoliciesResponse,
+    errors: [ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accessPolicies",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the access policies associated with an access entry.
  */
 export const listAssociatedAccessPolicies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssociatedAccessPoliciesRequest,
     output: ListAssociatedAccessPoliciesResponse,
     errors: [
@@ -2813,21 +2834,35 @@ export const listAssociatedAccessPolicies =
       ResourceNotFoundException,
       ServerException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "associatedAccessPolicies",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists all managed capabilities in your Amazon EKS cluster. You can use this operation to get an overview of all capabilities and their current status.
  */
-export const listCapabilities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCapabilitiesRequest,
-  output: ListCapabilitiesResponse,
-  errors: [InvalidParameterException, ServerException],
-}));
+export const listCapabilities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCapabilitiesRequest,
+    output: ListCapabilitiesResponse,
+    errors: [InvalidParameterException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "capabilities",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List the EKS Pod Identity associations in a cluster. You can filter the list by the namespace that the
  * association is in or the service account that the association uses.
  */
-export const listPodIdentityAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPodIdentityAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPodIdentityAssociationsRequest,
     output: ListPodIdentityAssociationsResponse,
     errors: [
@@ -2836,8 +2871,13 @@ export const listPodIdentityAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "associations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Describes an access entry.
  */
@@ -2897,16 +2937,24 @@ export const describePodIdentityAssociation =
 /**
  * Lists the access entries for your cluster.
  */
-export const listAccessEntries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessEntriesRequest,
-  output: ListAccessEntriesResponse,
-  errors: [
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServerException,
-  ],
-}));
+export const listAccessEntries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessEntriesRequest,
+    output: ListAccessEntriesResponse,
+    errors: [
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accessEntries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Initiates an on-demand refresh operation for cluster insights, getting the latest analysis outside of the standard refresh schedule.
  */
@@ -3015,7 +3063,7 @@ export const describeFargateProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the installed add-ons.
  */
-export const listAddons = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAddons = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAddonsRequest,
   output: ListAddonsResponse,
   errors: [
@@ -3025,35 +3073,56 @@ export const listAddons = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ServerException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "addons",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists the Fargate profiles associated with the specified cluster in your Amazon Web Services
  * account in the specified Amazon Web Services Region.
  */
-export const listFargateProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFargateProfilesRequest,
-  output: ListFargateProfilesResponse,
-  errors: [
-    ClientException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServerException,
-  ],
-}));
+export const listFargateProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFargateProfilesRequest,
+    output: ListFargateProfilesResponse,
+    errors: [
+      ClientException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "fargateProfileNames",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the updates associated with an Amazon EKS resource in your Amazon Web Services account, in the
  * specified Amazon Web Services Region.
  */
-export const listUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUpdatesRequest,
-  output: ListUpdatesResponse,
-  errors: [
-    ClientException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServerException,
-  ],
-}));
+export const listUpdates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUpdatesRequest,
+    output: ListUpdatesResponse,
+    errors: [
+      ClientException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "updateIds",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Update an EKS Anywhere Subscription. Only auto renewal and tags can be updated after
  * subscription creation.
@@ -3290,8 +3359,8 @@ export const deleteFargateProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `owner`, `publisher`, and the `type` of the add-on
  * are returned.
  */
-export const describeAddonVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAddonVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAddonVersionsRequest,
     output: DescribeAddonVersionsResponse,
     errors: [
@@ -3299,8 +3368,13 @@ export const describeAddonVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "addons",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the configuration of a managed capability in your Amazon EKS cluster. You can update the IAM role, configuration settings, and delete propagation policy for a capability.
  *
@@ -3401,21 +3475,29 @@ export const describeNodegroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Amazon EKS clusters in your Amazon Web Services account in the specified Amazon Web Services Region.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [
-    ClientException,
-    InvalidParameterException,
-    ServerException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [
+      ClientException,
+      InvalidParameterException,
+      ServerException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Displays the full description of the subscription.
  */
 export const listEksAnywhereSubscriptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEksAnywhereSubscriptionsRequest,
     output: ListEksAnywhereSubscriptionsResponse,
     errors: [
@@ -3424,12 +3506,18 @@ export const listEksAnywhereSubscriptions =
       ServerException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "subscriptions",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the identity provider configurations for your cluster.
  */
-export const listIdentityProviderConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdentityProviderConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdentityProviderConfigsRequest,
     output: ListIdentityProviderConfigsResponse,
     errors: [
@@ -3439,23 +3527,36 @@ export const listIdentityProviderConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServerException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "identityProviderConfigs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the managed node groups associated with the specified cluster in your Amazon Web Services
  * account in the specified Amazon Web Services Region. Self-managed node groups aren't listed.
  */
-export const listNodegroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNodegroupsRequest,
-  output: ListNodegroupsResponse,
-  errors: [
-    ClientException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServerException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listNodegroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNodegroupsRequest,
+    output: ListNodegroupsResponse,
+    errors: [
+      ClientException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServerException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "nodegroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an EKS Anywhere subscription. When a subscription is created, it is a contract
  * agreement for the length of the term specified in the request. Licenses that are used to

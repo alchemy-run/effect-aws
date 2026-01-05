@@ -804,29 +804,44 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
 /**
  * Returns a list of approval teams.
  */
-export const listApprovalTeams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApprovalTeamsRequest,
-  output: ListApprovalTeamsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listApprovalTeams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApprovalTeamsRequest,
+    output: ListApprovalTeamsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApprovalTeams",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of identity sources. For more information, see Identity Source in the *Multi-party approval User Guide*.
  */
-export const listIdentitySources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIdentitySourcesRequest,
-  output: ListIdentitySourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIdentitySources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListIdentitySourcesRequest,
+    output: ListIdentitySourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IdentitySources",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates or updates a resource tag. Each tag is a label consisting of a user-defined key and value. Tags can help you manage, identify, organize, search for, and filter resources.
  */
@@ -895,17 +910,25 @@ export const getIdentitySource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of approval sessions. For more information, see Session in the *Multi-party approval User Guide*.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Sessions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details for an approval team.
  */
@@ -983,22 +1006,30 @@ export const getPolicyVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * The protected operation for a service integration might require specific permissions. For more information, see How other services work with Multi-party approval in the *Multi-party approval User Guide*.
  */
-export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPolicyVersionsRequest,
-  output: ListPolicyVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPolicyVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPolicyVersionsRequest,
+    output: ListPolicyVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PolicyVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of policies for a resource.
  */
-export const listResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourcePoliciesRequest,
     output: ListResourcePoliciesResponse,
     errors: [
@@ -1008,8 +1039,13 @@ export const listResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourcePolicies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts the deletion process for an active approval team.
  *
@@ -1068,16 +1104,24 @@ export const cancelSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * The protected operation for a service integration might require specific permissions. For more information, see How other services work with Multi-party approval in the *Multi-party approval User Guide*.
  */
-export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPoliciesRequest,
-  output: ListPoliciesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPoliciesRequest,
+    output: ListPoliciesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Policies",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes an identity source. For more information, see Identity Source in the *Multi-party approval User Guide*.
  */

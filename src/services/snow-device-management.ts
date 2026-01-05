@@ -734,7 +734,7 @@ export const createTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of tasks that can be filtered by state.
  */
-export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksInput,
   output: ListTasksOutput,
   errors: [
@@ -743,21 +743,35 @@ export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "tasks",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns the status of tasks for one or more target devices.
  */
-export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutionsInput,
-  output: ListExecutionsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutionsInput,
+    output: ListExecutionsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "executions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Sends a cancel request for a specified task. You can cancel a task only if it's still in a
  * `QUEUED` state. Tasks that are already running can't be cancelled.
@@ -809,30 +823,45 @@ export const describeDevice = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of all devices on your Amazon Web Services account that have Amazon Web Services Snow Device Management
  * enabled in the Amazon Web Services Region where the command is run.
  */
-export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesInput,
-  output: ListDevicesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesInput,
+    output: ListDevicesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the Amazon Web Services resources available for a device. Currently, Amazon EC2 instances are the only supported resource type.
  */
-export const listDeviceResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeviceResourcesInput,
-  output: ListDeviceResourcesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDeviceResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListDeviceResourcesInput,
+    output: ListDeviceResourcesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resources",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Checks the current state of the Amazon EC2 instances. The output is similar to
  * `describeDevice`, but the results are sourced from the device cache in the

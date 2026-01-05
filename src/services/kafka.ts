@@ -2638,8 +2638,8 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the operations that have been performed on the specified MSK cluster.
  */
-export const listClusterOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClusterOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClusterOperationsRequest,
     output: ListClusterOperationsResponse,
     errors: [
@@ -2648,8 +2648,13 @@ export const listClusterOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerErrorException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterOperationInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes an MSK Configuration.
  */
@@ -2756,8 +2761,8 @@ export const getClusterPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the MSK configurations in this Region.
  */
-export const listConfigurationRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConfigurationRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationRevisionsRequest,
     output: ListConfigurationRevisionsResponse,
     errors: [
@@ -2768,8 +2773,13 @@ export const listConfigurationRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Revisions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the cluster with the configuration that is specified in the request body.
  */
@@ -2855,8 +2865,8 @@ export const deleteClusterPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns partition details of this topic on a MSK cluster.
  */
-export const describeTopicPartitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTopicPartitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTopicPartitionsRequest,
     output: DescribeTopicPartitionsResponse,
     errors: [
@@ -2866,8 +2876,13 @@ export const describeTopicPartitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Partitions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a description of the MSK cluster whose Amazon Resource Name (ARN) is specified in the request.
  */
@@ -2885,7 +2900,7 @@ export const describeClusterV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the broker nodes in the cluster.
  */
-export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [
@@ -2894,21 +2909,35 @@ export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalServerErrorException,
     NotFoundException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "NodeInfoList",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a list of all the VPC connections in this Region.
  */
-export const listVpcConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVpcConnectionsRequest,
-  output: ListVpcConnectionsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listVpcConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVpcConnectionsRequest,
+    output: ListVpcConnectionsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VpcConnections",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the EBS storage associated with MSK brokers.
  */
@@ -2970,8 +2999,8 @@ export const rejectClientVpcConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of all the VPC connections in this Region.
  */
-export const listClientVpcConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClientVpcConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClientVpcConnectionsRequest,
     output: ListClientVpcConnectionsResponse,
     errors: [
@@ -2981,48 +3010,77 @@ export const listClientVpcConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClientVpcConnections",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the MSK configurations in this Region.
  */
-export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConfigurationsRequest,
-  output: ListConfigurationsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    ServiceUnavailableException,
-    UnauthorizedException,
-  ],
-}));
+export const listConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConfigurationsRequest,
+    output: ListConfigurationsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      ServiceUnavailableException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Configurations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all the MSK clusters in the current Region.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    UnauthorizedException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all the MSK clusters in the current Region.
  */
-export const listClustersV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersV2Request,
-  output: ListClustersV2Response,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    UnauthorizedException,
-  ],
-}));
+export const listClustersV2 = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersV2Request,
+    output: ListClustersV2Response,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * A list of brokers that a client application can use to bootstrap. This list doesn't necessarily include all of the brokers in the cluster. The following Python 3.6 example shows how you can use the Amazon Resource Name (ARN) of a cluster to get its bootstrap brokers. If you don't know the ARN of your cluster, you can use the `ListClusters` operation to get the ARNs of all the clusters in this account and Region.
  */
@@ -3040,20 +3098,28 @@ export const getBootstrapBrokers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of Apache Kafka versions.
  */
-export const listKafkaVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKafkaVersionsRequest,
-  output: ListKafkaVersionsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    UnauthorizedException,
-  ],
-}));
+export const listKafkaVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKafkaVersionsRequest,
+    output: ListKafkaVersionsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "KafkaVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List topics in a MSK cluster.
  */
-export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTopicsRequest,
   output: ListTopicsResponse,
   errors: [
@@ -3063,6 +3129,12 @@ export const listTopics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceUnavailableException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Topics",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a description of the cluster operation specified by the ARN.
@@ -3133,19 +3205,27 @@ export const deleteReplicator = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the Scram Secrets associated with an Amazon MSK cluster.
  */
-export const listScramSecrets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScramSecretsRequest,
-  output: ListScramSecretsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listScramSecrets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListScramSecretsRequest,
+    output: ListScramSecretsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecretArnList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Reboots brokers.
  */
@@ -3300,8 +3380,8 @@ export const getCompatibleKafkaVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of all the operations that have been performed on the specified MSK cluster.
  */
-export const listClusterOperationsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClusterOperationsV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClusterOperationsV2Request,
     output: ListClusterOperationsV2Response,
     errors: [
@@ -3313,24 +3393,37 @@ export const listClusterOperationsV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterOperationInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the replicators.
  */
-export const listReplicators = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReplicatorsRequest,
-  output: ListReplicatorsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listReplicators = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReplicatorsRequest,
+    output: ListReplicatorsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Replicators",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new MSK VPC connection.
  */

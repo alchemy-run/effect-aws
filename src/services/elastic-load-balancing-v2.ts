@@ -1721,10 +1721,15 @@ export const describeListenerAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Guide.
  */
 export const describeListenerCertificates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeListenerCertificatesInput,
     output: DescribeListenerCertificatesOutput,
     errors: [ListenerNotFoundException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Certificates",
+    } as const,
   }));
 /**
  * Describes the attributes for the specified Application Load Balancer, Network Load
@@ -1830,13 +1835,17 @@ export const deleteTrustStore = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - Quotas for your Gateway
  * Load Balancers
  */
-export const describeAccountLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAccountLimits =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccountLimitsInput,
     output: DescribeAccountLimitsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Limits",
+    } as const,
+  }));
 /**
  * Describes the attributes for the specified target group.
  *
@@ -1863,31 +1872,47 @@ export const describeTargetGroupAttributes =
  * results: the ARN of the load balancer, the names of one or more target groups, or the ARNs of
  * one or more target groups.
  */
-export const describeTargetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTargetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTargetGroupsInput,
     output: DescribeTargetGroupsOutput,
     errors: [LoadBalancerNotFoundException, TargetGroupNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "TargetGroups",
+    } as const,
+  }));
 /**
  * Describes all resources associated with the specified trust store.
  */
 export const describeTrustStoreAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrustStoreAssociationsInput,
     output: DescribeTrustStoreAssociationsOutput,
     errors: [TrustStoreNotFoundException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "TrustStoreAssociations",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Describes the revocation files in use by the specified trust store or revocation
  * files.
  */
 export const describeTrustStoreRevocations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTrustStoreRevocationsInput,
     output: DescribeTrustStoreRevocationsOutput,
     errors: [RevocationIdNotFoundException, TrustStoreNotFoundException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "TrustStoreRevocations",
+      pageSize: "PageSize",
+    } as const,
   }));
 /**
  * Retrieves the resource policy for a specified resource.
@@ -1922,11 +1947,18 @@ export const modifyTargetGroupAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes all trust stores for the specified account.
  */
-export const describeTrustStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTrustStoresInput,
-  output: DescribeTrustStoresOutput,
-  errors: [TrustStoreNotFoundException],
-}));
+export const describeTrustStores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeTrustStoresInput,
+    output: DescribeTrustStoresOutput,
+    errors: [TrustStoreNotFoundException],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "TrustStores",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Retrieves the ca certificate bundle.
  *
@@ -2057,25 +2089,36 @@ export const describeCapacityReservation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Balancer, Network Load Balancer, or Gateway Load Balancer. You must specify either a load
  * balancer or one or more listeners.
  */
-export const describeListeners = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeListenersInput,
-  output: DescribeListenersOutput,
-  errors: [
-    ListenerNotFoundException,
-    LoadBalancerNotFoundException,
-    UnsupportedProtocolException,
-  ],
-}));
+export const describeListeners = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeListenersInput,
+    output: DescribeListenersOutput,
+    errors: [
+      ListenerNotFoundException,
+      LoadBalancerNotFoundException,
+      UnsupportedProtocolException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Listeners",
+    } as const,
+  }),
+);
 /**
  * Describes the specified load balancers or all of your load balancers.
  */
-export const describeLoadBalancers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeLoadBalancers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeLoadBalancersInput,
     output: DescribeLoadBalancersOutput,
     errors: [LoadBalancerNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "LoadBalancers",
+    } as const,
+  }));
 /**
  * Update the ca certificate bundle for the specified trust store.
  */
@@ -2124,15 +2167,22 @@ export const removeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Describes the specified rules or the rules for the specified listener. You must specify
  * either a listener or rules.
  */
-export const describeRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeRulesInput,
-  output: DescribeRulesOutput,
-  errors: [
-    ListenerNotFoundException,
-    RuleNotFoundException,
-    UnsupportedProtocolException,
-  ],
-}));
+export const describeRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeRulesInput,
+    output: DescribeRulesOutput,
+    errors: [
+      ListenerNotFoundException,
+      RuleNotFoundException,
+      UnsupportedProtocolException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Rules",
+    } as const,
+  }),
+);
 /**
  * Sets the type of IP addresses used by the subnets of the specified load balancer.
  */

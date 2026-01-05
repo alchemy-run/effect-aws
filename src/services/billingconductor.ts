@@ -1448,7 +1448,7 @@ export const batchDisassociateResourcesFromCustomLineItem =
  * A list of the pricing plans that are associated with a pricing rule.
  */
 export const listPricingPlansAssociatedWithPricingRule =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPricingPlansAssociatedWithPricingRuleInput,
     output: ListPricingPlansAssociatedWithPricingRuleOutput,
     errors: [
@@ -1458,12 +1458,18 @@ export const listPricingPlansAssociatedWithPricingRule =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PricingPlanArns",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the pricing rules that are associated with a pricing plan.
  */
 export const listPricingRulesAssociatedToPricingPlan =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPricingRulesAssociatedToPricingPlanInput,
     output: ListPricingRulesAssociatedToPricingPlanOutput,
     errors: [
@@ -1473,6 +1479,12 @@ export const listPricingRulesAssociatedToPricingPlan =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PricingRuleArns",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * A list the tags for a resource.
@@ -1569,8 +1581,8 @@ export const updateBillingGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This is a paginated call to list linked accounts that are linked to the payer account for the specified time period. If no information is provided, the current billing period is used. The response will optionally include the billing group that's associated with the linked account.
  */
-export const listAccountAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccountAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccountAssociationsInput,
     output: ListAccountAssociationsOutput,
     errors: [
@@ -1580,13 +1592,17 @@ export const listAccountAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LinkedAccounts",
+    } as const,
+  }));
 /**
  * A paginated call to retrieve a summary report of actual Amazon Web Services charges and the calculated Amazon Web Services charges based on the associated pricing plan of a billing group.
  */
-export const listBillingGroupCostReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBillingGroupCostReports =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBillingGroupCostReportsInput,
     output: ListBillingGroupCostReportsOutput,
     errors: [
@@ -1596,8 +1612,13 @@ export const listBillingGroupCostReports = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BillingGroupCostReports",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a billing group that resembles a consolidated billing family that Amazon Web Services charges, based off of the predefined pricing plan computation.
  */
@@ -1691,7 +1712,7 @@ export const updateCustomLineItem = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * List the resources that are associated to a custom line item.
  */
 export const listResourcesAssociatedToCustomLineItem =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourcesAssociatedToCustomLineItemInput,
     output: ListResourcesAssociatedToCustomLineItemOutput,
     errors: [
@@ -1701,20 +1722,34 @@ export const listResourcesAssociatedToCustomLineItem =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssociatedResources",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * A paginated call to get pricing plans for the given billing period. If you don't provide a billing period, the current billing period is used.
  */
-export const listPricingPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPricingPlansInput,
-  output: ListPricingPlansOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPricingPlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPricingPlansInput,
+    output: ListPricingPlansOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PricingPlans",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an existing pricing rule.
  */
@@ -1832,8 +1867,8 @@ export const associatePricingRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves the margin summary report, which includes the Amazon Web Services cost and charged amount (pro forma cost) by Amazon Web Services service for a specific billing group.
  */
-export const getBillingGroupCostReport = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getBillingGroupCostReport =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetBillingGroupCostReportInput,
     output: GetBillingGroupCostReportOutput,
     errors: [
@@ -1843,13 +1878,18 @@ export const getBillingGroupCostReport = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BillingGroupCostReportResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * A paginated call to get a list of all custom line item versions.
  */
-export const listCustomLineItemVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomLineItemVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomLineItemVersionsInput,
     output: ListCustomLineItemVersionsOutput,
     errors: [
@@ -1858,46 +1898,74 @@ export const listCustomLineItemVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomLineItemVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * A paginated call to retrieve a list of billing groups for the given billing period. If you don't provide a billing group, the current billing period is used.
  */
-export const listBillingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBillingGroupsInput,
-  output: ListBillingGroupsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBillingGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBillingGroupsInput,
+    output: ListBillingGroupsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BillingGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * A paginated call to get a list of all custom line items (FFLIs) for the given billing period. If you don't provide a billing period, the current billing period is used.
  */
-export const listCustomLineItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCustomLineItemsInput,
-  output: ListCustomLineItemsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCustomLineItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCustomLineItemsInput,
+    output: ListCustomLineItemsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CustomLineItems",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes a pricing rule that can be associated to a pricing plan, or set of pricing plans.
  */
-export const listPricingRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPricingRulesInput,
-  output: ListPricingRulesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPricingRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPricingRulesInput,
+    output: ListPricingRulesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PricingRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

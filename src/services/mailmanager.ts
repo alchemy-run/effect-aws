@@ -1659,8 +1659,8 @@ export const getArchiveSearchResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists jobs for an address list.
  */
-export const listAddressListImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAddressListImportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAddressListImportJobsRequest,
     output: ListAddressListImportJobsResponse,
     errors: [
@@ -1669,42 +1669,70 @@ export const listAddressListImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImportJobs",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Returns a list of email archive export jobs.
  */
-export const listArchiveExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListArchiveExportsRequest,
-  output: ListArchiveExportsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listArchiveExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListArchiveExportsRequest,
+    output: ListArchiveExportsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Exports",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Returns a list of email archive search jobs.
  */
-export const listArchiveSearches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListArchiveSearchesRequest,
-  output: ListArchiveSearchesResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listArchiveSearches =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListArchiveSearchesRequest,
+    output: ListArchiveSearchesResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Searches",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Lists address lists for this account.
  */
-export const listAddressLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAddressListsRequest,
-  output: ListAddressListsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listAddressLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAddressListsRequest,
+    output: ListAddressListsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AddressLists",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Creates a new email archive resource for storing and retaining emails.
  */
@@ -1722,11 +1750,19 @@ export const createArchive = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all email archives in your account.
  */
-export const listArchives = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListArchivesRequest,
-  output: ListArchivesResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listArchives = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListArchivesRequest,
+    output: ListArchivesResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Archives",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Deletes an Add On subscription.
  */
@@ -1748,11 +1784,19 @@ export const deleteRuleSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Add On instances in your account.
  */
-export const listAddonInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAddonInstancesRequest,
-  output: ListAddonInstancesResponse,
-  errors: [ValidationException],
-}));
+export const listAddonInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAddonInstancesRequest,
+    output: ListAddonInstancesResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AddonInstances",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Creates a subscription for an Add On representing the acceptance of its terms of use and additional pricing. The subscription can then be used to create an instance for use in rule sets or traffic policies.
  */
@@ -1770,21 +1814,34 @@ export const createAddonSubscription = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all Add On subscriptions in your account.
  */
-export const listAddonSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAddonSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAddonSubscriptionsRequest,
     output: ListAddonSubscriptionsResponse,
     errors: [ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AddonSubscriptions",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * List all ingress endpoint resources.
  */
-export const listIngressPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIngressPointsRequest,
-  output: ListIngressPointsResponse,
-  errors: [ValidationException],
-}));
+export const listIngressPoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIngressPointsRequest,
+    output: ListIngressPointsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IngressPoints",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * Creates a relay resource which can be used in rules to relay incoming emails to defined relay destinations.
  */
@@ -1800,27 +1857,48 @@ export const createRelay = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the existing relay resources.
  */
-export const listRelays = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRelays = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRelaysRequest,
   output: ListRelaysResponse,
   errors: [ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Relays",
+    pageSize: "PageSize",
+  } as const,
 }));
 /**
  * List rule sets for this account.
  */
-export const listRuleSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRuleSetsRequest,
-  output: ListRuleSetsResponse,
-  errors: [ValidationException],
-}));
+export const listRuleSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRuleSetsRequest,
+    output: ListRuleSetsResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RuleSets",
+      pageSize: "PageSize",
+    } as const,
+  }),
+);
 /**
  * List traffic policy resources.
  */
-export const listTrafficPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrafficPoliciesRequest,
-  output: ListTrafficPoliciesResponse,
-  errors: [ValidationException],
-}));
+export const listTrafficPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTrafficPoliciesRequest,
+    output: ListTrafficPoliciesResponse,
+    errors: [ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrafficPolicies",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Stops an in-progress export of emails from an archive.
  */
@@ -2122,8 +2200,8 @@ export const createAddressListImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists members of an address list.
  */
-export const listMembersOfAddressList = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMembersOfAddressList =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMembersOfAddressListRequest,
     output: ListMembersOfAddressListResponse,
     errors: [
@@ -2132,8 +2210,13 @@ export const listMembersOfAddressList = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Addresses",
+      pageSize: "PageSize",
+    } as const,
+  }));
 /**
  * Provision a new ingress endpoint resource.
  */

@@ -13958,21 +13958,34 @@ export const importHubContent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the aliases of a specified image or image version.
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesRequest,
-  output: ListAliasesResponse,
-  errors: [ResourceNotFound],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesRequest,
+    output: ListAliasesResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SageMakerImageVersionAliases",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the candidates created for the job.
  */
-export const listCandidatesForAutoMLJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCandidatesForAutoMLJob =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCandidatesForAutoMLJobRequest,
     output: ListCandidatesForAutoMLJobResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Candidates",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List hub content versions.
  */
@@ -13986,93 +13999,154 @@ export const listHubContentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists model bias jobs definitions that satisfy various filters.
  */
-export const listModelBiasJobDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelBiasJobDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelBiasJobDefinitionsRequest,
     output: ListModelBiasJobDefinitionsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobDefinitionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists model explainability job definitions that satisfy various filters.
  */
 export const listModelExplainabilityJobDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelExplainabilityJobDefinitionsRequest,
     output: ListModelExplainabilityJobDefinitionsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobDefinitionSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of model quality monitoring job definitions in your account.
  */
 export const listModelQualityJobDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelQualityJobDefinitionsRequest,
     output: ListModelQualityJobDefinitionsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobDefinitionSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns list of all monitoring job executions.
  */
-export const listMonitoringExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMonitoringExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMonitoringExecutionsRequest,
     output: ListMonitoringExecutionsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MonitoringExecutionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of parameters for a pipeline execution.
  */
 export const listPipelineParametersForExecution =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineParametersForExecutionRequest,
     output: ListPipelineParametersForExecutionResponse,
     errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineParameters",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of the work teams that you are subscribed to in the Amazon Web Services Marketplace. The list may be empty if no work team satisfies the filter specified in the `NameContains` parameter.
  */
-export const listSubscribedWorkteams = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubscribedWorkteams =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubscribedWorkteamsRequest,
     output: ListSubscribedWorkteamsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SubscribedWorkteams",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the tags for the specified SageMaker resource.
  */
-export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsInput,
   output: ListTagsOutput,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Tags",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Gets a list of TrainingJobSummary objects that describe the training jobs that a hyperparameter tuning job launched.
  */
 export const listTrainingJobsForHyperParameterTuningJob =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrainingJobsForHyperParameterTuningJobRequest,
     output: ListTrainingJobsForHyperParameterTuningJobResponse,
     errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrainingJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Use this operation to list all private and vendor workforces in an Amazon Web Services Region. Note that you can only have one private workforce per Amazon Web Services Region.
  */
-export const listWorkforces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkforcesRequest,
-  output: ListWorkforcesResponse,
-  errors: [],
-}));
+export const listWorkforces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkforcesRequest,
+    output: ListWorkforcesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workforces",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of private work teams that you have defined in a region. The list may be empty if no work team satisfies the filter specified in the `NameContains` parameter.
  */
-export const listWorkteams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkteamsRequest,
-  output: ListWorkteamsResponse,
-  errors: [],
-}));
+export const listWorkteams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkteamsRequest,
+    output: ListWorkteamsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workteams",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Adds a resouce policy to control access to a model group. For information about resoure policies, see Identity-based policies and resource-based policies in the *Amazon Web Services Identity and Access Management User Guide.*.
  */
@@ -15525,214 +15599,394 @@ export const getDeviceFleetReport = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the actions in your account and their properties.
  */
-export const listActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListActionsRequest,
-  output: ListActionsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListActionsRequest,
+    output: ListActionsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ActionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the machine learning algorithms that have been created.
  */
-export const listAlgorithms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAlgorithmsInput,
-  output: ListAlgorithmsOutput,
-  errors: [],
-}));
+export const listAlgorithms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAlgorithmsInput,
+    output: ListAlgorithmsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AlgorithmSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the AppImageConfigs in your account and their properties. The list can be filtered by creation time or modified time, and whether the AppImageConfig name contains a specified string.
  */
-export const listAppImageConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppImageConfigsRequest,
-  output: ListAppImageConfigsResponse,
-  errors: [],
-}));
+export const listAppImageConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAppImageConfigsRequest,
+    output: ListAppImageConfigsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AppImageConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists apps.
  */
-export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsRequest,
   output: ListAppsResponse,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Apps",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the artifacts in your account and their properties.
  */
-export const listArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListArtifactsRequest,
-  output: ListArtifactsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListArtifactsRequest,
+    output: ListArtifactsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ArtifactSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the associations in your account and their properties.
  */
-export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssociationsRequest,
-  output: ListAssociationsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listAssociations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssociationsRequest,
+    output: ListAssociationsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssociationSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Request a list of jobs.
  */
-export const listAutoMLJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAutoMLJobsRequest,
-  output: ListAutoMLJobsResponse,
-  errors: [],
-}));
+export const listAutoMLJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAutoMLJobsRequest,
+    output: ListAutoMLJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AutoMLJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of event summaries for a specified HyperPod cluster. The operation supports filtering, sorting, and pagination of results. This functionality is only supported when the `NodeProvisioningMode` is set to `Continuous`.
  */
-export const listClusterEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClusterEventsRequest,
-  output: ListClusterEventsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listClusterEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClusterEventsRequest,
+    output: ListClusterEventsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the list of instances (also called *nodes* interchangeably) in a SageMaker HyperPod cluster.
  */
-export const listClusterNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClusterNodesRequest,
-  output: ListClusterNodesResponse,
-  errors: [ResourceNotFound],
-}));
+export const listClusterNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClusterNodesRequest,
+    output: ListClusterNodesResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterNodeSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the list of SageMaker HyperPod clusters.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the cluster policy configurations.
  */
-export const listClusterSchedulerConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listClusterSchedulerConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClusterSchedulerConfigsRequest,
     output: ListClusterSchedulerConfigsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ClusterSchedulerConfigSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the Git repositories in your account.
  */
-export const listCodeRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCodeRepositories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCodeRepositoriesInput,
     output: ListCodeRepositoriesOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CodeRepositorySummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists model compilation jobs that satisfy various filters.
  *
  * To create a model compilation job, use CreateCompilationJob. To get information about a particular model compilation job you have created, use DescribeCompilationJob.
  */
-export const listCompilationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCompilationJobsRequest,
-  output: ListCompilationJobsResponse,
-  errors: [],
-}));
+export const listCompilationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCompilationJobsRequest,
+    output: ListCompilationJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CompilationJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the resource allocation definitions.
  */
-export const listComputeQuotas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComputeQuotasRequest,
-  output: ListComputeQuotasResponse,
-  errors: [],
-}));
+export const listComputeQuotas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComputeQuotasRequest,
+    output: ListComputeQuotasResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ComputeQuotaSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the contexts in your account and their properties.
  */
-export const listContexts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContextsRequest,
-  output: ListContextsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listContexts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContextsRequest,
+    output: ListContextsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ContextSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the data quality job definitions in your account.
  */
 export const listDataQualityJobDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataQualityJobDefinitionsRequest,
     output: ListDataQualityJobDefinitionsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobDefinitionSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of devices in the fleet.
  */
-export const listDeviceFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeviceFleetsRequest,
-  output: ListDeviceFleetsResponse,
-  errors: [],
-}));
+export const listDeviceFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeviceFleetsRequest,
+    output: ListDeviceFleetsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DeviceFleetSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the domains.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResponse,
-  errors: [],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Domains",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all edge deployment plans.
  */
-export const listEdgeDeploymentPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEdgeDeploymentPlans =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEdgeDeploymentPlansRequest,
     output: ListEdgeDeploymentPlansResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EdgeDeploymentPlanSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of edge packaging jobs.
  */
-export const listEdgePackagingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEdgePackagingJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEdgePackagingJobsRequest,
     output: ListEdgePackagingJobsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EdgePackagingJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists endpoint configurations.
  */
-export const listEndpointConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointConfigsInput,
-  output: ListEndpointConfigsOutput,
-  errors: [],
-}));
+export const listEndpointConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEndpointConfigsInput,
+    output: ListEndpointConfigsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EndpointConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists endpoints.
  */
-export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointsInput,
-  output: ListEndpointsOutput,
-  errors: [],
-}));
+export const listEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEndpointsInput,
+    output: ListEndpointsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Endpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the experiments in your account. The list can be filtered to show only experiments that were created in a specific time range. The list can be sorted by experiment name or creation time.
  */
-export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExperimentsRequest,
-  output: ListExperimentsResponse,
-  errors: [],
-}));
+export const listExperiments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExperimentsRequest,
+    output: ListExperimentsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExperimentSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List `FeatureGroup`s based on given filter and order.
  */
-export const listFeatureGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFeatureGroupsRequest,
-  output: ListFeatureGroupsResponse,
-  errors: [],
-}));
+export const listFeatureGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFeatureGroupsRequest,
+    output: ListFeatureGroupsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FeatureGroupSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about the flow definitions in your account.
  */
-export const listFlowDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlowDefinitionsRequest,
-  output: ListFlowDefinitionsResponse,
-  errors: [],
-}));
+export const listFlowDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFlowDefinitionsRequest,
+    output: ListFlowDefinitionsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FlowDefinitionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the contents of a hub.
  */
@@ -15752,282 +16006,477 @@ export const listHubs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns information about the human task user interfaces in your account.
  */
-export const listHumanTaskUis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHumanTaskUisRequest,
-  output: ListHumanTaskUisResponse,
-  errors: [],
-}));
+export const listHumanTaskUis = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHumanTaskUisRequest,
+    output: ListHumanTaskUisResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HumanTaskUiSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of HyperParameterTuningJobSummary objects that describe the hyperparameter tuning jobs launched in your account.
  */
 export const listHyperParameterTuningJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListHyperParameterTuningJobsRequest,
     output: ListHyperParameterTuningJobsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HyperParameterTuningJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the images in your account and their properties. The list can be filtered by creation time or modified time, and whether the image name contains a specified string.
  */
-export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
   output: ListImagesResponse,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Images",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists the versions of a specified image and their properties. The list can be filtered by creation time or modified time.
  */
-export const listImageVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImageVersionsRequest,
-  output: ListImageVersionsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listImageVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImageVersionsRequest,
+    output: ListImageVersionsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ImageVersions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the inference components in your account and their properties.
  */
-export const listInferenceComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInferenceComponents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceComponentsInput,
     output: ListInferenceComponentsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InferenceComponents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the list of all inference experiments.
  */
-export const listInferenceExperiments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInferenceExperiments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceExperimentsRequest,
     output: ListInferenceExperimentsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InferenceExperiments",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists recommendation jobs that satisfy various filters.
  */
 export const listInferenceRecommendationsJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceRecommendationsJobsRequest,
     output: ListInferenceRecommendationsJobsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InferenceRecommendationsJobs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of labeling jobs.
  */
-export const listLabelingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLabelingJobsRequest,
-  output: ListLabelingJobsResponse,
-  errors: [],
-}));
+export const listLabelingJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLabelingJobsRequest,
+    output: ListLabelingJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LabelingJobSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * A list of lineage groups shared with your Amazon Web Services account. For more information, see Cross-Account Lineage Tracking in the *Amazon SageMaker Developer Guide*.
  */
-export const listLineageGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLineageGroupsRequest,
-  output: ListLineageGroupsResponse,
-  errors: [],
-}));
+export const listLineageGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLineageGroupsRequest,
+    output: ListLineageGroupsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LineageGroupSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all MLflow Apps
  */
-export const listMlflowApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMlflowAppsRequest,
-  output: ListMlflowAppsResponse,
-  errors: [],
-}));
+export const listMlflowApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMlflowAppsRequest,
+    output: ListMlflowAppsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all MLflow Tracking Servers.
  */
-export const listMlflowTrackingServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMlflowTrackingServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMlflowTrackingServersRequest,
     output: ListMlflowTrackingServersResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrackingServerSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the export jobs for the Amazon SageMaker Model Card.
  */
-export const listModelCardExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelCardExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelCardExportJobsRequest,
     output: ListModelCardExportJobsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelCardExportJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List existing model cards.
  */
-export const listModelCards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelCardsRequest,
-  output: ListModelCardsResponse,
-  errors: [],
-}));
+export const listModelCards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListModelCardsRequest,
+    output: ListModelCardsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelCardSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List existing versions of an Amazon SageMaker Model Card.
  */
-export const listModelCardVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelCardVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelCardVersionsRequest,
     output: ListModelCardVersionsResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelCardVersionSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the model groups in your Amazon Web Services account.
  */
-export const listModelPackageGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listModelPackageGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListModelPackageGroupsInput,
     output: ListModelPackageGroupsOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelPackageGroupSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the model packages that have been created.
  */
-export const listModelPackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelPackagesInput,
-  output: ListModelPackagesOutput,
-  errors: [],
-}));
+export const listModelPackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListModelPackagesInput,
+    output: ListModelPackagesOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelPackageSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists models created with the `CreateModel` API.
  */
-export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListModelsInput,
   output: ListModelsOutput,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Models",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Gets a list of past alerts in a model monitoring schedule.
  */
-export const listMonitoringAlertHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMonitoringAlertHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMonitoringAlertHistoryRequest,
     output: ListMonitoringAlertHistoryResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MonitoringAlertHistory",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns list of all monitoring schedules.
  */
-export const listMonitoringSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMonitoringSchedules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMonitoringSchedulesRequest,
     output: ListMonitoringSchedulesResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MonitoringScheduleSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists notebook instance lifestyle configurations created with the CreateNotebookInstanceLifecycleConfig API.
  */
 export const listNotebookInstanceLifecycleConfigs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotebookInstanceLifecycleConfigsInput,
     output: ListNotebookInstanceLifecycleConfigsOutput,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NotebookInstanceLifecycleConfigs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of the SageMaker AI notebook instances in the requester's account in an Amazon Web Services Region.
  */
-export const listNotebookInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNotebookInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotebookInstancesInput,
     output: ListNotebookInstancesOutput,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "NotebookInstances",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the optimization jobs in your account and their properties.
  */
-export const listOptimizationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOptimizationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOptimizationJobsRequest,
     output: ListOptimizationJobsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OptimizationJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all of the SageMaker Partner AI Apps in an account.
  */
-export const listPartnerApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPartnerAppsRequest,
-  output: ListPartnerAppsResponse,
-  errors: [],
-}));
+export const listPartnerApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPartnerAppsRequest,
+    output: ListPartnerAppsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Summaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of the pipeline executions.
  */
-export const listPipelineExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPipelineExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineExecutionsRequest,
     output: ListPipelineExecutionsResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineExecutionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets a list of pipelines.
  */
-export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPipelinesRequest,
-  output: ListPipelinesResponse,
-  errors: [],
-}));
+export const listPipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPipelinesRequest,
+    output: ListPipelinesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of all versions of the pipeline.
  */
-export const listPipelineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPipelineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineVersionsRequest,
     output: ListPipelineVersionsResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineVersionSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists processing jobs that satisfy various filters.
  */
-export const listProcessingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProcessingJobsRequest,
-  output: ListProcessingJobsResponse,
-  errors: [],
-}));
+export const listProcessingJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProcessingJobsRequest,
+    output: ListProcessingJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProcessingJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of the projects in an Amazon Web Services account.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsInput,
-  output: ListProjectsOutput,
-  errors: [],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsInput,
+    output: ListProjectsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists Amazon SageMaker Catalogs based on given filters and orders. The maximum number of `ResourceCatalog`s viewable is 1000.
  */
-export const listResourceCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceCatalogs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceCatalogsRequest,
     output: ListResourceCatalogsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceCatalogs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists devices allocated to the stage, containing detailed device information and deployment status.
  */
-export const listStageDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStageDevicesRequest,
-  output: ListStageDevicesResponse,
-  errors: [],
-}));
+export const listStageDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStageDevicesRequest,
+    output: ListStageDevicesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DeviceDeploymentSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon SageMaker AI Studio Lifecycle Configurations in your Amazon Web Services Account.
  */
-export const listStudioLifecycleConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStudioLifecycleConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStudioLifecycleConfigsRequest,
     output: ListStudioLifecycleConfigsResponse,
     errors: [ResourceInUse],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StudioLifecycleConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists training jobs.
  *
@@ -16043,19 +16492,35 @@ export const listStudioLifecycleConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * `aws sagemaker list-training-jobs --max-results 100 --status-equals InProgress`
  */
-export const listTrainingJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrainingJobsRequest,
-  output: ListTrainingJobsResponse,
-  errors: [],
-}));
+export const listTrainingJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrainingJobsRequest,
+    output: ListTrainingJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrainingJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists transform jobs.
  */
-export const listTransformJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTransformJobsRequest,
-  output: ListTransformJobsResponse,
-  errors: [],
-}));
+export const listTransformJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTransformJobsRequest,
+    output: ListTransformJobsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TransformJobSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the trial components in your account. You can sort the list by trial component name or creation time. You can filter the list to show only components that were created in a specific time range. You can also filter on one of the following:
  *
@@ -16065,36 +16530,63 @@ export const listTransformJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - `TrialName`
  */
-export const listTrialComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrialComponentsRequest,
-  output: ListTrialComponentsResponse,
-  errors: [ResourceNotFound],
-}));
+export const listTrialComponents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTrialComponentsRequest,
+    output: ListTrialComponentsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrialComponentSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the trials in your account. Specify an experiment name to limit the list to the trials that are part of that experiment. Specify a trial component name to limit the list to the trials that associated with that trial component. The list can be filtered to show only trials that were created in a specific time range. The list can be sorted by trial name or creation time.
  */
-export const listTrials = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTrials = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrialsRequest,
   output: ListTrialsResponse,
   errors: [ResourceNotFound],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "TrialSummaries",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Lists all UltraServers that are part of a specified reserved capacity.
  */
 export const listUltraServersByReservedCapacity =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUltraServersByReservedCapacityRequest,
     output: ListUltraServersByReservedCapacityResponse,
     errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UltraServers",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists user profiles.
  */
-export const listUserProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserProfilesRequest,
-  output: ListUserProfilesResponse,
-  errors: [],
-}));
+export const listUserProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserProfilesRequest,
+    output: ListUserProfilesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "UserProfiles",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Notifies the pipeline that the execution of a callback step succeeded and provides a list of the step's output parameters. When a callback step is run, the pipeline generates a callback token and includes the token in a message sent to Amazon Simple Queue Service (Amazon SQS).
  */
@@ -16237,10 +16729,16 @@ export const createEdgeDeploymentPlan = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Creates presigned URLs for accessing hub content artifacts. This operation generates time-limited, secure URLs that allow direct download of model artifacts and associated files from Amazon SageMaker hub content, including gated models that require end-user license agreement acceptance.
  */
 export const createHubContentPresignedUrls =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: CreateHubContentPresignedUrlsRequest,
     output: CreateHubContentPresignedUrlsResponse,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AuthorizedUrlConfigs",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Creates an inference component, which is a SageMaker AI hosting object that you can use to deploy a model to an endpoint. In the inference component settings, you specify the model, the endpoint, and how the model utilizes the resources that the endpoint hosts. You can optimize resource utilization by tailoring how the required CPU cores, accelerators, and memory are allocated. You can deploy multiple inference components to an endpoint, where each inference component contains one model and the resource utilization needs for that individual model. After you deploy an inference component, you can directly invoke the associated model when you use the InvokeEndpoint API action.
@@ -16395,48 +16893,81 @@ export const describeWorkforce = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * A list of devices.
  */
-export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesRequest,
-  output: ListDevicesResponse,
-  errors: [],
-}));
+export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesRequest,
+    output: ListDevicesResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DeviceSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the subtasks for an Inference Recommender job.
  *
  * The supported subtasks are benchmarks, which evaluate the performance of your model on different instance types.
  */
 export const listInferenceRecommendationsJobSteps =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInferenceRecommendationsJobStepsRequest,
     output: ListInferenceRecommendationsJobStepsResponse,
     errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Steps",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets a list of labeling jobs assigned to a specified work team.
  */
-export const listLabelingJobsForWorkteam = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLabelingJobsForWorkteam =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLabelingJobsForWorkteamRequest,
     output: ListLabelingJobsForWorkteamResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LabelingJobSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists spaces.
  */
-export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSpaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSpacesRequest,
   output: ListSpacesResponse,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Spaces",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves a list of training plans for the current account.
  */
-export const listTrainingPlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrainingPlansRequest,
-  output: ListTrainingPlansResponse,
-  errors: [],
-}));
+export const listTrainingPlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrainingPlansRequest,
+    output: ListTrainingPlansResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TrainingPlanSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Renders the UI template so that you can preview the worker's experience.
  */
@@ -16795,29 +17326,49 @@ export const getSearchSuggestions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the domain, framework, task, and model name of standard machine learning models found in common model zoos.
  */
-export const listModelMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListModelMetadataRequest,
-  output: ListModelMetadataResponse,
-  errors: [],
-}));
-/**
- * Gets the alerts for a single monitoring schedule.
- */
-export const listMonitoringAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(
+export const listModelMetadata = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
   () => ({
-    input: ListMonitoringAlertsRequest,
-    output: ListMonitoringAlertsResponse,
-    errors: [ResourceNotFound],
+    input: ListModelMetadataRequest,
+    output: ListModelMetadataResponse,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ModelMetadataSummaries",
+      pageSize: "MaxResults",
+    } as const,
   }),
 );
 /**
+ * Gets the alerts for a single monitoring schedule.
+ */
+export const listMonitoringAlerts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMonitoringAlertsRequest,
+    output: ListMonitoringAlertsResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MonitoringAlertSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
+/**
  * Use this action to inspect your lineage and discover relationships between entities. For more information, see Querying Lineage Entities in the *Amazon SageMaker Developer Guide*.
  */
-export const queryLineage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: QueryLineageRequest,
-  output: QueryLineageResponse,
-  errors: [ResourceNotFound],
-}));
+export const queryLineage = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: QueryLineageRequest,
+    output: QueryLineageResponse,
+    errors: [ResourceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the platform software of a SageMaker HyperPod cluster for security patching. To learn how to use this API, see Update the SageMaker HyperPod platform software of a cluster.
  *
@@ -16987,13 +17538,18 @@ export const createTrainingJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of `PipeLineExecutionStep` objects.
  */
-export const listPipelineExecutionSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPipelineExecutionSteps =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPipelineExecutionStepsRequest,
     output: ListPipelineExecutionStepsResponse,
     errors: [ResourceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PipelineExecutionSteps",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates an Autopilot job also referred to as Autopilot experiment or AutoML job V2.
  *
@@ -17044,8 +17600,14 @@ export const getScalingConfigurationRecommendation =
  *
  * The Search API may provide access to otherwise restricted data. See Amazon SageMaker API Permissions: Actions, Permissions, and Resources Reference for more information.
  */
-export const search = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const search = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchRequest,
   output: SearchResponse,
   errors: [],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Results",
+    pageSize: "MaxResults",
+  } as const,
 }));

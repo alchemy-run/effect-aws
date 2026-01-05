@@ -2212,30 +2212,43 @@ export const deleteDashboard = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the channels in the current account, and their source names.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    InvalidNextTokenException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      InvalidNextTokenException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about all event data stores in the account, in the current
  * Region.
  */
-export const listEventDataStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEventDataStoresRequest,
-  output: ListEventDataStoresResponse,
-  errors: [
-    InvalidMaxResultsException,
-    InvalidNextTokenException,
-    NoManagementAccountSLRExistsException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listEventDataStores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListEventDataStoresRequest,
+    output: ListEventDataStoresResponse,
+    errors: [
+      InvalidMaxResultsException,
+      InvalidNextTokenException,
+      NoManagementAccountSLRExistsException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the specified dashboard.
  */
@@ -2274,8 +2287,8 @@ export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - If `ListInsightsMetricData` is invoked without `TrailName` parameter, access to the `ListInsightsMetricData` API operation is linked to the `cloudtrail:LookupEvents` action only. To use this operation,
  * you must have permissions to perform the `cloudtrail:LookupEvents` action.
  */
-export const listInsightsMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInsightsMetricData =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInsightsMetricDataRequest,
     output: ListInsightsMetricDataResponse,
     errors: [
@@ -2284,15 +2297,24 @@ export const listInsightsMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OperationNotPermittedException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists trails that are in the current account.
  */
-export const listTrails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTrails = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTrailsRequest,
   output: ListTrailsResponse,
   errors: [OperationNotPermittedException, UnsupportedOperationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Trails",
+  } as const,
 }));
 /**
  * Searches sample queries and returns a list of sample queries that are sorted by relevance.
@@ -2439,31 +2461,47 @@ export const getEventDataStore = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of failures for the specified import.
  */
-export const listImportFailures = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportFailuresRequest,
-  output: ListImportFailuresResponse,
-  errors: [
-    InvalidNextTokenException,
-    InvalidParameterException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listImportFailures = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportFailuresRequest,
+    output: ListImportFailuresResponse,
+    errors: [
+      InvalidNextTokenException,
+      InvalidParameterException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Failures",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information on all imports, or a select set of imports by
  * `ImportStatus` or `Destination`.
  */
-export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportsRequest,
-  output: ListImportsResponse,
-  errors: [
-    EventDataStoreARNInvalidException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportsRequest,
+    output: ListImportsResponse,
+    errors: [
+      EventDataStoreARNInvalidException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Imports",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a channel specified by a required channel ARN or UUID.
  */
@@ -2583,15 +2621,23 @@ export const getInsightSelectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The rate of ListInsightsData requests is limited to two per second, per account, per Region. If
  * this limit is exceeded, a throttling error occurs.
  */
-export const listInsightsData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInsightsDataRequest,
-  output: ListInsightsDataResponse,
-  errors: [
-    InvalidParameterException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listInsightsData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInsightsDataRequest,
+    output: ListInsightsDataResponse,
+    errors: [
+      InvalidParameterException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns all public keys whose private keys were used to sign the digest files within the
  * specified time range. The public key is needed to validate digest files that were signed
@@ -2602,16 +2648,23 @@ export const listInsightsData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * from a specific Region, you must look in the same Region for its corresponding public
  * key.
  */
-export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPublicKeysRequest,
-  output: ListPublicKeysResponse,
-  errors: [
-    InvalidTimeRangeException,
-    InvalidTokenException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPublicKeysRequest,
+    output: ListPublicKeysResponse,
+    errors: [
+      InvalidTimeRangeException,
+      InvalidTokenException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PublicKeyList",
+    } as const,
+  }),
+);
 /**
  * Looks up management events or CloudTrail Insights events that are captured by CloudTrail.
  * You can look up events that occurred in a Region within the last 90 days.
@@ -2652,19 +2705,27 @@ export const listPublicKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * The rate of lookup requests is limited to two per second, per account, per Region. If
  * this limit is exceeded, a throttling error occurs.
  */
-export const lookupEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: LookupEventsRequest,
-  output: LookupEventsResponse,
-  errors: [
-    InvalidEventCategoryException,
-    InvalidLookupAttributesException,
-    InvalidMaxResultsException,
-    InvalidNextTokenException,
-    InvalidTimeRangeException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const lookupEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: LookupEventsRequest,
+    output: LookupEventsResponse,
+    errors: [
+      InvalidEventCategoryException,
+      InvalidLookupAttributesException,
+      InvalidMaxResultsException,
+      InvalidNextTokenException,
+      InvalidTimeRangeException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Events",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts the recording of Amazon Web Services API calls and log file delivery for a trail.
  * For a trail that is enabled in all Regions, this operation must be called from the Region
@@ -3000,23 +3061,26 @@ export const putEventSelectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets event data results of a query. You must specify the `QueryID` value
  * returned by the `StartQuery` operation.
  */
-export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetQueryResultsRequest,
-  output: GetQueryResultsResponse,
-  errors: [
-    EventDataStoreARNInvalidException,
-    EventDataStoreNotFoundException,
-    InactiveEventDataStoreException,
-    InsufficientEncryptionPolicyException,
-    InvalidMaxResultsException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NoManagementAccountSLRExistsException,
-    OperationNotPermittedException,
-    QueryIdNotFoundException,
-    UnsupportedOperationException,
-  ],
-}));
+export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetQueryResultsRequest,
+    output: GetQueryResultsResponse,
+    errors: [
+      EventDataStoreARNInvalidException,
+      EventDataStoreNotFoundException,
+      InactiveEventDataStoreException,
+      InsufficientEncryptionPolicyException,
+      InvalidMaxResultsException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NoManagementAccountSLRExistsException,
+      OperationNotPermittedException,
+      QueryIdNotFoundException,
+      UnsupportedOperationException,
+    ],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }),
+);
 /**
  * Cancels a query if the query is not in a terminated state, such as
  * `CANCELLED`, `FAILED`, `TIMED_OUT`, or
@@ -3155,7 +3219,7 @@ export const deleteResourcePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the tags for the specified trails, event data stores, dashboards, or channels in the current Region.
  */
-export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTagsRequest,
   output: ListTagsResponse,
   errors: [
@@ -3172,6 +3236,11 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceTypeNotSupportedException,
     UnsupportedOperationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "ResourceTagList",
+  } as const,
 }));
 /**
  * Removes the specified tags from a trail, event data store, dashboard, or channel.
@@ -3228,23 +3297,30 @@ export const deregisterOrganizationDelegatedAdmin =
  * `FINISHED`, `FAILED`, `TIMED_OUT`, or
  * `CANCELLED`.
  */
-export const listQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQueriesRequest,
-  output: ListQueriesResponse,
-  errors: [
-    EventDataStoreARNInvalidException,
-    EventDataStoreNotFoundException,
-    InactiveEventDataStoreException,
-    InvalidDateRangeException,
-    InvalidMaxResultsException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidQueryStatusException,
-    NoManagementAccountSLRExistsException,
-    OperationNotPermittedException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listQueries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQueriesRequest,
+    output: ListQueriesResponse,
+    errors: [
+      EventDataStoreARNInvalidException,
+      EventDataStoreNotFoundException,
+      InactiveEventDataStoreException,
+      InvalidDateRangeException,
+      InvalidMaxResultsException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidQueryStatusException,
+      NoManagementAccountSLRExistsException,
+      OperationNotPermittedException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts an import of logged trail events from a source S3 bucket to a destination event
  * data store. By default, CloudTrail only imports events contained in the S3 bucket's

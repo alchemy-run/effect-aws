@@ -853,8 +853,8 @@ export const getAssociationForServiceQuotaTemplate =
  * Lists the default values for the quotas for the specified Amazon Web Services service. A default
  * value does not reflect any quota increases.
  */
-export const listAWSDefaultServiceQuotas = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAWSDefaultServiceQuotas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAWSDefaultServiceQuotasRequest,
     output: ListAWSDefaultServiceQuotasResponse,
     errors: [
@@ -865,15 +865,20 @@ export const listAWSDefaultServiceQuotas = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Quotas",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the quota increase requests for the specified Amazon Web Services service. Filter
  * responses to return quota requests at either the account level, resource level, or all
  * levels. Responses include any open or closed requests within 90 days.
  */
 export const listRequestedServiceQuotaChangeHistory =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRequestedServiceQuotaChangeHistoryRequest,
     output: ListRequestedServiceQuotaChangeHistoryResponse,
     errors: [
@@ -884,13 +889,19 @@ export const listRequestedServiceQuotaChangeHistory =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RequestedQuotas",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the quota increase requests for the specified quota. Filter responses to
  * return quota requests at either the account level, resource level, or all levels.
  */
 export const listRequestedServiceQuotaChangeHistoryByQuota =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRequestedServiceQuotaChangeHistoryByQuotaRequest,
     output: ListRequestedServiceQuotaChangeHistoryByQuotaResponse,
     errors: [
@@ -901,6 +912,12 @@ export const listRequestedServiceQuotaChangeHistoryByQuota =
       ServiceException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RequestedQuotas",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the applied quota values for the specified Amazon Web Services service. For some quotas, only
@@ -908,32 +925,48 @@ export const listRequestedServiceQuotaChangeHistoryByQuota =
  * quota, the quota is not retrieved. Filter responses to return applied quota values at
  * either the account level, resource level, or all levels.
  */
-export const listServiceQuotas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceQuotasRequest,
-  output: ListServiceQuotasResponse,
-  errors: [
-    AccessDeniedException,
-    IllegalArgumentException,
-    InvalidPaginationTokenException,
-    NoSuchResourceException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listServiceQuotas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceQuotasRequest,
+    output: ListServiceQuotasResponse,
+    errors: [
+      AccessDeniedException,
+      IllegalArgumentException,
+      InvalidPaginationTokenException,
+      NoSuchResourceException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Quotas",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the names and codes for the Amazon Web Services services integrated with Service Quotas.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [
-    AccessDeniedException,
-    IllegalArgumentException,
-    InvalidPaginationTokenException,
-    ServiceException,
-    TooManyRequestsException,
-  ],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [
+      AccessDeniedException,
+      IllegalArgumentException,
+      InvalidPaginationTokenException,
+      ServiceException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Services",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes tags from the specified applied quota. You can specify one or more tags to
  * remove.
@@ -1152,7 +1185,7 @@ export const getAWSDefaultServiceQuota = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the quota increase requests in the specified quota request template.
  */
 export const listServiceQuotaIncreaseRequestsInTemplate =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServiceQuotaIncreaseRequestsInTemplateRequest,
     output: ListServiceQuotaIncreaseRequestsInTemplateResponse,
     errors: [
@@ -1165,6 +1198,12 @@ export const listServiceQuotaIncreaseRequestsInTemplate =
       TemplatesNotAvailableInRegionException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceQuotaIncreaseRequestInTemplateList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves information about the specified quota increase request in your quota request

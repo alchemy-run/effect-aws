@@ -769,11 +769,18 @@ export const deleteAttributeMapping = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * **Required permissions: ** `rolesanywhere:ListSubjects`.
  */
-export const listSubjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRequest,
-  output: ListSubjectsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listSubjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRequest,
+    output: ListSubjectsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "subjects",
+    } as const,
+  }),
+);
 /**
  * Disables a certificate revocation list (CRL).
  *
@@ -933,21 +940,35 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Required permissions: ** `rolesanywhere:ListProfiles`.
  */
-export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRequest,
-  output: ListProfilesResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRequest,
+    output: ListProfilesResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "profiles",
+    } as const,
+  }),
+);
 /**
  * Lists the trust anchors in the authenticated account and Amazon Web Services Region.
  *
  * **Required permissions: ** `rolesanywhere:ListTrustAnchors`.
  */
-export const listTrustAnchors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRequest,
-  output: ListTrustAnchorsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listTrustAnchors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRequest,
+    output: ListTrustAnchorsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "trustAnchors",
+    } as const,
+  }),
+);
 /**
  * Imports the certificate revocation list (CRL). A CRL is a list of certificates that have been revoked by the issuing certificate Authority (CA).In order to be properly imported, a CRL must be in PEM format. IAM Roles Anywhere validates against the CRL before issuing credentials.
  *
@@ -963,10 +984,15 @@ export const importCrl = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * **Required permissions: ** `rolesanywhere:ListCrls`.
  */
-export const listCrls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listCrls = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRequest,
   output: ListCrlsResponse,
   errors: [AccessDeniedException, ValidationException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "crls",
+  } as const,
 }));
 /**
  * Attaches a list of *notification settings* to a trust anchor.

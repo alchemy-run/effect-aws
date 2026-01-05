@@ -961,27 +961,49 @@ export const getCase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all cases the requester has access to.
  */
-export const listCases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listCases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListCasesRequest,
   output: ListCasesResponse,
   errors: [],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "items",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Views the case history for edits made to a designated case.
  */
-export const listCaseEdits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCaseEditsRequest,
-  output: ListCaseEditsResponse,
-  errors: [],
-}));
+export const listCaseEdits = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCaseEditsRequest,
+    output: ListCaseEditsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns comments for a designated case.
  */
-export const listComments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCommentsRequest,
-  output: ListCommentsResponse,
-  errors: [],
-}));
+export const listComments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCommentsRequest,
+    output: ListCommentsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new membership.
  */
@@ -1001,11 +1023,19 @@ export const getMembership = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns the memberships that the calling principal can access.
  */
-export const listMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMembershipsRequest,
-  output: ListMembershipsResponse,
-  errors: [],
-}));
+export const listMemberships = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMembershipsRequest,
+    output: ListMembershipsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Provides information on whether the supplied account IDs are associated with a membership.
  *
@@ -1020,11 +1050,19 @@ export const batchGetMemberAccountDetails =
 /**
  * Investigation performed by an agent for a security incident...
  */
-export const listInvestigations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInvestigationsRequest,
-  output: ListInvestigationsResponse,
-  errors: [],
-}));
+export const listInvestigations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInvestigationsRequest,
+    output: ListInvestigationsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "investigationActions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a tag(s) from a designate resource.
  */

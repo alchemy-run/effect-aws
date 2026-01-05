@@ -1639,11 +1639,19 @@ export const deleteAssistant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about assistants.
  */
-export const listAssistants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssistantsRequest,
-  output: ListAssistantsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listAssistants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssistantsRequest,
+    output: ListAssistantsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assistantSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes the specified recommendations from the specified assistant's queue of newly
  * available recommendations. You can use this API in conjunction with GetRecommendations and a `waitTimeSeconds` input for long-polling
@@ -1662,8 +1670,8 @@ export const notifyRecommendationsReceived =
 /**
  * Lists information about assistant associations.
  */
-export const listAssistantAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAssistantAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAssistantAssociationsRequest,
     output: ListAssistantAssociationsResponse,
     errors: [
@@ -1671,8 +1679,13 @@ export const listAssistantAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "assistantAssociationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about the knowledge base.
  */
@@ -1688,11 +1701,19 @@ export const getKnowledgeBase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the knowledge bases.
  */
-export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKnowledgeBasesRequest,
-  output: ListKnowledgeBasesResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKnowledgeBasesRequest,
+    output: ListKnowledgeBasesResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "knowledgeBaseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the started import job.
  */
@@ -1708,24 +1729,40 @@ export const getImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about import jobs.
  */
-export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportJobsRequest,
-  output: ListImportJobsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportJobsRequest,
+    output: ListImportJobsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "importJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for content in a specified knowledge base. Can be used to get a specific content
  * resource by its name.
  */
-export const searchContent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchContentRequest,
-  output: SearchContentResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const searchContent = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchContentRequest,
+    output: SearchContentResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get a URL to upload content to a knowledge base. To upload content, first make a PUT
  * request to the returned URL with your file, making sure to include the required headers. Then
@@ -1771,15 +1808,23 @@ export const updateQuickResponse = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about quick response.
  */
-export const listQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQuickResponsesRequest,
-  output: ListQuickResponsesResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQuickResponsesRequest,
+    output: ListQuickResponsesResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "quickResponseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds the specified tags to the specified resource.
  */
@@ -1832,15 +1877,23 @@ export const getContent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the content.
  */
-export const listContents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContentsRequest,
-  output: ListContentsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listContents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContentsRequest,
+    output: ListContentsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contentSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves summary information about the content.
  */
@@ -1953,16 +2006,24 @@ export const getAssistant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Performs a manual search against the specified assistant. To retrieve recommendations for
  * an assistant, use GetRecommendations.
  */
-export const queryAssistant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: QueryAssistantRequest,
-  output: QueryAssistantResponse,
-  errors: [
-    AccessDeniedException,
-    RequestTimeoutException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const queryAssistant = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: QueryAssistantRequest,
+    output: QueryAssistantResponse,
+    errors: [
+      AccessDeniedException,
+      RequestTimeoutException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "results",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a session. A session is a contextual container used for generating
  * recommendations. Amazon Connect creates a new Wisdom session for each contact on which
@@ -2066,15 +2127,23 @@ export const createKnowledgeBase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Searches for sessions.
  */
-export const searchSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchSessionsRequest,
-  output: SearchSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const searchSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchSessionsRequest,
+    output: SearchSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about an assistant association.
  */
@@ -2092,8 +2161,8 @@ export const getAssistantAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches existing Wisdom quick responses in a Wisdom knowledge base.
  */
-export const searchQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchQuickResponses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchQuickResponsesRequest,
     output: SearchQuickResponsesResponse,
     errors: [
@@ -2102,8 +2171,13 @@ export const searchQuickResponses = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "results",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Start an asynchronous job to import Wisdom resources from an uploaded source file. Before calling this API, use StartContentUpload to
  * upload an asset that contains the resource data.

@@ -7,6 +7,7 @@ A fully typed AWS SDK for [Effect](https://effect.website), generated from [Smit
 - **Generated from Smithy specs** — 1:1 compatibility with AWS APIs
 - **Typed errors** — All service errors are `TaggedError` classes for pattern matching
 - **Streaming support** — Upload and download large files via Effect Streams
+- **Automatic pagination** — Stream pages or items with `.pages()` and `.items()`
 - **All AWS protocols** — REST-XML, REST-JSON, AWS JSON 1.0/1.1, AWS Query, EC2 Query
 
 ## Installation
@@ -491,6 +492,61 @@ const download = Effect.gen(function* () {
   yield* Console.log(content);
 });
 ```
+
+## Pagination
+
+Paginated operations expose `.pages()` and `.items()` methods that return Effect Streams for automatic pagination.
+
+### Stream Full Pages with `.pages()`
+
+Use `.pages()` to stream complete response objects. Each emission is a full API response:
+
+```typescript
+import { Effect, Stream } from "effect";
+import * as s3 from "effect-aws/s3";
+
+const program = Effect.gen(function* () {
+  // Stream all pages of objects
+  const allKeys = yield* s3.listObjectsV2
+    .pages({ Bucket: "my-bucket", MaxKeys: 100 })
+    .pipe(
+      Stream.flatMap((page) => Stream.fromIterable(page.Contents ?? [])),
+      Stream.map((obj) => obj.Key!),
+      Stream.runCollect,
+    );
+
+  console.log(`Found ${allKeys.length} objects`);
+});
+```
+
+### Stream Individual Items with `.items()`
+
+Use `.items()` to stream individual items directly. Only available for operations with an `items` field in their Smithy pagination trait:
+
+```typescript
+import { Effect, Stream } from "effect";
+import * as dynamodb from "effect-aws/dynamodb";
+
+const program = Effect.gen(function* () {
+  // Stream individual DynamoDB items across all pages
+  const allItems = yield* dynamodb.query
+    .items({
+      TableName: "users",
+      KeyConditionExpression: "pk = :pk",
+      ExpressionAttributeValues: { ":pk": { S: "user#123" } },
+      Limit: 25, // Items per page
+    })
+    .pipe(Stream.runCollect);
+
+  console.log(`Found ${allItems.length} items`);
+});
+```
+
+### Notes on `.items()`
+
+Most AWS list operations support pagination and expose both `.pages()` and `.items()` methods. The `.items()` method automatically extracts items from each page based on the operation's Smithy pagination trait.
+
+> **Note:** Some operations don't specify an `items` field in their pagination trait, or use nested paths (e.g., `DistributionList.Items`). In these cases, `.items()` returns an empty stream - use `.pages()` and extract items manually instead.
 
 ---
 

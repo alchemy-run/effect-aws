@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect } from "effect";
+import { Effect, Stream } from "effect";
 import {
   addRoleToInstanceProfile,
   addUserToGroup,
@@ -1144,4 +1144,70 @@ test(
       ),
     ),
   ),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listRoles.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of roles
+    const pages = yield* listRoles
+      .pages({ MaxItems: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listRoles.items() streams Role objects directly",
+  Effect.gen(function* () {
+    // Stream all roles using .items()
+    const roles = yield* listRoles
+      .items({ MaxItems: 10 })
+      .pipe(Stream.runCollect);
+
+    const rolesArray = Array.from(roles);
+
+    // Each item should be a Role with RoleName and Arn
+    for (const role of rolesArray) {
+      expect(role.RoleName).toBeDefined();
+      expect(role.Arn).toBeDefined();
+    }
+  }),
+);
+
+test(
+  "listUsers.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of users
+    const pages = yield* listUsers
+      .pages({ MaxItems: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listUsers.items() streams User objects directly",
+  Effect.gen(function* () {
+    // Stream all users using .items()
+    const users = yield* listUsers
+      .items({ MaxItems: 10 })
+      .pipe(Stream.runCollect);
+
+    const usersArray = Array.from(users);
+
+    // Each item should be a User with UserName and Arn
+    for (const user of usersArray) {
+      expect(user.UserName).toBeDefined();
+      expect(user.Arn).toBeDefined();
+    }
+  }),
 );

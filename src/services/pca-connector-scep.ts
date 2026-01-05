@@ -620,16 +620,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists the connectors belonging to your Amazon Web Services account.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Connectors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a SCEP connector. A SCEP connector links Amazon Web Services Private Certificate Authority to your SCEP-compatible devices and mobile device management (MDM) systems. Before you create a connector, you must complete a set of prerequisites, including creation of a private certificate authority (CA) to use with this connector. For more information, see Connector for SCEP prerequisites.
  */
@@ -665,8 +673,8 @@ export const getChallengeMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves the challenge metadata for the specified ARN.
  */
-export const listChallengeMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChallengeMetadata =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChallengeMetadataRequest,
     output: ListChallengeMetadataResponse,
     errors: [
@@ -676,8 +684,13 @@ export const listChallengeMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Challenges",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes the specified Challenge.
  */

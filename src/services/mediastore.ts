@@ -508,11 +508,18 @@ export class LimitExceededException extends S.TaggedError<LimitExceededException
  * See also DescribeContainer, which gets the properties of one
  * container.
  */
-export const listContainers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContainersInput,
-  output: ListContainersOutput,
-  errors: [InternalServerError],
-}));
+export const listContainers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContainersInput,
+    output: ListContainersOutput,
+    errors: [InternalServerError],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * The metric policy that you want to add to the container. A metric policy allows AWS Elemental MediaStore to send metrics to Amazon CloudWatch. It takes up to 20 minutes for the new policy to take effect.
  */

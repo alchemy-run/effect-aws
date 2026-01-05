@@ -598,7 +598,7 @@ export const describeEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Learn more"
  */
 export const describeEnvironmentMemberships =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEnvironmentMembershipsRequest,
     output: DescribeEnvironmentMembershipsResult,
     errors: [
@@ -610,6 +610,11 @@ export const describeEnvironmentMemberships =
       NotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Gets status information for an Cloud9 development environment.
@@ -644,19 +649,26 @@ export const describeEnvironmentStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Cloud9 can continue to use the service as normal.
  * Learn more"
  */
-export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEnvironmentsRequest,
-  output: ListEnvironmentsResult,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    LimitExceededException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEnvironmentsRequest,
+    output: ListEnvironmentsResult,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      LimitExceededException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Changes the settings of an existing environment member for an Cloud9 development
  * environment.

@@ -3764,10 +3764,15 @@ export const describeAccountAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * database that are required when converting objects to the target database.
  */
 export const describeExtensionPackAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeExtensionPackAssociationsMessage,
     output: DescribeExtensionPackAssociationsResponse,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Migrates 10 active and enabled Amazon SNS subscriptions at a time and converts them to
@@ -3809,42 +3814,60 @@ export const deleteFleetAdvisorCollector = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Describes the status of the connections that have been made between the replication
  * instance and an endpoint. Connections are created when you test an endpoint.
  */
-export const describeConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeConnectionsMessage,
-  output: DescribeConnectionsResponse,
-  errors: [ResourceNotFoundFault],
-}));
+export const describeConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeConnectionsMessage,
+    output: DescribeConnectionsResponse,
+    errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about the possible endpoint settings available when you create an
  * endpoint for a specific database engine.
  */
-export const describeEndpointSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEndpointSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEndpointSettingsMessage,
     output: DescribeEndpointSettingsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about the type of endpoints available.
  */
-export const describeEndpointTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEndpointTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEndpointTypesMessage,
     output: DescribeEndpointTypesResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about the replication instance versions used in the project.
  */
-export const describeEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEngineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEngineVersionsMessage,
     output: DescribeEngineVersionsResponse,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Lists categories for all event source types, or, if specified, for a specified source
  * type. You can see a list of the event categories and source types in Working with Events
@@ -3862,11 +3885,18 @@ export const describeEventCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * start and end time. For more information on DMS events, see Working with Events and
  * Notifications in the *Database Migration Service User Guide.*
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: DescribeEventsResponse,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: DescribeEventsResponse,
+    errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * End of support notice: On May 20, 2026, Amazon Web Services will end support for Amazon Web Services DMS Fleet Advisor;. After May 20, 2026, you will no longer be able to access the Amazon Web Services DMS Fleet Advisor; console or Amazon Web Services DMS Fleet Advisor; resources. For more information, see Amazon Web Services DMS Fleet Advisor end of support.
  *
@@ -3874,10 +3904,15 @@ export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Advisor collectors.
  */
 export const describeFleetAdvisorLsaAnalysis =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAdvisorLsaAnalysisRequest,
     output: DescribeFleetAdvisorLsaAnalysisResponse,
     errors: [InvalidResourceStateFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * End of support notice: On May 20, 2026, Amazon Web Services will end support for Amazon Web Services DMS Fleet Advisor;. After May 20, 2026, you will no longer be able to access the Amazon Web Services DMS Fleet Advisor; console or Amazon Web Services DMS Fleet Advisor; resources. For more information, see Amazon Web Services DMS Fleet Advisor end of support.
@@ -3886,10 +3921,15 @@ export const describeFleetAdvisorLsaAnalysis =
  * collectors.
  */
 export const describeFleetAdvisorSchemaObjectSummary =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAdvisorSchemaObjectSummaryRequest,
     output: DescribeFleetAdvisorSchemaObjectSummaryResponse,
     errors: [InvalidResourceStateFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Gets detailed information about the specified metadata model, including its definition and corresponding converted objects in the target database if applicable.
@@ -3906,10 +3946,15 @@ export const describeMetadataModel = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * specified region.
  */
 export const describeOrderableReplicationInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrderableReplicationInstancesMessage,
     output: DescribeOrderableReplicationInstancesResponse,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * End of support notice: On May 20, 2026, Amazon Web Services will end support for Amazon Web Services DMS Fleet Advisor;. After May 20, 2026, you will no longer be able to access the Amazon Web Services DMS Fleet Advisor; console or Amazon Web Services DMS Fleet Advisor; resources. For more information, see Amazon Web Services DMS Fleet Advisor end of support.
@@ -3918,10 +3963,15 @@ export const describeOrderableReplicationInstances =
  * engines.
  */
 export const describeRecommendationLimitations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRecommendationLimitationsRequest,
     output: DescribeRecommendationLimitationsResponse,
     errors: [AccessDeniedFault, InvalidResourceStateFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns the status of the RefreshSchemas operation.
@@ -3936,20 +3986,30 @@ export const describeRefreshSchemasStatus =
  * Returns information about the task logs for the specified task.
  */
 export const describeReplicationInstanceTaskLogs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationInstanceTaskLogsMessage,
     output: DescribeReplicationInstanceTaskLogsResponse,
     errors: [InvalidResourceStateFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns table and schema statistics for one or more provisioned replications that use a
  * given DMS Serverless replication configuration.
  */
 export const describeReplicationTableStatistics =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationTableStatisticsMessage,
     output: DescribeReplicationTableStatisticsResponse,
     errors: [InvalidResourceStateFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns the task assessment results from the Amazon S3 bucket that DMS creates in your
@@ -3959,10 +4019,15 @@ export const describeReplicationTableStatistics =
  * report in the *Database Migration Service User Guide*.
  */
 export const describeReplicationTaskAssessmentResults =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationTaskAssessmentResultsMessage,
     output: DescribeReplicationTaskAssessmentResultsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of individual assessments based on filter settings.
@@ -3971,10 +4036,15 @@ export const describeReplicationTaskAssessmentResults =
  * migration tasks, and assessment status values.
  */
 export const describeReplicationTaskIndividualAssessments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationTaskIndividualAssessmentsMessage,
     output: DescribeReplicationTaskIndividualAssessmentsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Saves a copy of a database migration assessment report to your Amazon S3 bucket. DMS can
@@ -4003,8 +4073,8 @@ export const reloadReplicationTables = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns information about data migrations.
  */
-export const describeDataMigrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDataMigrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataMigrationsMessage,
     output: DescribeDataMigrationsResponse,
     errors: [
@@ -4012,41 +4082,58 @@ export const describeDataMigrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidResourceStateFault,
       ResourceNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DataMigrations",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a paginated list of data providers for your account in the current
  * region.
  */
-export const describeDataProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDataProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDataProvidersMessage,
     output: DescribeDataProvidersResponse,
     errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a paginated list of instance profiles for your account in the current
  * region.
  */
-export const describeInstanceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInstanceProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInstanceProfilesMessage,
     output: DescribeInstanceProfilesResponse,
     errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a paginated list of migration projects for your account in the current
  * region.
  */
-export const describeMigrationProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMigrationProjects =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMigrationProjectsMessage,
     output: DescribeMigrationProjectsResponse,
     errors: [AccessDeniedFault, FailedDependencyFault, ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Modifies an existing DMS data migration.
  */
@@ -4129,11 +4216,18 @@ export const describeConversionConfiguration =
 /**
  * Returns information about the endpoints for your account in the current region.
  */
-export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEndpointsMessage,
-  output: DescribeEndpointsResponse,
-  errors: [ResourceNotFoundFault],
-}));
+export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEndpointsMessage,
+    output: DescribeEndpointsResponse,
+    errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists all the event subscriptions for a customer account. The description of a
  * subscription includes `SubscriptionName`, `SNSTopicARN`,
@@ -4143,116 +4237,176 @@ export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you specify `SubscriptionName`, this action lists the description for that
  * subscription.
  */
-export const describeEventSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEventSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventSubscriptionsMessage,
     output: DescribeEventSubscriptionsResponse,
     errors: [ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a paginated list of metadata model assessments for your account in the current
  * region.
  */
 export const describeMetadataModelAssessments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelAssessmentsMessage,
     output: DescribeMetadataModelAssessmentsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Gets a list of child metadata models for the specified metadata model in the database hierarchy.
  */
 export const describeMetadataModelChildren =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelChildrenMessage,
     output: DescribeMetadataModelChildrenResponse,
     errors: [AccessDeniedFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "MetadataModelChildren",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of metadata model conversions for a migration project.
  */
 export const describeMetadataModelConversions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelConversionsMessage,
     output: DescribeMetadataModelConversionsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of metadata model creation requests for a migration project.
  */
 export const describeMetadataModelCreations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelCreationsMessage,
     output: DescribeMetadataModelCreationsResponse,
     errors: [AccessDeniedFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Requests",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of metadata model exports.
  */
 export const describeMetadataModelExportsAsScript =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelExportsAsScriptMessage,
     output: DescribeMetadataModelExportsAsScriptResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of metadata model exports.
  */
 export const describeMetadataModelExportsToTarget =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelExportsToTargetMessage,
     output: DescribeMetadataModelExportsToTargetResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of metadata model imports.
  */
 export const describeMetadataModelImports =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetadataModelImportsMessage,
     output: DescribeMetadataModelImportsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a list of upcoming maintenance events for replication instances in your account
  * in the current Region.
  */
 export const describePendingMaintenanceActions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePendingMaintenanceActionsMessage,
     output: DescribePendingMaintenanceActionsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns one or more existing DMS Serverless replication configurations as a list of
  * structures.
  */
-export const describeReplicationConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReplicationConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationConfigsMessage,
     output: DescribeReplicationConfigsResponse,
     errors: [ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about replication instances for your account in the current
  * region.
  */
 export const describeReplicationInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationInstancesMessage,
     output: DescribeReplicationInstancesResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about the replication subnet groups.
  */
 export const describeReplicationSubnetGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationSubnetGroupsMessage,
     output: DescribeReplicationSubnetGroupsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns a paginated list of premigration assessment runs based on filter
@@ -4266,22 +4420,31 @@ export const describeReplicationSubnetGroups =
  * operation.
  */
 export const describeReplicationTaskAssessmentRuns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationTaskAssessmentRunsMessage,
     output: DescribeReplicationTaskAssessmentRunsResponse,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about replication tasks for your account in the current
  * region.
  */
-export const describeReplicationTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReplicationTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationTasksMessage,
     output: DescribeReplicationTasksResponse,
     errors: [ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Removes metadata tags from an DMS resource, including replication instance, endpoint,
  * subnet group, and migration task. For more information, see
@@ -4500,7 +4663,7 @@ export const deleteReplicationTaskAssessmentRun =
  * individual assessments that you can specify in an assessment run for the task.
  */
 export const describeApplicableIndividualAssessments =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeApplicableIndividualAssessmentsMessage,
     output: DescribeApplicableIndividualAssessmentsResponse,
     errors: [
@@ -4508,15 +4671,27 @@ export const describeApplicableIndividualAssessments =
       InvalidResourceStateFault,
       ResourceNotFoundFault,
     ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns information about the schema for the specified endpoint.
  */
-export const describeSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeSchemasMessage,
-  output: DescribeSchemasResponse,
-  errors: [InvalidResourceStateFault, ResourceNotFoundFault],
-}));
+export const describeSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeSchemasMessage,
+    output: DescribeSchemasResponse,
+    errors: [InvalidResourceStateFault, ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Returns table statistics on the database migration task, including table name, rows
  * inserted, rows updated, and rows deleted.
@@ -4525,8 +4700,8 @@ export const describeSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * last updated the table statistics record for a table. It does not indicate the time of the
  * last update to the table.
  */
-export const describeTableStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeTableStatistics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeTableStatisticsMessage,
     output: DescribeTableStatisticsResponse,
     errors: [
@@ -4534,8 +4709,12 @@ export const describeTableStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidResourceStateFault,
       ResourceNotFoundFault,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Converts source selection rules into their target counterparts for schema conversion operations.
  */
@@ -4659,13 +4838,17 @@ export const deleteReplicationConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Provides a description of the certificate.
  */
-export const describeCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCertificatesMessage,
     output: DescribeCertificatesResponse,
     errors: [ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Tests the connection between the replication instance and the endpoint.
  */
@@ -4819,10 +5002,15 @@ export const deleteReplicationInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of the Fleet Advisor collectors in your account.
  */
 export const describeFleetAdvisorCollectors =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAdvisorCollectorsRequest,
     output: DescribeFleetAdvisorCollectorsResponse,
     errors: [InvalidResourceStateFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * End of support notice: On May 20, 2026, Amazon Web Services will end support for Amazon Web Services DMS Fleet Advisor;. After May 20, 2026, you will no longer be able to access the Amazon Web Services DMS Fleet Advisor; console or Amazon Web Services DMS Fleet Advisor; resources. For more information, see Amazon Web Services DMS Fleet Advisor end of support.
@@ -4830,34 +5018,47 @@ export const describeFleetAdvisorCollectors =
  * Returns a list of Fleet Advisor databases in your account.
  */
 export const describeFleetAdvisorDatabases =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAdvisorDatabasesRequest,
     output: DescribeFleetAdvisorDatabasesResponse,
     errors: [InvalidResourceStateFault],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * End of support notice: On May 20, 2026, Amazon Web Services will end support for Amazon Web Services DMS Fleet Advisor;. After May 20, 2026, you will no longer be able to access the Amazon Web Services DMS Fleet Advisor; console or Amazon Web Services DMS Fleet Advisor; resources. For more information, see Amazon Web Services DMS Fleet Advisor end of support.
  *
  * Returns a list of schemas detected by Fleet Advisor Collectors in your account.
  */
-export const describeFleetAdvisorSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeFleetAdvisorSchemas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeFleetAdvisorSchemasRequest,
     output: DescribeFleetAdvisorSchemasResponse,
     errors: [InvalidResourceStateFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Provides details on replication progress by returning status information for one or more
  * provisioned DMS Serverless replications.
  */
-export const describeReplications = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReplications =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationsMessage,
     output: DescribeReplicationsResponse,
     errors: [ResourceNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Creates source metadata model of the given type with the specified properties for schema conversion operations.
  *
@@ -5351,13 +5552,17 @@ export const modifyMigrationProject = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a paginated list of target engine recommendations for your source
  * databases.
  */
-export const describeRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRecommendationsRequest,
     output: DescribeRecommendationsResponse,
     errors: [AccessDeniedFault, InvalidResourceStateFault],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Modifies the replication instance to apply new settings. You can change one or more
  * parameters by specifying these parameters and the new values in the request.

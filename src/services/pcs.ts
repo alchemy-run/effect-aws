@@ -897,18 +897,26 @@ export const getQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of running clusters in your account.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "clusters",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a managed set of compute nodes. You associate a compute node group with a cluster through 1 or more PCS queues or as part of the login fleet. A compute node group includes the definition of the compute properties and lifecycle management. PCS uses the information you provide to this API action to launch compute nodes in your account. You can only specify subnets in the same Amazon VPC as your cluster. You receive billing charges for the compute nodes that PCS launches in your account. You must already have a launch template before you call this API. For more information, see Launch an instance from a launch template in the *Amazon Elastic Compute Cloud User Guide for Linux Instances*.
  */
@@ -948,8 +956,8 @@ export const updateComputeNodeGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of all compute node groups associated with a cluster.
  */
-export const listComputeNodeGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComputeNodeGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComputeNodeGroupsRequest,
     output: ListComputeNodeGroupsResponse,
     errors: [
@@ -960,8 +968,13 @@ export const listComputeNodeGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "computeNodeGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a job queue. You must associate 1 or more compute node groups with the queue. You can associate 1 compute node group with multiple queues.
  */
@@ -997,7 +1010,7 @@ export const updateQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all queues associated with a cluster.
  */
-export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
   output: ListQueuesResponse,
   errors: [
@@ -1008,6 +1021,12 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "queues",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Deletes a compute node group. You must delete all queues associated with the compute node group first.

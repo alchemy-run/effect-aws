@@ -3415,13 +3415,17 @@ export const deleteOutboundConnection = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all the inbound cross-cluster search connections for a destination (remote)
  * Amazon OpenSearch Service domain. For more information, see Cross-cluster search for Amazon OpenSearch Service.
  */
-export const describeInboundConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInboundConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInboundConnectionsRequest,
     output: DescribeInboundConnectionsResponse,
     errors: [DisabledOperationException, InvalidPaginationTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes one or more Amazon OpenSearch Service-managed VPC endpoints.
  */
@@ -3441,17 +3445,24 @@ export const describeVpcEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves the complete history of the last 10 upgrades performed on an Amazon OpenSearch
  * Service domain.
  */
-export const getUpgradeHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUpgradeHistoryRequest,
-  output: GetUpgradeHistoryResponse,
-  errors: [
-    BaseException,
-    DisabledOperationException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const getUpgradeHistory = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUpgradeHistoryRequest,
+    output: GetUpgradeHistoryResponse,
+    errors: [
+      BaseException,
+      DisabledOperationException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Allows you to either upgrade your Amazon OpenSearch Service domain or perform an
  * upgrade eligibility check to a compatible version of OpenSearch or Elasticsearch.
@@ -3616,24 +3627,31 @@ export const describeDomainNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Custom packages
  * for Amazon OpenSearch Service.
  */
-export const describePackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePackagesRequest,
-  output: DescribePackagesResponse,
-  errors: [
-    AccessDeniedException,
-    BaseException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const describePackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribePackagesRequest,
+    output: DescribePackagesResponse,
+    errors: [
+      AccessDeniedException,
+      BaseException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Describes the Amazon OpenSearch Service instances that you have reserved in a given
  * Region. For more information, see Reserved Instances in Amazon
  * OpenSearch Service.
  */
-export const describeReservedInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeReservedInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedInstancesRequest,
     output: DescribeReservedInstancesResponse,
     errors: [
@@ -3642,8 +3660,12 @@ export const describeReservedInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Removes a package from the specified Amazon OpenSearch Service domain. The package
  * can't be in use with any OpenSearch index for the dissociation to succeed. The package
@@ -3701,8 +3723,8 @@ export const getCompatibleVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * information, see Custom packages for Amazon
  * OpenSearch Service.
  */
-export const getPackageVersionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getPackageVersionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetPackageVersionHistoryRequest,
     output: GetPackageVersionHistoryResponse,
     errors: [
@@ -3712,23 +3734,35 @@ export const getPackageVersionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all OpenSearch applications under your account.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [
-    AccessDeniedException,
-    BaseException,
-    DisabledOperationException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [
+      AccessDeniedException,
+      BaseException,
+      DisabledOperationException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ApplicationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists direct-query data sources for a specific domain. For more information, see For
  * more information, see Working with
@@ -3766,8 +3800,8 @@ export const listDirectQueryDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * A list of maintenance actions for the domain.
  */
-export const listDomainMaintenances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainMaintenances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainMaintenancesRequest,
     output: ListDomainMaintenancesResponse,
     errors: [
@@ -3777,14 +3811,18 @@ export const listDomainMaintenances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all instance types and available features for a given OpenSearch or
  * Elasticsearch version.
  */
-export const listInstanceTypeDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInstanceTypeDetails =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInstanceTypeDetailsRequest,
     output: ListInstanceTypeDetailsResponse,
     errors: [
@@ -3793,8 +3831,12 @@ export const listInstanceTypeDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Describes the domain configuration for the specified Amazon OpenSearch Service domain,
  * including the domain ID, domain service endpoint, and domain ARN.
@@ -3814,8 +3856,8 @@ export const describeDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * information, see Custom packages
  * for Amazon OpenSearch Service.
  */
-export const listDomainsForPackage = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainsForPackage =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainsForPackageRequest,
     output: ListDomainsForPackageResponse,
     errors: [
@@ -3825,15 +3867,19 @@ export const listDomainsForPackage = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all packages associated with an Amazon OpenSearch Service domain. For more
  * information, see Custom packages
  * for Amazon OpenSearch Service.
  */
-export const listPackagesForDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPackagesForDomain =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPackagesForDomainRequest,
     output: ListPackagesForDomainResponse,
     errors: [
@@ -3843,8 +3889,12 @@ export const listPackagesForDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns all resource tags for an Amazon OpenSearch Service domain, data source, or
  * application. For more information, see Tagging Amazon OpenSearch Service resources.
@@ -3863,16 +3913,23 @@ export const listTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all versions of OpenSearch and Elasticsearch that Amazon OpenSearch Service
  * supports.
  */
-export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVersionsRequest,
-  output: ListVersionsResponse,
-  errors: [
-    BaseException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVersionsRequest,
+    output: ListVersionsResponse,
+    errors: [
+      BaseException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Sets the default application to the application with the specified ARN.
  *
@@ -4282,8 +4339,8 @@ export const updateDomainConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * changes can be service
  * software updates or blue/green Auto-Tune enhancements.
  */
-export const listScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listScheduledActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListScheduledActionsRequest,
     output: ListScheduledActionsResponse,
     errors: [
@@ -4293,19 +4350,27 @@ export const listScheduledActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the outbound cross-cluster connections for a local (source) Amazon
  * OpenSearch Service domain. For more information, see Cross-cluster search for Amazon OpenSearch Service.
  */
-export const describeOutboundConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeOutboundConnections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOutboundConnectionsRequest,
     output: DescribeOutboundConnectionsResponse,
     errors: [DisabledOperationException, InvalidPaginationTokenException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the names of all Amazon OpenSearch Service domains owned by the current user
  * in the active Region.
@@ -4470,7 +4535,7 @@ export const describeDryRunProgress = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * OpenSearch Service.
  */
 export const describeReservedInstanceOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedInstanceOfferingsRequest,
     output: DescribeReservedInstanceOfferingsResponse,
     errors: [
@@ -4479,6 +4544,11 @@ export const describeReservedInstanceOfferings =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Creates a new cross-cluster search connection from a source Amazon OpenSearch Service domain
@@ -4551,8 +4621,8 @@ export const deleteDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Service domain. For more information, see Auto-Tune for Amazon
  * OpenSearch Service.
  */
-export const describeDomainAutoTunes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDomainAutoTunes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDomainAutoTunesRequest,
     output: DescribeDomainAutoTunesResponse,
     errors: [
@@ -4561,8 +4631,12 @@ export const describeDomainAutoTunes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the configuration of an Amazon OpenSearch Service domain.
  */

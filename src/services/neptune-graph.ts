@@ -1523,7 +1523,7 @@ export class UnprocessableException extends S.TaggedError<UnprocessableException
 /**
  * Lists available Neptune Analytics graphs.
  */
-export const listGraphs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGraphs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGraphsInput,
   output: ListGraphsOutput,
   errors: [
@@ -1531,6 +1531,12 @@ export const listGraphs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "graphs",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists active openCypher queries.
@@ -1598,8 +1604,8 @@ export const deleteGraph = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists private endpoints for a specified Neptune Analytics graph.
  */
-export const listPrivateGraphEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPrivateGraphEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPrivateGraphEndpointsInput,
     output: ListPrivateGraphEndpointsOutput,
     errors: [
@@ -1608,21 +1614,34 @@ export const listPrivateGraphEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "privateGraphEndpoints",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists available snapshots of a specified Neptune Analytics graph.
  */
-export const listGraphSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGraphSnapshotsInput,
-  output: ListGraphSnapshotsOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listGraphSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGraphSnapshotsInput,
+    output: ListGraphSnapshotsOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "graphSnapshots",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a specified export task.
  */
@@ -1652,29 +1671,45 @@ export const getImportTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of export tasks.
  */
-export const listExportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportTasksInput,
-  output: ListExportTasksOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listExportTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportTasksInput,
+    output: ListExportTasksOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists import tasks.
  */
-export const listImportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportTasksInput,
-  output: ListImportTasksOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listImportTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportTasksInput,
+    output: ListImportTasksOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tasks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about a specified graph.
  */

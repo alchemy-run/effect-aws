@@ -618,13 +618,17 @@ export const getLexicon = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * creation date. This operation can filter the tasks by their status, for
  * example, allowing users to list only tasks that are completed.
  */
-export const listSpeechSynthesisTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSpeechSynthesisTasks =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSpeechSynthesisTasksInput,
     output: ListSpeechSynthesisTasksOutput,
     errors: [InvalidNextTokenException, ServiceFailureException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the list of voices that are available for use when
  * requesting speech synthesis. Each voice speaks a specified language, is

@@ -3238,19 +3238,34 @@ export const getTrafficPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a paginated list of CIDR collections in the Amazon Web Services account
  * (metadata only).
  */
-export const listCidrCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCidrCollectionsRequest,
-  output: ListCidrCollectionsResponse,
-  errors: [InvalidInput],
-}));
+export const listCidrCollections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListCidrCollectionsRequest,
+    output: ListCidrCollectionsResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CidrCollections",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieve a list of the health checks that are associated with the current Amazon Web Services account.
  */
-export const listHealthChecks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHealthChecksRequest,
-  output: ListHealthChecksResponse,
-  errors: [IncompatibleVersion, InvalidInput],
-}));
+export const listHealthChecks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHealthChecksRequest,
+    output: ListHealthChecksResponse,
+    errors: [IncompatibleVersion, InvalidInput],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "HealthChecks",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of your hosted zones in lexicographic order. The response includes a
  * `HostedZones` child element for each hosted zone created by the current
@@ -3519,22 +3534,35 @@ export const testDNSAnswer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * DNS query logs, appears in Logging DNS Queries in
  * the *Amazon Route 53 Developer Guide*.
  */
-export const listQueryLoggingConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQueryLoggingConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQueryLoggingConfigsRequest,
     output: ListQueryLoggingConfigsResponse,
     errors: [InvalidInput, InvalidPaginationToken, NoSuchHostedZone],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "QueryLoggingConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a paginated list of CIDR locations for the given collection (metadata only,
  * does not include CIDR blocks).
  */
-export const listCidrLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCidrLocationsRequest,
-  output: ListCidrLocationsResponse,
-  errors: [InvalidInput, NoSuchCidrCollectionException],
-}));
+export const listCidrLocations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCidrLocationsRequest,
+    output: ListCidrLocationsResponse,
+    errors: [InvalidInput, NoSuchCidrCollectionException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CidrLocations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a CIDR collection in the current Amazon Web Services account.
  */
@@ -3761,11 +3789,19 @@ export const getReusableDelegationSet = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * hosted zones, you can use the `maxitems` parameter to list them in groups of
  * up to 100.
  */
-export const listHostedZones = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHostedZonesRequest,
-  output: ListHostedZonesResponse,
-  errors: [DelegationSetNotReusable, InvalidInput, NoSuchDelegationSet],
-}));
+export const listHostedZones = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHostedZonesRequest,
+    output: ListHostedZonesResponse,
+    errors: [DelegationSetNotReusable, InvalidInput, NoSuchDelegationSet],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "HostedZones",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * After you submit a `UpdateTrafficPolicyInstance` request, there's a brief delay while Route 53 creates the resource record sets
  * that are specified in the traffic policy definition. Use `GetTrafficPolicyInstance` with the `id` of updated traffic policy instance confirm
@@ -3962,15 +3998,23 @@ export const deleteTrafficPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of location objects and their CIDR blocks.
  */
-export const listCidrBlocks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCidrBlocksRequest,
-  output: ListCidrBlocksResponse,
-  errors: [
-    InvalidInput,
-    NoSuchCidrCollectionException,
-    NoSuchCidrLocationException,
-  ],
-}));
+export const listCidrBlocks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCidrBlocksRequest,
+    output: ListCidrBlocksResponse,
+    errors: [
+      InvalidInput,
+      NoSuchCidrCollectionException,
+      NoSuchCidrLocationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CidrBlocks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates, changes, or deletes CIDR blocks within a collection. Contains authoritative
  * IP information mapping blocks to one or multiple locations.

@@ -564,8 +564,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Retrieves a collection of WorkSpaces Instances based on specified filters.
  */
-export const listWorkspaceInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkspaceInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkspaceInstancesRequest,
     output: ListWorkspaceInstancesResponse,
     errors: [
@@ -574,8 +574,13 @@ export const listWorkspaceInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "WorkspaceInstances",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a new volume for WorkSpace Instances.
  */
@@ -700,29 +705,45 @@ export const getWorkspaceInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of instance types supported by Amazon WorkSpaces Instances, enabling precise workspace infrastructure configuration.
  */
-export const listInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstanceTypesRequest,
-  output: ListInstanceTypesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstanceTypesRequest,
+    output: ListInstanceTypesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of AWS regions supported by Amazon WorkSpaces Instances, enabling region discovery for workspace deployments.
  */
-export const listRegions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRegionsRequest,
-  output: ListRegionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRegions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRegionsRequest,
+    output: ListRegionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Regions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves tags for a WorkSpace Instance.
  */

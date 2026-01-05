@@ -1356,11 +1356,23 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listOutposts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOutpostsInput,
-  output: ListOutpostsOutput,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listOutposts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOutpostsInput,
+    output: ListOutpostsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Outposts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes tags from the specified resource.
  */
@@ -1375,7 +1387,7 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * cannot be launched with the current Outpost capacity configuration.
  */
 export const getOutpostSupportedInstanceTypes =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetOutpostSupportedInstanceTypesInput,
     output: GetOutpostSupportedInstanceTypesOutput,
     errors: [
@@ -1384,6 +1396,12 @@ export const getOutpostSupportedInstanceTypes =
       NotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypes",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the site address of the specified site.
@@ -1405,16 +1423,24 @@ export const getSiteAddress = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listCatalogItems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCatalogItemsInput,
-  output: ListCatalogItemsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    NotFoundException,
-    ValidationException,
-  ],
-}));
+export const listCatalogItems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCatalogItemsInput,
+    output: ListCatalogItemsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      NotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CatalogItems",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the tags for the specified resource.
  */
@@ -1507,16 +1533,22 @@ export const getOutpost = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets current and historical billing information about the specified Outpost.
  */
 export const getOutpostBillingInformation =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetOutpostBillingInformationInput,
     output: GetOutpostBillingInformationOutput,
     errors: [AccessDeniedException, InternalServerException, NotFoundException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Subscriptions",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets the instance types for the specified Outpost.
  */
-export const getOutpostInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getOutpostInstanceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetOutpostInstanceTypesInput,
     output: GetOutpostInstanceTypesOutput,
     errors: [
@@ -1525,8 +1557,13 @@ export const getOutpostInstanceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets information about the specified Outpost site.
  */
@@ -1544,23 +1581,31 @@ export const getSite = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * A list of Amazon EC2 instances, belonging to all accounts, running on the specified Outpost.
  * Does not include Amazon EBS or Amazon S3 instances.
  */
-export const listAssetInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAssetInstancesInput,
-  output: ListAssetInstancesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    NotFoundException,
-    ValidationException,
-  ],
-}));
+export const listAssetInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAssetInstancesInput,
+    output: ListAssetInstancesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      NotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AssetInstances",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * A list of Amazon EC2 instances running on the Outpost and belonging to the account that
  * initiated the capacity task. Use this list to specify the instances you cannot stop to free up
  * capacity to run the capacity task.
  */
 export const listBlockingInstancesForCapacityTask =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBlockingInstancesForCapacityTaskInput,
     output: ListBlockingInstancesForCapacityTaskOutput,
     errors: [
@@ -1569,6 +1614,12 @@ export const listBlockingInstancesForCapacityTask =
       NotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "BlockingInstances",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the capacity tasks for your Amazon Web Services account.
@@ -1577,16 +1628,24 @@ export const listBlockingInstancesForCapacityTask =
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listCapacityTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCapacityTasksInput,
-  output: ListCapacityTasksOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    NotFoundException,
-    ValidationException,
-  ],
-}));
+export const listCapacityTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCapacityTasksInput,
+    output: ListCapacityTasksOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      NotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CapacityTasks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Starts the specified capacity task. You can have one active capacity task for each order
  * and each Outpost.
@@ -1610,10 +1669,16 @@ export const startCapacityTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listSites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSites = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSitesInput,
   output: ListSitesOutput,
   errors: [AccessDeniedException, InternalServerException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Sites",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Adds tags to the specified resource.
@@ -1779,7 +1844,7 @@ export const getCatalogItem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Outpost orders for your Amazon Web Services account.
  */
-export const listOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listOrders = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListOrdersInput,
   output: ListOrdersOutput,
   errors: [
@@ -1788,6 +1853,12 @@ export const listOrders = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Orders",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates an order for an Outpost.
@@ -1836,7 +1907,7 @@ export const getOrder = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * all of the specified filters. For a filter where you can specify multiple values, the results include
  * items that match any of the values that you specify for the filter.
  */
-export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssetsInput,
   output: ListAssetsOutput,
   errors: [
@@ -1845,4 +1916,10 @@ export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Assets",
+    pageSize: "MaxResults",
+  } as const,
 }));

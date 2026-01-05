@@ -1162,8 +1162,8 @@ export class InvalidDeviceException extends S.TaggedError<InvalidDeviceException
  * signaling channel. To retrieve only those channels that satisfy a specific condition,
  * you can specify a `ChannelNameCondition`.
  */
-export const listSignalingChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSignalingChannels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSignalingChannelsInput,
     output: ListSignalingChannelsOutput,
     errors: [
@@ -1171,24 +1171,37 @@ export const listSignalingChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ClientLimitExceededException,
       InvalidArgumentException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ChannelInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns an array of `StreamInfo` objects. Each object describes a
  * stream. To retrieve only streams that satisfy a specific condition, you can specify a
  * `StreamNameCondition`.
  */
-export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStreamsInput,
-  output: ListStreamsOutput,
-  errors: [ClientLimitExceededException, InvalidArgumentException],
-}));
+export const listStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStreamsInput,
+    output: ListStreamsOutput,
+    errors: [ClientLimitExceededException, InvalidArgumentException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StreamInfoList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the most current information about the stream. The `streamName`
  * or `streamARN` should be provided in the input.
  */
 export const describeMappedResourceConfiguration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMappedResourceConfigurationInput,
     output: DescribeMappedResourceConfigurationOutput,
     errors: [
@@ -1197,6 +1210,12 @@ export const describeMappedResourceConfiguration =
       InvalidArgumentException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MappedResourceConfigurationList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of tags associated with the specified stream.
@@ -1234,8 +1253,8 @@ export const describeStream = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * In the request, you must specify the Edge Agent `HubDeviceArn`.
  */
-export const listEdgeAgentConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEdgeAgentConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEdgeAgentConfigurationsInput,
     output: ListEdgeAgentConfigurationsOutput,
     errors: [
@@ -1243,8 +1262,13 @@ export const listEdgeAgentConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidArgumentException,
       NotAuthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EdgeConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets an endpoint for a specified stream for either reading or writing. Use this
  * endpoint in your application to read from the specified stream (using the

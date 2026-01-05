@@ -1216,3 +1216,38 @@ export const getMiddleware = (ast: AST.AST): MiddlewareFn[] => {
   // Single middleware value
   return [value.middleware];
 };
+
+// =============================================================================
+// Pagination Trait (smithy.api#paginated)
+// =============================================================================
+
+/**
+ * Pagination trait metadata for operations that support pagination.
+ * This is operation-level metadata, not a schema annotation.
+ */
+export interface PaginatedTrait {
+  /** The name of the input member containing the continuation token */
+  inputToken: string;
+  /** The path to the output member containing the next continuation token */
+  outputToken: string;
+  /** The path to the output member containing the paginated items */
+  items?: string;
+  /** The name of the input member that limits page size */
+  pageSize?: string;
+}
+
+/**
+ * Helper to get a value from an object using a dot-separated path.
+ * Used for pagination traits where outputToken and items can be paths.
+ */
+export const getPath = (obj: unknown, path: string): unknown => {
+  const parts = path.split(".");
+  let current: unknown = obj;
+  for (const part of parts) {
+    if (current == null || typeof current !== "object") {
+      return undefined;
+    }
+    current = (current as Record<string, unknown>)[part];
+  }
+  return current;
+};

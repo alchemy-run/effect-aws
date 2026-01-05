@@ -1572,19 +1572,33 @@ export const describeTaskExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * In situations like this, you can always confirm whether an agent has been created (or deleted)
  * by using DescribeAgent.
  */
-export const listAgents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAgents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAgentsRequest,
   output: ListAgentsResponse,
   errors: [InternalException, InvalidRequestException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Agents",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a list of executions for an DataSync transfer task.
  */
-export const listTaskExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTaskExecutionsRequest,
-  output: ListTaskExecutionsResponse,
-  errors: [InternalException, InvalidRequestException],
-}));
+export const listTaskExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTaskExecutionsRequest,
+    output: ListTaskExecutionsResponse,
+    errors: [InternalException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TaskExecutions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Modifies the following configuration parameters of the Amazon FSx for NetApp ONTAP
  * transfer location that you're using with DataSync.
@@ -1768,11 +1782,18 @@ export const describeLocationSmb = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns all the tags associated with an Amazon Web Services resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [InternalException, InvalidRequestException],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [InternalException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts an DataSync transfer task. For each task, you can only run one task
  * execution at a time.
@@ -2027,18 +2048,32 @@ export const createLocationFsxOntap = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * returns only a truncated list of your agents), the response contains a token that you can
  * specify in your next request to fetch the next page of locations.
  */
-export const listLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLocationsRequest,
-  output: ListLocationsResponse,
-  errors: [InternalException, InvalidRequestException],
-}));
+export const listLocations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLocationsRequest,
+    output: ListLocationsResponse,
+    errors: [InternalException, InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Locations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the DataSync tasks you created.
  */
-export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
   output: ListTasksResponse,
   errors: [InternalException, InvalidRequestException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Tasks",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Configures a *task*, which defines where and how DataSync

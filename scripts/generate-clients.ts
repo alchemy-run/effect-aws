@@ -1667,15 +1667,64 @@ const generateClient = Effect.fn(function* (
           return allErrors.length === 0 ? "[]" : `[${allErrors.join(", ")}]`;
         });
 
-        // Build simplified operation object - metadata comes from annotations on input schema
-        const metaObject = `{ input: ${input}, output: ${output}, errors: ${operationErrors} }`;
+        // Extract pagination trait from operation (smithy.api#paginated)
+        // Operations may only specify partial pagination (e.g., just `items`)
+        // and inherit inputToken/outputToken from service-level pagination
+        const operationPaginatedTrait = operationShape.traits?.[
+          "smithy.api#paginated"
+        ] as
+          | {
+              inputToken?: string;
+              outputToken?: string;
+              items?: string;
+              pageSize?: string;
+            }
+          | undefined;
+
+        // Get service-level pagination trait for merging
+        const servicePaginatedTrait = serviceShape.traits?.[
+          "smithy.api#paginated"
+        ] as
+          | {
+              inputToken?: string;
+              outputToken?: string;
+              items?: string;
+              pageSize?: string;
+            }
+          | undefined;
+
+        // Merge operation pagination with service-level pagination
+        // Operation-level traits override service-level traits
+        const paginatedTrait = operationPaginatedTrait
+          ? {
+              inputToken:
+                operationPaginatedTrait.inputToken ??
+                servicePaginatedTrait?.inputToken,
+              outputToken:
+                operationPaginatedTrait.outputToken ??
+                servicePaginatedTrait?.outputToken,
+              items: operationPaginatedTrait.items,
+              pageSize:
+                operationPaginatedTrait.pageSize ??
+                servicePaginatedTrait?.pageSize,
+            }
+          : undefined;
+
+        // Build operation object - include pagination metadata if present
+        // Use 'as const' on pagination to preserve literal types for type inference
+        const metaObject = paginatedTrait
+          ? `{ input: ${input}, output: ${output}, errors: ${operationErrors}, pagination: ${JSON.stringify(paginatedTrait)} as const }`
+          : `{ input: ${input}, output: ${output}, errors: ${operationErrors} }`;
+
+        // Use API.makePaginated for paginated operations, API.make for others
+        const apiFn = paginatedTrait ? "API.makePaginated" : "API.make";
 
         yield* sdkFile.operations.pipe(
           Ref.update(
             (c) =>
               c +
               operationComment +
-              `export const ${formatName(operationShapeName, true)} = /*@__PURE__*/ /*#__PURE__*/ API.make(() => (${metaObject}));\n`,
+              `export const ${formatName(operationShapeName, true)} = /*@__PURE__*/ /*#__PURE__*/ ${apiFn}(() => (${metaObject}));\n`,
           ),
         );
       }),

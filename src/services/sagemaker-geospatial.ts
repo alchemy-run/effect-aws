@@ -1171,8 +1171,8 @@ export const exportEarthObservationJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Use this operation to get a list of the Earth Observation jobs associated with the calling Amazon Web Services account.
  */
-export const listEarthObservationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listEarthObservationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEarthObservationJobInput,
     output: ListEarthObservationJobOutput,
     errors: [
@@ -1182,8 +1182,12 @@ export const listEarthObservationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EarthObservationJobSummaries",
+    } as const,
+  }));
 /**
  * Use this operation to get details of a specific raster data collection.
  */
@@ -1203,8 +1207,8 @@ export const getRasterDataCollection = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Use this operation to get raster data collections.
  */
-export const listRasterDataCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRasterDataCollections =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRasterDataCollectionsInput,
     output: ListRasterDataCollectionsOutput,
     errors: [
@@ -1214,8 +1218,12 @@ export const listRasterDataCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RasterDataCollectionSummaries",
+    } as const,
+  }));
 /**
  * Retrieves details of a Vector Enrichment Job for a given job Amazon Resource Name (ARN).
  */
@@ -1235,8 +1243,8 @@ export const getVectorEnrichmentJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of vector enrichment jobs.
  */
-export const listVectorEnrichmentJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVectorEnrichmentJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVectorEnrichmentJobInput,
     output: ListVectorEnrichmentJobOutput,
     errors: [
@@ -1246,8 +1254,12 @@ export const listVectorEnrichmentJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "VectorEnrichmentJobSummaries",
+    } as const,
+  }));
 /**
  * Use this operation to delete an Earth Observation job.
  */
@@ -1397,8 +1409,8 @@ export const exportVectorEnrichmentJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Allows you run image query on a specific raster data collection to get a list of the satellite imagery matching the selected filters.
  */
-export const searchRasterDataCollection = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchRasterDataCollection =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchRasterDataCollectionInput,
     output: SearchRasterDataCollectionOutput,
     errors: [
@@ -1408,5 +1420,5 @@ export const searchRasterDataCollection = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }));

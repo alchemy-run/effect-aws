@@ -1035,7 +1035,7 @@ export const describeProtectionGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves the resources that are included in the protection group.
  */
 export const listResourcesInProtectionGroup =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourcesInProtectionGroupRequest,
     output: ListResourcesInProtectionGroupResponse,
     errors: [
@@ -1043,6 +1043,11 @@ export const listResourcesInProtectionGroup =
       InvalidPaginationTokenException,
       ResourceNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Gets information about Amazon Web Services tags for a specified Amazon Resource Name (ARN) in Shield.
@@ -1259,8 +1264,8 @@ export const associateProactiveEngagementDetails =
  * Retrieves ProtectionGroup objects for the account. You can retrieve all protection groups or you can provide
  * filtering criteria and retrieve just the subset of protection groups that match the criteria.
  */
-export const listProtectionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProtectionGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProtectionGroupsRequest,
     output: ListProtectionGroupsResponse,
     errors: [
@@ -1268,21 +1273,33 @@ export const listProtectionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidPaginationTokenException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves Protection objects for the account. You can retrieve all protections or you can provide
  * filtering criteria and retrieve just the subset of protections that match the criteria.
  */
-export const listProtections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProtectionsRequest,
-  output: ListProtectionsResponse,
-  errors: [
-    InternalErrorException,
-    InvalidPaginationTokenException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listProtections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProtectionsRequest,
+    output: ListProtectionsResponse,
+    errors: [
+      InternalErrorException,
+      InvalidPaginationTokenException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Protections",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes health-based detection from the Shield Advanced protection for a resource. Shield Advanced health-based detection uses the health of your Amazon Web Services resource to improve responsiveness and accuracy in attack detection and response.
  *
@@ -1331,15 +1348,23 @@ export const describeProtection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns all ongoing DDoS attacks or all DDoS attacks during a specified time
  * period.
  */
-export const listAttacks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttacksRequest,
-  output: ListAttacksResponse,
-  errors: [
-    InternalErrorException,
-    InvalidOperationException,
-    InvalidParameterException,
-  ],
-}));
+export const listAttacks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttacksRequest,
+    output: ListAttacksResponse,
+    errors: [
+      InternalErrorException,
+      InvalidOperationException,
+      InvalidParameterException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AttackSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Adds health-based detection to the Shield Advanced protection for a resource. Shield Advanced health-based detection uses the health of your Amazon Web Services resource to improve responsiveness and accuracy in attack detection and response.
  *

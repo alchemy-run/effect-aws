@@ -3210,24 +3210,32 @@ export const putComponentPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * recipe. When you use a wildcard in any node, all nodes to the right of the first wildcard must also be
  * wildcards.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsRequest,
-  output: ListComponentsResponse,
-  errors: [
-    CallRateLimitExceededException,
-    ClientException,
-    ForbiddenException,
-    InvalidPaginationTokenException,
-    InvalidRequestException,
-    ServiceException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsRequest,
+    output: ListComponentsResponse,
+    errors: [
+      CallRateLimitExceededException,
+      ClientException,
+      ForbiddenException,
+      InvalidPaginationTokenException,
+      InvalidRequestException,
+      ServiceException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "componentVersionList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List resources that the runtime instance of the image lifecycle identified for lifecycle actions.
  */
 export const listLifecycleExecutionResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLifecycleExecutionResourcesRequest,
     output: ListLifecycleExecutionResourcesResponse,
     errors: [
@@ -3239,12 +3247,18 @@ export const listLifecycleExecutionResources =
       ServiceException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resources",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of container recipes.
  */
-export const listContainerRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listContainerRecipes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListContainerRecipesRequest,
     output: ListContainerRecipesResponse,
     errors: [
@@ -3256,13 +3270,18 @@ export const listContainerRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "containerRecipeSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of distribution configurations.
  */
 export const listDistributionConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDistributionConfigurationsRequest,
     output: ListDistributionConfigurationsResponse,
     errors: [
@@ -3274,12 +3293,18 @@ export const listDistributionConfigurations =
       ServiceException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "distributionConfigurationSummaryList",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of image build versions.
  */
-export const listImageBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImageBuildVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImageBuildVersionsRequest,
     output: ListImageBuildVersionsResponse,
     errors: [
@@ -3291,47 +3316,68 @@ export const listImageBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List the Packages that are associated with an Image Build Version, as determined by
  * Amazon Web Services Systems Manager Inventory at build time.
  */
-export const listImagePackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImagePackagesRequest,
-  output: ListImagePackagesResponse,
-  errors: [
-    CallRateLimitExceededException,
-    ClientException,
-    ForbiddenException,
-    InvalidPaginationTokenException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ServiceException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listImagePackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImagePackagesRequest,
+    output: ListImagePackagesResponse,
+    errors: [
+      CallRateLimitExceededException,
+      ClientException,
+      ForbiddenException,
+      InvalidPaginationTokenException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ServiceException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imagePackageList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of image recipes.
  */
-export const listImageRecipes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImageRecipesRequest,
-  output: ListImageRecipesResponse,
-  errors: [
-    CallRateLimitExceededException,
-    ClientException,
-    ForbiddenException,
-    InvalidPaginationTokenException,
-    InvalidRequestException,
-    ServiceException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listImageRecipes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImageRecipesRequest,
+    output: ListImageRecipesResponse,
+    errors: [
+      CallRateLimitExceededException,
+      ClientException,
+      ForbiddenException,
+      InvalidPaginationTokenException,
+      InvalidRequestException,
+      ServiceException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageRecipeSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the list of images that you have access to. Newly created images can take up
  * to two minutes to appear in the ListImages API Results.
  */
-export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
   output: ListImagesResponse,
   errors: [
@@ -3343,12 +3389,18 @@ export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceException,
     ServiceUnavailableException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "imageVersionList",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns a list of infrastructure configurations.
  */
 export const listInfrastructureConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInfrastructureConfigurationsRequest,
     output: ListInfrastructureConfigurationsResponse,
     errors: [
@@ -3360,12 +3412,18 @@ export const listInfrastructureConfigurations =
       ServiceException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "infrastructureConfigurationSummaryList",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Get a list of lifecycle policies in your Amazon Web Services account.
  */
-export const listLifecyclePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLifecyclePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLifecyclePoliciesRequest,
     output: ListLifecyclePoliciesResponse,
     errors: [
@@ -3377,14 +3435,19 @@ export const listLifecyclePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "lifecyclePolicySummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get a list of workflow steps that are waiting for action for workflows
  * in your Amazon Web Services account.
  */
-export const listWaitingWorkflowSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWaitingWorkflowSteps =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWaitingWorkflowStepsRequest,
     output: ListWaitingWorkflowStepsResponse,
     errors: [
@@ -3396,13 +3459,18 @@ export const listWaitingWorkflowSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "steps",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of build versions for a specific workflow resource.
  */
-export const listWorkflowBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowBuildVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowBuildVersionsRequest,
     output: ListWorkflowBuildVersionsResponse,
     errors: [
@@ -3414,14 +3482,19 @@ export const listWorkflowBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of workflow runtime instance metadata objects for a specific image build
  * version.
  */
-export const listWorkflowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowExecutionsRequest,
     output: ListWorkflowExecutionsResponse,
     errors: [
@@ -3433,30 +3506,43 @@ export const listWorkflowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowExecutions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists workflow build versions based on filtering parameters.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [
-    CallRateLimitExceededException,
-    ClientException,
-    ForbiddenException,
-    InvalidPaginationTokenException,
-    InvalidRequestException,
-    ServiceException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [
+      CallRateLimitExceededException,
+      ClientException,
+      ForbiddenException,
+      InvalidPaginationTokenException,
+      InvalidRequestException,
+      ServiceException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workflowVersionList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns runtime data for each step in a runtime instance of the workflow
  * that you specify in the request.
  */
-export const listWorkflowStepExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWorkflowStepExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWorkflowStepExecutionsRequest,
     output: ListWorkflowStepExecutionsResponse,
     errors: [
@@ -3468,13 +3554,18 @@ export const listWorkflowStepExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "steps",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of images created by the specified pipeline.
  */
-export const listImagePipelineImages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImagePipelineImages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImagePipelineImagesRequest,
     output: ListImagePipelineImagesResponse,
     errors: [
@@ -3487,29 +3578,42 @@ export const listImagePipelineImages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of image pipelines.
  */
-export const listImagePipelines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImagePipelinesRequest,
-  output: ListImagePipelinesResponse,
-  errors: [
-    CallRateLimitExceededException,
-    ClientException,
-    ForbiddenException,
-    InvalidPaginationTokenException,
-    InvalidRequestException,
-    ServiceException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listImagePipelines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImagePipelinesRequest,
+    output: ListImagePipelinesResponse,
+    errors: [
+      CallRateLimitExceededException,
+      ClientException,
+      ForbiddenException,
+      InvalidPaginationTokenException,
+      InvalidRequestException,
+      ServiceException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imagePipelineList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Get the lifecycle runtime history for the specified resource.
  */
-export const listLifecycleExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLifecycleExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLifecycleExecutionsRequest,
     output: ListLifecycleExecutionsResponse,
     errors: [
@@ -3521,8 +3625,13 @@ export const listLifecycleExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "lifecycleExecutions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a component policy.
  */
@@ -3800,8 +3909,8 @@ export const getImage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns the list of component build versions for the specified component
  * version Amazon Resource Name (ARN).
  */
-export const listComponentBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listComponentBuildVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListComponentBuildVersionsRequest,
     output: ListComponentBuildVersionsResponse,
     errors: [
@@ -3813,8 +3922,13 @@ export const listComponentBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "componentSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of image scan aggregations for your account. You can filter by the type
  * of key that Image Builder uses to group results. For example, if you want to get a list of
@@ -3833,7 +3947,7 @@ export const listComponentBuildVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - `vulnerabilityId`
  */
 export const listImageScanFindingAggregations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImageScanFindingAggregationsRequest,
     output: ListImageScanFindingAggregationsResponse,
     errors: [
@@ -3845,6 +3959,11 @@ export const listImageScanFindingAggregations =
       ServiceException,
       ServiceUnavailableException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "responses",
+    } as const,
   }));
 /**
  * Applies a policy to a container image. We recommend that you call the RAM API
@@ -4299,8 +4418,8 @@ export const startResourceStateUpdate = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of image scan findings for your account.
  */
-export const listImageScanFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImageScanFindings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImageScanFindingsRequest,
     output: ListImageScanFindingsResponse,
     errors: [
@@ -4312,8 +4431,13 @@ export const listImageScanFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "findings",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a new image pipeline. Image pipelines enable you to automate the creation and
  * distribution of images.

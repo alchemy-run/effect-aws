@@ -1644,18 +1644,26 @@ export class ValidationError extends S.TaggedError<ValidationError>()(
 /**
  * Retrieves a paginated list of all Wickr networks associated with your Amazon Web Services account. You can sort the results by network ID or name.
  */
-export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNetworksRequest,
-  output: ListNetworksResponse,
-  errors: [
-    BadRequestError,
-    ForbiddenError,
-    InternalServerError,
-    RateLimitError,
-    UnauthorizedError,
-    ValidationError,
-  ],
-}));
+export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNetworksRequest,
+    output: ListNetworksResponse,
+    errors: [
+      BadRequestError,
+      ForbiddenError,
+      InternalServerError,
+      RateLimitError,
+      UnauthorizedError,
+      ValidationError,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "networks",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new security group in a Wickr network. Security groups allow you to organize users and control their permissions, features, and security settings.
  */
@@ -1793,8 +1801,8 @@ export const getSecurityGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a paginated list of guest users who have been blocked from a Wickr network. You can filter and sort the results.
  */
-export const listBlockedGuestUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBlockedGuestUsers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBlockedGuestUsersRequest,
     output: ListBlockedGuestUsersResponse,
     errors: [
@@ -1806,12 +1814,17 @@ export const listBlockedGuestUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedError,
       ValidationError,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "blocklist",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a paginated list of bots in a specified Wickr network. You can filter and sort the results based on various criteria.
  */
-export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -1823,44 +1836,66 @@ export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     UnauthorizedError,
     ValidationError,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "bots",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Retrieves a paginated list of devices associated with a specific user in a Wickr network. This operation returns information about all devices where the user has logged into Wickr.
  */
-export const listDevicesForUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesForUserRequest,
-  output: ListDevicesForUserResponse,
-  errors: [
-    BadRequestError,
-    ForbiddenError,
-    InternalServerError,
-    RateLimitError,
-    ResourceNotFoundError,
-    UnauthorizedError,
-    ValidationError,
-  ],
-}));
+export const listDevicesForUser = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesForUserRequest,
+    output: ListDevicesForUserResponse,
+    errors: [
+      BadRequestError,
+      ForbiddenError,
+      InternalServerError,
+      RateLimitError,
+      ResourceNotFoundError,
+      UnauthorizedError,
+      ValidationError,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devices",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of guest users who have communicated with your Wickr network. Guest users are external users from federated networks who can communicate with network members.
  */
-export const listGuestUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGuestUsersRequest,
-  output: ListGuestUsersResponse,
-  errors: [
-    BadRequestError,
-    ForbiddenError,
-    InternalServerError,
-    RateLimitError,
-    ResourceNotFoundError,
-    UnauthorizedError,
-    ValidationError,
-  ],
-}));
+export const listGuestUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGuestUsersRequest,
+    output: ListGuestUsersResponse,
+    errors: [
+      BadRequestError,
+      ForbiddenError,
+      InternalServerError,
+      RateLimitError,
+      ResourceNotFoundError,
+      UnauthorizedError,
+      ValidationError,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "guestlist",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of users who belong to a specific security group in a Wickr network.
  */
-export const listSecurityGroupUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSecurityGroupUsers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSecurityGroupUsersRequest,
     output: ListSecurityGroupUsersResponse,
     errors: [
@@ -1872,8 +1907,13 @@ export const listSecurityGroupUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       UnauthorizedError,
       ValidationError,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "users",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the properties of an existing user in a Wickr network. This operation allows you to modify the user's name, password, security group membership, and invite code settings.
  *
@@ -2141,23 +2181,31 @@ export const getUsersCount = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a paginated list of security groups in a specified Wickr network. You can sort the results by various criteria.
  */
-export const listSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSecurityGroupsRequest,
-  output: ListSecurityGroupsResponse,
-  errors: [
-    BadRequestError,
-    ForbiddenError,
-    InternalServerError,
-    RateLimitError,
-    ResourceNotFoundError,
-    UnauthorizedError,
-    ValidationError,
-  ],
-}));
+export const listSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSecurityGroupsRequest,
+    output: ListSecurityGroupsResponse,
+    errors: [
+      BadRequestError,
+      ForbiddenError,
+      InternalServerError,
+      RateLimitError,
+      ResourceNotFoundError,
+      UnauthorizedError,
+      ValidationError,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "securityGroups",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a paginated list of users in a specified Wickr network. You can filter and sort the results based on various criteria such as name, status, or security group membership.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -2169,6 +2217,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     UnauthorizedError,
     ValidationError,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "users",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Registers and saves an OpenID Connect (OIDC) configuration for a Wickr network, enabling Single Sign-On (SSO) authentication through an identity provider.

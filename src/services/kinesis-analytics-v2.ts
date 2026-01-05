@@ -1700,13 +1700,18 @@ export const startApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information about the current application snapshots.
  */
-export const listApplicationSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationSnapshotsRequest,
     output: ListApplicationSnapshotsResponse,
     errors: [InvalidArgumentException, UnsupportedOperationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SnapshotSummaries",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Updates the maintenance configuration of the Managed Service for Apache Flink application.
  *
@@ -1785,11 +1790,19 @@ export const addApplicationVpcConfiguration =
  * If you want detailed information about a specific application, use
  * DescribeApplication.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [InvalidRequestException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [InvalidRequestException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationSummaries",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified application. Managed Service for Apache Flink halts application execution and deletes the application.
  */
@@ -1993,8 +2006,8 @@ export const addApplicationReferenceDataSource =
  *
  * This operation is supported only for Managed Service for Apache Flink.
  */
-export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationVersionsRequest,
     output: ListApplicationVersionsResponse,
     errors: [
@@ -2002,8 +2015,13 @@ export const listApplicationVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationVersionSummaries",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Provides a detailed description of a specified version of the application. To see a list of all the versions of an application, invoke the ListApplicationVersions operation.
  *
@@ -2097,8 +2115,8 @@ export const describeApplicationSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This operation is supported only for Managed Service for Apache Flink.
  */
-export const listApplicationOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationOperations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationOperationsRequest,
     output: ListApplicationOperationsResponse,
     errors: [
@@ -2106,8 +2124,13 @@ export const listApplicationOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationOperationInfoList",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Provides a detailed description of a specified application operation. To see a list of all the operations of an application, invoke the ListApplicationOperations operation.
  *

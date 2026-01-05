@@ -3633,16 +3633,22 @@ export const listEventConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the wireless devices registered to your AWS account.
  */
-export const listWirelessDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWirelessDevicesRequest,
-  output: ListWirelessDevicesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWirelessDevices =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListWirelessDevicesRequest,
+    output: ListWirelessDevicesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the wireless gateway tasks definitions registered to your AWS account.
  */
@@ -3739,60 +3745,87 @@ export const getWirelessGatewayFirmwareInformation =
 /**
  * Lists the destinations registered to your AWS account.
  */
-export const listDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDestinationsRequest,
-  output: ListDestinationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDestinations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDestinationsRequest,
+    output: ListDestinationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the device profiles registered to your AWS account.
  */
-export const listDeviceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDeviceProfilesRequest,
-  output: ListDeviceProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDeviceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDeviceProfilesRequest,
+    output: ListDeviceProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the FUOTA tasks registered to your AWS account.
  */
-export const listFuotaTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFuotaTasksRequest,
-  output: ListFuotaTasksResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFuotaTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFuotaTasksRequest,
+    output: ListFuotaTasksResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the multicast groups registered to your AWS account.
  */
-export const listMulticastGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMulticastGroupsRequest,
-  output: ListMulticastGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMulticastGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMulticastGroupsRequest,
+    output: ListMulticastGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all multicast groups associated with a FUOTA task.
  */
 export const listMulticastGroupsByFuotaTask =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMulticastGroupsByFuotaTaskRequest,
     output: ListMulticastGroupsByFuotaTaskResponse,
     errors: [
@@ -3802,12 +3835,17 @@ export const listMulticastGroupsByFuotaTask =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the network analyzer configurations.
  */
 export const listNetworkAnalyzerConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNetworkAnalyzerConfigurationsRequest,
     output: ListNetworkAnalyzerConfigurationsResponse,
     errors: [
@@ -3816,6 +3854,11 @@ export const listNetworkAnalyzerConfigurations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List position configurations for a given resource, such as positioning solvers.
@@ -3823,8 +3866,8 @@ export const listNetworkAnalyzerConfigurations =
  * This action is no longer supported. Calls to retrieve position information should
  * use the GetResourcePosition API operation instead.
  */
-export const listPositionConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPositionConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPositionConfigurationsRequest,
     output: ListPositionConfigurationsResponse,
     errors: [
@@ -3833,35 +3876,52 @@ export const listPositionConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List queued messages in the downlink queue.
  */
-export const listQueuedMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQueuedMessagesRequest,
-  output: ListQueuedMessagesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listQueuedMessages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQueuedMessagesRequest,
+    output: ListQueuedMessagesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the service profiles registered to your AWS account.
  */
-export const listServiceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceProfilesRequest,
-  output: ListServiceProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServiceProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListServiceProfilesRequest,
+    output: ListServiceProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List of import tasks and summary information of onboarding status of devices in each
  * import task.
@@ -3882,8 +3942,8 @@ export const listWirelessDeviceImportTasks =
 /**
  * Lists the wireless gateways registered to your AWS account.
  */
-export const listWirelessGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listWirelessGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListWirelessGatewaysRequest,
     output: ListWirelessGatewaysResponse,
     errors: [
@@ -3892,8 +3952,12 @@ export const listWirelessGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Put position configuration for a given resource.
  *

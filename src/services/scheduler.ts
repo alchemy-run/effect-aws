@@ -719,11 +719,19 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a paginated list of your schedule groups.
  */
-export const listScheduleGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListScheduleGroupsInput,
-  output: ListScheduleGroupsOutput,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listScheduleGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListScheduleGroupsInput,
+    output: ListScheduleGroupsOutput,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduleGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates the specified schedule group.
  */
@@ -860,16 +868,24 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a paginated list of your EventBridge Scheduler schedules.
  */
-export const listSchedules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchedulesInput,
-  output: ListSchedulesOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSchedules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchedulesInput,
+    output: ListSchedulesOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schedules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Creates the specified schedule.
  */

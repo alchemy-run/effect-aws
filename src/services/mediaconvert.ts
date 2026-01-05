@@ -4094,19 +4094,27 @@ export const getQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Send a request with an empty body to the regional API endpoint to get your account API endpoint. Note that DescribeEndpoints is no longer required. We recommend that you send your requests directly to the regional endpoint instead.
  */
-export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEndpointsRequest,
-  output: DescribeEndpointsResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceQuotaExceededException,
-    TooManyRequestsException,
-  ],
-}));
+export const describeEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEndpointsRequest,
+    output: DescribeEndpointsResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceQuotaExceededException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Endpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve the JSON for a specific job template.
  */
@@ -4158,19 +4166,27 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieve a JSON array of all available Job engine versions and the date they expire.
  */
-export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVersionsRequest,
-  output: ListVersionsResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceQuotaExceededException,
-    TooManyRequestsException,
-  ],
-}));
+export const listVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVersionsRequest,
+    output: ListVersionsResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceQuotaExceededException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Versions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Start an asynchronous jobs query using the provided filters. To receive the list of jobs that match your query, call the GetJobsQueryResults API using the query ID returned by this API.
  */
@@ -4222,7 +4238,7 @@ export const getPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieve a JSON array of up to twenty of your most recently created jobs. This array includes in-process, completed, and errored jobs. This will return the jobs themselves, not just a list of the jobs. To retrieve the twenty next most recent jobs, use the nextToken string returned with the array.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -4234,43 +4250,65 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceQuotaExceededException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Jobs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieve a JSON array of up to twenty of your job templates. This will return the templates themselves, not just a list of them. To retrieve the next twenty templates, use the nextToken string returned with the array
  */
-export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobTemplatesRequest,
-  output: ListJobTemplatesResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceQuotaExceededException,
-    TooManyRequestsException,
-  ],
-}));
+export const listJobTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobTemplatesRequest,
+    output: ListJobTemplatesResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceQuotaExceededException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "JobTemplates",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve a JSON array of up to twenty of your presets. This will return the presets themselves, not just a list of them. To retrieve the next twenty presets, use the nextToken string returned with the array.
  */
-export const listPresets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPresetsRequest,
-  output: ListPresetsResponse,
-  errors: [
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceQuotaExceededException,
-    TooManyRequestsException,
-  ],
-}));
+export const listPresets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPresetsRequest,
+    output: ListPresetsResponse,
+    errors: [
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceQuotaExceededException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Presets",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve a JSON array of up to twenty of your queues. This will return the queues themselves, not just a list of them. To retrieve the next twenty queues, use the nextToken string returned with the array.
  */
-export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
   output: ListQueuesResponse,
   errors: [
@@ -4282,6 +4320,12 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceQuotaExceededException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Queues",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Create or change your policy. For more information about policies, see the user guide at http://docs.aws.amazon.com/mediaconvert/latest/ug/what-is.html
@@ -4302,7 +4346,7 @@ export const putPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieve a JSON array that includes job details for up to twenty of your most recent jobs. Optionally filter results further according to input file, queue, or status. To retrieve the twenty next most recent jobs, use the nextToken string returned with the array.
  */
-export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchJobsRequest,
   output: SearchJobsResponse,
   errors: [
@@ -4314,6 +4358,12 @@ export const searchJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ServiceQuotaExceededException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Jobs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Modify one of your existing job templates.

@@ -5182,21 +5182,28 @@ export const describeTestSetDiscrepancyReport =
 /**
  * Gets a list of locales for the specified bot.
  */
-export const listBotLocales = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBotLocalesRequest,
-  output: ListBotLocalesResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBotLocales = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBotLocalesRequest,
+    output: ListBotLocalesResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the generation requests made for a bot locale.
  */
-export const listBotResourceGenerations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBotResourceGenerations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBotResourceGenerationsRequest,
     output: ListBotResourceGenerationsResponse,
     errors: [
@@ -5205,12 +5212,16 @@ export const listBotResourceGenerations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of available bots.
  */
-export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListBotsRequest,
   output: ListBotsResponse,
   errors: [
@@ -5219,12 +5230,17 @@ export const listBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Contains information about all the versions replication statuses applicable for Global Resiliency.
  */
-export const listBotVersionReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBotVersionReplicas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBotVersionReplicasRequest,
     output: ListBotVersionReplicasResponse,
     errors: [
@@ -5233,8 +5249,12 @@ export const listBotVersionReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about all of the versions of a bot.
  *
@@ -5247,16 +5267,23 @@ export const listBotVersionReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * The `ListBotVersions` operation always returns at least
  * one version, the `DRAFT` version.
  */
-export const listBotVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBotVersionsRequest,
-  output: ListBotVersionsResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBotVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBotVersionsRequest,
+    output: ListBotVersionsResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of built-in intents provided by Amazon Lex that you can use
  * in your bot.
@@ -5266,22 +5293,29 @@ export const listBotVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * parameter when you call the `CreateIntent` operation. For
  * more information, see CreateIntent.
  */
-export const listBuiltInIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBuiltInIntentsRequest,
-  output: ListBuiltInIntentsResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBuiltInIntents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBuiltInIntentsRequest,
+    output: ListBuiltInIntentsResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of built-in slot types that meet the specified
  * criteria.
  */
-export const listBuiltInSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBuiltInSlotTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBuiltInSlotTypesRequest,
     output: ListBuiltInSlotTypesResponse,
     errors: [
@@ -5290,26 +5324,44 @@ export const listBuiltInSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the exports for a bot, bot locale, or custom vocabulary.
  * Exports are kept in the list for 7 days.
  */
-export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportsRequest,
-  output: ListExportsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportsRequest,
+    output: ListExportsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the imports for a bot, bot locale, or custom vocabulary.
  * Imports are kept in the list for 7 days.
  */
-export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportsRequest,
-  output: ListImportsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listImports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportsRequest,
+    output: ListImportsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves summary statistics for a path of intents that users take over sessions with your bot. The following fields are required:
  *
@@ -5333,20 +5385,27 @@ export const listIntentPaths = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Get a list of intents that meet the specified criteria.
  */
-export const listIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIntentsRequest,
-  output: ListIntentsResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIntents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIntentsRequest,
+    output: ListIntentsResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of slots that match the specified criteria.
  */
-export const listSlots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSlots = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSlotsRequest,
   output: ListSlotsResponse,
   errors: [
@@ -5355,46 +5414,72 @@ export const listSlots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets a list of slot types that match the specified criteria.
  */
-export const listSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSlotTypesRequest,
-  output: ListSlotTypesResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSlotTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSlotTypesRequest,
+    output: ListSlotTypesResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The list of test set executions.
  */
-export const listTestExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTestExecutionsRequest,
-  output: ListTestExecutionsResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTestExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTestExecutionsRequest,
+    output: ListTestExecutionsResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The list of the test sets
  */
-export const listTestSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTestSetsRequest,
-  output: ListTestSetsResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTestSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTestSetsRequest,
+    output: ListTestSetsResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Search for associated transcripts that meet the specified
  * criteria.
@@ -5431,8 +5516,8 @@ export const startTestExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Get a list of bot recommendations that meet the specified
  * criteria.
  */
-export const listBotRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBotRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBotRecommendationsRequest,
     output: ListBotRecommendationsResponse,
     errors: [
@@ -5441,8 +5526,12 @@ export const listBotRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about a request to generate a bot through natural language description, made through
  * the `StartBotResource` API. Use the `generatedBotLocaleUrl`
@@ -5590,21 +5679,28 @@ export const generateBotElement = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of aliases for the specified bot.
  */
-export const listBotAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBotAliasesRequest,
-  output: ListBotAliasesResponse,
-  errors: [
-    InternalServerException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBotAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBotAliasesRequest,
+    output: ListBotAliasesResponse,
+    errors: [
+      InternalServerException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * The action to list the replicated bots created from the source bot alias.
  */
-export const listBotAliasReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listBotAliasReplicas =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListBotAliasReplicasRequest,
     output: ListBotAliasReplicasResponse,
     errors: [
@@ -5613,8 +5709,12 @@ export const listBotAliasReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * The action to list the replicated bots.
  */
@@ -5633,8 +5733,8 @@ export const listBotReplicas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * recommendation that you can use in your bot. Intents in the
  * response are ordered by relevance.
  */
-export const listRecommendedIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendedIntents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendedIntentsRequest,
     output: ListRecommendedIntentsResponse,
     errors: [
@@ -5644,8 +5744,12 @@ export const listRecommendedIntents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the settings for an intent.
  */
@@ -5811,8 +5915,8 @@ export const getTestExecutionArtifactsUrl =
  * Paginated list of custom vocabulary items for a given bot locale's
  * custom vocabulary.
  */
-export const listCustomVocabularyItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomVocabularyItems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomVocabularyItemsRequest,
     output: ListCustomVocabularyItemsResponse,
     errors: [
@@ -5822,8 +5926,12 @@ export const listCustomVocabularyItems = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates the password used to protect an export zip archive.
  *
@@ -6478,8 +6586,8 @@ export const describeBotRecommendation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - You opted out of participating in improving Amazon Lex.
  */
-export const listAggregatedUtterances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAggregatedUtterances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAggregatedUtterancesRequest,
     output: ListAggregatedUtterancesResponse,
     errors: [
@@ -6488,8 +6596,12 @@ export const listAggregatedUtterances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves summary metrics for the intents in your bot. The following fields are required:
  *
@@ -6505,17 +6617,24 @@ export const listAggregatedUtterances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. You can specify only one `order` in a given request.
  */
-export const listIntentMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIntentMetricsRequest,
-  output: ListIntentMetricsResponse,
-  errors: [
-    InternalServerException,
-    PreconditionFailedException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIntentMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIntentMetricsRequest,
+    output: ListIntentMetricsResponse,
+    errors: [
+      InternalServerException,
+      PreconditionFailedException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves summary metrics for the stages within intents in your bot. The following fields are required:
  *
@@ -6531,8 +6650,8 @@ export const listIntentMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. You can only specify one `order` in a given request.
  */
-export const listIntentStageMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIntentStageMetrics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIntentStageMetricsRequest,
     output: ListIntentStageMetricsResponse,
     errors: [
@@ -6542,8 +6661,12 @@ export const listIntentStageMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of metadata for individual user sessions with your bot. The `startDateTime` and `endDateTime` fields are required. These fields define a time range for which you want to retrieve results. Of the optional fields, you can organize the results in the following ways:
  *
@@ -6551,8 +6674,8 @@ export const listIntentStageMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Use the `maxResults` field to limit the number of results to return in a single response and the `nextToken` field to return the next batch of results if the response does not return the full set of results.
  */
-export const listSessionAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSessionAnalyticsData =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSessionAnalyticsDataRequest,
     output: ListSessionAnalyticsDataResponse,
     errors: [
@@ -6562,8 +6685,12 @@ export const listSessionAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves summary metrics for the user sessions with your bot. The following fields are required:
  *
@@ -6579,17 +6706,24 @@ export const listSessionAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. Currently, you can specify it in either field, but not in both.
  */
-export const listSessionMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionMetricsRequest,
-  output: ListSessionMetricsResponse,
-  errors: [
-    InternalServerException,
-    PreconditionFailedException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessionMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionMetricsRequest,
+    output: ListSessionMetricsResponse,
+    errors: [
+      InternalServerException,
+      PreconditionFailedException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * To use this API operation, your IAM role must have permissions to
  * perform the ListAggregatedUtterances operation, which provides access to
@@ -6606,8 +6740,8 @@ export const listSessionMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Use the `maxResults` field to limit the number of results to return in a single response and the `nextToken` field to return the next batch of results if the response does not return the full set of results.
  */
-export const listUtteranceAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listUtteranceAnalyticsData =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUtteranceAnalyticsDataRequest,
     output: ListUtteranceAnalyticsDataResponse,
     errors: [
@@ -6617,8 +6751,12 @@ export const listUtteranceAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * To use this API operation, your IAM role must have permissions to
  * perform the ListAggregatedUtterances operation, which provides access to
@@ -6639,8 +6777,8 @@ export const listUtteranceAnalyticsData = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Note that an `order` field exists in both `binBy` and `metrics`. Currently, you can specify it in either field, but not in both.
  */
-export const listUtteranceMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listUtteranceMetrics =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUtteranceMetricsRequest,
     output: ListUtteranceMetricsResponse,
     errors: [
@@ -6650,8 +6788,12 @@ export const listUtteranceMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Starts importing a bot, bot locale, or custom vocabulary from a zip
  * archive that you uploaded to an S3 bucket.
@@ -6811,7 +6953,7 @@ export const createIntent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets a list of test execution result items.
  */
 export const listTestExecutionResultItems =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestExecutionResultItemsRequest,
     output: ListTestExecutionResultItemsResponse,
     errors: [
@@ -6821,18 +6963,30 @@ export const listTestExecutionResultItems =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * The list of test set records.
  */
-export const listTestSetRecords = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTestSetRecordsRequest,
-  output: ListTestSetRecordsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTestSetRecords = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTestSetRecordsRequest,
+    output: ListTestSetRecordsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);

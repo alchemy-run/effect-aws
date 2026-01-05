@@ -2259,16 +2259,22 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Retrieves a list of browser settings.
  */
-export const listBrowserSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBrowserSettingsRequest,
-  output: ListBrowserSettingsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBrowserSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListBrowserSettingsRequest,
+    output: ListBrowserSettingsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a network settings resource that can be associated with a web portal. Once associated with a web portal, network settings define how streaming instances will connect with your specified VPC.
  */
@@ -2318,17 +2324,25 @@ export const getSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists information for multiple secure browser sessions from a specific portal.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets browser settings.
  */
@@ -2462,8 +2476,8 @@ export const getTrustStoreCertificate = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of trust store certificates.
  */
-export const listTrustStoreCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrustStoreCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrustStoreCertificatesRequest,
     output: ListTrustStoreCertificatesResponse,
     errors: [
@@ -2473,8 +2487,12 @@ export const listTrustStoreCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets user access logging settings.
  */
@@ -3005,8 +3023,8 @@ export const createIdentityProvider = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of data protection settings.
  */
-export const listDataProtectionSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataProtectionSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataProtectionSettingsRequest,
     output: ListDataProtectionSettingsResponse,
     errors: [
@@ -3015,13 +3033,18 @@ export const listDataProtectionSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataProtectionSettings",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of identity providers for a specific web portal.
  */
-export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdentityProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdentityProvidersRequest,
     output: ListIdentityProvidersResponse,
     errors: [
@@ -3030,13 +3053,17 @@ export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of IP access settings.
  */
-export const listIpAccessSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIpAccessSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIpAccessSettingsRequest,
     output: ListIpAccessSettingsResponse,
     errors: [
@@ -3045,65 +3072,97 @@ export const listIpAccessSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of network settings.
  */
-export const listNetworkSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNetworkSettingsRequest,
-  output: ListNetworkSettingsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listNetworkSettings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListNetworkSettingsRequest,
+    output: ListNetworkSettingsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list or web portals.
  */
-export const listPortals = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPortalsRequest,
-  output: ListPortalsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPortals = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPortalsRequest,
+    output: ListPortalsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all available session logger resources.
  */
-export const listSessionLoggers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionLoggersRequest,
-  output: ListSessionLoggersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessionLoggers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionLoggersRequest,
+    output: ListSessionLoggersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionLoggers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of trust stores.
  */
-export const listTrustStores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrustStoresRequest,
-  output: ListTrustStoresResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTrustStores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrustStoresRequest,
+    output: ListTrustStoresResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of user access logging settings.
  */
 export const listUserAccessLoggingSettings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUserAccessLoggingSettingsRequest,
     output: ListUserAccessLoggingSettingsResponse,
     errors: [
@@ -3112,20 +3171,32 @@ export const listUserAccessLoggingSettings =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of user settings.
  */
-export const listUserSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUserSettingsRequest,
-  output: ListUserSettingsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listUserSettings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUserSettingsRequest,
+    output: ListUserSettingsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes browser settings.
  */

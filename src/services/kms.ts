@@ -1781,7 +1781,7 @@ export const connectCustomKeyStore = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListKeysRequest,
   output: ListKeysResponse,
   errors: [
@@ -1789,6 +1789,12 @@ export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidMarkerException,
     KMSInternalException,
   ],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "NextMarker",
+    items: "Keys",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Gets information about custom key stores in the account and Region.
@@ -1841,8 +1847,8 @@ export const listKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const describeCustomKeyStores = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCustomKeyStores =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCustomKeyStoresRequest,
     output: DescribeCustomKeyStoresResponse,
     errors: [
@@ -1850,8 +1856,13 @@ export const describeCustomKeyStores = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidMarkerException,
       KMSInternalException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "CustomKeyStores",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns information about all grants in the Amazon Web Services account and Region that have the
  * specified retiring principal.
@@ -1895,17 +1906,24 @@ export const describeCustomKeyStores = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listRetirableGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRetirableGrantsRequest,
-  output: ListGrantsResponse,
-  errors: [
-    DependencyTimeoutException,
-    InvalidArnException,
-    InvalidMarkerException,
-    KMSInternalException,
-    NotFoundException,
-  ],
-}));
+export const listRetirableGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRetirableGrantsRequest,
+    output: ListGrantsResponse,
+    errors: [
+      DependencyTimeoutException,
+      InvalidArnException,
+      InvalidMarkerException,
+      KMSInternalException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Grants",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Sets the state of a KMS key to disabled. This change temporarily prevents use of the KMS
  * key for cryptographic operations.
@@ -2039,17 +2057,25 @@ export const getKeyPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeyPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKeyPoliciesRequest,
-  output: ListKeyPoliciesResponse,
-  errors: [
-    DependencyTimeoutException,
-    InvalidArnException,
-    KMSInternalException,
-    KMSInvalidStateException,
-    NotFoundException,
-  ],
-}));
+export const listKeyPolicies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKeyPoliciesRequest,
+    output: ListKeyPoliciesResponse,
+    errors: [
+      DependencyTimeoutException,
+      InvalidArnException,
+      KMSInternalException,
+      KMSInvalidStateException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "PolicyNames",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Schedules the deletion of a KMS key. By default, KMS applies a waiting period of 30
  * days, but you can specify a waiting period of 7-30 days. When this operation is successful,
@@ -2281,16 +2307,24 @@ export const revokeGrant = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listResourceTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourceTagsRequest,
-  output: ListResourceTagsResponse,
-  errors: [
-    InvalidArnException,
-    InvalidMarkerException,
-    KMSInternalException,
-    NotFoundException,
-  ],
-}));
+export const listResourceTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourceTagsRequest,
+    output: ListResourceTagsResponse,
+    errors: [
+      InvalidArnException,
+      InvalidMarkerException,
+      KMSInternalException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Tags",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Gets a list of aliases in the caller's Amazon Web Services account and region. For more information
  * about aliases, see CreateAlias.
@@ -2328,17 +2362,25 @@ export const listResourceTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesRequest,
-  output: ListAliasesResponse,
-  errors: [
-    DependencyTimeoutException,
-    InvalidArnException,
-    InvalidMarkerException,
-    KMSInternalException,
-    NotFoundException,
-  ],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesRequest,
+    output: ListAliasesResponse,
+    errors: [
+      DependencyTimeoutException,
+      InvalidArnException,
+      InvalidMarkerException,
+      KMSInternalException,
+      NotFoundException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Aliases",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified alias.
  *
@@ -2421,7 +2463,7 @@ export const deleteAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGrants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGrantsRequest,
   output: ListGrantsResponse,
   errors: [
@@ -2433,6 +2475,12 @@ export const listGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     KMSInvalidStateException,
     NotFoundException,
   ],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "NextMarker",
+    items: "Grants",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Changes the primary key of a multi-Region key.
@@ -2858,18 +2906,26 @@ export const getParametersForImport = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * **Eventual consistency**: The KMS API follows an eventual consistency model.
  * For more information, see KMS eventual consistency.
  */
-export const listKeyRotations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKeyRotationsRequest,
-  output: ListKeyRotationsResponse,
-  errors: [
-    InvalidArnException,
-    InvalidMarkerException,
-    KMSInternalException,
-    KMSInvalidStateException,
-    NotFoundException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listKeyRotations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKeyRotationsRequest,
+    output: ListKeyRotationsResponse,
+    errors: [
+      InvalidArnException,
+      InvalidMarkerException,
+      KMSInternalException,
+      KMSInvalidStateException,
+      NotFoundException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Rotations",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Immediately initiates rotation of the key material of the specified symmetric encryption
  * KMS key.

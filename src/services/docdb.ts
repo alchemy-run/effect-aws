@@ -1951,33 +1951,49 @@ export class StorageTypeNotSupportedFault extends S.TaggedError<StorageTypeNotSu
  * Returns a list of `DBClusterParameterGroup` descriptions. If a `DBClusterParameterGroupName` parameter is specified, the list contains only the description of the specified cluster parameter group.
  */
 export const describeDBClusterParameterGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterParameterGroupsMessage,
     output: DBClusterParameterGroupsMessage,
     errors: [DBParameterGroupNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterParameterGroups",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Returns the detailed parameter list for a particular cluster parameter
  * group.
  */
-export const describeDBClusterParameters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterParameters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterParametersMessage,
     output: DBClusterParameterGroupDetails,
     errors: [DBParameterGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Parameters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of `DBSubnetGroup` descriptions. If a
  * `DBSubnetGroupName` is specified, the list will contain only the descriptions of the specified `DBSubnetGroup`.
  */
-export const describeDBSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBSubnetGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBSubnetGroupsMessage,
     output: DBSubnetGroupMessage,
     errors: [DBSubnetGroupNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBSubnetGroups",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about provisioned Amazon DocumentDB clusters. This API
  * operation supports pagination. For certain management features
@@ -1986,11 +2002,19 @@ export const describeDBSubnetGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Neptune. Use the `filterName=engine,Values=docdb` filter
  * parameter to return only Amazon DocumentDB clusters.
  */
-export const describeDBClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBClustersMessage,
-  output: DBClusterMessage,
-  errors: [DBClusterNotFoundFault],
-}));
+export const describeDBClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDBClustersMessage,
+    output: DBClusterMessage,
+    errors: [DBClusterNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Deletes a specified cluster parameter group. The cluster parameter group to be deleted can't be associated with any clusters.
  */
@@ -2024,32 +2048,51 @@ export const describeEventCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns events related to instances, security groups, snapshots, and DB parameter groups for the past 14 days. You can obtain events specific to a particular DB instance, security group, snapshot, or parameter group by providing the name as a parameter. By default, the events of the past hour are returned.
  */
-export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEventsMessage,
-  output: EventsMessage,
-  errors: [],
-}));
+export const describeEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEventsMessage,
+    output: EventsMessage,
+    errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Events",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists all the subscription descriptions for a customer account. The description for a subscription includes `SubscriptionName`, `SNSTopicARN`, `CustomerID`, `SourceType`, `SourceID`, `CreationTime`, and `Status`.
  *
  * If you specify a `SubscriptionName`, lists the description for that subscription.
  */
-export const describeEventSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeEventSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeEventSubscriptionsMessage,
     output: EventSubscriptionsMessage,
     errors: [SubscriptionNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "EventSubscriptionsList",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of resources (for example, instances) that have at least one pending
  * maintenance action.
  */
 export const describePendingMaintenanceActions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePendingMaintenanceActionsMessage,
     output: PendingMaintenanceActionsMessage,
     errors: [ResourceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "PendingMaintenanceActions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Removes a source identifier from an existing Amazon DocumentDB event notification
@@ -2106,33 +2149,50 @@ export const resetDBClusterParameterGroup =
 /**
  * Returns information about cluster snapshots. This API operation supports pagination.
  */
-export const describeDBClusterSnapshots = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBClusterSnapshots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBClusterSnapshotsMessage,
     output: DBClusterSnapshotMessage,
     errors: [DBClusterSnapshotNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBClusterSnapshots",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about provisioned Amazon DocumentDB instances. This API supports pagination.
  */
-export const describeDBInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDBInstancesMessage,
-  output: DBInstanceMessage,
-  errors: [DBInstanceNotFoundFault],
-}));
+export const describeDBInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDBInstancesMessage,
+    output: DBInstanceMessage,
+    errors: [DBInstanceNotFoundFault],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBInstances",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns information about Amazon DocumentDB global clusters. This API supports pagination.
  *
  * This action only applies to Amazon DocumentDB clusters.
  */
-export const describeGlobalClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeGlobalClusters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeGlobalClustersMessage,
     output: GlobalClustersMessage,
     errors: [GlobalClusterNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "GlobalClusters",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Deletes an Amazon DocumentDB event notification subscription.
  */
@@ -2240,21 +2300,32 @@ export const describeDBClusterSnapshotAttributes =
 /**
  * Returns a list of the available engines.
  */
-export const describeDBEngineVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDBEngineVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDBEngineVersionsMessage,
     output: DBEngineVersionMessage,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "DBEngineVersions",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * Returns a list of orderable instance options for the specified engine.
  */
 export const describeOrderableDBInstanceOptions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrderableDBInstanceOptionsMessage,
     output: OrderableDBInstanceOptionsMessage,
     errors: [],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "OrderableDBInstanceOptions",
+      pageSize: "MaxRecords",
+    } as const,
   }));
 /**
  * Restarts the stopped cluster that is specified by `DBClusterIdentifier`.
@@ -2361,13 +2432,18 @@ export const removeFromGlobalCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of certificate authority (CA) certificates provided by Amazon DocumentDB for this Amazon Web Services account.
  */
-export const describeCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeCertificatesMessage,
     output: CertificateMessage,
     errors: [CertificateNotFoundFault],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "Marker",
+      items: "Certificates",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * You might need to reboot your instance, usually for maintenance reasons. For
  * example, if you make certain changes, or if you change the cluster parameter group

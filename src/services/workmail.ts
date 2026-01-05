@@ -1952,22 +1952,29 @@ export const listAccessControlRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns an overview of the members of a group. Users and groups can be members of a
  * group.
  */
-export const listGroupMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupMembersRequest,
-  output: ListGroupMembersResponse,
-  errors: [
-    EntityNotFoundException,
-    EntityStateException,
-    InvalidParameterException,
-    OrganizationNotFoundException,
-    OrganizationStateException,
-  ],
-}));
+export const listGroupMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupMembersRequest,
+    output: ListGroupMembersResponse,
+    errors: [
+      EntityNotFoundException,
+      EntityStateException,
+      InvalidParameterException,
+      OrganizationNotFoundException,
+      OrganizationStateException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the impersonation roles for the given WorkMail organization.
  */
-export const listImpersonationRoles = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listImpersonationRoles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListImpersonationRolesRequest,
     output: ListImpersonationRolesResponse,
     errors: [
@@ -1975,14 +1982,18 @@ export const listImpersonationRoles = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the mailbox export jobs started for the specified organization within the last
  * seven days.
  */
-export const listMailboxExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMailboxExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMailboxExportJobsRequest,
     output: ListMailboxExportJobsResponse,
     errors: [
@@ -1990,14 +2001,18 @@ export const listMailboxExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the mailbox permissions associated with a user, group, or resource
  * mailbox.
  */
-export const listMailboxPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMailboxPermissions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMailboxPermissionsRequest,
     output: ListMailboxPermissionsResponse,
     errors: [
@@ -2006,25 +2021,36 @@ export const listMailboxPermissions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the mail domains in a given WorkMail organization.
  */
-export const listMailDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMailDomainsRequest,
-  output: ListMailDomainsResponse,
-  errors: [
-    InvalidParameterException,
-    OrganizationNotFoundException,
-    OrganizationStateException,
-  ],
-}));
+export const listMailDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMailDomainsRequest,
+    output: ListMailDomainsResponse,
+    errors: [
+      InvalidParameterException,
+      OrganizationNotFoundException,
+      OrganizationStateException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the mobile device access overrides for any given combination of WorkMail organization, user, or device.
  */
 export const listMobileDeviceAccessOverrides =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMobileDeviceAccessOverridesRequest,
     output: ListMobileDeviceAccessOverridesResponse,
     errors: [
@@ -2033,6 +2059,11 @@ export const listMobileDeviceAccessOverrides =
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the mobile device access rules for the specified WorkMail organization.
@@ -2051,16 +2082,23 @@ export const listMobileDeviceAccessRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns summaries of the customer's organizations.
  */
-export const listOrganizations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOrganizationsRequest,
-  output: ListOrganizationsResponse,
-  errors: [InvalidParameterException],
-}));
+export const listOrganizations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOrganizationsRequest,
+    output: ListOrganizationsResponse,
+    errors: [InvalidParameterException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a summary of your Personal Access Tokens.
  */
-export const listPersonalAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPersonalAccessTokens =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPersonalAccessTokensRequest,
     output: ListPersonalAccessTokensResponse,
     errors: [
@@ -2070,8 +2108,13 @@ export const listPersonalAccessTokens = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PersonalAccessTokenSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Puts a retention policy to the specified organization.
  */
@@ -2296,17 +2339,24 @@ export const getPersonalAccessTokenMetadata =
  * Creates a paginated call to list the aliases associated with a given
  * entity.
  */
-export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAliasesRequest,
-  output: ListAliasesResponse,
-  errors: [
-    EntityNotFoundException,
-    EntityStateException,
-    InvalidParameterException,
-    OrganizationNotFoundException,
-    OrganizationStateException,
-  ],
-}));
+export const listAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAliasesRequest,
+    output: ListAliasesResponse,
+    errors: [
+      EntityNotFoundException,
+      EntityStateException,
+      InvalidParameterException,
+      OrganizationNotFoundException,
+      OrganizationStateException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Enables integration between IAM Identity Center (IdC) and WorkMail to proxy authentication requests for mailbox users. You can connect your IdC directory or your external directory to WorkMail through
  * IdC and manage access to WorkMail mailboxes in a single place. For enhanced protection, you could enable Multifactor Authentication (MFA) and Personal Access Tokens.
@@ -2755,7 +2805,7 @@ export const getMailDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List all the `AvailabilityConfiguration`'s for the given WorkMail organization.
  */
 export const listAvailabilityConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAvailabilityConfigurationsRequest,
     output: ListAvailabilityConfigurationsResponse,
     errors: [
@@ -2763,11 +2813,17 @@ export const listAvailabilityConfigurations =
       OrganizationNotFoundException,
       OrganizationStateException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AvailabilityConfigurations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns summaries of the organization's groups.
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsRequest,
   output: ListGroupsResponse,
   errors: [
@@ -2776,27 +2832,38 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     OrganizationNotFoundException,
     OrganizationStateException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns all the groups to which an entity belongs.
  */
-export const listGroupsForEntity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupsForEntityRequest,
-  output: ListGroupsForEntityResponse,
-  errors: [
-    EntityNotFoundException,
-    EntityStateException,
-    InvalidParameterException,
-    OrganizationNotFoundException,
-    OrganizationStateException,
-  ],
-}));
+export const listGroupsForEntity =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListGroupsForEntityRequest,
+    output: ListGroupsForEntityResponse,
+    errors: [
+      EntityNotFoundException,
+      EntityStateException,
+      InvalidParameterException,
+      OrganizationNotFoundException,
+      OrganizationStateException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the delegates associated with a resource. Users and groups can be resource
  * delegates and answer requests on behalf of the resource.
  */
-export const listResourceDelegates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResourceDelegates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceDelegatesRequest,
     output: ListResourceDelegatesResponse,
     errors: [
@@ -2807,25 +2874,36 @@ export const listResourceDelegates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       OrganizationStateException,
       UnsupportedOperationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns summaries of the organization's resources.
  */
-export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourcesRequest,
-  output: ListResourcesResponse,
-  errors: [
-    InvalidParameterException,
-    OrganizationNotFoundException,
-    OrganizationStateException,
-    UnsupportedOperationException,
-  ],
-}));
+export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourcesRequest,
+    output: ListResourcesResponse,
+    errors: [
+      InvalidParameterException,
+      OrganizationNotFoundException,
+      OrganizationStateException,
+      UnsupportedOperationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns summaries of the organization's users.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -2833,6 +2911,11 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     OrganizationNotFoundException,
     OrganizationStateException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Applies the specified tags to the specified WorkMailorganization

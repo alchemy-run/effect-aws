@@ -2233,7 +2233,7 @@ export const describeElasticsearchDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns information about reserved Elasticsearch instances for this account.
  */
 export const describeReservedElasticsearchInstances =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedElasticsearchInstancesRequest,
     output: DescribeReservedElasticsearchInstancesResponse,
     errors: [
@@ -2242,6 +2242,11 @@ export const describeReservedElasticsearchInstances =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Describes one or more Amazon OpenSearch Service-managed VPC endpoints.
@@ -2281,8 +2286,8 @@ export const getCompatibleElasticsearchVersions =
 /**
  * Returns a list of versions of the package, along with their creation time and commit message.
  */
-export const getPackageVersionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getPackageVersionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetPackageVersionHistoryRequest,
     output: GetPackageVersionHistoryResponse,
     errors: [
@@ -2292,8 +2297,12 @@ export const getPackageVersionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the name of all Elasticsearch domains owned by the current user's account.
  */
@@ -2352,7 +2361,7 @@ export const removeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List all Elasticsearch instance types that are supported for given ElasticsearchVersion
  */
 export const listElasticsearchInstanceTypes =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListElasticsearchInstanceTypesRequest,
     output: ListElasticsearchInstanceTypesResponse,
     errors: [
@@ -2361,12 +2370,17 @@ export const listElasticsearchInstanceTypes =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List all supported Elasticsearch versions
  */
-export const listElasticsearchVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listElasticsearchVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListElasticsearchVersionsRequest,
     output: ListElasticsearchVersionsResponse,
     errors: [
@@ -2375,8 +2389,12 @@ export const listElasticsearchVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns all tags for the given Elasticsearch domain.
  */
@@ -2530,8 +2548,8 @@ export const deleteVpcEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Amazon ES domains associated with the package.
  */
-export const listDomainsForPackage = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainsForPackage =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainsForPackageRequest,
     output: ListDomainsForPackageResponse,
     errors: [
@@ -2541,13 +2559,17 @@ export const listDomainsForPackage = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all packages associated with the Amazon ES domain.
  */
-export const listPackagesForDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPackagesForDomain =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPackagesForDomainRequest,
     output: ListPackagesForDomainResponse,
     errors: [
@@ -2557,8 +2579,12 @@ export const listPackagesForDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates a package for use with Amazon ES domains.
  */
@@ -2592,25 +2618,37 @@ export const deletePackage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes all packages available to Amazon ES. Includes options for filtering, limiting the number of results, and pagination.
  */
-export const describePackages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribePackagesRequest,
-  output: DescribePackagesResponse,
-  errors: [
-    AccessDeniedException,
-    BaseException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const describePackages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribePackagesRequest,
+    output: DescribePackagesResponse,
+    errors: [
+      AccessDeniedException,
+      BaseException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the outbound cross-cluster search connections for a source domain.
  */
 export const describeOutboundCrossClusterSearchConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOutboundCrossClusterSearchConnectionsRequest,
     output: DescribeOutboundCrossClusterSearchConnectionsResponse,
     errors: [DisabledOperationException, InvalidPaginationTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Dissociates a package from the Amazon ES domain.
@@ -2648,10 +2686,15 @@ export const authorizeVpcEndpointAccess = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all the inbound cross-cluster search connections for a destination domain.
  */
 export const describeInboundCrossClusterSearchConnections =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInboundCrossClusterSearchConnectionsRequest,
     output: DescribeInboundCrossClusterSearchConnectionsResponse,
     errors: [DisabledOperationException, InvalidPaginationTokenException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Allows the destination domain owner to accept an inbound cross-cluster search connection request.
@@ -2724,7 +2767,7 @@ export const describeDomainChangeProgress =
  * Lists available reserved Elasticsearch instance offerings.
  */
 export const describeReservedElasticsearchInstanceOfferings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReservedElasticsearchInstanceOfferingsRequest,
     output: DescribeReservedElasticsearchInstanceOfferingsResponse,
     errors: [
@@ -2733,21 +2776,33 @@ export const describeReservedElasticsearchInstanceOfferings =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the complete history of the last 10 upgrades that were performed on the domain.
  */
-export const getUpgradeHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUpgradeHistoryRequest,
-  output: GetUpgradeHistoryResponse,
-  errors: [
-    BaseException,
-    DisabledOperationException,
-    InternalException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const getUpgradeHistory = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUpgradeHistoryRequest,
+    output: GetUpgradeHistoryResponse,
+    errors: [
+      BaseException,
+      DisabledOperationException,
+      InternalException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Allows you to either upgrade your domain or perform an Upgrade eligibility check to a compatible Elasticsearch version.
  */
@@ -2864,8 +2919,8 @@ export const deleteElasticsearchDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Provides scheduled Auto-Tune action details for the Elasticsearch domain, such as Auto-Tune action type, description, severity, and scheduled date.
  */
-export const describeDomainAutoTunes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDomainAutoTunes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDomainAutoTunesRequest,
     output: DescribeDomainAutoTunesResponse,
     errors: [
@@ -2874,8 +2929,12 @@ export const describeDomainAutoTunes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides cluster configuration information about the specified Elasticsearch domain, such as the state, creation date, update version, and update date for cluster options.
  */

@@ -1377,7 +1377,7 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of the existing Amplify apps.
  */
-export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsRequest,
   output: ListAppsResult,
   errors: [
@@ -1385,6 +1385,12 @@ export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalFailureException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "apps",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Untags a resource with a specified Amazon Resource Name (ARN).
@@ -1625,7 +1631,7 @@ export const getWebhook = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the jobs for a branch of an Amplify app.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [
@@ -1634,6 +1640,12 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     LimitExceededException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Returns a list of webhooks for an Amplify app.
@@ -1856,20 +1868,28 @@ export const listBackendEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the branches of an Amplify app.
  */
-export const listBranches = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBranchesRequest,
-  output: ListBranchesResult,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    UnauthorizedException,
-  ],
-}));
+export const listBranches = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBranchesRequest,
+    output: ListBranchesResult,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "branches",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the domain associations for an Amplify app.
  */
-export const listDomainAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDomainAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDomainAssociationsRequest,
     output: ListDomainAssociationsResult,
     errors: [
@@ -1877,8 +1897,13 @@ export const listDomainAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "domainAssociations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates a branch for an Amplify app.
  */

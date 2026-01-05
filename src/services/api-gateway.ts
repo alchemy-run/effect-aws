@@ -1,7 +1,7 @@
 import * as S from "effect/Schema";
 import * as API from "../api.ts";
-import { ERROR_CATEGORIES, withCategory } from "../error-category.ts";
 import * as T from "../traits.ts";
+import { ERROR_CATEGORIES, withCategory } from "../error-category.ts";
 const svc = T.AwsApiService({
   sdkId: "API Gateway",
   serviceShapeName: "BackplaneControlService",
@@ -401,18 +401,13 @@ export class CreateResourceRequest extends S.Class<CreateResourceRequest>(
   ),
 ) {}
 export const ListOfEndpointType = S.Array(S.String);
-export interface EndpointConfiguration {
-  types: string[];
-  ipAddressType: string;
-  vpcEndpointIds: string[];
-}
-export const EndpointConfiguration = S.suspend(() =>
-  S.Struct({
-    types: S.optional(ListOfEndpointType),
-    ipAddressType: S.optional(S.String),
-    vpcEndpointIds: S.optional(ListOfString),
-  }),
-) as unknown as S.Schema<EndpointConfiguration>;
+export class EndpointConfiguration extends S.Class<EndpointConfiguration>(
+  "EndpointConfiguration",
+)({
+  types: S.optional(ListOfEndpointType),
+  ipAddressType: S.optional(S.String),
+  vpcEndpointIds: S.optional(ListOfString),
+}) {}
 export class CreateRestApiRequest extends S.Class<CreateRestApiRequest>(
   "CreateRestApiRequest",
 )(
@@ -3344,7 +3339,7 @@ export const getSdkType = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets the usage data of a usage plan in a specified time interval.
  */
-export const getUsage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getUsage = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetUsageRequest,
   output: Usage,
   errors: [
@@ -3353,6 +3348,12 @@ export const getUsage = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     TooManyRequestsException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "position",
+    outputToken: "position",
+    items: "items",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Simulate the execution of an Authorizer in your RestApi with headers, parameters, and an incoming request body.
@@ -4181,17 +4182,25 @@ export const createUsagePlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about a Deployments collection.
  */
-export const getDeployments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDeploymentsRequest,
-  output: Deployments,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getDeployments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDeploymentsRequest,
+    output: Deployments,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Gets documentation versions.
  */
@@ -4224,16 +4233,24 @@ export const getDomainNameAccessAssociations =
 /**
  * Represents a collection of DomainName resources.
  */
-export const getDomainNames = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDomainNamesRequest,
-  output: DomainNames,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getDomainNames = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDomainNamesRequest,
+    output: DomainNames,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Gets a GatewayResponse of a specified response type on the given RestApi.
  */
@@ -4286,7 +4303,7 @@ export const getMethodResponse = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes existing Models defined for a RestApi resource.
  */
-export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetModelsRequest,
   output: Models,
   errors: [
@@ -4295,6 +4312,12 @@ export const getModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     TooManyRequestsException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "position",
+    outputToken: "position",
+    items: "items",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Generates a sample mapping template that can be used to transform a payload into the structure of a model.
@@ -4327,29 +4350,45 @@ export const getRequestValidators = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists information about a collection of Resource resources.
  */
-export const getResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcesRequest,
-  output: Resources,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetResourcesRequest,
+    output: Resources,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Lists the RestApis resources for your collection.
  */
-export const getRestApis = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetRestApisRequest,
-  output: RestApis,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getRestApis = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetRestApisRequest,
+    output: RestApis,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Gets SDK types
  */
@@ -4392,42 +4431,66 @@ export const getUsagePlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets all the usage plan keys representing the API keys added to a specified usage plan.
  */
-export const getUsagePlanKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUsagePlanKeysRequest,
-  output: UsagePlanKeys,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getUsagePlanKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUsagePlanKeysRequest,
+    output: UsagePlanKeys,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Gets all the usage plans of the caller's account.
  */
-export const getUsagePlans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetUsagePlansRequest,
-  output: UsagePlans,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getUsagePlans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetUsagePlansRequest,
+    output: UsagePlans,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Gets the VpcLinks collection under the caller's account in a selected region.
  */
-export const getVpcLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetVpcLinksRequest,
-  output: VpcLinks,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getVpcLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetVpcLinksRequest,
+    output: VpcLinks,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Simulate the invocation of a Method in your RestApi with headers, parameters, and an incoming request body.
  */
@@ -4927,7 +4990,7 @@ export const getApiKey = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about the current ApiKeys resource.
  */
-export const getApiKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getApiKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetApiKeysRequest,
   output: ApiKeys,
   errors: [
@@ -4936,6 +4999,12 @@ export const getApiKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     TooManyRequestsException,
     UnauthorizedException,
   ],
+  pagination: {
+    inputToken: "position",
+    outputToken: "position",
+    items: "items",
+    pageSize: "limit",
+  } as const,
 }));
 /**
  * Describe an existing Authorizers resource.
@@ -4953,21 +5022,28 @@ export const getAuthorizers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Represents a collection of BasePathMapping resources.
  */
-export const getBasePathMappings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBasePathMappingsRequest,
-  output: BasePathMappings,
-  errors: [
-    BadRequestException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const getBasePathMappings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetBasePathMappingsRequest,
+    output: BasePathMappings,
+    errors: [
+      BadRequestException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Gets a collection of ClientCertificate resources.
  */
-export const getClientCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getClientCertificates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetClientCertificatesRequest,
     output: ClientCertificates,
     errors: [
@@ -4976,8 +5052,13 @@ export const getClientCertificates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnauthorizedException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "position",
+      outputToken: "position",
+      items: "items",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Gets a documentation part.
  */

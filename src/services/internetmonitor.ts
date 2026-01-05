@@ -843,46 +843,69 @@ export const getMonitor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Using the Amazon CloudWatch Internet Monitor query interface
  * in the Amazon CloudWatch Internet Monitor User Guide.
  */
-export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetQueryResultsInput,
-  output: GetQueryResultsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    LimitExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getQueryResults = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetQueryResultsInput,
+    output: GetQueryResultsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      LimitExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all of your monitors for Amazon CloudWatch Internet Monitor and their statuses, along with the Amazon Resource Name (ARN) and name of each monitor.
  */
-export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMonitorsInput,
-  output: ListMonitorsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMonitorsInput,
+    output: ListMonitorsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Monitors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all health events for a monitor in Amazon CloudWatch Internet Monitor. Returns information for health events including the event start and end times, and
  * the status.
  *
  * Health events that have start times during the time frame that is requested are not included in the list of health events.
  */
-export const listHealthEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListHealthEventsInput,
-  output: ListHealthEventsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listHealthEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListHealthEventsInput,
+    output: ListHealthEventsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "HealthEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a monitor in Amazon CloudWatch Internet Monitor.
  */
@@ -927,16 +950,24 @@ export const getInternetEvent = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also limit the events returned to a specific status
  * (`ACTIVE` or `RESOLVED`) or type (`PERFORMANCE` or `AVAILABILITY`).
  */
-export const listInternetEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInternetEventsInput,
-  output: ListInternetEventsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInternetEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInternetEventsInput,
+    output: ListInternetEventsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InternetEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Start a query to return data for a specific query type for the Amazon CloudWatch Internet Monitor query interface. Specify a time period
  * for the data that you want returned by using `StartTime` and `EndTime`. You filter the query

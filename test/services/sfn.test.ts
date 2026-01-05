@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect, Schedule } from "effect";
+import { Effect, Schedule, Stream } from "effect";
 import {
   attachRolePolicy,
   createRole,
@@ -450,4 +450,39 @@ test(
         expect(listResult.executions!.length >= 3).toBe(true);
       }),
   ),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listStateMachines.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of state machines
+    const pages = yield* listStateMachines
+      .pages({ maxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listStateMachines.items() streams StateMachineListItem objects directly",
+  Effect.gen(function* () {
+    // Stream all state machines using .items()
+    const stateMachines = yield* listStateMachines
+      .items({ maxResults: 10 })
+      .pipe(Stream.runCollect);
+
+    const smArray = Array.from(stateMachines);
+
+    // Each item should be a StateMachineListItem with stateMachineArn and name
+    for (const sm of smArray) {
+      expect(sm.stateMachineArn).toBeDefined();
+      expect(sm.name).toBeDefined();
+    }
+  }),
 );

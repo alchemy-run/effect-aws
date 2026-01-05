@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Effect, Schedule } from "effect";
+import { Effect, Schedule, Stream } from "effect";
 import {
   cancelKeyDeletion,
   createAlias,
@@ -342,6 +342,36 @@ test(
         KeyId: keyId!,
         PendingWindowInDays: 7,
       }).pipe(Effect.ignore);
+    }
+  }),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listKeys.pages() streams full response pages",
+  Effect.gen(function* () {
+    // Stream all pages of keys
+    const pages = yield* listKeys.pages({ Limit: 10 }).pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+  }),
+);
+
+test(
+  "listKeys.items() streams KeyListEntry objects directly",
+  Effect.gen(function* () {
+    // Stream all keys using .items()
+    const keys = yield* listKeys.items({ Limit: 10 }).pipe(Stream.runCollect);
+
+    const keysArray = Array.from(keys);
+
+    // Each item should be a KeyListEntry with KeyId
+    for (const key of keysArray) {
+      expect(key.KeyId).toBeDefined();
     }
   }),
 );

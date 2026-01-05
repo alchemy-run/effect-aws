@@ -1722,7 +1722,7 @@ export const getLicenseRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To get the enrollment status of standalone accounts, use the GetEnrollmentStatus action.
  */
 export const getEnrollmentStatusesForOrganization =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetEnrollmentStatusesForOrganizationRequest,
     output: GetEnrollmentStatusesForOrganizationResponse,
     errors: [
@@ -1733,6 +1733,12 @@ export const getEnrollmentStatusesForOrganization =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "accountEnrollmentStatuses",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Updates the enrollment (opt in and opt out) status of an account to the Compute Optimizer service.
@@ -1788,8 +1794,8 @@ export const updateEnrollmentStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * - Amazon Aurora and Amazon RDS databases in an account that are `Underprovisioned`,
  * `Overprovisioned`, `Optimized`, or `NotOptimized`.
  */
-export const getRecommendationSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getRecommendationSummaries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetRecommendationSummariesRequest,
     output: GetRecommendationSummariesResponse,
     errors: [
@@ -1801,8 +1807,13 @@ export const getRecommendationSummaries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendationSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Exports optimization recommendations for Amazon EC2 Auto Scaling groups.
  *
@@ -2013,7 +2024,7 @@ export const exportRDSDatabaseRecommendations =
  * Guide.
  */
 export const getLambdaFunctionRecommendations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetLambdaFunctionRecommendationsRequest,
     output: GetLambdaFunctionRecommendationsResponse,
     errors: [
@@ -2026,6 +2037,12 @@ export const getLambdaFunctionRecommendations =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "lambdaFunctionRecommendations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns Amazon Aurora and RDS database recommendations.
@@ -2082,7 +2099,7 @@ export const getRDSDatabaseRecommendationProjectedMetrics =
  * Guide.
  */
 export const getRecommendationPreferences =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetRecommendationPreferencesRequest,
     output: GetRecommendationPreferencesResponse,
     errors: [
@@ -2095,6 +2112,12 @@ export const getRecommendationPreferences =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendationPreferencesDetails",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a new recommendation preference or updates an existing recommendation
@@ -2215,7 +2238,7 @@ export const getECSServiceRecommendationProjectedMetrics =
  * to view your export jobs.
  */
 export const describeRecommendationExportJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRecommendationExportJobsRequest,
     output: DescribeRecommendationExportJobsResponse,
     errors: [
@@ -2228,6 +2251,12 @@ export const describeRecommendationExportJobs =
       ServiceUnavailableException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "recommendationExportJobs",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns Amazon EC2 Auto Scaling group recommendations.

@@ -1727,11 +1727,19 @@ export class WorkflowExecutionAlreadyStartedFault extends S.TaggedError<Workflow
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsInput,
-  output: DomainInfos,
-  errors: [OperationNotPermittedFault],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsInput,
+    output: DomainInfos,
+    errors: [OperationNotPermittedFault],
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "domainInfos",
+      pageSize: "maximumPageSize",
+    } as const,
+  }),
+);
 /**
  * Deprecates the specified domain. After a domain has been deprecated it cannot be used
  * to create new workflow executions or register new types. However, you can still use visibility
@@ -1912,10 +1920,16 @@ export const describeWorkflowType = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Workflows in the *Amazon SWF Developer Guide*.
  */
 export const listClosedWorkflowExecutions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListClosedWorkflowExecutionsInput,
     output: WorkflowExecutionInfos,
     errors: [OperationNotPermittedFault, UnknownResourceFault],
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "executionInfos",
+      pageSize: "maximumPageSize",
+    } as const,
   }));
 /**
  * Registers a new *activity type* along with its configuration
@@ -2104,11 +2118,19 @@ export const deprecateWorkflowType = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listActivityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListActivityTypesInput,
-  output: ActivityTypeInfos,
-  errors: [OperationNotPermittedFault, UnknownResourceFault],
-}));
+export const listActivityTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListActivityTypesInput,
+    output: ActivityTypeInfos,
+    errors: [OperationNotPermittedFault, UnknownResourceFault],
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "typeInfos",
+      pageSize: "maximumPageSize",
+    } as const,
+  }),
+);
 /**
  * Returns information about workflow types in the specified domain. The results may be
  * split into multiple pages that can be retrieved by making the call repeatedly.
@@ -2132,11 +2154,19 @@ export const listActivityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listWorkflowTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowTypesInput,
-  output: WorkflowTypeInfos,
-  errors: [OperationNotPermittedFault, UnknownResourceFault],
-}));
+export const listWorkflowTypes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowTypesInput,
+    output: WorkflowTypeInfos,
+    errors: [OperationNotPermittedFault, UnknownResourceFault],
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "typeInfos",
+      pageSize: "maximumPageSize",
+    } as const,
+  }),
+);
 /**
  * Used by activity workers to report to the service that the ActivityTask represented by the specified `taskToken` is still making progress. The worker
  * can also specify details of the progress, for example percent complete, using the
@@ -2261,13 +2291,18 @@ export const undeprecateDomain = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const listOpenWorkflowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOpenWorkflowExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOpenWorkflowExecutionsInput,
     output: WorkflowExecutionInfos,
     errors: [OperationNotPermittedFault, UnknownResourceFault],
-  }),
-);
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "executionInfos",
+      pageSize: "maximumPageSize",
+    } as const,
+  }));
 /**
  * Records a `WorkflowExecutionCancelRequested` event in the currently running
  * workflow execution identified by the given domain, workflowId, and runId. This logically
@@ -2772,15 +2807,22 @@ export const pollForActivityTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const pollForDecisionTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: PollForDecisionTaskInput,
-  output: DecisionTask,
-  errors: [
-    LimitExceededFault,
-    OperationNotPermittedFault,
-    UnknownResourceFault,
-  ],
-}));
+export const pollForDecisionTask =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: PollForDecisionTaskInput,
+    output: DecisionTask,
+    errors: [
+      LimitExceededFault,
+      OperationNotPermittedFault,
+      UnknownResourceFault,
+    ],
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "events",
+      pageSize: "maximumPageSize",
+    } as const,
+  }));
 /**
  * Deprecates the specified *activity type*. After an activity type has
  * been deprecated, you cannot create new tasks of that activity type. Tasks of this type that
@@ -3110,13 +3152,18 @@ export const describeWorkflowExecution = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For details and example IAM policies, see Using IAM to Manage Access to Amazon SWF
  * Workflows in the *Amazon SWF Developer Guide*.
  */
-export const getWorkflowExecutionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getWorkflowExecutionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetWorkflowExecutionHistoryInput,
     output: History,
     errors: [OperationNotPermittedFault, UnknownResourceFault],
-  }),
-);
+    pagination: {
+      inputToken: "nextPageToken",
+      outputToken: "nextPageToken",
+      items: "events",
+      pageSize: "maximumPageSize",
+    } as const,
+  }));
 /**
  * Starts an execution of the workflow type in the specified domain using the provided
  * `workflowId` and input data.

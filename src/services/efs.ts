@@ -1344,8 +1344,8 @@ export const deleteAccessPoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation requires permissions for the `elasticfilesystem:DescribeAccessPoints` action.
  */
-export const describeAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAccessPoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAccessPointsRequest,
     output: DescribeAccessPointsResponse,
     errors: [
@@ -1354,8 +1354,13 @@ export const describeAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       FileSystemNotFound,
       InternalServerError,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccessPoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the account preferences settings for the Amazon Web Services account associated with the user making the request, in the current Amazon Web Services Region.
  */
@@ -1425,11 +1430,18 @@ export const deleteFileSystem = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions for the
  * `elasticfilesystem:DescribeFileSystems` action.
  */
-export const describeFileSystems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeFileSystemsRequest,
-  output: DescribeFileSystemsResponse,
-  errors: [BadRequest, FileSystemNotFound, InternalServerError],
-}));
+export const describeFileSystems =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeFileSystemsRequest,
+    output: DescribeFileSystemsResponse,
+    errors: [BadRequest, FileSystemNotFound, InternalServerError],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "FileSystems",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns the current `LifecycleConfiguration` object for the specified
  * EFS file system. Lifecycle management uses the `LifecycleConfiguration`
@@ -1458,27 +1470,41 @@ export const describeLifecycleConfiguration =
  * This operation requires permissions for the
  * `elasticfilesystem:DescribeTags` action.
  */
-export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTagsRequest,
-  output: DescribeTagsResponse,
-  errors: [BadRequest, FileSystemNotFound, InternalServerError],
-}));
+export const describeTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTagsRequest,
+    output: DescribeTagsResponse,
+    errors: [BadRequest, FileSystemNotFound, InternalServerError],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "Tags",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists all tags for a top-level EFS resource. You must provide the ID of the
  * resource that you want to retrieve the tags for.
  *
  * This operation requires permissions for the `elasticfilesystem:DescribeAccessPoints` action.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    AccessPointNotFound,
-    BadRequest,
-    FileSystemNotFound,
-    InternalServerError,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      AccessPointNotFound,
+      BadRequest,
+      FileSystemNotFound,
+      InternalServerError,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * DEPRECATED - `DeleteTags` is deprecated and not maintained. To remove tags from EFS
  * resources, use the API action.
@@ -1652,8 +1678,8 @@ export const deleteMountTarget = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * that you specify in `FileSystemId`, or on the file system of the mount target that
  * you specify in `MountTargetId`.
  */
-export const describeMountTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMountTargets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMountTargetsRequest,
     output: DescribeMountTargetsResponse,
     errors: [
@@ -1663,8 +1689,13 @@ export const describeMountTargets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerError,
       MountTargetNotFound,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextMarker",
+      items: "MountTargets",
+      pageSize: "MaxItems",
+    } as const,
+  }));
 /**
  * Returns the `FileSystemPolicy` for the specified EFS file
  * system.
@@ -1805,7 +1836,7 @@ export const putBackupPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Amazon Web Services Region are retrieved.
  */
 export const describeReplicationConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeReplicationConfigurationsRequest,
     output: DescribeReplicationConfigurationsResponse,
     errors: [
@@ -1815,6 +1846,12 @@ export const describeReplicationConfigurations =
       ReplicationNotFound,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Replications",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Applies an Amazon EFS

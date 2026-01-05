@@ -957,31 +957,55 @@ export const startApplication = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists applications based on a set of parameters.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsRequest,
-  output: ListApplicationsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsRequest,
+    output: ListApplicationsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists job runs based on a set of parameters.
  */
-export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobRunsRequest,
-  output: ListJobRunsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobRunsRequest,
+    output: ListJobRunsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobRuns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all attempt of a job run.
  */
-export const listJobRunAttempts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobRunAttemptsRequest,
-  output: ListJobRunAttemptsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listJobRunAttempts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobRunAttemptsRequest,
+    output: ListJobRunAttemptsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobRunAttempts",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a specified application. An application has to be in a stopped or created state in order to be updated.
  */

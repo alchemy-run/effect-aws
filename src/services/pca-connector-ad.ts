@@ -1221,16 +1221,24 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Lists the connectors that you created by using the https://docs.aws.amazon.com/pca-connector-ad/latest/APIReference/API_CreateConnector action.
  */
-export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectorsRequest,
-  output: ListConnectorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listConnectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConnectorsRequest,
+    output: ListConnectorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Connectors",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Create a group access control entry. Allow or deny Active Directory groups from enrolling and/or
  * autoenrolling with the template based on the group security identifiers (SIDs).
@@ -1334,8 +1342,8 @@ export const getServicePrincipalName = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the service principal names that the connector uses to authenticate with
  * Active Directory.
  */
-export const listServicePrincipalNames = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listServicePrincipalNames =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListServicePrincipalNamesRequest,
     output: ListServicePrincipalNamesResponse,
     errors: [
@@ -1345,8 +1353,13 @@ export const listServicePrincipalNames = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServicePrincipalNames",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the group access control entries for a template.
  */
@@ -1366,7 +1379,7 @@ export const getTemplateGroupAccessControlEntry =
  * Lists group access control entries you created.
  */
 export const listTemplateGroupAccessControlEntries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTemplateGroupAccessControlEntriesRequest,
     output: ListTemplateGroupAccessControlEntriesResponse,
     errors: [
@@ -1376,21 +1389,35 @@ export const listTemplateGroupAccessControlEntries =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccessControlEntries",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the templates, if any, that are associated with a connector.
  */
-export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTemplatesRequest,
-  output: ListTemplatesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listTemplates = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTemplatesRequest,
+    output: ListTemplatesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Templates",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the tags, if any, that are associated with your resource.
  */
@@ -1524,8 +1551,8 @@ export const deleteTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists the directory registrations that you created by using the https://docs.aws.amazon.com/pca-connector-ad/latest/APIReference/API_CreateDirectoryRegistration
  * action.
  */
-export const listDirectoryRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDirectoryRegistrations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDirectoryRegistrationsRequest,
     output: ListDirectoryRegistrationsResponse,
     errors: [
@@ -1534,8 +1561,13 @@ export const listDirectoryRegistrations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DirectoryRegistrations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a directory registration. Deleting a directory registration deauthorizes
  * Amazon Web Services Private CA with the directory.

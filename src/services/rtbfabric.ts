@@ -1091,23 +1091,33 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Lists requester gateways.
  */
-export const listRequesterGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRequesterGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRequesterGatewaysRequest,
     output: ListRequesterGatewaysResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "gatewayIds",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists reponder gateways.
  */
-export const listResponderGateways = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResponderGateways =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResponderGatewaysRequest,
     output: ListResponderGatewaysResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "gatewayIds",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves information about a link between gateways.
  *
@@ -1149,7 +1159,7 @@ export const createResponderGateway = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * Returns a list of all links for the specified gateways, including their status and configuration details.
  */
-export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLinksRequest,
   output: ListLinksResponse,
   errors: [
@@ -1159,6 +1169,12 @@ export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "links",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Removes a tag or tags from a resource.

@@ -2285,8 +2285,8 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists the recommendation templates for the Resilience Hub applications.
  */
-export const listRecommendationTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listRecommendationTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListRecommendationTemplatesRequest,
     output: ListRecommendationTemplatesResponse,
     errors: [
@@ -2295,8 +2295,12 @@ export const listRecommendationTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Updates an application.
  */
@@ -2481,8 +2485,8 @@ export const describeAppVersionResource = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all the Application Components in the Resilience Hub application.
  */
-export const listAppVersionAppComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppVersionAppComponents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppVersionAppComponentsRequest,
     output: ListAppVersionAppComponentsResponse,
     errors: [
@@ -2493,13 +2497,17 @@ export const listAppVersionAppComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all the resources in an Resilience Hub application.
  */
-export const listAppVersionResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppVersionResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppVersionResourcesRequest,
     output: ListAppVersionResourcesResponse,
     errors: [
@@ -2510,8 +2518,12 @@ export const listAppVersionResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Publishes a new version of a specific Resilience Hub application.
  */
@@ -2802,7 +2814,7 @@ export const describeResourceGroupingRecommendationTask =
  * app.
  */
 export const listAppVersionResourceMappings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppVersionResourceMappingsRequest,
     output: ListAppVersionResourceMappingsResponse,
     errors: [
@@ -2812,12 +2824,17 @@ export const listAppVersionResourceMappings =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the resiliency policies for the Resilience Hub applications.
  */
-export const listResiliencyPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResiliencyPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResiliencyPoliciesRequest,
     output: ListResiliencyPoliciesResponse,
     errors: [
@@ -2827,14 +2844,18 @@ export const listResiliencyPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the suggested resiliency policies for the Resilience Hub
  * applications.
  */
 export const listSuggestedResiliencyPolicies =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSuggestedResiliencyPoliciesRequest,
     output: ListSuggestedResiliencyPoliciesResponse,
     errors: [
@@ -2844,6 +2865,11 @@ export const listSuggestedResiliencyPolicies =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists the tags for your resources in your Resilience Hub applications.
@@ -3033,22 +3059,29 @@ export const importResourcesToDraftAppVersion =
  * Lists the assessments for an Resilience Hub application. You can use request
  * parameters to refine the results for the response object.
  */
-export const listAppAssessments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppAssessmentsRequest,
-  output: ListAppAssessmentsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAppAssessments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppAssessmentsRequest,
+    output: ListAppAssessmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the compliances for an Resilience Hub Application Component.
  */
-export const listAppComponentCompliances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppComponentCompliances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppComponentCompliancesRequest,
     output: ListAppComponentCompliancesResponse,
     errors: [
@@ -3058,42 +3091,59 @@ export const listAppComponentCompliances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all the input sources of the Resilience Hub application. For more
  * information about the input sources supported by Resilience Hub, see Discover
  * the structure and describe your Resilience Hub application.
  */
-export const listAppInputSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppInputSourcesRequest,
-  output: ListAppInputSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAppInputSources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAppInputSourcesRequest,
+    output: ListAppInputSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the different versions for the Resilience Hub applications.
  */
-export const listAppVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppVersionsRequest,
-  output: ListAppVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listAppVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppVersionsRequest,
+    output: ListAppVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the standard operating procedure (SOP) recommendations for the Resilience Hub applications.
  */
-export const listSopRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSopRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSopRecommendationsRequest,
     output: ListSopRecommendationsResponse,
     errors: [
@@ -3104,13 +3154,17 @@ export const listSopRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the test recommendations for the Resilience Hub application.
  */
-export const listTestRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTestRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestRecommendationsRequest,
     output: ListTestRecommendationsResponse,
     errors: [
@@ -3121,15 +3175,19 @@ export const listTestRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the resources that are not currently supported in Resilience Hub. An
  * unsupported resource is a resource that exists in the object that was used to create an app,
  * but is not supported by Resilience Hub.
  */
 export const listUnsupportedAppVersionResources =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUnsupportedAppVersionResourcesRequest,
     output: ListUnsupportedAppVersionResourcesResponse,
     errors: [
@@ -3140,6 +3198,11 @@ export const listUnsupportedAppVersionResources =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Rejects resource grouping recommendations.
@@ -3197,7 +3260,7 @@ export const addDraftAppVersionResourceMappings =
  * Lists the resource grouping recommendations suggested by Resilience Hub for your application.
  */
 export const listResourceGroupingRecommendations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResourceGroupingRecommendationsRequest,
     output: ListResourceGroupingRecommendationsResponse,
     errors: [
@@ -3207,6 +3270,12 @@ export const listResourceGroupingRecommendations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "groupingRecommendations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a resiliency policy for an application.
@@ -3238,7 +3307,7 @@ export const createResiliencyPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * assessment.
  */
 export const listAppAssessmentComplianceDrifts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppAssessmentComplianceDriftsRequest,
     output: ListAppAssessmentComplianceDriftsResponse,
     errors: [
@@ -3247,6 +3316,11 @@ export const listAppAssessmentComplianceDrifts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists your Resilience Hub applications.
@@ -3258,7 +3332,7 @@ export const listAppAssessmentComplianceDrifts =
  * An error occurred (ValidationException) when calling the ListApps operation: Only
  * one filter is supported for this operation.
  */
-export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAppsRequest,
   output: ListAppsResponse,
   errors: [
@@ -3267,26 +3341,39 @@ export const listApps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists the metrics that can be exported.
  */
-export const listMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMetricsRequest,
-  output: ListMetricsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMetricsRequest,
+    output: ListMetricsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "rows",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * List of resource drifts that were detected while running an
  * assessment.
  */
 export const listAppAssessmentResourceDrifts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppAssessmentResourceDriftsRequest,
     output: ListAppAssessmentResourceDriftsResponse,
     errors: [
@@ -3295,6 +3382,12 @@ export const listAppAssessmentResourceDrifts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "resourceDrifts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Applies one or more tags to a resource.
@@ -3343,8 +3436,8 @@ export const batchUpdateRecommendationStatus =
 /**
  * Lists the alarm recommendations for an Resilience Hub application.
  */
-export const listAlarmRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAlarmRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAlarmRecommendationsRequest,
     output: ListAlarmRecommendationsResponse,
     errors: [
@@ -3354,8 +3447,12 @@ export const listAlarmRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Describes an assessment for an Resilience Hub application.
  */
@@ -3376,7 +3473,7 @@ export const describeAppAssessment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the recommendations for an Resilience Hub Application Component.
  */
 export const listAppComponentRecommendations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppComponentRecommendationsRequest,
     output: ListAppComponentRecommendationsResponse,
     errors: [
@@ -3386,4 +3483,9 @@ export const listAppComponentRecommendations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
   }));

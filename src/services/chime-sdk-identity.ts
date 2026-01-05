@@ -1120,8 +1120,8 @@ export const putAppInstanceRetentionSettings =
 /**
  * Returns a list of the administrators in the `AppInstance`.
  */
-export const listAppInstanceAdmins = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppInstanceAdmins =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppInstanceAdminsRequest,
     output: ListAppInstanceAdminsResponse,
     errors: [
@@ -1133,24 +1133,34 @@ export const listAppInstanceAdmins = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all `AppInstanceBots` created under a single `AppInstance`.
  */
-export const listAppInstanceBots = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppInstanceBotsRequest,
-  output: ListAppInstanceBotsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ResourceLimitExceededException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listAppInstanceBots =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListAppInstanceBotsRequest,
+    output: ListAppInstanceBotsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ResourceLimitExceededException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Registers an endpoint under an Amazon Chime `AppInstanceUser`. The endpoint receives messages for a user. For push notifications, the endpoint is a mobile device used to receive mobile push notifications for a user.
  */
@@ -1391,23 +1401,30 @@ export const describeAppInstanceUser = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all Amazon Chime `AppInstance`s created under a single AWS
  * account.
  */
-export const listAppInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppInstancesRequest,
-  output: ListAppInstancesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listAppInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppInstancesRequest,
+    output: ListAppInstancesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the `AppInstanceUserEndpoints` created under a single `AppInstanceUser`.
  */
 export const listAppInstanceUserEndpoints =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppInstanceUserEndpointsRequest,
     output: ListAppInstanceUserEndpointsResponse,
     errors: [
@@ -1418,13 +1435,18 @@ export const listAppInstanceUserEndpoints =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List all `AppInstanceUsers` created under a single
  * `AppInstance`.
  */
-export const listAppInstanceUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppInstanceUsers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppInstanceUsersRequest,
     output: ListAppInstanceUsersResponse,
     errors: [
@@ -1435,8 +1457,12 @@ export const listAppInstanceUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Sets the number of days before the `AppInstanceUser` is automatically deleted.
  *

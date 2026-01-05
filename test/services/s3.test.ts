@@ -1560,3 +1560,166 @@ test(
     }),
   ),
 );
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listObjectsV2.pages() streams full response pages",
+  withBucket("itty-s3-pagination-pages", (bucket) =>
+    Effect.gen(function* () {
+      // Create multiple test objects
+      const objectCount = 5;
+      const objectKeys = Array.from(
+        { length: objectCount },
+        (_, i) => `pagination-test-${i.toString().padStart(3, "0")}.txt`,
+      );
+
+      // Upload all test objects
+      yield* Effect.all(
+        objectKeys.map((key) =>
+          putObject({
+            Bucket: bucket,
+            Key: key,
+            Body: `Content for ${key}`,
+            ContentType: "text/plain",
+          }),
+        ),
+        { concurrency: 5 },
+      );
+
+      // Use .pages() to get full response objects
+      const collectedKeys = yield* listObjectsV2
+        .pages({ Bucket: bucket, MaxKeys: 2 })
+        .pipe(
+          // Each emission is a full page (ListObjectsV2Output)
+          Stream.flatMap((page) => Stream.fromIterable(page.Contents ?? [])),
+          Stream.map((obj) => obj.Key),
+          Stream.filter((key): key is string => key !== undefined),
+          Stream.runCollect,
+        );
+
+      // Verify we got all objects
+      const keysArray = Array.from(collectedKeys);
+      expect(keysArray.length).toEqual(objectCount);
+      expect(keysArray.sort()).toEqual(objectKeys.sort());
+
+      // Cleanup
+      yield* Effect.all(
+        objectKeys.map((key) => deleteObject({ Bucket: bucket, Key: key })),
+        { concurrency: 5 },
+      );
+    }),
+  ),
+);
+
+test(
+  "listObjectsV2.items() returns empty stream when paginated trait has no items field",
+  withBucket("itty-s3-pagination-items", (bucket) =>
+    Effect.gen(function* () {
+      // Create test objects
+      const objectKeys = ["item-test-001.txt", "item-test-002.txt"];
+
+      yield* Effect.all(
+        objectKeys.map((key) =>
+          putObject({
+            Bucket: bucket,
+            Key: key,
+            Body: `Content for ${key}`,
+            ContentType: "text/plain",
+          }),
+        ),
+        { concurrency: 2 },
+      );
+
+      // Use .items() - since S3's listObjectsV2 paginated trait doesn't have an items field,
+      // it returns an empty stream. Users should use .pages() instead.
+      const items = yield* listObjectsV2
+        .items({ Bucket: bucket })
+        .pipe(Stream.runCollect);
+
+      // Should return empty stream (no items field in pagination trait)
+      expect(Array.from(items).length).toEqual(0);
+
+      // Cleanup
+      yield* Effect.all(
+        objectKeys.map((key) => deleteObject({ Bucket: bucket, Key: key })),
+        { concurrency: 2 },
+      );
+    }),
+  ),
+);
+
+test(
+  "listObjectsV2.pages() handles empty bucket",
+  withBucket("itty-s3-pagination-empty", (bucket) =>
+    Effect.gen(function* () {
+      // Use .pages() on empty bucket
+      const pages = yield* listObjectsV2
+        .pages({ Bucket: bucket })
+        .pipe(Stream.runCollect);
+
+      // Should have exactly one page (even if empty)
+      const pagesArray = Array.from(pages);
+      expect(pagesArray.length).toEqual(1);
+      expect(pagesArray[0].Contents).toBeUndefined();
+    }),
+  ),
+);
+
+test(
+  "listObjectsV2.pages() respects Prefix filter",
+  withBucket("itty-s3-pagination-prefix", (bucket) =>
+    Effect.gen(function* () {
+      // Create objects with different prefixes
+      const objectKeys = [
+        "images/photo-001.jpg",
+        "images/photo-002.jpg",
+        "documents/file-001.pdf",
+        "documents/file-002.pdf",
+        "documents/file-003.pdf",
+      ];
+
+      yield* Effect.all(
+        objectKeys.map((key) =>
+          putObject({
+            Bucket: bucket,
+            Key: key,
+            Body: `Content for ${key}`,
+            ContentType: "text/plain",
+          }),
+        ),
+        { concurrency: 5 },
+      );
+
+      // Use .pages() with Prefix filter for images
+      const imageKeys = yield* listObjectsV2
+        .pages({ Bucket: bucket, Prefix: "images/", MaxKeys: 1 })
+        .pipe(
+          Stream.flatMap((page) => Stream.fromIterable(page.Contents ?? [])),
+          Stream.map((obj) => obj.Key!),
+          Stream.runCollect,
+        );
+
+      expect(Array.from(imageKeys).length).toEqual(2);
+
+      // Use .pages() with Prefix filter for documents
+      const docKeys = yield* listObjectsV2
+        .pages({ Bucket: bucket, Prefix: "documents/", MaxKeys: 1 })
+        .pipe(
+          Stream.flatMap((page) => Stream.fromIterable(page.Contents ?? [])),
+          Stream.map((obj) => obj.Key!),
+          Stream.runCollect,
+        );
+
+      expect(Array.from(docKeys).length).toEqual(3);
+
+      // Cleanup
+      yield* Effect.all(
+        objectKeys.map((key) => deleteObject({ Bucket: bucket, Key: key })),
+        { concurrency: 5 },
+      );
+    }),
+  ),
+);

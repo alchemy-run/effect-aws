@@ -1760,31 +1760,44 @@ export class TooManyTagsException extends S.TaggedError<TooManyTagsException>()(
 /**
  * Gets a list of all Selenium testing projects in your account.
  */
-export const listTestGridProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTestGridProjects =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestGridProjectsRequest,
     output: ListTestGridProjectsResult,
     errors: [ArgumentException, InternalServiceException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResult",
+    } as const,
+  }));
 /**
  * Returns a list of the actions taken in a TestGridSession.
  */
-export const listTestGridSessionActions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTestGridSessionActions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestGridSessionActionsRequest,
     output: ListTestGridSessionActionsResult,
     errors: [ArgumentException, InternalServiceException, NotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResult",
+    } as const,
+  }));
 /**
  * Retrieves a list of artifacts created during the session.
  */
 export const listTestGridSessionArtifacts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestGridSessionArtifactsRequest,
     output: ListTestGridSessionArtifactsResult,
     errors: [ArgumentException, InternalServiceException, NotFoundException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResult",
+    } as const,
   }));
 /**
  * Returns information about all Amazon Virtual Private Cloud (VPC) endpoint
@@ -1901,16 +1914,23 @@ export const listDeviceInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about device pools.
  */
-export const listDevicePools = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicePoolsRequest,
-  output: ListDevicePoolsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listDevicePools = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicePoolsRequest,
+    output: ListDevicePoolsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devicePools",
+    } as const,
+  }),
+);
 /**
  * Returns information about all the instance profiles in an AWS account.
  */
@@ -1929,7 +1949,7 @@ export const listInstanceProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about jobs for a given test run.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [
@@ -1938,6 +1958,11 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ServiceAccountException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobs",
+  } as const,
 }));
 /**
  * Returns the list of available network profiles.
@@ -1955,16 +1980,23 @@ export const listNetworkProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets information about projects.
  */
-export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectsRequest,
-  output: ListProjectsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListProjectsRequest,
+    output: ListProjectsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projects",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all currently running remote access sessions.
  */
@@ -1983,7 +2015,7 @@ export const listRemoteAccessSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about runs, given an AWS Device Farm project ARN.
  */
-export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListRunsRequest,
   output: ListRunsResult,
   errors: [
@@ -1992,11 +2024,16 @@ export const listRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ServiceAccountException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "runs",
+  } as const,
 }));
 /**
  * Gets information about test suites for a given job.
  */
-export const listSuites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSuites = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSuitesRequest,
   output: ListSuitesResult,
   errors: [
@@ -2005,11 +2042,16 @@ export const listSuites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ServiceAccountException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "suites",
+  } as const,
 }));
 /**
  * Gets information about tests in a given test suite.
  */
-export const listTests = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTests = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTestsRequest,
   output: ListTestsResult,
   errors: [
@@ -2018,20 +2060,32 @@ export const listTests = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     ServiceAccountException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "tests",
+  } as const,
 }));
 /**
  * Gets information about uploads, given an AWS Device Farm project ARN.
  */
-export const listUploads = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUploadsRequest,
-  output: ListUploadsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listUploads = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUploadsRequest,
+    output: ListUploadsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "uploads",
+    } as const,
+  }),
+);
 /**
  * Initiates a stop request for the current job. AWS Device Farm immediately stops the job on the device
  * where tests have not started. You are not billed for this device. On the device where tests have started,
@@ -2424,13 +2478,17 @@ export const getTest = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of sessions for a TestGridProject.
  */
-export const listTestGridSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTestGridSessions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTestGridSessionsRequest,
     output: ListTestGridSessionsResult,
     errors: [ArgumentException, InternalServiceException, NotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResult",
+    } as const,
+  }));
 /**
  * Change details of a project.
  */
@@ -2504,42 +2562,63 @@ export const getVPCEConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Gets information about artifacts.
  */
-export const listArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListArtifactsRequest,
-  output: ListArtifactsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListArtifactsRequest,
+    output: ListArtifactsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "artifacts",
+    } as const,
+  }),
+);
 /**
  * Gets information about unique device types.
  */
-export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevicesRequest,
-  output: ListDevicesResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevicesRequest,
+    output: ListDevicesResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "devices",
+    } as const,
+  }),
+);
 /**
  * Gets information about samples, given an AWS Device Farm job ARN.
  */
-export const listSamples = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSamplesRequest,
-  output: ListSamplesResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listSamples = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSamplesRequest,
+    output: ListSamplesResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "samples",
+    } as const,
+  }),
+);
 /**
  * Deletes a configuration for your Amazon Virtual Private Cloud (VPC) endpoint.
  */
@@ -2648,25 +2727,32 @@ export const listOfferingPromotions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `NotEligible` error if the user is not permitted to invoke the operation. If you must be
  * able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOfferingsRequest,
-  output: ListOfferingsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotEligibleException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOfferingsRequest,
+    output: ListOfferingsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotEligibleException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "offerings",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all historical purchases, renewals, and system renewal transactions for an AWS
  * account. The list is paginated and ordered by a descending timestamp (most recent transactions are first).
  * The API returns a `NotEligible` error if the user is not permitted to invoke the operation. If
  * you must be able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const listOfferingTransactions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOfferingTransactions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOfferingTransactionsRequest,
     output: ListOfferingTransactionsResult,
     errors: [
@@ -2676,8 +2762,12 @@ export const listOfferingTransactions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       ServiceAccountException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "offeringTransactions",
+    } as const,
+  }));
 /**
  * Schedules a run.
  */
@@ -2745,17 +2835,20 @@ export const renewOffering = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * period. The API returns a `NotEligible` error if the user is not permitted to invoke the
  * operation. If you must be able to invoke this operation, contact aws-devicefarm-support@amazon.com.
  */
-export const getOfferingStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetOfferingStatusRequest,
-  output: GetOfferingStatusResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotEligibleException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const getOfferingStatus = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetOfferingStatusRequest,
+    output: GetOfferingStatusResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotEligibleException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: { inputToken: "nextToken", outputToken: "nextToken" } as const,
+  }),
+);
 /**
  * List the tags for an AWS Device Farm resource.
  */
@@ -2795,16 +2888,23 @@ export const getDevicePoolCompatibility = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * MyActivity.java:386), `ListUniqueProblems` returns a single entry instead of many
  * individual entries for that exception.
  */
-export const listUniqueProblems = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUniqueProblemsRequest,
-  output: ListUniqueProblemsResult,
-  errors: [
-    ArgumentException,
-    LimitExceededException,
-    NotFoundException,
-    ServiceAccountException,
-  ],
-}));
+export const listUniqueProblems = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUniqueProblemsRequest,
+    output: ListUniqueProblemsResult,
+    errors: [
+      ArgumentException,
+      LimitExceededException,
+      NotFoundException,
+      ServiceAccountException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "uniqueProblems",
+    } as const,
+  }),
+);
 /**
  * Associates the specified tags to a resource with the specified `resourceArn`. If existing tags
  * on a resource are not specified in the request parameters, they are not changed. When a resource is deleted,

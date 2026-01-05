@@ -1629,24 +1629,30 @@ export const describeAccountOverview = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of a specified insight's recommendations. Each recommendation includes
  * a list of related metrics and a list of related events.
  */
-export const listRecommendations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRecommendationsRequest,
-  output: ListRecommendationsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRecommendations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRecommendationsRequest,
+    output: ListRecommendationsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Recommendations",
+    } as const,
+  }));
 /**
  * Provides an overview of your system's health. If additional member accounts are part
  * of your organization, you can filter those accounts using the `AccountIds`
  * field.
  */
 export const describeOrganizationResourceCollectionHealth =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeOrganizationResourceCollectionHealthRequest,
     output: DescribeOrganizationResourceCollectionHealthResponse,
     errors: [
@@ -1655,6 +1661,7 @@ export const describeOrganizationResourceCollectionHealth =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
   }));
 /**
  * Returns the integration status of services that are integrated with DevOps Guru.
@@ -1680,8 +1687,8 @@ export const describeServiceIntegration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Amazon Web Services resources that contain the same Amazon Web Services tag. DevOps Guru can be configured to analyze
  * the Amazon Web Services resources that are defined in the stacks or that are tagged using the same tag *key*. You can specify up to 500 Amazon Web Services CloudFormation stacks.
  */
-export const getResourceCollection = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getResourceCollection =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourceCollectionRequest,
     output: GetResourceCollectionResponse,
     errors: [
@@ -1691,13 +1698,13 @@ export const getResourceCollection = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }));
 /**
  * Returns the list of all log groups that are being monitored and tagged by DevOps Guru.
  */
-export const listMonitoredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMonitoredResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMonitoredResourcesRequest,
     output: ListMonitoredResourcesResponse,
     errors: [
@@ -1706,8 +1713,12 @@ export const listMonitoredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of insights in your Amazon Web Services account. You can specify which insights are
  * returned by their start time, one or more statuses (`ONGOING` or `CLOSED`), one or more severities
@@ -1718,16 +1729,23 @@ export const listMonitoredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * parameters. Use the `Type` parameter to specify `REACTIVE` or
  * `PROACTIVE` in your search.
  */
-export const searchInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchInsightsRequest,
-  output: SearchInsightsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchInsights = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchInsightsRequest,
+    output: SearchInsightsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the integration status of services that are integrated with DevOps Guru as Consumer
  * via EventBridge. The one service that can be integrated with DevOps Guru is Amazon CodeGuru
@@ -1752,8 +1770,8 @@ export const describeEventSourcesConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * about how to improve your operations. The one
  * supported notification channel is Amazon Simple Notification Service (Amazon SNS).
  */
-export const listNotificationChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listNotificationChannels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListNotificationChannelsRequest,
     output: ListNotificationChannelsResponse,
     errors: [
@@ -1762,13 +1780,17 @@ export const listNotificationChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Channels",
+    } as const,
+  }));
 /**
  * Returns a list of insights associated with the account or OU Id.
  */
-export const listOrganizationInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOrganizationInsights =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOrganizationInsightsRequest,
     output: ListOrganizationInsightsResponse,
     errors: [
@@ -1777,8 +1799,12 @@ export const listOrganizationInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of insights in your organization. You can specify which insights are
  * returned by their start time, one or more statuses (`ONGOING`,
@@ -1790,8 +1816,8 @@ export const listOrganizationInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * parameters. Use the `Type` parameter to specify `REACTIVE` or
  * `PROACTIVE` in your search.
  */
-export const searchOrganizationInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchOrganizationInsights =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchOrganizationInsightsRequest,
     output: SearchOrganizationInsightsResponse,
     errors: [
@@ -1800,8 +1826,12 @@ export const searchOrganizationInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Updates the collection of resources that DevOps Guru analyzes.
  * The two types of Amazon Web Services resource collections supported are Amazon Web Services CloudFormation stacks and
@@ -1879,7 +1909,7 @@ export const describeOrganizationOverview =
  * the Amazon Web Services resources that are defined in the stacks or that are tagged using the same tag *key*. You can specify up to 500 Amazon Web Services CloudFormation stacks.
  */
 export const describeResourceCollectionHealth =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeResourceCollectionHealthRequest,
     output: DescribeResourceCollectionHealthResponse,
     errors: [
@@ -1888,6 +1918,7 @@ export const describeResourceCollectionHealth =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
   }));
 /**
  * Returns the number of open reactive insights, the number of open proactive insights,
@@ -1930,17 +1961,20 @@ export const updateEventSourcesConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Amazon DevOps Guru costs and
  * Amazon DevOps Guru pricing.
  */
-export const getCostEstimation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCostEstimationRequest,
-  output: GetCostEstimationResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getCostEstimation = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCostEstimationRequest,
+    output: GetCostEstimationResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }),
+);
 /**
  * Starts the creation of an estimate of the monthly cost to analyze your Amazon Web Services
  * resources.
@@ -2038,8 +2072,8 @@ export const describeInsight = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list of the anomalies that belong to an insight that you specify using its
  * ID.
  */
-export const listAnomaliesForInsight = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnomaliesForInsight =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnomaliesForInsightRequest,
     output: ListAnomaliesForInsightResponse,
     errors: [
@@ -2049,13 +2083,17 @@ export const listAnomaliesForInsight = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns the list of log groups that contain log anomalies.
  */
-export const listAnomalousLogGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnomalousLogGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnomalousLogGroupsRequest,
     output: ListAnomalousLogGroupsResponse,
     errors: [
@@ -2065,23 +2103,34 @@ export const listAnomalousLogGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of insights in your Amazon Web Services account. You can specify which insights are
  * returned by their start time and status (`ONGOING`, `CLOSED`, or
  * `ANY`).
  */
-export const listInsights = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInsightsRequest,
-  output: ListInsightsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInsights = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInsightsRequest,
+    output: ListInsightsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Adds a notification channel to DevOps Guru. A notification channel is used to notify you
  * about important DevOps Guru events, such as when an insight is generated.
@@ -2114,7 +2163,7 @@ export const addNotificationChannel = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of the events emitted by the resources that are evaluated by DevOps Guru.
  * You can use filters to specify which events are returned.
  */
-export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListEventsRequest,
   output: ListEventsResponse,
   errors: [
@@ -2124,6 +2173,12 @@ export const listEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Events",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns details about an anomaly that you specify using its ID.

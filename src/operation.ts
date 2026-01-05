@@ -3,6 +3,7 @@ import * as S from "effect/Schema";
 import type { Credentials } from "./aws/credentials.ts";
 import type { Endpoint } from "./aws/endpoint.ts";
 import type { Region } from "./aws/region.ts";
+import type { PaginatedTrait } from "./traits.ts";
 
 export declare namespace Operation {
   export type Input<Op extends Operation> = S.Schema.Type<Op["input"]>;
@@ -20,4 +21,6 @@ export interface Operation<
   input: Input;
   output: Output;
   errors: Error[];
+  /** Pagination metadata for paginated operations */
+  pagination?: PaginatedTrait;
 }

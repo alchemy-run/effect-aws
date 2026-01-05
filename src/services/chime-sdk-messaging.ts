@@ -1946,33 +1946,47 @@ export const getMessagingSessionEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelBans = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelBansRequest,
-  output: ListChannelBansResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listChannelBans = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelBansRequest,
+    output: ListChannelBansResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a paginated lists of all the channel flows created under a single Chime. This is a developer API.
  */
-export const listChannelFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelFlowsRequest,
-  output: ListChannelFlowsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listChannelFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelFlowsRequest,
+    output: ListChannelFlowsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all channel memberships in a channel.
  *
@@ -1983,8 +1997,8 @@ export const listChannelFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you want to list the channels to which a specific app instance user belongs, see the
  * ListChannelMembershipsForAppInstanceUser API.
  */
-export const listChannelMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChannelMemberships =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelMembershipsRequest,
     output: ListChannelMembershipsResponse,
     errors: [
@@ -1995,8 +2009,12 @@ export const listChannelMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List all the messages in a channel. Returns a paginated list of
  * `ChannelMessages`. By default, sorted by creation timestamp in descending
@@ -2010,18 +2028,24 @@ export const listChannelMemberships = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelMessagesRequest,
-  output: ListChannelMessagesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listChannelMessages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListChannelMessagesRequest,
+    output: ListChannelMessagesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the moderators for a channel.
  *
@@ -2029,8 +2053,8 @@ export const listChannelMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannelModerators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChannelModerators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelModeratorsRequest,
     output: ListChannelModeratorsResponse,
     errors: [
@@ -2041,8 +2065,12 @@ export const listChannelModerators = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottledClientException,
       UnauthorizedClientException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all Channels created under a single Chime App as a paginated list. You can specify
  * filters to narrow results.
@@ -2059,23 +2087,30 @@ export const listChannelModerators = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * ARN of the `AppInstanceUser` or `AppInstanceBot` that makes the API call as the value in
  * the header.
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all channels associated with a specified channel flow. You can associate a channel flow with multiple channels, but you can only associate a channel with one channel flow. This is a developer API.
  */
 export const listChannelsAssociatedWithChannelFlow =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelsAssociatedWithChannelFlowRequest,
     output: ListChannelsAssociatedWithChannelFlowResponse,
     errors: [
@@ -2086,22 +2121,34 @@ export const listChannelsAssociatedWithChannelFlow =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all the SubChannels in an elastic channel when given a channel ID. Available only to the app instance admins and channel moderators of elastic channels.
  */
-export const listSubChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubChannelsRequest,
-  output: ListSubChannelsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const listSubChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSubChannelsRequest,
+    output: ListSubChannelsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Allows the `ChimeBearer` to search channels by channel members. Users or bots can search
  * across the channels that they belong to. Users in the `AppInstanceAdmin` role can search across
@@ -2113,18 +2160,25 @@ export const listSubChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation isn't supported for `AppInstanceUsers` with a large number of memberships.
  */
-export const searchChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchChannelsRequest,
-  output: SearchChannelsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottledClientException,
-    UnauthorizedClientException,
-  ],
-}));
+export const searchChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchChannelsRequest,
+    output: SearchChannelsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottledClientException,
+      UnauthorizedClientException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Sets the number of days before the channel is automatically deleted.
  *
@@ -2328,7 +2382,7 @@ export const deleteChannelMembership = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * the header.
  */
 export const listChannelMembershipsForAppInstanceUser =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelMembershipsForAppInstanceUserRequest,
     output: ListChannelMembershipsForAppInstanceUserResponse,
     errors: [
@@ -2339,6 +2393,11 @@ export const listChannelMembershipsForAppInstanceUser =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * A list of the channels moderated by an `AppInstanceUser`.
@@ -2348,7 +2407,7 @@ export const listChannelMembershipsForAppInstanceUser =
  * the header.
  */
 export const listChannelsModeratedByAppInstanceUser =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelsModeratedByAppInstanceUserRequest,
     output: ListChannelsModeratedByAppInstanceUserResponse,
     errors: [
@@ -2359,6 +2418,11 @@ export const listChannelsModeratedByAppInstanceUser =
       ThrottledClientException,
       UnauthorizedClientException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the tags applied to an Amazon Chime SDK messaging resource.

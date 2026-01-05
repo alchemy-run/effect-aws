@@ -619,17 +619,25 @@ export const describeStatement = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const describeTable = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeTableRequest,
-  output: DescribeTableResponse,
-  errors: [
-    DatabaseConnectionException,
-    InternalServerException,
-    QueryTimeoutException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const describeTable = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeTableRequest,
+    output: DescribeTableResponse,
+    errors: [
+      DatabaseConnectionException,
+      InternalServerException,
+      QueryTimeoutException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ColumnList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the tables in a database. If neither `SchemaPattern` nor `TablePattern` are specified, then all tables in the database are returned. A token is returned to page through the table list. Depending on the authorization method, use one of the following combinations of request parameters:
  *
@@ -645,7 +653,7 @@ export const describeTable = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [
@@ -655,6 +663,12 @@ export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Tables",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * List the databases in a cluster. A token is returned to page through the database list. Depending on the authorization method, use one of the following combinations of request parameters:
@@ -671,17 +685,25 @@ export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatabasesRequest,
-  output: ListDatabasesResponse,
-  errors: [
-    DatabaseConnectionException,
-    InternalServerException,
-    QueryTimeoutException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatabasesRequest,
+    output: ListDatabasesResponse,
+    errors: [
+      DatabaseConnectionException,
+      InternalServerException,
+      QueryTimeoutException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Databases",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the schemas in a database. A token is returned to page through the schema list. Depending on the authorization method, use one of the following combinations of request parameters:
  *
@@ -697,38 +719,53 @@ export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemasRequest,
-  output: ListSchemasResponse,
-  errors: [
-    DatabaseConnectionException,
-    InternalServerException,
-    QueryTimeoutException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemasRequest,
+    output: ListSchemasResponse,
+    errors: [
+      DatabaseConnectionException,
+      InternalServerException,
+      QueryTimeoutException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Fetches the temporarily cached result of an SQL statement in JSON format. The `ExecuteStatement` or `BatchExecuteStatement` operation that ran the SQL statement must have specified `ResultFormat` as `JSON` , or let the format default to JSON. A token is returned to page through the statement results.
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const getStatementResult = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetStatementResultRequest,
-  output: GetStatementResultResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const getStatementResult = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetStatementResultRequest,
+    output: GetStatementResultResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Records",
+    } as const,
+  }),
+);
 /**
  * Fetches the temporarily cached result of an SQL statement in CSV format. The `ExecuteStatement` or `BatchExecuteStatement` operation that ran the SQL statement must have specified `ResultFormat` as `CSV`. A token is returned to page through the statement results.
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const getStatementResultV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getStatementResultV2 =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetStatementResultV2Request,
     output: GetStatementResultV2Response,
     errors: [
@@ -736,8 +773,12 @@ export const getStatementResultV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Records",
+    } as const,
+  }));
 /**
  * List of SQL statements. By default, only finished statements are shown. A token is returned to page through the statement list.
  *
@@ -745,15 +786,23 @@ export const getStatementResultV2 = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information about the Amazon Redshift Data API and CLI usage examples, see Using the Amazon Redshift Data API in the *Amazon Redshift Management Guide*.
  */
-export const listStatements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStatementsRequest,
-  output: ListStatementsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listStatements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStatementsRequest,
+    output: ListStatementsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Statements",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Runs one or more SQL statements, which can be data manipulation language (DML) or data definition language (DDL). Depending on the authorization method, use one of the following combinations of request parameters:
  *

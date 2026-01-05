@@ -925,32 +925,47 @@ export const getNamespaceDeletionStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Searches for entities of the specified type. You can search for entities in your namespace and the public namespace that you're tracking.
  */
-export const searchEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchEntitiesRequest,
-  output: SearchEntitiesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const searchEntities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchEntitiesRequest,
+    output: SearchEntitiesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "descriptions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for summary information about workflows.
  */
-export const searchFlowTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchFlowTemplatesRequest,
-  output: SearchFlowTemplatesResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const searchFlowTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: SearchFlowTemplatesRequest,
+    output: SearchFlowTemplatesResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for system instances in the user's account.
  */
-export const searchSystemInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchSystemInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchSystemInstancesRequest,
     output: SearchSystemInstancesResponse,
     errors: [
@@ -958,13 +973,18 @@ export const searchSystemInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for summary information about systems in the user's account. You can filter by the ID of a workflow to return only systems that use the specified workflow.
  */
-export const searchSystemTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchSystemTemplates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchSystemTemplatesRequest,
     output: SearchSystemTemplatesResponse,
     errors: [
@@ -972,8 +992,13 @@ export const searchSystemTemplates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Associates a device with a concrete thing that is in the user's registry.
  *
@@ -1099,8 +1124,8 @@ export const getFlowTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets revisions of the specified workflow. Only the last 100 revisions are stored. If the workflow has been deprecated,
  * this action will return revisions that occurred before the deprecation. This action won't work for workflows that have been deleted.
  */
-export const getFlowTemplateRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getFlowTemplateRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetFlowTemplateRevisionsRequest,
     output: GetFlowTemplateRevisionsResponse,
     errors: [
@@ -1109,8 +1134,13 @@ export const getFlowTemplateRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a system.
  */
@@ -1127,8 +1157,8 @@ export const getSystemTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of objects that contain information about events in a flow execution.
  */
-export const listFlowExecutionMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFlowExecutionMessages =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFlowExecutionMessagesRequest,
     output: ListFlowExecutionMessagesResponse,
     errors: [
@@ -1137,13 +1167,18 @@ export const listFlowExecutionMessages = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "messages",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for AWS IoT Things Graph workflow execution instances.
  */
-export const searchFlowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const searchFlowExecutions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: SearchFlowExecutionsRequest,
     output: SearchFlowExecutionsResponse,
     errors: [
@@ -1152,8 +1187,13 @@ export const searchFlowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Searches for things associated with the specified entity. You can search by both device and device model.
  *
@@ -1162,16 +1202,24 @@ export const searchFlowExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * This action searches for exact matches and doesn't perform partial text matching.
  */
-export const searchThings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchThingsRequest,
-  output: SearchThingsResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const searchThings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchThingsRequest,
+    output: SearchThingsResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "things",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the latest version of the user's namespace and the public version that it is tracking.
  */
@@ -1189,8 +1237,8 @@ export const describeNamespace = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Gets revisions made to the specified system template. Only the previous 100 revisions are stored. If the system has been deprecated, this action will return
  * the revisions that occurred before its deprecation. This action won't work with systems that have been deleted.
  */
-export const getSystemTemplateRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getSystemTemplateRevisions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSystemTemplateRevisionsRequest,
     output: GetSystemTemplateRevisionsResponse,
     errors: [
@@ -1199,8 +1247,13 @@ export const getSystemTemplateRevisions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "summaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets the status of the specified upload.
  */
@@ -1320,16 +1373,23 @@ export const createSystemInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all tags on an AWS IoT Things Graph resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InternalFailureException,
-    InvalidRequestException,
-    ResourceAlreadyExistsException,
-    ThrottlingException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InternalFailureException,
+      InvalidRequestException,
+      ResourceAlreadyExistsException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "tags",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a tag for the specified resource.
  */

@@ -709,24 +709,35 @@ export const getEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Requires permission to access the ListSuiteDefinitions action.
  */
-export const listSuiteDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSuiteDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSuiteDefinitionsRequest,
     output: ListSuiteDefinitionsResponse,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists runs of the specified Device Advisor test suite. You can list all runs of the test
  * suite, or the runs of a specific version of the test suite.
  *
  * Requires permission to access the ListSuiteRuns action.
  */
-export const listSuiteRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSuiteRunsRequest,
-  output: ListSuiteRunsResponse,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listSuiteRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSuiteRunsRequest,
+    output: ListSuiteRunsResponse,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates a Device Advisor test suite.
  *

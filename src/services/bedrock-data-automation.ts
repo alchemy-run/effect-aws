@@ -1028,22 +1028,30 @@ export const createBlueprint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all existing Amazon Bedrock Data Automation Blueprints
  */
-export const listBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBlueprintsRequest,
-  output: ListBlueprintsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBlueprintsRequest,
+    output: ListBlueprintsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "blueprints",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all existing Amazon Bedrock Data Automation Projects
  */
-export const listDataAutomationProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataAutomationProjects =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataAutomationProjectsRequest,
     output: ListDataAutomationProjectsResponse,
     errors: [
@@ -1053,8 +1061,13 @@ export const listDataAutomationProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "projects",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates a new version of an existing Amazon Bedrock Data Automation Blueprint
  */

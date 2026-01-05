@@ -3931,8 +3931,8 @@ export const getTransformer = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For more information about field indexes, see Create field indexes
  * to improve query performance and reduce costs.
  */
-export const listLogGroupsForQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLogGroupsForQuery =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLogGroupsForQueryRequest,
     output: ListLogGroupsForQueryResponse,
     errors: [
@@ -3941,8 +3941,13 @@ export const listLogGroupsForQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "logGroupIdentifiers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Displays the tags associated with a CloudWatch Logs resource. Currently, log groups and
  * destinations support tagging.
@@ -4080,13 +4085,18 @@ export const describeAccountPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists all your destinations. The results are ASCII-sorted by destination
  * name.
  */
-export const describeDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDestinationsRequest,
     output: DescribeDestinationsResponse,
     errors: [InvalidParameterException, ServiceUnavailableException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "destinations",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Returns a list of custom and default field indexes which are discovered in log data. For
  * more information about field index policies, see PutIndexPolicy.
@@ -4148,11 +4158,19 @@ export const describeIndexPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * in a monitoring account and view data from the linked source accounts. For more information,
  * see CloudWatch cross-account observability.
  */
-export const describeLogGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeLogGroupsRequest,
-  output: DescribeLogGroupsResponse,
-  errors: [InvalidParameterException, ServiceUnavailableException],
-}));
+export const describeLogGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeLogGroupsRequest,
+    output: DescribeLogGroupsResponse,
+    errors: [InvalidParameterException, ServiceUnavailableException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "logGroups",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Lists the log streams for the specified log group. You can list all the log streams or
  * filter the results by prefix. You can also control how the results are ordered.
@@ -4168,22 +4186,30 @@ export const describeLogGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * in a monitoring account and view data from the linked source accounts. For more information,
  * see CloudWatch cross-account observability.
  */
-export const describeLogStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeLogStreamsRequest,
-  output: DescribeLogStreamsResponse,
-  errors: [
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const describeLogStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeLogStreamsRequest,
+    output: DescribeLogStreamsResponse,
+    errors: [
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "logStreams",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Lists the specified metric filters. You can list all of the metric filters or filter
  * the results by log name, prefix, metric name, or metric namespace. The results are
  * ASCII-sorted by filter name.
  */
-export const describeMetricFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeMetricFilters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeMetricFiltersRequest,
     output: DescribeMetricFiltersResponse,
     errors: [
@@ -4191,8 +4217,13 @@ export const describeMetricFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "metricFilters",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Returns a list of CloudWatch Logs Insights queries that are scheduled, running, or have
  * been run recently in this account. You can request all queries or limit it to queries of a
@@ -4242,8 +4273,8 @@ export const describeResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * subscription filters or filter the results by prefix. The results are ASCII-sorted by filter
  * name.
  */
-export const describeSubscriptionFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeSubscriptionFilters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeSubscriptionFiltersRequest,
     output: DescribeSubscriptionFiltersResponse,
     errors: [
@@ -4251,8 +4282,13 @@ export const describeSubscriptionFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "subscriptionFilters",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Lists log events from the specified log group. You can list all the log events or
  * filter the results using one or more of the following:
@@ -4299,15 +4335,22 @@ export const describeSubscriptionFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * versions, you must use a CloudWatch Logs
  * query.
  */
-export const filterLogEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: FilterLogEventsRequest,
-  output: FilterLogEventsResponse,
-  errors: [
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const filterLogEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: FilterLogEventsRequest,
+    output: FilterLogEventsResponse,
+    errors: [
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Lists log events from the specified log stream. You can list all of the log events or
  * filter using a time range.
@@ -4343,15 +4386,23 @@ export const filterLogEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * must use a CloudWatch Logs
  * query.
  */
-export const getLogEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetLogEventsRequest,
-  output: GetLogEventsResponse,
-  errors: [
-    InvalidParameterException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const getLogEvents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetLogEventsRequest,
+    output: GetLogEventsResponse,
+    errors: [
+      InvalidParameterException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextForwardToken",
+      items: "events",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the fields that are included in log events in the specified log group.
  * Includes the percentage of log events that contain each field. The search is limited to a time
@@ -4451,8 +4502,8 @@ export const listIntegrations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of the log anomaly detectors in the account.
  */
-export const listLogAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLogAnomalyDetectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLogAnomalyDetectorsRequest,
     output: ListLogAnomalyDetectorsResponse,
     errors: [
@@ -4461,8 +4512,13 @@ export const listLogAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ServiceUnavailableException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "anomalyDetectors",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Returns a list of log groups in the Region in your account. If you are performing this
  * action in a monitoring account, you can choose to also return log groups from source accounts
@@ -4801,8 +4857,8 @@ export const describeImportTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists all scheduled queries in your account and region. You can filter results by state to
  * show only enabled or disabled queries.
  */
-export const listScheduledQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listScheduledQueries =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListScheduledQueriesRequest,
     output: ListScheduledQueriesResponse,
     errors: [
@@ -4811,14 +4867,19 @@ export const listScheduledQueries = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "scheduledQueries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of data source associations for a specified S3 Table Integration, showing
  * which data sources are currently associated for query access.
  */
 export const listSourcesForS3TableIntegration =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSourcesForS3TableIntegrationRequest,
     output: ListSourcesForS3TableIntegrationResponse,
     errors: [
@@ -4828,6 +4889,12 @@ export const listSourcesForS3TableIntegration =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sources",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Deletes a *delivery destination*. A delivery is a connection between a
@@ -5140,22 +5207,30 @@ export const createDelivery = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * configured as a delivery source. These services are listed in Enable logging from
  * Amazon Web Services services.
  */
-export const describeDeliveries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDeliveriesRequest,
-  output: DescribeDeliveriesResponse,
-  errors: [
-    ServiceQuotaExceededException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const describeDeliveries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeDeliveriesRequest,
+    output: DescribeDeliveriesResponse,
+    errors: [
+      ServiceQuotaExceededException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deliveries",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of the delivery destinations that have been created in the
  * account.
  */
 export const describeDeliveryDestinations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDeliveryDestinationsRequest,
     output: DescribeDeliveryDestinationsResponse,
     errors: [
@@ -5164,12 +5239,18 @@ export const describeDeliveryDestinations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deliveryDestinations",
+      pageSize: "limit",
+    } as const,
   }));
 /**
  * Retrieves a list of the delivery sources that have been created in the account.
  */
-export const describeDeliverySources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeDeliverySources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeDeliverySourcesRequest,
     output: DescribeDeliverySourcesResponse,
     errors: [
@@ -5178,8 +5259,13 @@ export const describeDeliverySources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "deliverySources",
+      pageSize: "limit",
+    } as const,
+  }));
 /**
  * Creates or updates a logical *delivery destination*. A delivery
  * destination is an Amazon Web Services resource that represents an Amazon Web Services service
@@ -5382,7 +5468,7 @@ export const createScheduledQuery = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * deliveries, see CreateDelivery.
  */
 export const describeConfigurationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeConfigurationTemplatesRequest,
     output: DescribeConfigurationTemplatesResponse,
     errors: [
@@ -5391,13 +5477,19 @@ export const describeConfigurationTemplates =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configurationTemplates",
+      pageSize: "limit",
+    } as const,
   }));
 /**
  * Retrieves the execution history of a scheduled query within a specified time range,
  * including query results and destination processing status.
  */
-export const getScheduledQueryHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getScheduledQueryHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetScheduledQueryHistoryRequest,
     output: GetScheduledQueryHistoryResponse,
     errors: [
@@ -5407,8 +5499,13 @@ export const getScheduledQueryHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "triggerHistory",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates an integration between CloudWatch Logs and another service in this account.
  * Currently, only integrations with OpenSearch Service are supported, and currently you can have
@@ -5446,7 +5543,7 @@ export const putIntegration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * results.
  */
 export const listAggregateLogGroupSummaries =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAggregateLogGroupSummariesRequest,
     output: ListAggregateLogGroupSummariesResponse,
     errors: [
@@ -5454,22 +5551,36 @@ export const listAggregateLogGroupSummaries =
       ServiceUnavailableException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "aggregateLogGroupSummaries",
+      pageSize: "limit",
+    } as const,
   }));
 /**
  * Returns a list of anomalies that log anomaly detectors have found. For details about the
  * structure format of each anomaly object that is returned, see the example in this
  * section.
  */
-export const listAnomalies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAnomaliesRequest,
-  output: ListAnomaliesResponse,
-  errors: [
-    InvalidParameterException,
-    OperationAbortedException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-  ],
-}));
+export const listAnomalies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAnomaliesRequest,
+    output: ListAnomaliesResponse,
+    errors: [
+      InvalidParameterException,
+      OperationAbortedException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "anomalies",
+      pageSize: "limit",
+    } as const,
+  }),
+);
 /**
  * Starts a Live Tail streaming session for one or more log groups. A Live Tail session
  * returns a stream of log events that have been recently ingested in the log groups. For more

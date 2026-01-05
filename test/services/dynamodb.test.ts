@@ -1,5 +1,5 @@
 import { expect } from "@effect/vitest";
-import { Console, Effect, Schedule } from "effect";
+import { Console, Effect, Schedule, Stream } from "effect";
 import {
   createTable,
   deleteItem,
@@ -555,5 +555,254 @@ test(
 
     // Should NOT have password (not in projection)
     expect(getResult.Item!.password).toBeUndefined();
+  }),
+);
+
+// ============================================================================
+// Pagination Stream Tests
+// ============================================================================
+
+test(
+  "listTables.items() streams table names directly",
+  Effect.gen(function* () {
+    // listTables has items: "TableNames" in its paginated trait
+    // so .items() should yield string table names directly
+
+    // Collect all table names using .items()
+    const tableNames = yield* listTables
+      .items({ Limit: 1 })
+      .pipe(Stream.runCollect);
+
+    const tableNamesArray = Array.from(tableNames);
+
+    // Should contain our test table
+    expect(tableNamesArray.includes(TEST_TABLE_NAME)).toBe(true);
+  }),
+);
+
+test(
+  "listTables.pages() streams full ListTablesOutput responses",
+  Effect.gen(function* () {
+    // listTables.pages() should yield full response objects
+    const pages = yield* listTables.pages({ Limit: 1 }).pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+
+    // Each page should have TableNames property
+    const firstPage = pagesArray[0];
+    expect(firstPage.TableNames).toBeDefined();
+
+    // Flatten all table names from pages
+    const allTableNames = pagesArray.flatMap((page) => page.TableNames ?? []);
+    expect(allTableNames.includes(TEST_TABLE_NAME)).toBe(true);
+  }),
+);
+
+test(
+  "query.items() streams DynamoDB items directly",
+  Effect.gen(function* () {
+    const tableName = TEST_TABLE_NAME;
+
+    // Insert multiple items with same partition key
+    const itemCount = 5;
+    const items = Array.from({ length: itemCount }, (_, i) => ({
+      pk: { S: "pagination#query" },
+      sk: { S: `item#${i.toString().padStart(3, "0")}` },
+      data: { S: `Data ${i}` },
+    }));
+
+    yield* Effect.all(
+      items.map((item) => putItem({ TableName: tableName, Item: item })),
+      { concurrency: 5 },
+    );
+
+    // Use query.items() to stream items directly
+    // query has items: "Items" in its paginated trait
+    const collectedItems = yield* query
+      .items({
+        TableName: tableName,
+        KeyConditionExpression: "pk = :pk",
+        ExpressionAttributeValues: {
+          ":pk": { S: "pagination#query" },
+        },
+        Limit: 2, // Force pagination
+      })
+      .pipe(Stream.runCollect);
+
+    const itemsArray = Array.from(collectedItems);
+    expect(itemsArray.length).toEqual(itemCount);
+
+    // Each item should be a DynamoDB AttributeValue map
+    for (const item of itemsArray) {
+      expect((item.pk as { S: string }).S).toEqual("pagination#query");
+    }
+
+    // Cleanup
+    yield* Effect.all(
+      items.map((item) =>
+        deleteItem({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+        }),
+      ),
+      { concurrency: 5 },
+    );
+  }),
+);
+
+test(
+  "query.pages() streams full QueryOutput responses",
+  Effect.gen(function* () {
+    const tableName = TEST_TABLE_NAME;
+
+    // Insert items for pagination
+    const itemCount = 5;
+    const items = Array.from({ length: itemCount }, (_, i) => ({
+      pk: { S: "pagination#query-pages" },
+      sk: { S: `item#${i.toString().padStart(3, "0")}` },
+      data: { S: `Page data ${i}` },
+    }));
+
+    yield* Effect.all(
+      items.map((item) => putItem({ TableName: tableName, Item: item })),
+      { concurrency: 5 },
+    );
+
+    // Use query.pages() to stream full response pages
+    const pages = yield* query
+      .pages({
+        TableName: tableName,
+        KeyConditionExpression: "pk = :pk",
+        ExpressionAttributeValues: {
+          ":pk": { S: "pagination#query-pages" },
+        },
+        Limit: 2, // 5 items with limit 2 = 3 pages
+      })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toEqual(3);
+
+    // Each page should have metadata like Count, ScannedCount
+    for (const page of pagesArray) {
+      expect(page.Items).toBeDefined();
+      expect(page.Count).toBeDefined();
+    }
+
+    // Total items across all pages
+    const totalItems = pagesArray.reduce(
+      (sum, page) => sum + (page.Items?.length ?? 0),
+      0,
+    );
+    expect(totalItems).toEqual(itemCount);
+
+    // Cleanup
+    yield* Effect.all(
+      items.map((item) =>
+        deleteItem({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+        }),
+      ),
+      { concurrency: 5 },
+    );
+  }),
+);
+
+test(
+  "scan.items() streams items from table scan",
+  Effect.gen(function* () {
+    const tableName = TEST_TABLE_NAME;
+
+    // Insert items with unique prefix
+    const itemCount = 6;
+    const items = Array.from({ length: itemCount }, (_, i) => ({
+      pk: { S: `pagination#scan#${i.toString().padStart(3, "0")}` },
+      sk: { S: "data" },
+      index: { N: String(i) },
+    }));
+
+    yield* Effect.all(
+      items.map((item) => putItem({ TableName: tableName, Item: item })),
+      { concurrency: 6 },
+    );
+
+    // Use scan.items() with filter to get our items
+    const collectedItems = yield* scan
+      .items({
+        TableName: tableName,
+        FilterExpression: "begins_with(pk, :prefix)",
+        ExpressionAttributeValues: {
+          ":prefix": { S: "pagination#scan#" },
+        },
+        Limit: 2,
+      })
+      .pipe(Stream.runCollect);
+
+    const itemsArray = Array.from(collectedItems);
+    expect(itemsArray.length).toEqual(itemCount);
+
+    // Cleanup
+    yield* Effect.all(
+      items.map((item) =>
+        deleteItem({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+        }),
+      ),
+      { concurrency: 6 },
+    );
+  }),
+);
+
+test(
+  "scan.pages() streams full ScanOutput pages",
+  Effect.gen(function* () {
+    const tableName = TEST_TABLE_NAME;
+
+    // Insert items
+    const itemCount = 4;
+    const items = Array.from({ length: itemCount }, (_, i) => ({
+      pk: { S: `pagination#scan-pages#${i.toString().padStart(3, "0")}` },
+      sk: { S: "info" },
+      value: { N: String(i * 10) },
+    }));
+
+    yield* Effect.all(
+      items.map((item) => putItem({ TableName: tableName, Item: item })),
+      { concurrency: 4 },
+    );
+
+    // Use scan.pages() to get full response pages
+    const pages = yield* scan
+      .pages({
+        TableName: tableName,
+        FilterExpression: "begins_with(pk, :prefix)",
+        ExpressionAttributeValues: {
+          ":prefix": { S: "pagination#scan-pages#" },
+        },
+        Limit: 2,
+      })
+      .pipe(Stream.runCollect);
+
+    const pagesArray = Array.from(pages);
+    expect(pagesArray.length).toBeGreaterThanOrEqual(1);
+
+    // Each page has ScannedCount (items read before filter)
+    for (const page of pagesArray) {
+      expect(page.ScannedCount).toBeDefined();
+    }
+
+    // Cleanup
+    yield* Effect.all(
+      items.map((item) =>
+        deleteItem({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+        }),
+      ),
+      { concurrency: 4 },
+    );
   }),
 );

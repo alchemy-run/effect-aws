@@ -658,8 +658,8 @@ export class UnauthorizedOperation extends S.TaggedError<UnauthorizedOperation>(
  *
  * - Lists created artifacts in a paginated interface.
  */
-export const listCreatedArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCreatedArtifacts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCreatedArtifactsRequest,
     output: ListCreatedArtifactsResult,
     errors: [
@@ -671,13 +671,18 @@ export const listCreatedArtifacts = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CreatedArtifactList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists discovered resources associated with the given `MigrationTask`.
  */
-export const listDiscoveredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDiscoveredResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDiscoveredResourcesRequest,
     output: ListDiscoveredResourcesResult,
     errors: [
@@ -689,8 +694,13 @@ export const listDiscoveredResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DiscoveredResourceList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of all attributes associated with a specific migration task.
  */
@@ -713,8 +723,8 @@ export const describeMigrationTask = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This is a paginated API that returns all the migration-task states for the specified
  * `MigrationTaskName` and `ProgressUpdateStream`.
  */
-export const listMigrationTaskUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMigrationTaskUpdates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMigrationTaskUpdatesRequest,
     output: ListMigrationTaskUpdatesResult,
     errors: [
@@ -725,8 +735,13 @@ export const listMigrationTaskUpdates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MigrationTaskUpdateList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the migration status of an application.
  */
@@ -757,27 +772,35 @@ export const describeApplicationState = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - Lists migration tasks in a paginated interface.
  */
-export const listMigrationTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMigrationTasksRequest,
-  output: ListMigrationTasksResult,
-  errors: [
-    AccessDeniedException,
-    HomeRegionNotSetException,
-    InternalServerError,
-    InvalidInputException,
-    PolicyErrorException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listMigrationTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMigrationTasksRequest,
+    output: ListMigrationTasksResult,
+    errors: [
+      AccessDeniedException,
+      HomeRegionNotSetException,
+      InternalServerError,
+      InvalidInputException,
+      PolicyErrorException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MigrationTaskSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the migration statuses for your applications. If you use the optional
  * `ApplicationIds` parameter, only the migration statuses for those
  * applications will be returned.
  */
-export const listApplicationStates = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationStates =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationStatesRequest,
     output: ListApplicationStatesResult,
     errors: [
@@ -788,13 +811,18 @@ export const listApplicationStates = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ApplicationStateList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists progress update streams associated with the user account making this call.
  */
-export const listProgressUpdateStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProgressUpdateStreams =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProgressUpdateStreamsRequest,
     output: ListProgressUpdateStreamsResult,
     errors: [
@@ -805,24 +833,36 @@ export const listProgressUpdateStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceUnavailableException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProgressUpdateStreamSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists all the source resource that are associated with the specified
  * `MigrationTaskName` and `ProgressUpdateStream`.
  */
-export const listSourceResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSourceResourcesRequest,
-  output: ListSourceResourcesResult,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidInputException,
-    ResourceNotFoundException,
-    ServiceUnavailableException,
-    ThrottlingException,
-  ],
-}));
+export const listSourceResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSourceResourcesRequest,
+    output: ListSourceResourcesResult,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidInputException,
+      ResourceNotFoundException,
+      ServiceUnavailableException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SourceResourceList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a progress update stream which is an AWS resource used for access control as
  * well as a namespace for migration task names that is implicitly linked to your AWS account.

@@ -7649,10 +7649,16 @@ export const getStorageLensGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * For information about REST API errors, see REST error responses.
  */
 export const listAccessPointsForDirectoryBuckets =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessPointsForDirectoryBucketsRequest,
     output: ListAccessPointsForDirectoryBucketsResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AccessPointList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * This operation is not supported by directory buckets.
@@ -7675,13 +7681,17 @@ export const listAccessPointsForDirectoryBuckets =
  *
  * - GetMultiRegionAccessPoint
  */
-export const listMultiRegionAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMultiRegionAccessPoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMultiRegionAccessPointsRequest,
     output: ListMultiRegionAccessPointsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation allows you to list all of the tags for a specified resource. Each tag is a label consisting of a key and value. Tags can help you organize, track costs for, and control access to resources.
  *
@@ -8128,11 +8138,18 @@ export const getPublicAccessBlock = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You must have the `s3:ListAccessGrants` permission to use this operation.
  */
-export const listAccessGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessGrantsRequest,
-  output: ListAccessGrantsResult,
-  errors: [],
-}));
+export const listAccessGrants = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessGrantsRequest,
+    output: ListAccessGrantsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of S3 Access Grants instances. An S3 Access Grants instance serves as a logical grouping for your individual access grants. You can only have one S3 Access Grants instance per Region per account.
  *
@@ -8140,13 +8157,17 @@ export const listAccessGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must have the `s3:ListAccessGrantsInstances` permission to use this operation.
  */
-export const listAccessGrantsInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccessGrantsInstances =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessGrantsInstancesRequest,
     output: ListAccessGrantsInstancesResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of the locations registered in your S3 Access Grants instance.
  *
@@ -8154,13 +8175,17 @@ export const listAccessGrantsInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * You must have the `s3:ListAccessGrantsLocations` permission to use this operation.
  */
-export const listAccessGrantsLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAccessGrantsLocations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessGrantsLocationsRequest,
     output: ListAccessGrantsLocationsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation is not supported by directory buckets.
  *
@@ -8182,11 +8207,18 @@ export const listAccessGrantsLocations = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - GetAccessPoint
  */
-export const listAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAccessPointsRequest,
-  output: ListAccessPointsResult,
-  errors: [],
-}));
+export const listAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAccessPointsRequest,
+    output: ListAccessPointsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation is not supported by directory buckets.
  *
@@ -8204,10 +8236,16 @@ export const listAccessPoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - GetAccessPointForObjectLambda
  */
 export const listAccessPointsForObjectLambda =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAccessPointsForObjectLambdaRequest,
     output: ListAccessPointsForObjectLambdaResult,
     errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ObjectLambdaAccessPointList",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Use this API to list the access grants that grant the caller access to Amazon S3 data through S3 Access Grants. The caller (grantee) can be an Identity and Access Management (IAM) identity or Amazon Web Services Identity Center corporate directory identity. You must pass the Amazon Web Services account of the S3 data owner (grantor) in the request. You can, optionally, narrow the results by `GrantScope`, using a fragment of the data's S3 path, and S3 Access Grants will return only the grants with a path that contains the path fragment. You can also pass the `AllowedByApplication` filter in the request, which returns only the grants authorized for applications, whether the application is the caller's Identity Center application or any other application (`ALL`). For more information, see List the caller's access grants in the *Amazon S3 User Guide*.
@@ -8216,13 +8254,18 @@ export const listAccessPointsForObjectLambda =
  *
  * You must have the `s3:ListCallerAccessGrants` permission to use this operation.
  */
-export const listCallerAccessGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCallerAccessGrants =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCallerAccessGrantsRequest,
     output: ListCallerAccessGrantsResult,
     errors: [],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CallerAccessGrantsList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation is not supported by directory buckets.
  *
@@ -8233,11 +8276,17 @@ export const listCallerAccessGrants = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For an example of the request syntax for Amazon S3 on Outposts that uses the S3 on Outposts
  * endpoint hostname prefix and `x-amz-outpost-id` in your request, see the Examples section.
  */
-export const listRegionalBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRegionalBucketsRequest,
-  output: ListRegionalBucketsResult,
-  errors: [],
-}));
+export const listRegionalBuckets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListRegionalBucketsRequest,
+    output: ListRegionalBucketsResult,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation is not supported by directory buckets.
  *
@@ -8252,10 +8301,11 @@ export const listRegionalBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * use Amazon S3 Storage Lens in the *Amazon S3 User Guide*.
  */
 export const listStorageLensConfigurations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStorageLensConfigurationsRequest,
     output: ListStorageLensConfigurationsResult,
     errors: [],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
   }));
 /**
  * Lists all the Storage Lens groups in the specified home Region.
@@ -8267,13 +8317,13 @@ export const listStorageLensConfigurations =
  * For information about Storage Lens groups errors, see List of Amazon S3 Storage
  * Lens error codes.
  */
-export const listStorageLensGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStorageLensGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStorageLensGroupsRequest,
     output: ListStorageLensGroupsResult,
     errors: [],
-  }),
-);
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }));
 /**
  * This operation is not supported by directory buckets.
  *
@@ -8565,7 +8615,7 @@ export const describeJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - UpdateJobStatus
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResult,
   errors: [
@@ -8573,6 +8623,11 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidNextTokenException,
     InvalidRequestException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * This action puts a lifecycle configuration to an Amazon S3 on Outposts bucket. To put a

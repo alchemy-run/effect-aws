@@ -1535,7 +1535,7 @@ export const removeCustomRoutingEndpoints =
  * ports are allowed or denied traffic.
  */
 export const listCustomRoutingPortMappings =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomRoutingPortMappingsRequest,
     output: ListCustomRoutingPortMappingsResponse,
     errors: [
@@ -1545,6 +1545,12 @@ export const listCustomRoutingPortMappings =
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PortMappings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Delete a cross-account attachment. When you delete an attachment, Global Accelerator revokes the permission
@@ -1842,7 +1848,7 @@ export const updateListener = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * list the port mappings for a specific destination instance.
  */
 export const listCustomRoutingPortMappingsByDestination =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomRoutingPortMappingsByDestinationRequest,
     output: ListCustomRoutingPortMappingsByDestinationResponse,
     errors: [
@@ -1851,12 +1857,18 @@ export const listCustomRoutingPortMappingsByDestination =
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DestinationPortMappings",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List the cross-account resources available to work with.
  */
-export const listCrossAccountResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCrossAccountResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCrossAccountResourcesRequest,
     output: ListCrossAccountResourcesResponse,
     errors: [
@@ -1866,39 +1878,60 @@ export const listCrossAccountResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CrossAccountResources",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the accelerators for an Amazon Web Services account.
  */
-export const listAccelerators = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAcceleratorsRequest,
-  output: ListAcceleratorsResponse,
-  errors: [
-    InternalServiceErrorException,
-    InvalidArgumentException,
-    InvalidNextTokenException,
-  ],
-}));
+export const listAccelerators = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAcceleratorsRequest,
+    output: ListAcceleratorsResponse,
+    errors: [
+      InternalServiceErrorException,
+      InvalidArgumentException,
+      InvalidNextTokenException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Accelerators",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the IP address ranges that were specified in calls to ProvisionByoipCidr, including
  * the current state and a history of state changes.
  */
-export const listByoipCidrs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListByoipCidrsRequest,
-  output: ListByoipCidrsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidArgumentException,
-    InvalidNextTokenException,
-  ],
-}));
+export const listByoipCidrs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListByoipCidrsRequest,
+    output: ListByoipCidrsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidArgumentException,
+      InvalidNextTokenException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ByoipCidrs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the cross-account attachments that have been created in Global Accelerator.
  */
-export const listCrossAccountAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCrossAccountAttachments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCrossAccountAttachmentsRequest,
     output: ListCrossAccountAttachmentsResponse,
     errors: [
@@ -1907,13 +1940,18 @@ export const listCrossAccountAttachments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CrossAccountAttachments",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the custom routing accelerators for an Amazon Web Services account.
  */
 export const listCustomRoutingAccelerators =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomRoutingAcceleratorsRequest,
     output: ListCustomRoutingAcceleratorsResponse,
     errors: [
@@ -1921,12 +1959,18 @@ export const listCustomRoutingAccelerators =
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Accelerators",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List the endpoint groups that are associated with a listener for a custom routing accelerator.
  */
 export const listCustomRoutingEndpointGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomRoutingEndpointGroupsRequest,
     output: ListCustomRoutingEndpointGroupsResponse,
     errors: [
@@ -1935,25 +1979,39 @@ export const listCustomRoutingEndpointGroups =
       InvalidNextTokenException,
       ListenerNotFoundException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EndpointGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * List the endpoint groups that are associated with a listener.
  */
-export const listEndpointGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEndpointGroupsRequest,
-  output: ListEndpointGroupsResponse,
-  errors: [
-    InternalServiceErrorException,
-    InvalidArgumentException,
-    InvalidNextTokenException,
-    ListenerNotFoundException,
-  ],
-}));
+export const listEndpointGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEndpointGroupsRequest,
+    output: ListEndpointGroupsResponse,
+    errors: [
+      InternalServiceErrorException,
+      InvalidArgumentException,
+      InvalidNextTokenException,
+      ListenerNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EndpointGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the listeners for a custom routing accelerator.
  */
-export const listCustomRoutingListeners = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomRoutingListeners =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomRoutingListenersRequest,
     output: ListCustomRoutingListenersResponse,
     errors: [
@@ -1962,21 +2020,34 @@ export const listCustomRoutingListeners = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidArgumentException,
       InvalidNextTokenException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Listeners",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the listeners for an accelerator.
  */
-export const listListeners = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListListenersRequest,
-  output: ListListenersResponse,
-  errors: [
-    AcceleratorNotFoundException,
-    InternalServiceErrorException,
-    InvalidArgumentException,
-    InvalidNextTokenException,
-  ],
-}));
+export const listListeners = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListListenersRequest,
+    output: ListListenersResponse,
+    errors: [
+      AcceleratorNotFoundException,
+      InternalServiceErrorException,
+      InvalidArgumentException,
+      InvalidNextTokenException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Listeners",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Update an accelerator to make changes, such as the following:
  *

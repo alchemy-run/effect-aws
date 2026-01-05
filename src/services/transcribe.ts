@@ -1860,8 +1860,8 @@ export const startTranscriptionJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * To get detailed information about a specific Call Analytics job, use the operation.
  */
-export const listCallAnalyticsJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCallAnalyticsJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCallAnalyticsJobsRequest,
     output: ListCallAnalyticsJobsResponse,
     errors: [
@@ -1869,16 +1869,20 @@ export const listCallAnalyticsJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of Medical Scribe jobs that match the specified criteria. If no
  * criteria are specified, all Medical Scribe jobs are returned.
  *
  * To get detailed information about a specific Medical Scribe job, use the operation.
  */
-export const listMedicalScribeJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMedicalScribeJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMedicalScribeJobsRequest,
     output: ListMedicalScribeJobsResponse,
     errors: [
@@ -1886,8 +1890,12 @@ export const listMedicalScribeJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of medical transcription jobs that match the specified criteria. If no
  * criteria are specified, all medical transcription jobs are returned.
@@ -1895,7 +1903,7 @@ export const listMedicalScribeJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * To get detailed information about a specific medical transcription job, use the operation.
  */
 export const listMedicalTranscriptionJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMedicalTranscriptionJobsRequest,
     output: ListMedicalTranscriptionJobsResponse,
     errors: [
@@ -1903,6 +1911,11 @@ export const listMedicalTranscriptionJobs =
       InternalFailureException,
       LimitExceededException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Provides a list of custom medical vocabularies that match the specified criteria. If
@@ -1910,8 +1923,8 @@ export const listMedicalTranscriptionJobs =
  *
  * To get detailed information about a specific custom medical vocabulary, use the operation.
  */
-export const listMedicalVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMedicalVocabularies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMedicalVocabulariesRequest,
     output: ListMedicalVocabulariesResponse,
     errors: [
@@ -1919,16 +1932,20 @@ export const listMedicalVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of transcription jobs that match the specified criteria. If no
  * criteria are specified, all transcription jobs are returned.
  *
  * To get detailed information about a specific transcription job, use the operation.
  */
-export const listTranscriptionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTranscriptionJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTranscriptionJobsRequest,
     output: ListTranscriptionJobsResponse,
     errors: [
@@ -1936,16 +1953,20 @@ export const listTranscriptionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of custom vocabulary filters that match the specified criteria. If no
  * criteria are specified, all custom vocabularies are returned.
  *
  * To get detailed information about a specific custom vocabulary filter, use the operation.
  */
-export const listVocabularyFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listVocabularyFilters =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListVocabularyFiltersRequest,
     output: ListVocabularyFiltersResponse,
     errors: [
@@ -1953,16 +1974,20 @@ export const listVocabularyFilters = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of Call Analytics categories, including all rules that make up each
  * category.
  *
  * To get detailed information about a specific Call Analytics category, use the operation.
  */
-export const listCallAnalyticsCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCallAnalyticsCategories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCallAnalyticsCategoriesRequest,
     output: ListCallAnalyticsCategoriesResponse,
     errors: [
@@ -1970,38 +1995,56 @@ export const listCallAnalyticsCategories = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalFailureException,
       LimitExceededException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Provides a list of custom language models that match the specified criteria. If no
  * criteria are specified, all custom language models are returned.
  *
  * To get detailed information about a specific custom language model, use the operation.
  */
-export const listLanguageModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListLanguageModelsRequest,
-  output: ListLanguageModelsResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const listLanguageModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListLanguageModelsRequest,
+    output: ListLanguageModelsResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Provides a list of custom vocabularies that match the specified criteria. If no
  * criteria are specified, all custom vocabularies are returned.
  *
  * To get detailed information about a specific custom vocabulary, use the operation.
  */
-export const listVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListVocabulariesRequest,
-  output: ListVocabulariesResponse,
-  errors: [
-    BadRequestException,
-    InternalFailureException,
-    LimitExceededException,
-  ],
-}));
+export const listVocabularies = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListVocabulariesRequest,
+    output: ListVocabulariesResponse,
+    errors: [
+      BadRequestException,
+      InternalFailureException,
+      LimitExceededException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a Call Analytics job. To use this operation, specify the name of the job you
  * want to delete using `CallAnalyticsJobName`. Job names are case

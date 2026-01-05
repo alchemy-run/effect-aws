@@ -2518,8 +2518,8 @@ export class VideoTooLargeException extends S.TaggedError<VideoTooLargeException
 /**
  * Returns a list of media analysis jobs. Results are sorted by `CreationTimestamp` in descending order.
  */
-export const listMediaAnalysisJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMediaAnalysisJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMediaAnalysisJobsRequest,
     output: ListMediaAnalysisJobsResponse,
     errors: [
@@ -2530,8 +2530,12 @@ export const listMediaAnalysisJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ProvisionedThroughputExceededException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists and describes the versions of an Amazon Rekognition project. You can specify up to 10 model or
  * adapter versions in `ProjectVersionArns`. If you don't specify a value,
@@ -2540,8 +2544,8 @@ export const listMediaAnalysisJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * This operation requires permissions to perform the `rekognition:DescribeProjectVersions`
  * action.
  */
-export const describeProjectVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeProjectVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeProjectVersionsRequest,
     output: DescribeProjectVersionsResponse,
     errors: [
@@ -2553,8 +2557,13 @@ export const describeProjectVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProjectVersionDescriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * For a given input image, first detects the largest face in the image, and then searches
  * the specified collection for matching faces. The operation compares the features of the input
@@ -2654,19 +2663,26 @@ export const describeDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Note that for the `GetFaceDetection` operation, the returned values for
  * `FaceOccluded` and `EyeDirection` will always be "null".
  */
-export const getFaceDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFaceDetectionRequest,
-  output: GetFaceDetectionResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getFaceDetection = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFaceDetectionRequest,
+    output: GetFaceDetectionResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the face search results for Amazon Rekognition Video face search started by
  * StartFaceSearch. The search returns faces in a collection that match the faces
@@ -2700,19 +2716,26 @@ export const getFaceDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can also sort by persons by specifying `INDEX` for the `SORTBY` input
  * parameter.
  */
-export const getFaceSearch = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetFaceSearchRequest,
-  output: GetFaceSearchResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getFaceSearch = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetFaceSearchRequest,
+    output: GetFaceSearchResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the results for a given media analysis job.
  * Takes a `JobId` returned by StartMediaAnalysisJob.
@@ -2757,19 +2780,25 @@ export const getMediaAnalysisJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * For more information, see Detecting video segments in stored video in the Amazon Rekognition Developer Guide.
  */
-export const getSegmentDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetSegmentDetectionRequest,
-  output: GetSegmentDetectionResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getSegmentDetection =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetSegmentDetectionRequest,
+    output: GetSegmentDetectionResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the text detection results of a Amazon Rekognition Video analysis started by StartTextDetection.
  *
@@ -2794,19 +2823,26 @@ export const getSegmentDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and populate the `NextToken` request parameter with the token value returned from the previous
  * call to `GetTextDetection`.
  */
-export const getTextDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTextDetectionRequest,
-  output: GetTextDetectionResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getTextDetection = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTextDetectionRequest,
+    output: GetTextDetectionResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for UserIDs within a collection based on a `FaceId` or
  * `UserId`. This API can be used to find the closest UserID (with a highest
@@ -3057,19 +3093,26 @@ export const disassociateFaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * of results. To get the next page of results, call `GetPersonTracking` and populate the `NextToken` request parameter with the token
  * value returned from the previous call to `GetPersonTracking`.
  */
-export const getPersonTracking = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetPersonTrackingRequest,
-  output: GetPersonTrackingResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getPersonTracking = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetPersonTrackingRequest,
+    output: GetPersonTrackingResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns metadata for faces in the specified collection. This metadata
  * includes information such as the bounding box coordinates, the confidence (that the bounding
@@ -3079,7 +3122,7 @@ export const getPersonTracking = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions to perform the `rekognition:ListFaces`
  * action.
  */
-export const listFaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFacesRequest,
   output: ListFacesResponse,
   errors: [
@@ -3091,6 +3134,12 @@ export const listFaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Faces",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * This operation applies only to Amazon Rekognition Custom Labels.
@@ -3101,19 +3150,26 @@ export const listFaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation requires permissions to perform the `rekognition:ListProjectPolicies` action.
  */
-export const listProjectPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListProjectPoliciesRequest,
-  output: ListProjectPoliciesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listProjectPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListProjectPoliciesRequest,
+    output: ListProjectPoliciesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProjectPolicies",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns metadata of the User such as `UserID` in the specified collection.
  * Anonymous User (to reserve faces without any identity) is not returned as part of this
@@ -3121,7 +3177,7 @@ export const listProjectPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * truncated, `NextToken` is returned in the response that can be used in the
  * subsequent request to retrieve the next set of identities.
  */
-export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListUsersRequest,
   output: ListUsersResponse,
   errors: [
@@ -3133,6 +3189,12 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ResourceNotFoundException,
     ThrottlingException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Users",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns list of collection IDs in your account. If the result is truncated, the
@@ -3145,19 +3207,27 @@ export const listUsers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * This operation requires permissions to perform the
  * `rekognition:ListCollections` action.
  */
-export const listCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCollectionsRequest,
-  output: ListCollectionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listCollections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCollectionsRequest,
+    output: ListCollectionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CollectionIds",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the celebrity recognition results for a Amazon Rekognition Video analysis started by
  * StartCelebrityRecognition.
@@ -3204,8 +3274,8 @@ export const listCollections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and populate the `NextToken` request parameter with the token
  * value returned from the previous call to `GetCelebrityRecognition`.
  */
-export const getCelebrityRecognition = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getCelebrityRecognition =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetCelebrityRecognitionRequest,
     output: GetCelebrityRecognitionResponse,
     errors: [
@@ -3217,8 +3287,12 @@ export const getCelebrityRecognition = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the inappropriate, unwanted, or offensive content analysis results for a Amazon Rekognition Video analysis started by
  * StartContentModeration. For a list of moderation labels in Amazon Rekognition, see
@@ -3252,8 +3326,8 @@ export const getCelebrityRecognition = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * For more information, see moderating content in the Amazon Rekognition Developer Guide.
  */
-export const getContentModeration = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getContentModeration =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetContentModerationRequest,
     output: GetContentModerationResponse,
     errors: [
@@ -3265,8 +3339,12 @@ export const getContentModeration = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Searches for UserIDs using a supplied image. It first detects the largest face in the
  * image, and then searches a specified collection for matching UserIDs.
@@ -3603,8 +3681,8 @@ export const createDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets a list of stream processors that you have created with CreateStreamProcessor.
  */
-export const listStreamProcessors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStreamProcessors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStreamProcessorsRequest,
     output: ListStreamProcessorsResponse,
     errors: [
@@ -3615,25 +3693,37 @@ export const listStreamProcessors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ProvisionedThroughputExceededException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets information about your Rekognition projects.
  *
  * This operation requires permissions to perform the `rekognition:DescribeProjects` action.
  */
-export const describeProjects = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeProjectsRequest,
-  output: DescribeProjectsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ThrottlingException,
-  ],
-}));
+export const describeProjects = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeProjectsRequest,
+    output: DescribeProjectsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProjectDescriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This API operation initiates a Face Liveness session. It returns a `SessionId`,
  * which you can use to start streaming Face Liveness video and get the results for a Face
@@ -4074,19 +4164,26 @@ export const detectLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * If you are retrieving results while using the Amazon Simple Notification Service, note that you will receive an
  * "ERROR" notification if the job encounters an issue.
  */
-export const getLabelDetection = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetLabelDetectionRequest,
-  output: GetLabelDetectionResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getLabelDetection = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetLabelDetectionRequest,
+    output: GetLabelDetectionResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation applies only to Amazon Rekognition Custom Labels.
  *
@@ -4417,21 +4514,29 @@ export const startMediaAnalysisJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the labels in a dataset. Amazon Rekognition Custom Labels uses labels to describe images. For more information, see Labeling images
  * in the *Amazon Rekognition Custom Labels Developer Guide*.
  */
-export const listDatasetLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetLabelsRequest,
-  output: ListDatasetLabelsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceInUseException,
-    ResourceNotFoundException,
-    ResourceNotReadyException,
-    ThrottlingException,
-  ],
-}));
+export const listDatasetLabels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetLabelsRequest,
+    output: ListDatasetLabelsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceInUseException,
+      ResourceNotFoundException,
+      ResourceNotReadyException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DatasetLabelDescriptions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation applies only to Amazon Rekognition Custom Labels.
  *
@@ -4450,21 +4555,29 @@ export const listDatasetLabels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation requires permissions to perform the `rekognition:ListDatasetEntries` action.
  */
-export const listDatasetEntries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatasetEntriesRequest,
-  output: ListDatasetEntriesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerError,
-    InvalidPaginationTokenException,
-    InvalidParameterException,
-    ProvisionedThroughputExceededException,
-    ResourceInUseException,
-    ResourceNotFoundException,
-    ResourceNotReadyException,
-    ThrottlingException,
-  ],
-}));
+export const listDatasetEntries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatasetEntriesRequest,
+    output: ListDatasetEntriesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerError,
+      InvalidPaginationTokenException,
+      InvalidParameterException,
+      ProvisionedThroughputExceededException,
+      ResourceInUseException,
+      ResourceNotFoundException,
+      ResourceNotReadyException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DatasetEntries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Associates one or more faces with an existing UserID. Takes an array of
  * `FaceIds`. Each `FaceId` that are present in the `FaceIds`

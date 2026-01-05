@@ -3657,7 +3657,7 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of flows and information about each flow. For more information, see Manage a flow in Amazon Bedrock in the Amazon Bedrock User Guide.
  */
-export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFlowsRequest,
   output: ListFlowsResponse,
   errors: [
@@ -3666,6 +3666,12 @@ export const listFlows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "flowSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets information about a data ingestion job. Data sources are ingested into your knowledge base so that Large Language Models (LLMs) can use your data.
@@ -3684,17 +3690,25 @@ export const getIngestionJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the data ingestion jobs for a data source. The list also includes information about each job.
  */
-export const listIngestionJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIngestionJobsRequest,
-  output: ListIngestionJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIngestionJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIngestionJobsRequest,
+    output: ListIngestionJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ingestionJobSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a prompt flow that you can use to send an input through various steps to yield an output. Configure nodes, each of which corresponds to a step of the flow, and create connections between the nodes to create paths to different outputs. For more information, see How it works and Create a flow in Amazon Bedrock in the Amazon Bedrock User Guide.
  */
@@ -3713,17 +3727,25 @@ export const createFlow = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the aliases of an agent and information about each one.
  */
-export const listAgentAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAgentAliasesRequest,
-  output: ListAgentAliasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAgentAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAgentAliasesRequest,
+    output: ListAgentAliasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentAliasSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets information about a data source.
  */
@@ -3741,17 +3763,25 @@ export const getDataSource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the data sources in a knowledge base and information about each one.
  */
-export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDataSourcesRequest,
-  output: ListDataSourcesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDataSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDataSourcesRequest,
+    output: ListDataSourcesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataSourceSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates an alias of a flow for deployment. For more information, see Deploy a flow in Amazon Bedrock in the Amazon Bedrock User Guide.
  */
@@ -3771,31 +3801,47 @@ export const createFlowAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of aliases for a flow.
  */
-export const listFlowAliases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlowAliasesRequest,
-  output: ListFlowAliasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFlowAliases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFlowAliasesRequest,
+    output: ListFlowAliasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flowAliasSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of information about each flow. For more information, see Deploy a flow in Amazon Bedrock in the Amazon Bedrock User Guide.
  */
-export const listFlowVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFlowVersionsRequest,
-  output: ListFlowVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFlowVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFlowVersionsRequest,
+    output: ListFlowVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "flowVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves specific documents from a data source that is connected to a knowledge base. For more information, see Ingest changes directly into a knowledge base in the Amazon Bedrock User Guide.
  */
@@ -3848,8 +3894,8 @@ export const getKnowledgeBase = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists knowledge bases associated with an agent and information about each one.
  */
-export const listAgentKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAgentKnowledgeBases =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAgentKnowledgeBasesRequest,
     output: ListAgentKnowledgeBasesResponse,
     errors: [
@@ -3859,22 +3905,35 @@ export const listAgentKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentKnowledgeBaseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns either information about the working draft (`DRAFT` version) of each prompt in an account, or information about of all versions of a prompt, depending on whether you include the `promptIdentifier` field or not. For more information, see View information about prompts using Prompt management in the Amazon Bedrock User Guide.
  */
-export const listPrompts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPromptsRequest,
-  output: ListPromptsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listPrompts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPromptsRequest,
+    output: ListPromptsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "promptSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets details about a version of an agent.
  */
@@ -3892,17 +3951,25 @@ export const getAgentVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the versions of an agent and information about each version.
  */
-export const listAgentVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAgentVersionsRequest,
-  output: ListAgentVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAgentVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAgentVersionsRequest,
+    output: ListAgentVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentVersionSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates the configuration for an action group for an agent.
  */
@@ -4356,8 +4423,8 @@ export const getFlowVersion = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all the documents contained in a data source that is connected to a knowledge base. For more information, see Ingest changes directly into a knowledge base in the Amazon Bedrock User Guide.
  */
-export const listKnowledgeBaseDocuments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listKnowledgeBaseDocuments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListKnowledgeBaseDocumentsRequest,
     output: ListKnowledgeBaseDocumentsResponse,
     errors: [
@@ -4368,8 +4435,13 @@ export const listKnowledgeBaseDocuments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "documentDetails",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about a knowledge base associated with an agent.
  */
@@ -4477,8 +4549,8 @@ export const getAgentActionGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the action groups for an agent and information about each one.
  */
-export const listAgentActionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAgentActionGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAgentActionGroupsRequest,
     output: ListAgentActionGroupsResponse,
     errors: [
@@ -4488,8 +4560,13 @@ export const listAgentActionGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "actionGroupSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Makes an agent a collaborator for another agent.
  */
@@ -4527,8 +4604,8 @@ export const getAgentCollaborator = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieve a list of an agent's collaborators.
  */
-export const listAgentCollaborators = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAgentCollaborators =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAgentCollaboratorsRequest,
     output: ListAgentCollaboratorsResponse,
     errors: [
@@ -4538,8 +4615,13 @@ export const listAgentCollaborators = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "agentCollaboratorSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about an agent.
  */
@@ -4573,20 +4655,28 @@ export const createAgentAlias = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the knowledge bases in an account. The list also includesinformation about each knowledge base.
  */
-export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKnowledgeBasesRequest,
-  output: ListKnowledgeBasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKnowledgeBases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKnowledgeBasesRequest,
+    output: ListKnowledgeBasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "knowledgeBaseSummaries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the agents belonging to an account and information about each agent.
  */
-export const listAgents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAgents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAgentsRequest,
   output: ListAgentsResponse,
   errors: [
@@ -4595,6 +4685,12 @@ export const listAgents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "agentSummaries",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Deletes an alias of an agent.

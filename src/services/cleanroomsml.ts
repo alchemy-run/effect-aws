@@ -2615,46 +2615,76 @@ export const startTrainedModelInferenceJob =
  * Returns a list of the ML input channels in a collaboration.
  */
 export const listCollaborationMLInputChannels =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationMLInputChannelsRequest,
     output: ListCollaborationMLInputChannelsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationMLInputChannelsList",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of the export jobs for a trained model in a collaboration.
  */
 export const listCollaborationTrainedModelExportJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationTrainedModelExportJobsRequest,
     output: ListCollaborationTrainedModelExportJobsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationTrainedModelExportJobs",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of trained model inference jobs in a specified collaboration.
  */
 export const listCollaborationTrainedModelInferenceJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationTrainedModelInferenceJobsRequest,
     output: ListCollaborationTrainedModelInferenceJobsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationTrainedModelInferenceJobs",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of the trained models in a collaboration.
  */
 export const listCollaborationTrainedModels =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationTrainedModelsRequest,
     output: ListCollaborationTrainedModelsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationTrainedModels",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of configured model algorithm associations.
  */
 export const listConfiguredModelAlgorithmAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredModelAlgorithmAssociationsRequest,
     output: ListConfiguredModelAlgorithmAssociationsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredModelAlgorithmAssociations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Assigns information about an ML configuration.
@@ -2667,11 +2697,18 @@ export const putMLConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of ML input channels.
  */
-export const listMLInputChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMLInputChannelsRequest,
-  output: ListMLInputChannelsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listMLInputChannels =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMLInputChannelsRequest,
+    output: ListMLInputChannelsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "mlInputChannelsList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about a trained model.
  */
@@ -2688,11 +2725,19 @@ export const getTrainedModel = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of trained models.
  */
-export const listTrainedModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTrainedModelsRequest,
-  output: ListTrainedModelsResponse,
-  errors: [AccessDeniedException, ThrottlingException, ValidationException],
-}));
+export const listTrainedModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTrainedModelsRequest,
+    output: ListTrainedModelsResponse,
+    errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "trainedModels",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Provides the information necessary to start a trained model export job.
  */
@@ -2713,10 +2758,16 @@ export const startTrainedModelExportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of trained model inference jobs that match the request parameters.
  */
 export const listTrainedModelInferenceJobs =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrainedModelInferenceJobsRequest,
     output: ListTrainedModelInferenceJobsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "trainedModelInferenceJobs",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns information about a configured model algorithm association.
@@ -2790,8 +2841,8 @@ export const getCollaborationTrainedModel =
 /**
  * Returns a list of trained model versions for a specified trained model. This operation allows you to view all versions of a trained model, including information about their status and creation details. You can use this to track the evolution of your trained models and select specific versions for inference or further training.
  */
-export const listTrainedModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrainedModelVersions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrainedModelVersionsRequest,
     output: ListTrainedModelVersionsResponse,
     errors: [
@@ -2800,8 +2851,13 @@ export const listTrainedModelVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "trainedModels",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about a trained model inference job.
  */
@@ -2911,59 +2967,94 @@ export const cancelTrainedModelInferenceJob =
 /**
  * Returns a list of the audience export jobs.
  */
-export const listAudienceExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAudienceExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAudienceExportJobsRequest,
     output: ListAudienceExportJobsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "audienceExportJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of audience generation jobs.
  */
-export const listAudienceGenerationJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAudienceGenerationJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAudienceGenerationJobsRequest,
     output: ListAudienceGenerationJobsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "audienceGenerationJobs",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of audience models.
  */
-export const listAudienceModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAudienceModelsRequest,
-  output: ListAudienceModelsResponse,
-  errors: [AccessDeniedException, ValidationException],
-}));
+export const listAudienceModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAudienceModelsRequest,
+    output: ListAudienceModelsResponse,
+    errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "audienceModels",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of the configured audience models.
  */
 export const listConfiguredAudienceModels =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredAudienceModelsRequest,
     output: ListConfiguredAudienceModelsResponse,
     errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredAudienceModels",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of configured model algorithms.
  */
 export const listConfiguredModelAlgorithms =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfiguredModelAlgorithmsRequest,
     output: ListConfiguredModelAlgorithmsResponse,
     errors: [AccessDeniedException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configuredModelAlgorithms",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of training datasets.
  */
-export const listTrainingDatasets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTrainingDatasets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTrainingDatasetsRequest,
     output: ListTrainingDatasetsResponse,
     errors: [AccessDeniedException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "trainingDatasets",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns information about an audience model
  */
@@ -3168,10 +3259,16 @@ export const deleteTrainingDataset = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns a list of the configured model algorithm associations in a collaboration.
  */
 export const listCollaborationConfiguredModelAlgorithmAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCollaborationConfiguredModelAlgorithmAssociationsRequest,
     output: ListCollaborationConfiguredModelAlgorithmAssociationsResponse,
     errors: [AccessDeniedException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "collaborationConfiguredModelAlgorithmAssociations",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Defines the information necessary to create an audience model. An audience model is a machine learning model that Clean Rooms ML trains to measure similarity between users. Clean Rooms ML manages training and storing the audience model. The audience model can be used in multiple calls to the StartAudienceGenerationJob API.

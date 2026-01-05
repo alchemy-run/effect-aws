@@ -2762,7 +2762,7 @@ export const initiateLayerUpload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * results to return only `TAGGED` images to list all of the tags in your
  * repository.
  */
-export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListImagesRequest,
   output: ListImagesResponse,
   errors: [
@@ -2770,12 +2770,18 @@ export const listImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     RepositoryNotFoundException,
     ServerException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "imageIds",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Describes image repositories in a registry.
  */
-export const describeRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRepositories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRepositoriesRequest,
     output: DescribeRepositoriesResponse,
     errors: [
@@ -2783,8 +2789,13 @@ export const describeRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
       RepositoryNotFoundException,
       ServerException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List the tags for an Amazon ECR resource.
  */
@@ -2888,10 +2899,16 @@ export const deleteRepositoryPolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * specific repository creation template.
  */
 export const describeRepositoryCreationTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRepositoryCreationTemplatesRequest,
     output: DescribeRepositoryCreationTemplatesResponse,
     errors: [InvalidParameterException, ServerException, ValidationException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositoryCreationTemplates",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Transitions an image between storage classes. You can transition images from Amazon ECR standard storage class to Amazon ECR archival storage class for long-term storage, or restore archived images back to Amazon ECR standard.
@@ -3293,7 +3310,7 @@ export const deletePullThroughCacheRule = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Returns the pull through cache rules for a registry.
  */
 export const describePullThroughCacheRules =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribePullThroughCacheRulesRequest,
     output: DescribePullThroughCacheRulesResponse,
     errors: [
@@ -3302,6 +3319,12 @@ export const describePullThroughCacheRules =
       ServerException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "pullThroughCacheRules",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Describes the settings for a registry. The replication configuration for a repository
@@ -3485,16 +3508,24 @@ export const deleteSigningConfiguration = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * instead. For more information about Amazon Web Services native basic scanning, see Scan
  * images for software vulnerabilities in Amazon ECR.
  */
-export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImagesRequest,
-  output: DescribeImagesResponse,
-  errors: [
-    ImageNotFoundException,
-    InvalidParameterException,
-    RepositoryNotFoundException,
-    ServerException,
-  ],
-}));
+export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeImagesRequest,
+    output: DescribeImagesResponse,
+    errors: [
+      ImageNotFoundException,
+      InvalidParameterException,
+      RepositoryNotFoundException,
+      ServerException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageDetails",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can
  * only get URLs for image layers that are referenced in an image.
@@ -3576,8 +3607,8 @@ export const completeLayerUpload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the results of the lifecycle policy preview request for the specified
  * repository.
  */
-export const getLifecyclePolicyPreview = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getLifecyclePolicyPreview =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetLifecyclePolicyPreviewRequest,
     output: GetLifecyclePolicyPreviewResponse,
     errors: [
@@ -3587,8 +3618,13 @@ export const getLifecyclePolicyPreview = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "previewResults",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates or updates the image manifest and tags associated with an image.
  *
@@ -3659,8 +3695,8 @@ export const createPullThroughCacheRule = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns the scan findings for the specified image.
  */
-export const describeImageScanFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeImageScanFindings =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeImageScanFindingsRequest,
     output: DescribeImageScanFindingsResponse,
     errors: [
@@ -3671,5 +3707,9 @@ export const describeImageScanFindings = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServerException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));

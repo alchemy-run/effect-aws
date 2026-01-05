@@ -983,21 +983,29 @@ export const getAccountLevelServiceConfiguration =
 /**
  * Lists all Resource Explorer indexes across the specified Amazon Web Services Regions. This operation returns information about indexes including their ARNs, types, and Regions.
  */
-export const listServiceIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceIndexesInput,
-  output: ListServiceIndexesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServiceIndexes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceIndexesInput,
+    output: ListServiceIndexesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Indexes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Amazon Web Services services that have been granted streaming access to your Resource Explorer data. Streaming access allows Amazon Web Services services to receive real-time updates about your resources as they are indexed by Resource Explorer.
  */
 export const listStreamingAccessForServices =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStreamingAccessForServicesInput,
     output: ListStreamingAccessForServicesOutput,
     errors: [
@@ -1005,12 +1013,18 @@ export const listStreamingAccessForServices =
       InternalServerException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "StreamingAccessForServices",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves a list of all resource types currently supported by Amazon Web Services Resource Explorer.
  */
-export const listSupportedResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSupportedResourceTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSupportedResourceTypesInput,
     output: ListSupportedResourceTypesOutput,
     errors: [
@@ -1019,8 +1033,13 @@ export const listSupportedResourceTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves details about the Amazon Web Services Resource Explorer index in the Amazon Web Services Region in which you invoked the operation.
  */
@@ -1132,16 +1151,24 @@ export const getServiceIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all Resource Explorer service views available in the current Amazon Web Services account. This operation returns the ARNs of available service views.
  */
-export const listServiceViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceViewsInput,
-  output: ListServiceViewsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServiceViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceViewsInput,
+    output: ListServiceViewsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ServiceViews",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Turns on Amazon Web Services Resource Explorer in the Amazon Web Services Region in which you called this operation by creating an index. Resource Explorer begins discovering the resources in this Region and stores the details about the resources in the index so that they can be queried by using the Search operation. You can create only one index in a Region.
  *
@@ -1179,22 +1206,30 @@ export const createIndex = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of all of the indexes in Amazon Web Services Regions that are currently collecting resource information for Amazon Web Services Resource Explorer.
  */
-export const listIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIndexesInput,
-  output: ListIndexesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIndexes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIndexesInput,
+    output: ListIndexesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Indexes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the Amazon resource names (ARNs) of the views available in the Amazon Web Services Region in which you call this operation.
  *
  * Always check the `NextToken` response parameter for a `null` value when calling a paginated operation. These operations can occasionally return an empty set of results even when there are more results available. The `NextToken` response parameter value is `null` *only* when there are no more results to display.
  */
-export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListViewsInput,
   output: ListViewsOutput,
   errors: [
@@ -1203,6 +1238,12 @@ export const listViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Views",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a Resource Explorer setup configuration across multiple Amazon Web Services Regions. This operation sets up indexes and views in the specified Regions. This operation can also be used to set an aggregator Region for cross-Region resource search.
@@ -1271,8 +1312,8 @@ export const getServiceView = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves a list of a member's indexes in all Amazon Web Services Regions that are currently collecting resource information for Amazon Web Services Resource Explorer. Only the management account or a delegated administrator with service access enabled can invoke this API call.
  */
-export const listIndexesForMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIndexesForMembers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIndexesForMembersInput,
     output: ListIndexesForMembersOutput,
     errors: [
@@ -1281,22 +1322,35 @@ export const listIndexesForMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Indexes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the Amazon resource names (ARNs) of the Amazon Web Services-managed views available in the Amazon Web Services Region in which you call this operation.
  */
-export const listManagedViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListManagedViewsInput,
-  output: ListManagedViewsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listManagedViews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListManagedViewsInput,
+    output: ListManagedViewsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ManagedViews",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Searches for resources and displays details about all resources that match the specified criteria. You must specify a query string.
  *
@@ -1306,7 +1360,7 @@ export const listManagedViews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If your search results are empty, or are missing results that you think should be there, see Troubleshooting Resource Explorer search.
  */
-export const search = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const search = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: SearchInput,
   output: SearchOutput,
   errors: [
@@ -1317,22 +1371,36 @@ export const search = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     UnauthorizedException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Resources",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a list of resources and their details that match the specified criteria. This query must use a view. If you don’t explicitly specify a view, then Resource Explorer uses the default view for the Amazon Web Services Region in which you call this operation.
  */
-export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResourcesInput,
-  output: ListResourcesOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResourcesInput,
+    output: ListResourcesOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Resources",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Modifies some of the details of a view. You can change the filter string and the list of included properties. You can't change the name of the view.
  */
@@ -1475,8 +1543,8 @@ export const createView = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the status and details of a Resource Explorer setup operation. This operation returns information about the progress of creating or deleting Resource Explorer configurations across Regions.
  */
-export const getResourceExplorerSetup = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getResourceExplorerSetup =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetResourceExplorerSetupInput,
     output: GetResourceExplorerSetupOutput,
     errors: [
@@ -1486,5 +1554,10 @@ export const getResourceExplorerSetup = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Regions",
+      pageSize: "MaxResults",
+    } as const,
+  }));

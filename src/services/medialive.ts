@@ -7944,18 +7944,26 @@ export const createTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieve a list of the existing multiplexes.
  */
-export const listMultiplexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMultiplexesRequest,
-  output: ListMultiplexesResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listMultiplexes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMultiplexesRequest,
+    output: ListMultiplexesResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Multiplexes",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Delete the specified ChannelPlacementGroup that exists in the specified Cluster.
  */
@@ -8062,7 +8070,7 @@ export const updateInput = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists cloudwatch alarm template groups.
  */
 export const listCloudWatchAlarmTemplateGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCloudWatchAlarmTemplateGroupsRequest,
     output: ListCloudWatchAlarmTemplateGroupsResponse,
     errors: [
@@ -8072,12 +8080,18 @@ export const listCloudWatchAlarmTemplateGroups =
       NotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CloudWatchAlarmTemplateGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists cloudwatch alarm templates.
  */
 export const listCloudWatchAlarmTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCloudWatchAlarmTemplatesRequest,
     output: ListCloudWatchAlarmTemplatesResponse,
     errors: [
@@ -8087,12 +8101,18 @@ export const listCloudWatchAlarmTemplates =
       NotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "CloudWatchAlarmTemplates",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists eventbridge rule template groups.
  */
 export const listEventBridgeRuleTemplateGroups =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventBridgeRuleTemplateGroupsRequest,
     output: ListEventBridgeRuleTemplateGroupsResponse,
     errors: [
@@ -8102,12 +8122,18 @@ export const listEventBridgeRuleTemplateGroups =
       NotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventBridgeRuleTemplateGroups",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists eventbridge rule templates.
  */
 export const listEventBridgeRuleTemplates =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListEventBridgeRuleTemplatesRequest,
     output: ListEventBridgeRuleTemplatesResponse,
     errors: [
@@ -8117,21 +8143,35 @@ export const listEventBridgeRuleTemplates =
       NotFoundException,
       TooManyRequestsException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EventBridgeRuleTemplates",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists signal maps.
  */
-export const listSignalMaps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSignalMapsRequest,
-  output: ListSignalMapsResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listSignalMaps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSignalMapsRequest,
+    output: ListSignalMapsResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SignalMaps",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the specified cloudwatch alarm template.
  */
@@ -8582,7 +8622,7 @@ export const describeInputSecurityGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List the alerts for a channel with optional filtering based on alert state.
  */
-export const listAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAlerts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAlertsRequest,
   output: ListAlertsResponse,
   errors: [
@@ -8594,44 +8634,65 @@ export const listAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Alerts",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * List the alerts for a cluster with optional filtering based on alert state.
  */
-export const listClusterAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClusterAlertsRequest,
-  output: ListClusterAlertsResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listClusterAlerts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClusterAlertsRequest,
+    output: ListClusterAlertsResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Alerts",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List the alerts for a multiplex with optional filtering based on alert state.
  */
-export const listMultiplexAlerts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMultiplexAlertsRequest,
-  output: ListMultiplexAlertsResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listMultiplexAlerts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMultiplexAlertsRequest,
+    output: ListMultiplexAlertsResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Alerts",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * List the programs that currently exist for a specific multiplex.
  */
-export const listMultiplexPrograms = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listMultiplexPrograms =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListMultiplexProgramsRequest,
     output: ListMultiplexProgramsResponse,
     errors: [
@@ -8643,8 +8704,13 @@ export const listMultiplexPrograms = /*@__PURE__*/ /*#__PURE__*/ API.make(
       NotFoundException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "MultiplexPrograms",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Purchase an offering and create a reservation.
  */
@@ -8829,19 +8895,27 @@ export const describeReservation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Get a channel schedule
  */
-export const describeSchedule = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeScheduleRequest,
-  output: DescribeScheduleResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const describeSchedule = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeScheduleRequest,
+    output: DescribeScheduleResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ScheduleActions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets details about a SdiSource.
  */
@@ -9167,8 +9241,8 @@ export const updateCluster = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieve the list of ChannelPlacementGroups in the specified Cluster.
  */
-export const listChannelPlacementGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChannelPlacementGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelPlacementGroupsRequest,
     output: ListChannelPlacementGroupsResponse,
     errors: [
@@ -9179,58 +9253,87 @@ export const listChannelPlacementGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerErrorException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ChannelPlacementGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Produces list of channels that have been created
  */
-export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChannelsRequest,
-  output: ListChannelsResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listChannels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChannelsRequest,
+    output: ListChannelsResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Channels",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve the list of Clusters.
  */
-export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListClustersRequest,
-  output: ListClustersResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listClusters = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListClustersRequest,
+    output: ListClustersResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Clusters",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List input devices
  */
-export const listInputDevices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInputDevicesRequest,
-  output: ListInputDevicesResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listInputDevices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInputDevicesRequest,
+    output: ListInputDevicesResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InputDevices",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Produces a list of Input Security Groups for an account
  */
-export const listInputSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInputSecurityGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInputSecurityGroupsRequest,
     output: ListInputSecurityGroupsResponse,
     errors: [
@@ -9241,27 +9344,40 @@ export const listInputSecurityGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerErrorException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InputSecurityGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieve the list of Networks.
  */
-export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNetworksRequest,
-  output: ListNetworksResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listNetworks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNetworksRequest,
+    output: ListNetworksResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Networks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve the list of Nodes.
  */
-export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListNodesRequest,
   output: ListNodesResponse,
   errors: [
@@ -9272,52 +9388,82 @@ export const listNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalServerErrorException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Nodes",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * List offerings available for purchase.
  */
-export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOfferingsRequest,
-  output: ListOfferingsResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listOfferings = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOfferingsRequest,
+    output: ListOfferingsResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Offerings",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List purchased reservations.
  */
-export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListReservationsRequest,
-  output: ListReservationsResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listReservations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListReservationsRequest,
+    output: ListReservationsResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Reservations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all the SdiSources in the AWS account.
  */
-export const listSdiSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSdiSourcesRequest,
-  output: ListSdiSourcesResponse,
-  errors: [
-    BadGatewayException,
-    BadRequestException,
-    ForbiddenException,
-    GatewayTimeoutException,
-    InternalServerErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listSdiSources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSdiSourcesRequest,
+    output: ListSdiSourcesResponse,
+    errors: [
+      BadGatewayException,
+      BadRequestException,
+      ForbiddenException,
+      GatewayTimeoutException,
+      InternalServerErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SdiSources",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Change the settings for a Network.
  */
@@ -9369,7 +9515,7 @@ export const describeAccountConfiguration =
 /**
  * Produces list of inputs that have been created
  */
-export const listInputs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listInputs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListInputsRequest,
   output: ListInputsResponse,
   errors: [
@@ -9380,6 +9526,12 @@ export const listInputs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InternalServerErrorException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Inputs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates a Input Security Group
@@ -9779,8 +9931,8 @@ export const acceptInputDeviceTransfer = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * List input devices that are currently being transferred. List input devices that you are transferring from your AWS account or input devices that another AWS account is transferring to you.
  */
-export const listInputDeviceTransfers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInputDeviceTransfers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInputDeviceTransfersRequest,
     output: ListInputDeviceTransfersResponse,
     errors: [
@@ -9792,8 +9944,13 @@ export const listInputDeviceTransfers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnprocessableEntityException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InputDeviceTransfers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Update account configuration
  */

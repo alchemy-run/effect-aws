@@ -919,15 +919,21 @@ export const getSigningProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * new values that Signer returns in the `nextToken` parameter until all of
  * your signing jobs have been returned.
  */
-export const listSigningProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSigningProfilesRequest,
-  output: ListSigningProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    TooManyRequestsException,
-  ],
-}));
+export const listSigningProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSigningProfilesRequest,
+    output: ListSigningProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Changes the state of an `ACTIVE` signing profile to `CANCELED`.
  * A canceled profile is still viewable with the `ListSigningProfiles`
@@ -1009,16 +1015,23 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * parameter and with new values that Signer returns in the `nextToken`
  * parameter until all of your signing jobs have been returned.
  */
-export const listSigningJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSigningJobsRequest,
-  output: ListSigningJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    TooManyRequestsException,
-    ValidationException,
-  ],
-}));
+export const listSigningJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSigningJobsRequest,
+    output: ListSigningJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      TooManyRequestsException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Initiates a signing job to be performed on the code provided. Signing jobs are
  * viewable by the `ListSigningJobs` operation. Note the following requirements:
@@ -1179,8 +1192,8 @@ export const revokeSigningProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `nextToken` parameter until all of your signing jobs have been
  * returned.
  */
-export const listSigningPlatforms = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSigningPlatforms =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSigningPlatformsRequest,
     output: ListSigningPlatformsResponse,
     errors: [
@@ -1189,8 +1202,12 @@ export const listSigningPlatforms = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves the revocation status of one or more of the signing profile, signing job,
  * and signing certificate.

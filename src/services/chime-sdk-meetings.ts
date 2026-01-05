@@ -922,19 +922,26 @@ export const getMeeting = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Using the Amazon Chime SDK
  * in the *Amazon Chime Developer Guide*.
  */
-export const listAttendees = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttendeesRequest,
-  output: ListAttendeesResponse,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    NotFoundException,
-    ServiceFailureException,
-    ServiceUnavailableException,
-    ThrottlingException,
-    UnauthorizedException,
-  ],
-}));
+export const listAttendees = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttendeesRequest,
+    output: ListAttendeesResponse,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      NotFoundException,
+      ServiceFailureException,
+      ServiceUnavailableException,
+      ThrottlingException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the specified Amazon Chime SDK meeting. The operation deletes all attendees, disconnects all clients, and prevents new clients from
  * joining the meeting. For more information about the Amazon Chime SDK, see

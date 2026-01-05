@@ -1088,19 +1088,34 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Lists the operations performed by AWS Systems Manager for SAP.
  */
-export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOperationsInput,
-  output: ListOperationsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOperationsInput,
+    output: ListOperationsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Operations",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the sub-check results of a specified configuration check operation.
  */
-export const listSubCheckResults = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSubCheckResultsInput,
-  output: ListSubCheckResultsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listSubCheckResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListSubCheckResultsInput,
+    output: ListSubCheckResultsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SubCheckResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Register an SAP application with AWS Systems Manager for SAP. You must meet the following requirements before registering.
  *
@@ -1140,7 +1155,7 @@ export const updateApplicationSettings = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the configuration check operations performed by AWS Systems Manager for SAP.
  */
 export const listConfigurationCheckOperations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationCheckOperationsInput,
     output: ListConfigurationCheckOperationsOutput,
     errors: [
@@ -1148,6 +1163,12 @@ export const listConfigurationCheckOperations =
       ResourceNotFoundException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationCheckOperations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Adds permissions to the target database.
@@ -1309,37 +1330,59 @@ export const getResourcePermission = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all the components registered with AWS Systems Manager for SAP.
  */
-export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListComponentsInput,
-  output: ListComponentsOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    UnauthorizedException,
-    ValidationException,
-  ],
-}));
+export const listComponents = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListComponentsInput,
+    output: ListComponentsOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      UnauthorizedException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Components",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all configuration check types supported by AWS Systems Manager for SAP.
  */
 export const listConfigurationCheckDefinitions =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConfigurationCheckDefinitionsInput,
     output: ListConfigurationCheckDefinitionsOutput,
     errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConfigurationChecks",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the SAP HANA databases of an application registered with AWS Systems Manager for SAP.
  */
-export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDatabasesInput,
-  output: ListDatabasesOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDatabasesInput,
+    output: ListDatabasesOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Databases",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Gets the details of a configuration check operation by specifying the operation ID.
  */
@@ -1360,35 +1403,55 @@ export const getOperation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the applications registered with AWS Systems Manager for SAP.
  */
-export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListApplicationsInput,
-  output: ListApplicationsOutput,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ValidationException,
-  ],
-}));
+export const listApplications = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListApplicationsInput,
+    output: ListApplicationsOutput,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Applications",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of operations events.
  *
  * Available parameters include `OperationID`, as well as optional parameters `MaxResults`, `NextToken`, and `Filters`.
  */
-export const listOperationEvents = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOperationEventsInput,
-  output: ListOperationEventsOutput,
-  errors: [InternalServerException, ValidationException],
-}));
+export const listOperationEvents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListOperationEventsInput,
+    output: ListOperationEventsOutput,
+    errors: [InternalServerException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OperationEvents",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the rules of a specified sub-check belonging to a configuration check operation.
  */
-export const listSubCheckRuleResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSubCheckRuleResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSubCheckRuleResultsInput,
     output: ListSubCheckRuleResultsOutput,
     errors: [InternalServerException, ValidationException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RuleResults",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Gets the component of an application registered with AWS Systems Manager for SAP.
  */

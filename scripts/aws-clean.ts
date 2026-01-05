@@ -10,6 +10,7 @@
  * - SNS topics
  * - DynamoDB tables
  * - API Gateway REST APIs
+ * - API Gateway V2 HTTP/WebSocket APIs
  * - AppSync GraphQL APIs (with resolvers and data sources)
  * - VPCs (with dependencies: subnets, internet gateways, NAT gateways, route tables, security groups)
  * - IAM roles (optionally, with --iam flag)
@@ -25,7 +26,16 @@
 import { Command, Options } from "@effect/cli";
 import { FetchHttpClient } from "@effect/platform";
 import { NodeContext, NodeRuntime } from "@effect/platform-node";
-import { Console, Effect, Layer, Logger, LogLevel, Option, Ref } from "effect";
+import {
+  Console,
+  Effect,
+  Layer,
+  Logger,
+  LogLevel,
+  Option,
+  Ref,
+  Stream,
+} from "effect";
 import * as Credentials from "../src/aws/credentials.ts";
 import { Endpoint } from "../src/aws/endpoint.ts";
 import { Region } from "../src/aws/region.ts";
@@ -33,6 +43,10 @@ import * as Retry from "../src/retry-policy.ts";
 
 // Service imports
 import { deleteRestApi, getRestApis } from "../src/services/api-gateway.ts";
+import {
+  deleteApi as deleteApiV2,
+  getApis as getApisV2,
+} from "../src/services/apigatewayv2.ts";
 import {
   deleteDataSource,
   deleteGraphqlApi,
@@ -184,26 +198,21 @@ const emptyBucket = (bucket: string) =>
       versionIdMarker = versions.NextVersionIdMarker;
     } while (versionKeyMarker);
 
-    // Delete regular objects (for non-versioned buckets)
-    let continuationToken: string | undefined;
-    do {
-      const objects = yield* listObjectsV2({
-        Bucket: bucket,
-        ContinuationToken: continuationToken,
-      });
+    // Delete regular objects (for non-versioned buckets) using pagination stream
+    const objects = yield* listObjectsV2.pages({ Bucket: bucket }).pipe(
+      Stream.flatMap((page) => Stream.fromIterable(page.Contents ?? [])),
+      Stream.runCollect,
+    );
 
-      for (const obj of objects.Contents ?? []) {
-        if (obj.Key) {
-          yield* deleteObject({ Bucket: bucket, Key: obj.Key });
-        }
+    for (const obj of objects) {
+      if (obj.Key) {
+        yield* deleteObject({ Bucket: bucket, Key: obj.Key });
       }
+    }
 
-      if ((objects.Contents?.length ?? 0) > 0) {
-        yield* log("  🗑️", `Deleted ${objects.Contents?.length} objects`);
-      }
-
-      continuationToken = objects.NextContinuationToken;
-    } while (continuationToken);
+    if (objects.length > 0) {
+      yield* log("  🗑️", `Deleted ${objects.length} objects`);
+    }
   });
 
 const cleanS3 = Effect.gen(function* () {
@@ -243,28 +252,22 @@ const cleanAPIGateway = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🌐", "Cleaning API Gateway REST APIs...");
 
-  // First, collect all APIs to delete (pagination completes before any deletions)
-  const toDelete: Array<{ id: string; name: string }> = [];
-  let position: string | undefined;
-
-  do {
-    const apis = yield* getRestApis({ position });
-
-    for (const api of apis.items ?? []) {
-      if (!api.id || !api.name) continue;
-      if (!matchesPrefix(prefix, api.name)) continue;
-      toDelete.push({ id: api.id, name: api.name });
-    }
-
-    position = apis.position;
-  } while (position);
+  // Collect all APIs using pagination stream
+  const toDelete = yield* getRestApis.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.items ?? [])),
+    Stream.filter(
+      (api) => !!api.id && !!api.name && matchesPrefix(prefix, api.name),
+    ),
+    Stream.map((api) => ({ id: api.id!, name: api.name! })),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No API Gateway REST APIs to delete");
     return;
   }
 
-  // Now delete all collected APIs
+  // Delete all collected APIs
   for (const api of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete REST API: ${api.name} (${api.id})`);
@@ -278,6 +281,48 @@ const cleanAPIGateway = Effect.gen(function* () {
 });
 
 // ============================================================================
+// API Gateway V2 Cleanup (HTTP and WebSocket APIs)
+// ============================================================================
+
+const cleanAPIGatewayV2 = Effect.gen(function* () {
+  const { dryRun, prefix } = yield* getConfig;
+  yield* log("🌐", "Cleaning API Gateway V2 (HTTP/WebSocket) APIs...");
+
+  // Collect all APIs (manual pagination - no paginated trait)
+  const toDelete: Array<{ id: string; name: string }> = [];
+  let nextToken: string | undefined;
+
+  do {
+    const apis = yield* getApisV2({ NextToken: nextToken });
+
+    for (const api of apis.Items ?? []) {
+      if (!api.ApiId || !api.Name) continue;
+      if (!matchesPrefix(prefix, api.Name)) continue;
+      toDelete.push({ id: api.ApiId, name: api.Name });
+    }
+
+    nextToken = apis.NextToken;
+  } while (nextToken);
+
+  if (toDelete.length === 0) {
+    yield* log("  ✓", "No API Gateway V2 APIs to delete");
+    return;
+  }
+
+  // Delete all collected APIs
+  for (const api of toDelete) {
+    if (dryRun) {
+      yield* log("  📋", `Would delete API: ${api.name} (${api.id})`);
+    } else {
+      yield* log("  🗑️", `Deleting API: ${api.name} (${api.id})`);
+      yield* deleteApiV2({ ApiId: api.id });
+    }
+  }
+
+  yield* log("  ✓", `Processed ${toDelete.length} API Gateway V2 APIs`);
+});
+
+// ============================================================================
 // AppSync Cleanup
 // ============================================================================
 
@@ -285,7 +330,7 @@ const cleanAppSync = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📊", "Cleaning AppSync GraphQL APIs...");
 
-  // First collect all APIs to delete
+  // Collect all APIs (manual pagination - no paginated trait)
   const toDelete: Array<{ apiId: string; name: string }> = [];
   let nextToken: string | undefined;
 
@@ -306,7 +351,7 @@ const cleanAppSync = Effect.gen(function* () {
     return;
   }
 
-  // Now delete all collected APIs
+  // Delete all collected APIs
   for (const api of toDelete) {
     if (dryRun) {
       yield* log(
@@ -365,28 +410,22 @@ const cleanLambda = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("λ", "Cleaning Lambda functions...");
 
-  // First collect all functions to delete
-  const toDelete: string[] = [];
-  let marker: string | undefined;
-
-  do {
-    const functions = yield* listFunctions({ Marker: marker });
-
-    for (const fn of functions.Functions ?? []) {
-      if (!fn.FunctionName) continue;
-      if (!matchesPrefix(prefix, fn.FunctionName)) continue;
-      toDelete.push(fn.FunctionName);
-    }
-
-    marker = functions.NextMarker;
-  } while (marker);
+  // Collect all functions using pagination stream
+  const toDelete = yield* listFunctions.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.Functions ?? [])),
+    Stream.filter(
+      (fn) => !!fn.FunctionName && matchesPrefix(prefix, fn.FunctionName),
+    ),
+    Stream.map((fn) => fn.FunctionName!),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No Lambda functions to delete");
     return;
   }
 
-  // Now delete all collected functions
+  // Delete all collected functions
   for (const functionName of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete function: ${functionName}`);
@@ -407,31 +446,27 @@ const cleanECSTaskDefinitions = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📋", "Cleaning ECS task definitions...");
 
-  // First collect all task definitions to delete
-  const toDelete: Array<{ arn: string; display: string }> = [];
-  let nextToken: string | undefined;
-
-  do {
-    const taskDefs = yield* listTaskDefinitions({ nextToken });
-
-    for (const taskDefArn of taskDefs.taskDefinitionArns ?? []) {
+  // Collect all task definitions using pagination stream
+  const toDelete = yield* listTaskDefinitions.pages({}).pipe(
+    Stream.flatMap((page) =>
+      Stream.fromIterable(page.taskDefinitionArns ?? []),
+    ),
+    Stream.map((taskDefArn) => {
       // Extract family name from ARN: arn:aws:ecs:region:account:task-definition/family:revision
       const familyWithRevision = taskDefArn.split("/").pop() ?? "";
       const family = familyWithRevision.split(":")[0];
-
-      if (!matchesPrefix(prefix, family)) continue;
-      toDelete.push({ arn: taskDefArn, display: familyWithRevision });
-    }
-
-    nextToken = taskDefs.nextToken;
-  } while (nextToken);
+      return { arn: taskDefArn, display: familyWithRevision, family };
+    }),
+    Stream.filter(({ family }) => matchesPrefix(prefix, family)),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No ECS task definitions to delete");
     return;
   }
 
-  // Now delete all collected task definitions
+  // Delete all collected task definitions
   for (const taskDef of toDelete) {
     if (dryRun) {
       yield* log(
@@ -451,28 +486,23 @@ const cleanECSClusters = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🐳", "Cleaning ECS clusters...");
 
-  // First collect all clusters to delete
-  const toDelete: Array<{ arn: string; name: string }> = [];
-  let nextToken: string | undefined;
-
-  do {
-    const clusters = yield* listClusters({ nextToken });
-
-    for (const clusterArn of clusters.clusterArns ?? []) {
-      const clusterName = clusterArn.split("/").pop() ?? "";
-      if (!matchesPrefix(prefix, clusterName)) continue;
-      toDelete.push({ arn: clusterArn, name: clusterName });
-    }
-
-    nextToken = clusters.nextToken;
-  } while (nextToken);
+  // Collect all clusters using pagination stream
+  const toDelete = yield* listClusters.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.clusterArns ?? [])),
+    Stream.map((clusterArn) => ({
+      arn: clusterArn,
+      name: clusterArn.split("/").pop() ?? "",
+    })),
+    Stream.filter(({ name }) => matchesPrefix(prefix, name)),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No ECS clusters to delete");
     return;
   }
 
-  // Now delete all collected clusters
+  // Delete all collected clusters
   for (const cluster of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete cluster: ${cluster.name}`);
@@ -481,50 +511,40 @@ const cleanECSClusters = Effect.gen(function* () {
 
     yield* log("  🗑️", `Deleting cluster: ${cluster.name}`);
 
-    // Stop all running tasks
-    let tasksNextToken: string | undefined;
-    do {
-      const tasks = yield* listTasks({
+    // Stop all running tasks using pagination stream
+    const tasks = yield* listTasks.pages({ cluster: cluster.arn }).pipe(
+      Stream.flatMap((page) => Stream.fromIterable(page.taskArns ?? [])),
+      Stream.runCollect,
+    );
+
+    for (const taskArn of tasks) {
+      yield* stopTask({
         cluster: cluster.arn,
-        nextToken: tasksNextToken,
+        task: taskArn,
+        reason: "Cleanup script",
+      });
+    }
+
+    // Delete all services using pagination stream
+    const services = yield* listServices.pages({ cluster: cluster.arn }).pipe(
+      Stream.flatMap((page) => Stream.fromIterable(page.serviceArns ?? [])),
+      Stream.runCollect,
+    );
+
+    for (const serviceArn of services) {
+      // Scale down to 0 first
+      yield* updateService({
+        cluster: cluster.arn,
+        service: serviceArn,
+        desiredCount: 0,
       });
 
-      for (const taskArn of tasks.taskArns ?? []) {
-        yield* stopTask({
-          cluster: cluster.arn,
-          task: taskArn,
-          reason: "Cleanup script",
-        });
-      }
-
-      tasksNextToken = tasks.nextToken;
-    } while (tasksNextToken);
-
-    // Delete all services
-    let servicesNextToken: string | undefined;
-    do {
-      const services = yield* listServices({
+      yield* deleteService({
         cluster: cluster.arn,
-        nextToken: servicesNextToken,
+        service: serviceArn,
+        force: true,
       });
-
-      for (const serviceArn of services.serviceArns ?? []) {
-        // Scale down to 0 first
-        yield* updateService({
-          cluster: cluster.arn,
-          service: serviceArn,
-          desiredCount: 0,
-        });
-
-        yield* deleteService({
-          cluster: cluster.arn,
-          service: serviceArn,
-          force: true,
-        });
-      }
-
-      servicesNextToken = services.nextToken;
-    } while (servicesNextToken);
+    }
 
     // Delete the cluster
     yield* deleteCluster({ cluster: cluster.arn });
@@ -546,30 +566,24 @@ const cleanSQS = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📨", "Cleaning SQS queues...");
 
-  // First collect all queues to delete
-  const toDelete: Array<{ url: string; name: string }> = [];
-  let nextToken: string | undefined;
-
-  do {
-    const queues = yield* listQueues({
-      NextToken: nextToken,
-      QueueNamePrefix: prefix || undefined,
-    });
-
-    for (const queueUrl of queues.QueueUrls ?? []) {
-      const queueName = queueUrl.split("/").pop() ?? "";
-      toDelete.push({ url: queueUrl, name: queueName });
-    }
-
-    nextToken = queues.NextToken;
-  } while (nextToken);
+  // Collect all queues using pagination stream
+  const toDelete = yield* listQueues
+    .pages({ QueueNamePrefix: prefix || undefined })
+    .pipe(
+      Stream.flatMap((page) => Stream.fromIterable(page.QueueUrls ?? [])),
+      Stream.map((queueUrl) => ({
+        url: queueUrl,
+        name: queueUrl.split("/").pop() ?? "",
+      })),
+      Stream.runCollect,
+    );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No SQS queues to delete");
     return;
   }
 
-  // Now delete all collected queues
+  // Delete all collected queues
   for (const queue of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete queue: ${queue.name}`);
@@ -590,30 +604,24 @@ const cleanSNS = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("📢", "Cleaning SNS topics...");
 
-  // First collect all topics to delete
-  const toDelete: Array<{ arn: string; name: string }> = [];
-  let nextToken: string | undefined;
-
-  do {
-    const topics = yield* listTopics({ NextToken: nextToken });
-
-    for (const topic of topics.Topics ?? []) {
-      if (!topic.TopicArn) continue;
-
-      const topicName = topic.TopicArn.split(":").pop() ?? "";
-      if (!matchesPrefix(prefix, topicName)) continue;
-      toDelete.push({ arn: topic.TopicArn, name: topicName });
-    }
-
-    nextToken = topics.NextToken;
-  } while (nextToken);
+  // Collect all topics using pagination stream
+  const toDelete = yield* listTopics.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.Topics ?? [])),
+    Stream.filter((topic) => !!topic.TopicArn),
+    Stream.map((topic) => ({
+      arn: topic.TopicArn!,
+      name: topic.TopicArn!.split(":").pop() ?? "",
+    })),
+    Stream.filter(({ name }) => matchesPrefix(prefix, name)),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No SNS topics to delete");
     return;
   }
 
-  // Now delete all collected topics
+  // Delete all collected topics
   for (const topic of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete topic: ${topic.name}`);
@@ -634,29 +642,19 @@ const cleanDynamoDB = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🗃️", "Cleaning DynamoDB tables...");
 
-  // First collect all tables to delete
-  const toDelete: string[] = [];
-  let lastEvaluatedTableName: string | undefined;
-
-  do {
-    const tables = yield* listTables({
-      ExclusiveStartTableName: lastEvaluatedTableName,
-    });
-
-    for (const tableName of tables.TableNames ?? []) {
-      if (!matchesPrefix(prefix, tableName)) continue;
-      toDelete.push(tableName);
-    }
-
-    lastEvaluatedTableName = tables.LastEvaluatedTableName;
-  } while (lastEvaluatedTableName);
+  // Collect all tables using pagination stream
+  const toDelete = yield* listTables.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.TableNames ?? [])),
+    Stream.filter((tableName) => matchesPrefix(prefix, tableName)),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No DynamoDB tables to delete");
     return;
   }
 
-  // Now delete all collected tables
+  // Delete all collected tables
   for (const tableName of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete table: ${tableName}`);
@@ -677,7 +675,7 @@ const cleanVPC = Effect.gen(function* () {
   const { dryRun, prefix } = yield* getConfig;
   yield* log("🌐", "Cleaning VPCs...");
 
-  // First collect all VPCs to delete
+  // Collect all VPCs (manual pagination - no paginated trait on EC2 describe operations)
   const toDelete: Array<{ vpcId: string; nameTag: string }> = [];
   let nextToken: string | undefined;
 
@@ -706,7 +704,7 @@ const cleanVPC = Effect.gen(function* () {
     return;
   }
 
-  // Now delete all collected VPCs
+  // Delete all collected VPCs
   for (const vpc of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete VPC: ${vpc.vpcId} (${vpc.nameTag})`);
@@ -816,32 +814,25 @@ const cleanIAM = Effect.gen(function* () {
   yield* warn("Cleaning IAM roles - this is dangerous!");
   yield* log("🔐", "Cleaning IAM roles...");
 
-  // First collect all roles to delete
-  const toDelete: string[] = [];
-  let marker: string | undefined;
-
-  do {
-    const roles = yield* listRoles({ Marker: marker });
-
-    for (const role of roles.Roles ?? []) {
-      if (!role.RoleName) continue;
-      if (!matchesPrefix(prefix, role.RoleName)) continue;
-
-      // Skip AWS service-linked roles
-      if (role.Path?.startsWith("/aws-service-role/")) continue;
-
-      toDelete.push(role.RoleName);
-    }
-
-    marker = roles.Marker;
-  } while (marker);
+  // Collect all roles using pagination stream
+  const toDelete = yield* listRoles.pages({}).pipe(
+    Stream.flatMap((page) => Stream.fromIterable(page.Roles ?? [])),
+    Stream.filter(
+      (role) =>
+        !!role.RoleName &&
+        matchesPrefix(prefix, role.RoleName) &&
+        !role.Path?.startsWith("/aws-service-role/"),
+    ),
+    Stream.map((role) => role.RoleName!),
+    Stream.runCollect,
+  );
 
   if (toDelete.length === 0) {
     yield* log("  ✓", "No IAM roles to delete");
     return;
   }
 
-  // Now delete all collected roles
+  // Delete all collected roles
   for (const roleName of toDelete) {
     if (dryRun) {
       yield* log("  📋", `Would delete role: ${roleName}`);
@@ -850,12 +841,19 @@ const cleanIAM = Effect.gen(function* () {
 
     yield* log("  🗑️", `Deleting role: ${roleName}`);
 
-    // Detach managed policies
-    const attachedPolicies = yield* listAttachedRolePolicies({
-      RoleName: roleName,
-    });
+    // Detach managed policies using pagination stream
+    const attachedPolicies = yield* listAttachedRolePolicies
+      .pages({
+        RoleName: roleName,
+      })
+      .pipe(
+        Stream.flatMap((page) =>
+          Stream.fromIterable(page.AttachedPolicies ?? []),
+        ),
+        Stream.runCollect,
+      );
 
-    for (const policy of attachedPolicies.AttachedPolicies ?? []) {
+    for (const policy of attachedPolicies) {
       if (policy.PolicyArn) {
         yield* detachRolePolicy({
           RoleName: roleName,
@@ -864,12 +862,17 @@ const cleanIAM = Effect.gen(function* () {
       }
     }
 
-    // Delete inline policies
-    const inlinePolicies = yield* listRolePolicies({
-      RoleName: roleName,
-    });
+    // Delete inline policies using pagination stream
+    const inlinePolicies = yield* listRolePolicies
+      .pages({
+        RoleName: roleName,
+      })
+      .pipe(
+        Stream.flatMap((page) => Stream.fromIterable(page.PolicyNames ?? [])),
+        Stream.runCollect,
+      );
 
-    for (const policyName of inlinePolicies.PolicyNames ?? []) {
+    for (const policyName of inlinePolicies) {
       yield* deleteRolePolicy({
         RoleName: roleName,
         PolicyName: policyName,
@@ -928,6 +931,7 @@ const cleanCommand = Command.make(
       yield* cleanSNS;
       yield* cleanDynamoDB;
       yield* cleanAPIGateway;
+      yield* cleanAPIGatewayV2;
       yield* cleanAppSync;
       yield* cleanVPC;
       yield* cleanIAM;

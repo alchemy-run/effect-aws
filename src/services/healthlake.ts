@@ -633,11 +633,18 @@ export const startFHIRExportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * List all FHIR-enabled data stores in a user’s account, regardless of data store
  * status.
  */
-export const listFHIRDatastores = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFHIRDatastoresRequest,
-  output: ListFHIRDatastoresResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listFHIRDatastores = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFHIRDatastoresRequest,
+    output: ListFHIRDatastoresResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Start importing bulk FHIR data into an ACTIVE data store. The import job imports FHIR
  * data found in the `InputDataConfig` object and stores processing results in the
@@ -657,31 +664,45 @@ export const startFHIRImportJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all FHIR export jobs associated with an account and their statuses.
  */
-export const listFHIRExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFHIRExportJobsRequest,
-  output: ListFHIRExportJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFHIRExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFHIRExportJobsRequest,
+    output: ListFHIRExportJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all FHIR import jobs associated with an account and their statuses.
  */
-export const listFHIRImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFHIRImportJobsRequest,
-  output: ListFHIRImportJobsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFHIRImportJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFHIRImportJobsRequest,
+    output: ListFHIRImportJobsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Create a FHIR-enabled data store.
  */

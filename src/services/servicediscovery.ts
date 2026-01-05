@@ -1030,13 +1030,17 @@ export const getInstance = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * There's a brief delay between when you register an instance and when the health status for
  * the instance is available.
  */
-export const getInstancesHealthStatus = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getInstancesHealthStatus =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetInstancesHealthStatusRequest,
     output: GetInstancesHealthStatusResponse,
     errors: [InstanceNotFound, InvalidInput, ServiceNotFound],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Deletes a specified service and all associated service attributes. If the service still
  * contains one or more registered instances, the request fails.
@@ -1068,11 +1072,18 @@ export const getServiceAttributes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists summary information about the instances that you registered by using a specified
  * service.
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesRequest,
-  output: ListInstancesResponse,
-  errors: [InvalidInput, ServiceNotFound],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesRequest,
+    output: ListInstancesResponse,
+    errors: [InvalidInput, ServiceNotFound],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Submits a request to change the health status of a custom health check to healthy or
  * unhealthy.
@@ -1142,28 +1153,49 @@ export const discoverInstancesRevision = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists summary information about the namespaces that were created by the current Amazon Web Services account and shared with the current Amazon Web Services account.
  */
-export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNamespacesRequest,
-  output: ListNamespacesResponse,
-  errors: [InvalidInput],
-}));
+export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNamespacesRequest,
+    output: ListNamespacesResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists operations that match the criteria that you specify.
  */
-export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOperationsRequest,
-  output: ListOperationsResponse,
-  errors: [InvalidInput],
-}));
+export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOperationsRequest,
+    output: ListOperationsResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists summary information for all the services that are associated with one or more
  * namespaces.
  */
-export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServicesRequest,
-  output: ListServicesResponse,
-  errors: [InvalidInput],
-}));
+export const listServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServicesRequest,
+    output: ListServicesResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Submits a request to perform the following operations:
  *

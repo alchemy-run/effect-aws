@@ -1043,7 +1043,7 @@ export const updateRelationship = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Lists program management accounts based on specified criteria.
  */
 export const listProgramManagementAccounts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProgramManagementAccountsRequest,
     output: ListProgramManagementAccountsResponse,
     errors: [
@@ -1053,21 +1053,35 @@ export const listProgramManagementAccounts =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists partner relationships based on specified criteria.
  */
-export const listRelationships = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRelationshipsRequest,
-  output: ListRelationshipsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listRelationships = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRelationshipsRequest,
+    output: ListRelationshipsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a new channel handshake request to establish a partnership with another AWS account.
  */
@@ -1105,8 +1119,8 @@ export const createRelationship = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists channel handshakes based on specified criteria.
  */
-export const listChannelHandshakes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listChannelHandshakes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListChannelHandshakesRequest,
     output: ListChannelHandshakesResponse,
     errors: [
@@ -1116,5 +1130,10 @@ export const listChannelHandshakes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "items",
+      pageSize: "maxResults",
+    } as const,
+  }));

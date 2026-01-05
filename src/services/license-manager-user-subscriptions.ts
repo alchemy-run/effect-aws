@@ -839,8 +839,8 @@ export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * List the Remote Desktop Services (RDS) License Server endpoints
  */
-export const listLicenseServerEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLicenseServerEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLicenseServerEndpointsRequest,
     output: ListLicenseServerEndpointsResponse,
     errors: [
@@ -851,13 +851,18 @@ export const listLicenseServerEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "LicenseServerEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the user-based subscription products available from an identity provider.
  */
-export const listProductSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listProductSubscriptions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListProductSubscriptionsRequest,
     output: ListProductSubscriptionsResponse,
     errors: [
@@ -869,8 +874,13 @@ export const listProductSubscriptions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ProductUserSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Registers an identity provider for user-based subscriptions.
  */
@@ -892,8 +902,8 @@ export const registerIdentityProvider = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists user associations for an identity provider.
  */
-export const listUserAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listUserAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListUserAssociationsRequest,
     output: ListUserAssociationsResponse,
     errors: [
@@ -905,8 +915,13 @@ export const listUserAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceUserSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Starts a product subscription for a user with the specified identity provider.
  *
@@ -982,8 +997,8 @@ export const disassociateUser = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the Active Directory identity providers for user-based subscriptions.
  */
-export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIdentityProviders =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIdentityProvidersRequest,
     output: ListIdentityProvidersResponse,
     errors: [
@@ -995,24 +1010,37 @@ export const listIdentityProviders = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IdentityProviderSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the EC2 instances providing user-based subscriptions.
  */
-export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListInstancesRequest,
-  output: ListInstancesResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ServiceQuotaExceededException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listInstances = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListInstancesRequest,
+    output: ListInstancesResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ServiceQuotaExceededException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "InstanceSummaries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a `LicenseServerEndpoint` resource.
  */

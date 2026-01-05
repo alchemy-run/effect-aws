@@ -906,8 +906,8 @@ export const initiateLayerUpload = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Describes repositories that are in a public registry.
  */
-export const describeRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeRepositories =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeRepositoriesRequest,
     output: DescribeRepositoriesResponse,
     errors: [
@@ -916,8 +916,13 @@ export const describeRepositories = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServerException,
       UnsupportedCommandException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "repositories",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List the tags for an Amazon ECR Public resource.
  */
@@ -1028,42 +1033,66 @@ export const deleteRepository = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * command shows the uncompressed image size. Therefore, it might return a larger image
  * size than the image sizes that are returned by DescribeImages.
  */
-export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImagesRequest,
-  output: DescribeImagesResponse,
-  errors: [
-    ImageNotFoundException,
-    InvalidParameterException,
-    RepositoryNotFoundException,
-    ServerException,
-    UnsupportedCommandException,
-  ],
-}));
+export const describeImages = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeImagesRequest,
+    output: DescribeImagesResponse,
+    errors: [
+      ImageNotFoundException,
+      InvalidParameterException,
+      RepositoryNotFoundException,
+      ServerException,
+      UnsupportedCommandException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageDetails",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the image tag details for a repository in a public registry.
  */
-export const describeImageTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeImageTagsRequest,
-  output: DescribeImageTagsResponse,
-  errors: [
-    InvalidParameterException,
-    RepositoryNotFoundException,
-    ServerException,
-    UnsupportedCommandException,
-  ],
-}));
+export const describeImageTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeImageTagsRequest,
+    output: DescribeImageTagsResponse,
+    errors: [
+      InvalidParameterException,
+      RepositoryNotFoundException,
+      ServerException,
+      UnsupportedCommandException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "imageTagDetails",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns details for a public registry.
  */
-export const describeRegistries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeRegistriesRequest,
-  output: DescribeRegistriesResponse,
-  errors: [
-    InvalidParameterException,
-    ServerException,
-    UnsupportedCommandException,
-  ],
-}));
+export const describeRegistries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeRegistriesRequest,
+    output: DescribeRegistriesResponse,
+    errors: [
+      InvalidParameterException,
+      ServerException,
+      UnsupportedCommandException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "registries",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes the repository policy that's associated with the specified repository.
  */

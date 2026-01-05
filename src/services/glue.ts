@@ -7869,24 +7869,38 @@ export const getColumnStatisticsTaskRun = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of connection definitions from the Data Catalog.
  */
-export const getConnections = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetConnectionsRequest,
-  output: GetConnectionsResponse,
-  errors: [
-    EntityNotFoundException,
-    GlueEncryptionException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getConnections = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetConnectionsRequest,
+    output: GetConnectionsResponse,
+    errors: [
+      EntityNotFoundException,
+      GlueEncryptionException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves metrics about specified crawlers.
  */
-export const getCrawlerMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCrawlerMetricsRequest,
-  output: GetCrawlerMetricsResponse,
-  errors: [OperationTimeoutException],
-}));
+export const getCrawlerMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCrawlerMetricsRequest,
+    output: GetCrawlerMetricsResponse,
+    errors: [OperationTimeoutException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve a statistic's predictions for a given Profile ID.
  */
@@ -7936,16 +7950,23 @@ export const getPlan = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * permission on the KMS key, the operation can't return the Data Catalog resource
  * policy.
  */
-export const getResourcePolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcePoliciesRequest,
-  output: GetResourcePoliciesResponse,
-  errors: [
-    GlueEncryptionException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getResourcePolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetResourcePoliciesRequest,
+    output: GetResourcePoliciesResponse,
+    errors: [
+      GlueEncryptionException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GetResourcePoliciesResponseList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Get the specified schema by its unique ID assigned when a version of the schema is created or registered. Schema versions in Deleted status will not be included in the results.
  */
@@ -8021,43 +8042,67 @@ export const getUserDefinedFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of registries that you have created, with minimal registry information. Registries in the `Deleting` status will not be included in the results. Empty results will be returned if there are no registries available.
  */
-export const listRegistries = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRegistriesInput,
-  output: ListRegistriesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidInputException,
-  ],
-}));
+export const listRegistries = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRegistriesInput,
+    output: ListRegistriesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidInputException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Registries",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of schemas with minimal details. Schemas in Deleting status will not be included in the results. Empty results will be returned if there are no schemas available.
  *
  * When the `RegistryId` is not provided, all the schemas across registries will be part of the API response.
  */
-export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemasInput,
-  output: ListSchemasResponse,
-  errors: [
-    AccessDeniedException,
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-  ],
-}));
+export const listSchemas = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemasInput,
+    output: ListSchemasResponse,
+    errors: [
+      AccessDeniedException,
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of schema versions that you have created, with minimal information. Schema versions in Deleted status will not be included in the results. Empty results will be returned if there are no schema versions available.
  */
-export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSchemaVersionsInput,
-  output: ListSchemaVersionsResponse,
-  errors: [
-    AccessDeniedException,
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-  ],
-}));
+export const listSchemaVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSchemaVersionsInput,
+    output: ListSchemaVersionsResponse,
+    errors: [
+      AccessDeniedException,
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Schemas",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Sets the security configuration for a specified catalog. After the configuration has been
  * set, the specified encryption is applied to every catalog write thereafter.
@@ -8077,15 +8122,22 @@ export const putDataCatalogEncryptionSettings =
  *
  * You can only get tables that you have access to based on the security policies defined in Lake Formation. You need at least a read-only access to the table for it to be returned. If you do not have access to all the columns in the table, these columns will not be searched against when returning the list of tables back to you. If you have access to the columns but not the data in the columns, those columns and the associated metadata for those columns will be included in the search.
  */
-export const searchTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchTablesRequest,
-  output: SearchTablesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const searchTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchTablesRequest,
+    output: SearchTablesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Once you have a ruleset definition (either recommended or your own), you call this operation to evaluate the ruleset against a data source (Glue table). The evaluation computes results which you can retrieve with the `GetDataQualityResult` API.
  */
@@ -8229,22 +8281,29 @@ export const getColumnStatisticsForTable = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Retrieves a list of strings that identify available versions of
  * a specified table.
  */
-export const getTableVersions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTableVersionsRequest,
-  output: GetTableVersionsResponse,
-  errors: [
-    EntityNotFoundException,
-    GlueEncryptionException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getTableVersions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTableVersionsRequest,
+    output: GetTableVersionsResponse,
+    errors: [
+      EntityNotFoundException,
+      GlueEncryptionException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves multiple function definitions from the Data Catalog.
  */
-export const getUserDefinedFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getUserDefinedFunctions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetUserDefinedFunctionsRequest,
     output: GetUserDefinedFunctionsResponse,
     errors: [
@@ -8254,8 +8313,12 @@ export const getUserDefinedFunctions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       OperationTimeoutException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Delete the partition column statistics of a column.
  *
@@ -8336,21 +8399,32 @@ export const updateUserDefinedFunction = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all classifier objects in the Data Catalog.
  */
-export const getClassifiers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetClassifiersRequest,
-  output: GetClassifiersResponse,
-  errors: [OperationTimeoutException],
-}));
+export const getClassifiers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetClassifiersRequest,
+    output: GetClassifiersResponse,
+    errors: [OperationTimeoutException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about all runs associated with the specified table.
  */
-export const getColumnStatisticsTaskRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getColumnStatisticsTaskRuns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetColumnStatisticsTaskRunsRequest,
     output: GetColumnStatisticsTaskRunsResponse,
     errors: [OperationTimeoutException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves metadata for a specified crawler.
  */
@@ -8363,19 +8437,31 @@ export const getCrawler = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves metadata for all crawlers defined in the customer
  * account.
  */
-export const getCrawlers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetCrawlersRequest,
-  output: GetCrawlersResponse,
-  errors: [OperationTimeoutException],
-}));
+export const getCrawlers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetCrawlersRequest,
+    output: GetCrawlersResponse,
+    errors: [OperationTimeoutException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * List all task runs for a particular account.
  */
 export const listColumnStatisticsTaskRuns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListColumnStatisticsTaskRunsRequest,
     output: ListColumnStatisticsTaskRunsResponse,
     errors: [OperationTimeoutException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the names of all crawler resources in this Amazon Web Services account, or the
@@ -8386,11 +8472,18 @@ export const listColumnStatisticsTaskRuns =
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listCrawlers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCrawlersRequest,
-  output: ListCrawlersResponse,
-  errors: [OperationTimeoutException],
-}));
+export const listCrawlers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCrawlersRequest,
+    output: ListCrawlersResponse,
+    errors: [OperationTimeoutException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a classifier from the Data Catalog.
  */
@@ -8496,16 +8589,23 @@ export const getBlueprint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves the details of blueprint runs for a specified blueprint.
  */
-export const getBlueprintRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetBlueprintRunsRequest,
-  output: GetBlueprintRunsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getBlueprintRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetBlueprintRunsRequest,
+    output: GetBlueprintRunsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the details of a custom pattern by specifying its name.
  */
@@ -8625,16 +8725,23 @@ export const getDevEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * and the public IP address field is not populated. When you create a non-VPC development
  * endpoint, Glue returns only a public IP address.
  */
-export const getDevEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDevEndpointsRequest,
-  output: GetDevEndpointsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getDevEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDevEndpointsRequest,
+    output: GetDevEndpointsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves an existing job definition.
  */
@@ -8653,7 +8760,7 @@ export const getJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * `GetJobRuns` returns the job runs in chronological order, with the newest jobs returned first.
  */
-export const getJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetJobRunsRequest,
   output: GetJobRunsResponse,
   errors: [
@@ -8662,11 +8769,17 @@ export const getJobRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidInputException,
     OperationTimeoutException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "JobRuns",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves all current job definitions.
  */
-export const getJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetJobsRequest,
   output: GetJobsResponse,
   errors: [
@@ -8675,6 +8788,12 @@ export const getJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidInputException,
     OperationTimeoutException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Jobs",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Describes the specified registry in detail.
@@ -8750,8 +8869,8 @@ export const getSchemaVersionsDiff = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of all security configurations.
  */
-export const getSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getSecurityConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSecurityConfigurationsRequest,
     output: GetSecurityConfigurationsResponse,
     errors: [
@@ -8760,8 +8879,13 @@ export const getSecurityConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       OperationTimeoutException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SecurityConfigurations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of tags associated with a resource.
  */
@@ -8791,16 +8915,24 @@ export const getTrigger = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Gets all the triggers associated with a job.
  */
-export const getTriggers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTriggersRequest,
-  output: GetTriggersResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getTriggers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTriggersRequest,
+    output: GetTriggersResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Triggers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves resource metadata for a workflow.
  */
@@ -8832,33 +8964,49 @@ export const getWorkflowRunProperties = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves metadata for all runs of a given workflow.
  */
-export const getWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetWorkflowRunsRequest,
-  output: GetWorkflowRunsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getWorkflowRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetWorkflowRunsRequest,
+    output: GetWorkflowRunsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Runs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the blueprint names in an account.
  */
-export const listBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBlueprintsRequest,
-  output: ListBlueprintsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listBlueprints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBlueprintsRequest,
+    output: ListBlueprintsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Blueprints",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the custom patterns that have been created.
  */
-export const listCustomEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listCustomEntityTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListCustomEntityTypesRequest,
     output: ListCustomEntityTypesResponse,
     errors: [
@@ -8866,8 +9014,12 @@ export const listCustomEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       OperationTimeoutException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the names of all `DevEndpoint` resources in this Amazon Web Services account, or the
  * resources with the specified tag. This operation allows you to see which resources are
@@ -8877,16 +9029,23 @@ export const listCustomEntityTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listDevEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDevEndpointsRequest,
-  output: ListDevEndpointsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listDevEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDevEndpointsRequest,
+    output: ListDevEndpointsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the names of all job resources in this Amazon Web Services account, or the resources with the specified tag. This operation allows you to see which resources are available in your account, and their names.
  *
@@ -8894,7 +9053,7 @@ export const listDevEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -8903,6 +9062,12 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidInputException,
     OperationTimeoutException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "JobNames",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves a sortable, filterable list of existing Glue machine learning transforms in this Amazon Web Services account,
@@ -8910,29 +9075,43 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * a filter of the responses so that tagged resources can be retrieved as a group. If you choose to use tag
  * filtering, only resources with the tags are retrieved.
  */
-export const listMLTransforms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMLTransformsRequest,
-  output: ListMLTransformsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listMLTransforms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMLTransformsRequest,
+    output: ListMLTransformsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieve a list of sessions.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the names of all trigger resources in this Amazon Web Services account, or the resources with the specified tag. This operation allows you to see which resources are available in your account, and their names.
  *
@@ -8940,28 +9119,44 @@ export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the response so that tagged resources can be retrieved as a group. If you choose to use tags
  * filtering, only resources with the tag are retrieved.
  */
-export const listTriggers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTriggersRequest,
-  output: ListTriggersResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listTriggers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTriggersRequest,
+    output: ListTriggersResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TriggerNames",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists names of workflows created in the account.
  */
-export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkflowsRequest,
-  output: ListWorkflowsResponse,
-  errors: [
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const listWorkflows = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkflowsRequest,
+    output: ListWorkflowsResponse,
+    errors: [
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Workflows",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Sets the Data Catalog resource policy for access control.
  */
@@ -9942,30 +10137,43 @@ export const getMLTaskRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation returns a list of historic runs and must be paginated.
  */
-export const getMLTaskRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMLTaskRunsRequest,
-  output: GetMLTaskRunsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getMLTaskRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMLTaskRunsRequest,
+    output: GetMLTaskRunsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the partition indexes associated with a table.
  */
-export const getPartitionIndexes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetPartitionIndexesRequest,
-  output: GetPartitionIndexesResponse,
-  errors: [
-    ConflictException,
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getPartitionIndexes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetPartitionIndexesRequest,
+    output: GetPartitionIndexesResponse,
+    errors: [
+      ConflictException,
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PartitionIndexDescriptorList",
+    } as const,
+  }));
 /**
  * Returns the configuration of all optimizers associated with a specified table.
  */
@@ -9996,11 +10204,18 @@ export const getWorkflowRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * The `ListConnectionTypes` API provides a discovery mechanism to learn available connection types in Glue. The response contains a list of connection types with high-level details of what is supported for each connection type. The connection types listed are the set of supported options for the `ConnectionType` value in the `CreateConnection` API.
  */
-export const listConnectionTypes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConnectionTypesRequest,
-  output: ListConnectionTypesResponse,
-  errors: [AccessDeniedException, InternalServiceException],
-}));
+export const listConnectionTypes =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListConnectionTypesRequest,
+    output: ListConnectionTypesResponse,
+    errors: [AccessDeniedException, InternalServiceException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ConnectionTypes",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns all the crawls of a specified crawler. Returns only the crawls that have occurred since the launch date of the crawler history feature, and only retains up to 12 months of crawls. Older crawls will not be returned.
  *
@@ -10026,8 +10241,8 @@ export const listCrawls = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns all data quality execution results for your account.
  */
-export const listDataQualityResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataQualityResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataQualityResultsRequest,
     output: ListDataQualityResultsResponse,
     errors: [
@@ -10035,13 +10250,17 @@ export const listDataQualityResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       OperationTimeoutException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the recommendation runs meeting the filter criteria.
  */
 export const listDataQualityRuleRecommendationRuns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataQualityRuleRecommendationRunsRequest,
     output: ListDataQualityRuleRecommendationRunsResponse,
     errors: [
@@ -10049,12 +10268,17 @@ export const listDataQualityRuleRecommendationRuns =
       InvalidInputException,
       OperationTimeoutException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists all the runs meeting the filter criteria, where a ruleset is evaluated against a data source.
  */
 export const listDataQualityRulesetEvaluationRuns =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataQualityRulesetEvaluationRunsRequest,
     output: ListDataQualityRulesetEvaluationRunsResponse,
     errors: [
@@ -10062,12 +10286,17 @@ export const listDataQualityRulesetEvaluationRuns =
       InvalidInputException,
       OperationTimeoutException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a paginated list of rulesets for the specified list of Glue tables.
  */
-export const listDataQualityRulesets = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataQualityRulesets =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataQualityRulesetsRequest,
     output: ListDataQualityRulesetsResponse,
     errors: [
@@ -10076,8 +10305,12 @@ export const listDataQualityRulesets = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidInputException,
       OperationTimeoutException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieve annotations for a data quality statistic.
  */
@@ -10121,16 +10354,24 @@ export const listIntegrationResourceProperties =
 /**
  * List all the Glue usage profiles.
  */
-export const listUsageProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListUsageProfilesRequest,
-  output: ListUsageProfilesResponse,
-  errors: [
-    InternalServiceException,
-    InvalidInputException,
-    OperationNotSupportedException,
-    OperationTimeoutException,
-  ],
-}));
+export const listUsageProfiles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListUsageProfilesRequest,
+    output: ListUsageProfilesResponse,
+    errors: [
+      InternalServiceException,
+      InvalidInputException,
+      OperationNotSupportedException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Profiles",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Puts the metadata key value pair for a specified schema version ID. A maximum of 10 key value pairs will be allowed per schema version. They can be added over one or more calls.
  */
@@ -10295,19 +10536,26 @@ export const getCatalogs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves all databases defined in a given Data Catalog.
  */
-export const getDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetDatabasesRequest,
-  output: GetDatabasesResponse,
-  errors: [
-    EntityNotFoundException,
-    FederationSourceException,
-    FederationSourceRetryableException,
-    GlueEncryptionException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetDatabasesRequest,
+    output: GetDatabasesResponse,
+    errors: [
+      EntityNotFoundException,
+      FederationSourceException,
+      FederationSourceRetryableException,
+      GlueEncryptionException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves information about a specified partition.
  */
@@ -10428,19 +10676,26 @@ export const getJobBookmark = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns the available entities supported by the connection type.
  */
-export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntitiesRequest,
-  output: ListEntitiesResponse,
-  errors: [
-    AccessDeniedException,
-    EntityNotFoundException,
-    FederationSourceException,
-    GlueEncryptionException,
-    InvalidInputException,
-    OperationTimeoutException,
-    ValidationException,
-  ],
-}));
+export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntitiesRequest,
+    output: ListEntitiesResponse,
+    errors: [
+      AccessDeniedException,
+      EntityNotFoundException,
+      FederationSourceException,
+      GlueEncryptionException,
+      InvalidInputException,
+      OperationTimeoutException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Entities",
+    } as const,
+  }),
+);
 /**
  * Updates a specified development endpoint.
  */
@@ -10500,19 +10755,26 @@ export const updateSourceControlFromJob = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * The response includes all the fields which make up the entity.
  */
-export const describeEntity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEntityRequest,
-  output: DescribeEntityResponse,
-  errors: [
-    AccessDeniedException,
-    EntityNotFoundException,
-    FederationSourceException,
-    GlueEncryptionException,
-    InvalidInputException,
-    OperationTimeoutException,
-    ValidationException,
-  ],
-}));
+export const describeEntity = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeEntityRequest,
+    output: DescribeEntityResponse,
+    errors: [
+      AccessDeniedException,
+      EntityNotFoundException,
+      FederationSourceException,
+      GlueEncryptionException,
+      InvalidInputException,
+      OperationTimeoutException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Fields",
+    } as const,
+  }),
+);
 /**
  * The API is used to retrieve a list of integrations.
  */
@@ -11446,16 +11708,23 @@ export const getMLTransform = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * These transformations are then saved by Glue, and you can retrieve their metadata by
  * calling `GetMLTransforms`.
  */
-export const getMLTransforms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMLTransformsRequest,
-  output: GetMLTransformsResponse,
-  errors: [
-    EntityNotFoundException,
-    InternalServiceException,
-    InvalidInputException,
-    OperationTimeoutException,
-  ],
-}));
+export const getMLTransforms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMLTransformsRequest,
+    output: GetMLTransformsResponse,
+    errors: [
+      EntityNotFoundException,
+      InternalServiceException,
+      InvalidInputException,
+      OperationTimeoutException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves the statement.
  */
@@ -11495,8 +11764,8 @@ export const getUnfilteredPartitionMetadata =
 /**
  * Lists the history of previous optimizer runs for a specific table.
  */
-export const listTableOptimizerRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listTableOptimizerRuns =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListTableOptimizerRunsRequest,
     output: ListTableOptimizerRunsResponse,
     errors: [
@@ -11507,8 +11776,13 @@ export const listTableOptimizerRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TableOptimizerRuns",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Queries for the schema version metadata information.
  */
@@ -11526,21 +11800,28 @@ export const querySchemaVersionMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves information about the partitions in a table.
  */
-export const getPartitions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetPartitionsRequest,
-  output: GetPartitionsResponse,
-  errors: [
-    EntityNotFoundException,
-    FederationSourceException,
-    FederationSourceRetryableException,
-    GlueEncryptionException,
-    InternalServiceException,
-    InvalidInputException,
-    InvalidStateException,
-    OperationTimeoutException,
-    ResourceNotReadyException,
-  ],
-}));
+export const getPartitions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetPartitionsRequest,
+    output: GetPartitionsResponse,
+    errors: [
+      EntityNotFoundException,
+      FederationSourceException,
+      FederationSourceRetryableException,
+      GlueEncryptionException,
+      InternalServiceException,
+      InvalidInputException,
+      InvalidStateException,
+      OperationTimeoutException,
+      ResourceNotReadyException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Modifies a Zero-ETL integration in the caller's account.
  */
@@ -11589,7 +11870,7 @@ export const getUnfilteredTableMetadata = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * For IAM authorization, the public IAM action associated with this API is `glue:GetPartitions`.
  */
 export const getUnfilteredPartitionsMetadata =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetUnfilteredPartitionsMetadataRequest,
     output: GetUnfilteredPartitionsMetadataResponse,
     errors: [
@@ -11602,6 +11883,11 @@ export const getUnfilteredPartitionsMetadata =
       OperationTimeoutException,
       PermissionTypeMismatchException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Returns a list of inbound integrations for the specified integration.
@@ -11739,7 +12025,7 @@ export const createTable = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the definitions of some or all of the tables in a given
  * `Database`.
  */
-export const getTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTablesRequest,
   output: GetTablesResponse,
   errors: [
@@ -11751,6 +12037,11 @@ export const getTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidInputException,
     OperationTimeoutException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Creates or updates partition statistics of columns.

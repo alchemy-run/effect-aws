@@ -543,18 +543,32 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Lists all data export definitions.
  */
-export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExportsRequest,
-  output: ListExportsResponse,
-  errors: [InternalServerException, ThrottlingException, ValidationException],
-}));
+export const listExports = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExportsRequest,
+    output: ListExportsResponse,
+    errors: [InternalServerException, ThrottlingException, ValidationException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Exports",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all available tables in data exports.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [InternalServerException, ThrottlingException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Tables",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Adds tags for an existing data export definition.
@@ -651,16 +665,24 @@ export const getExport = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists the historical executions for the export.
  */
-export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutionsRequest,
-  output: ListExecutionsResponse,
-  errors: [
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutionsRequest,
+    output: ListExecutionsResponse,
+    errors: [
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Executions",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the metadata for the specified table and table properties. This includes the list
  * of columns in the table schema, their data types, and column descriptions.

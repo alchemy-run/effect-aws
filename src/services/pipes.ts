@@ -1229,10 +1229,16 @@ export const deletePipe = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Get the pipes associated with this account. For more information about pipes, see Amazon EventBridge Pipes in the Amazon EventBridge User Guide.
  */
-export const listPipes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listPipes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPipesRequest,
   output: ListPipesResponse,
   errors: [InternalException, ThrottlingException, ValidationException],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Pipes",
+    pageSize: "Limit",
+  } as const,
 }));
 /**
  * Start an existing pipe.

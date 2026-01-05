@@ -942,7 +942,7 @@ export const describeAsset = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a collection of MediaPackage VOD Asset resources.
  */
-export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListAssetsRequest,
   output: ListAssetsResponse,
   errors: [
@@ -953,12 +953,18 @@ export const listAssets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     TooManyRequestsException,
     UnprocessableEntityException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Assets",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Returns a collection of MediaPackage VOD PackagingConfiguration resources.
  */
-export const listPackagingConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listPackagingConfigurations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListPackagingConfigurationsRequest,
     output: ListPackagingConfigurationsResponse,
     errors: [
@@ -969,23 +975,35 @@ export const listPackagingConfigurations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       TooManyRequestsException,
       UnprocessableEntityException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PackagingConfigurations",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a collection of MediaPackage VOD PackagingGroup resources.
  */
-export const listPackagingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPackagingGroupsRequest,
-  output: ListPackagingGroupsResponse,
-  errors: [
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    ServiceUnavailableException,
-    TooManyRequestsException,
-    UnprocessableEntityException,
-  ],
-}));
+export const listPackagingGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListPackagingGroupsRequest,
+    output: ListPackagingGroupsResponse,
+    errors: [
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      ServiceUnavailableException,
+      TooManyRequestsException,
+      UnprocessableEntityException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PackagingGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a description of a MediaPackage VOD PackagingConfiguration resource.
  */

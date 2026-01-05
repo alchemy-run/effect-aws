@@ -410,18 +410,26 @@ export class ThrottlingException extends S.TaggedError<ThrottlingException>()(
  * Offer File Definitions
  * in the Billing and Cost Management User Guide.
  */
-export const getAttributeValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAttributeValuesRequest,
-  output: GetAttributeValuesResponse,
-  errors: [
-    ExpiredNextTokenException,
-    InternalErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getAttributeValues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAttributeValuesRequest,
+    output: GetAttributeValuesResponse,
+    errors: [
+      ExpiredNextTokenException,
+      InternalErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AttributeValues",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * **This feature is in preview release and is subject to change. Your use of Amazon Web Services Price List API is subject to the Beta Service Participation terms of the Amazon Web Services Service Terms (Section 1.10).**
  *
@@ -433,35 +441,51 @@ export const getAttributeValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * specific Amazon Web Services Region. You can use the `PriceListArn` from the
  * response to get your preferred Price List files through the GetPriceListFileUrl API.
  */
-export const listPriceLists = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListPriceListsRequest,
-  output: ListPriceListsResponse,
-  errors: [
-    AccessDeniedException,
-    ExpiredNextTokenException,
-    InternalErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NotFoundException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listPriceLists = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListPriceListsRequest,
+    output: ListPriceListsResponse,
+    errors: [
+      AccessDeniedException,
+      ExpiredNextTokenException,
+      InternalErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NotFoundException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PriceLists",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all products that match the filter criteria.
  */
-export const getProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetProductsRequest,
-  output: GetProductsResponse,
-  errors: [
-    ExpiredNextTokenException,
-    InternalErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const getProducts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetProductsRequest,
+    output: GetProductsResponse,
+    errors: [
+      ExpiredNextTokenException,
+      InternalErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "PriceList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the metadata for one service or a list of the metadata for all services. Use
  * this without a service code to get the service codes for all services.
@@ -471,18 +495,26 @@ export const getProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `volumeType`, `maxIopsVolume`, `operation`,
  * `locationType`, and `instanceCapacity10xlarge`.
  */
-export const describeServices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeServicesRequest,
-  output: DescribeServicesResponse,
-  errors: [
-    ExpiredNextTokenException,
-    InternalErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    NotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const describeServices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeServicesRequest,
+    output: DescribeServicesResponse,
+    errors: [
+      ExpiredNextTokenException,
+      InternalErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      NotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Services",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * **This feature is in preview release and is subject to change. Your use of Amazon Web Services Price List API is subject to the Beta Service Participation terms of the Amazon Web Services Service Terms (Section 1.10).**
  *

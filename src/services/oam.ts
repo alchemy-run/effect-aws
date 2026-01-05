@@ -680,7 +680,7 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
  *
  * To find a list of links for one monitoring account sink, use ListAttachedLinks from within the monitoring account.
  */
-export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLinksInput,
   output: ListLinksOutput,
   errors: [
@@ -688,11 +688,17 @@ export const listLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidParameterException,
     ResourceNotFoundException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Items",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Use this operation in a monitoring account to return the list of sinks created in that account.
  */
-export const listSinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListSinksInput,
   output: ListSinksOutput,
   errors: [
@@ -700,6 +706,12 @@ export const listSinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     InvalidParameterException,
     ResourceNotFoundException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "Items",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Removes one or more tags from the specified resource.
@@ -761,16 +773,24 @@ export const deleteLink = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * To find a list of links for one source account, use ListLinks.
  */
-export const listAttachedLinks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAttachedLinksInput,
-  output: ListAttachedLinksOutput,
-  errors: [
-    InternalServiceFault,
-    InvalidParameterException,
-    MissingRequiredParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listAttachedLinks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAttachedLinksInput,
+    output: ListAttachedLinksOutput,
+    errors: [
+      InternalServiceFault,
+      InvalidParameterException,
+      MissingRequiredParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Items",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a sink. You must delete all links to a sink before you can delete that sink.
  */

@@ -867,11 +867,19 @@ export const resendOperationAuthorization =
  *
  * This command runs only in the us-east-1 Region.
  */
-export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListOperationsRequest,
-  output: ListOperationsResponse,
-  errors: [InvalidInput],
-}));
+export const listOperations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListOperationsRequest,
+    output: ListOperationsResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextPageMarker",
+      items: "Operations",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * This operation returns the authorization code for the domain. To transfer a domain to
  * another registrar, you provide this value to the new registrar.
@@ -886,11 +894,19 @@ export const retrieveDomainAuthCode = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns all the domain-related billing records for the current Amazon Web Services account for a specified period
  */
-export const viewBilling = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ViewBillingRequest,
-  output: ViewBillingResponse,
-  errors: [InvalidInput],
-}));
+export const viewBilling = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ViewBillingRequest,
+    output: ViewBillingResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextPageMarker",
+      items: "BillingRecords",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Transfers a domain from the current Amazon Web Services account to another Amazon Web Services account. Note the following:
  *
@@ -1374,11 +1390,19 @@ export const associateDelegationSignerToDomain =
  * This operation returns all the domain names registered with Amazon Route 53 for the
  * current Amazon Web Services account if no filtering conditions are used.
  */
-export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDomainsRequest,
-  output: ListDomainsResponse,
-  errors: [InvalidInput],
-}));
+export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDomainsRequest,
+    output: ListDomainsResponse,
+    errors: [InvalidInput],
+    pagination: {
+      inputToken: "Marker",
+      outputToken: "NextPageMarker",
+      items: "Domains",
+      pageSize: "MaxItems",
+    } as const,
+  }),
+);
 /**
  * Lists the following prices for either all the TLDs supported by Route 53, or
  * the specified TLD:
@@ -1393,10 +1417,16 @@ export const listDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - Domain restoration
  */
-export const listPrices = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listPrices = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListPricesRequest,
   output: ListPricesResponse,
   errors: [InvalidInput, UnsupportedTLD],
+  pagination: {
+    inputToken: "Marker",
+    outputToken: "NextPageMarker",
+    items: "Prices",
+    pageSize: "MaxItems",
+  } as const,
 }));
 /**
  * This operation registers a domain. For some top-level domains (TLDs), this operation

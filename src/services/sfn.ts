@@ -1486,19 +1486,35 @@ export const describeMapRun = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation is eventually consistent. The results are best effort and may not reflect very recent updates and changes.
  */
-export const listActivities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListActivitiesInput,
-  output: ListActivitiesOutput,
-  errors: [InvalidToken],
-}));
+export const listActivities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListActivitiesInput,
+    output: ListActivitiesOutput,
+    errors: [InvalidToken],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "activities",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all Map Runs that were started by a given state machine execution. Use this API action to obtain Map Run ARNs, and then call `DescribeMapRun` to obtain more information, if needed.
  */
-export const listMapRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMapRunsInput,
-  output: ListMapRunsOutput,
-  errors: [ExecutionDoesNotExist, InvalidArn, InvalidToken],
-}));
+export const listMapRuns = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMapRunsInput,
+    output: ListMapRunsOutput,
+    errors: [ExecutionDoesNotExist, InvalidArn, InvalidToken],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "mapRuns",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the existing state machines.
  *
@@ -1507,11 +1523,19 @@ export const listMapRuns = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This operation is eventually consistent. The results are best effort and may not reflect very recent updates and changes.
  */
-export const listStateMachines = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStateMachinesInput,
-  output: ListStateMachinesOutput,
-  errors: [InvalidToken],
-}));
+export const listStateMachines = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStateMachinesInput,
+    output: ListStateMachinesOutput,
+    errors: [InvalidToken],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "stateMachines",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Deletes a state machine. This is an asynchronous operation. It sets the state machine's
  * status to `DELETING` and begins the deletion process. A state machine is deleted only when all its executions are completed. On the next state transition, the state machine's executions are terminated.
@@ -1900,18 +1924,26 @@ export const sendTaskHeartbeat = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API action is not supported by `EXPRESS` state machines.
  */
-export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListExecutionsInput,
-  output: ListExecutionsOutput,
-  errors: [
-    InvalidArn,
-    InvalidToken,
-    ResourceNotFound,
-    StateMachineDoesNotExist,
-    StateMachineTypeNotSupported,
-    ValidationException,
-  ],
-}));
+export const listExecutions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListExecutionsInput,
+    output: ListExecutionsOutput,
+    errors: [
+      InvalidArn,
+      InvalidToken,
+      ResourceNotFound,
+      StateMachineDoesNotExist,
+      StateMachineTypeNotSupported,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "executions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Used by activity workers, Task states using the callback
  * pattern, and optionally Task states using the job run pattern to report that the task identified by the `taskToken` failed.
@@ -2203,18 +2235,25 @@ export const createActivity = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * This API action is not supported by `EXPRESS` state machines.
  */
-export const getExecutionHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetExecutionHistoryInput,
-  output: GetExecutionHistoryOutput,
-  errors: [
-    ExecutionDoesNotExist,
-    InvalidArn,
-    InvalidToken,
-    KmsAccessDeniedException,
-    KmsInvalidStateException,
-    KmsThrottlingException,
-  ],
-}));
+export const getExecutionHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: GetExecutionHistoryInput,
+    output: GetExecutionHistoryOutput,
+    errors: [
+      ExecutionDoesNotExist,
+      InvalidArn,
+      InvalidToken,
+      KmsAccessDeniedException,
+      KmsInvalidStateException,
+      KmsThrottlingException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "events",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Restarts unsuccessful executions of Standard workflows that didn't complete successfully in the last 14 days. These include failed, aborted, or timed out executions. When you redrive an execution, it continues the failed execution from the unsuccessful step and uses the same input. Step Functions preserves the results and execution history of the successful steps, and doesn't rerun these steps when you redrive an execution. Redriven executions use the same state machine definition and execution ARN as the original execution attempt.
  *

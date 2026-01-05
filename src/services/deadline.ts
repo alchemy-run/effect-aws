@@ -4273,16 +4273,22 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  * A list of the available metered products.
  */
 export const listAvailableMeteredProducts =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAvailableMeteredProductsRequest,
     output: ListAvailableMeteredProductsResponse,
     errors: [InternalServerErrorException, ThrottlingException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "meteredProducts",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Lists queue-fleet associations.
  */
-export const listQueueFleetAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQueueFleetAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQueueFleetAssociationsRequest,
     output: ListQueueFleetAssociationsResponse,
     errors: [
@@ -4291,13 +4297,18 @@ export const listQueueFleetAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "queueFleetAssociations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a list of the associations between queues and limits defined in a farm.
  */
-export const listQueueLimitAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQueueLimitAssociations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQueueLimitAssociationsRequest,
     output: ListQueueLimitAssociationsResponse,
     errors: [
@@ -4306,8 +4317,13 @@ export const listQueueLimitAssociations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ResourceNotFoundException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "queueLimitAssociations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Creates an Amazon Web Services Deadline Cloud monitor that you can use to view your farms, queues, and
  * fleets. After you submit a job, you can track the progress of the tasks and steps that make
@@ -4331,7 +4347,7 @@ export const createMonitor = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * 1 hour after you call the `StartSessionsStatisticsAggregation` operation.
  */
 export const getSessionsStatisticsAggregation =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetSessionsStatisticsAggregationRequest,
     output: GetSessionsStatisticsAggregationResponse,
     errors: [
@@ -4341,6 +4357,12 @@ export const getSessionsStatisticsAggregation =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "statistics",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Creates a budget to set spending thresholds for your rendering activity.
@@ -4561,21 +4583,29 @@ export const createStorageProfile = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the members of a farm.
  */
-export const listFarmMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFarmMembersRequest,
-  output: ListFarmMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFarmMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFarmMembersRequest,
+    output: ListFarmMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a list of limits defined in the specified farm.
  */
-export const listLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listLimits = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListLimitsRequest,
   output: ListLimitsResponse,
   errors: [
@@ -4585,21 +4615,34 @@ export const listLimits = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "limits",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists storage profiles.
  */
-export const listStorageProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStorageProfilesRequest,
-  output: ListStorageProfilesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listStorageProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListStorageProfilesRequest,
+    output: ListStorageProfilesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "storageProfiles",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Get a budget.
  */
@@ -4617,21 +4660,29 @@ export const getBudget = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * A list of budgets in a farm.
  */
-export const listBudgets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListBudgetsRequest,
-  output: ListBudgetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listBudgets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListBudgetsRequest,
+    output: ListBudgetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "budgets",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists fleets.
  */
-export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFleetsRequest,
   output: ListFleetsResponse,
   errors: [
@@ -4641,6 +4692,12 @@ export const listFleets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "fleets",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Get Amazon Web Services credentials from the fleet role. The IAM permissions of the credentials are
@@ -4662,36 +4719,52 @@ export const assumeFleetRoleForRead = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists fleet members.
  */
-export const listFleetMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFleetMembersRequest,
-  output: ListFleetMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFleetMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFleetMembersRequest,
+    output: ListFleetMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists workers.
  */
-export const listWorkers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListWorkersRequest,
-  output: ListWorkersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listWorkers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListWorkersRequest,
+    output: ListWorkersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "workers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists sessions for a worker.
  */
-export const listSessionsForWorker = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSessionsForWorker =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSessionsForWorkerRequest,
     output: ListSessionsForWorkerResponse,
     errors: [
@@ -4701,12 +4774,17 @@ export const listSessionsForWorker = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists queues.
  */
-export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListQueuesRequest,
   output: ListQueuesResponse,
   errors: [
@@ -4716,12 +4794,18 @@ export const listQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "queues",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists queue environments.
  */
-export const listQueueEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listQueueEnvironments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListQueueEnvironmentsRequest,
     output: ListQueueEnvironmentsResponse,
     errors: [
@@ -4731,22 +4815,35 @@ export const listQueueEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environments",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists the members in a queue.
  */
-export const listQueueMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListQueueMembersRequest,
-  output: ListQueueMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listQueueMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListQueueMembersRequest,
+    output: ListQueueMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Gets a Deadline Cloud job.
  */
@@ -4764,7 +4861,7 @@ export const getJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists jobs.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [
@@ -4774,6 +4871,12 @@ export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobs",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Copies a job template to an Amazon S3 bucket.
@@ -4792,50 +4895,74 @@ export const copyJobTemplate = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists members on a job.
  */
-export const listJobMembers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListJobMembersRequest,
-  output: ListJobMembersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listJobMembers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListJobMembersRequest,
+    output: ListJobMembersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "members",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists sessions.
  */
-export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionsRequest,
-  output: ListSessionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionsRequest,
+    output: ListSessionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists step consumers.
  */
-export const listStepConsumers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListStepConsumersRequest,
-  output: ListStepConsumersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listStepConsumers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListStepConsumersRequest,
+    output: ListStepConsumersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "consumers",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the dependencies for a step.
  */
-export const listStepDependencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStepDependencies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStepDependenciesRequest,
     output: ListStepDependenciesResponse,
     errors: [
@@ -4845,12 +4972,17 @@ export const listStepDependencies = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dependencies",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists steps for a job.
  */
-export const listSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listSteps = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListStepsRequest,
   output: ListStepsResponse,
   errors: [
@@ -4860,11 +4992,17 @@ export const listSteps = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "steps",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists tasks for a job.
  */
-export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTasksRequest,
   output: ListTasksResponse,
   errors: [
@@ -4874,12 +5012,18 @@ export const listTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "tasks",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Lists license endpoints.
  */
-export const listLicenseEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listLicenseEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListLicenseEndpointsRequest,
     output: ListLicenseEndpointsResponse,
     errors: [
@@ -4889,8 +5033,13 @@ export const listLicenseEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "licenseEndpoints",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Associates a limit with a particular queue. After the limit is associated, all workers
  * for jobs that specify the limit associated with the queue are subject to the limit. You
@@ -5458,8 +5607,8 @@ export const getStorageProfileForQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists storage profiles for a queue.
  */
-export const listStorageProfilesForQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listStorageProfilesForQueue =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListStorageProfilesForQueueRequest,
     output: ListStorageProfilesForQueueResponse,
     errors: [
@@ -5469,8 +5618,13 @@ export const listStorageProfilesForQueue = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "storageProfiles",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a session.
  */
@@ -5488,8 +5642,8 @@ export const getSession = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists parameter definitions of a job.
  */
-export const listJobParameterDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listJobParameterDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListJobParameterDefinitionsRequest,
     output: ListJobParameterDefinitionsResponse,
     errors: [
@@ -5499,8 +5653,13 @@ export const listJobParameterDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobParameterDefinitions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets a licence endpoint.
  */
@@ -5518,17 +5677,24 @@ export const getLicenseEndpoint = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists metered products.
  */
-export const listMeteredProducts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMeteredProductsRequest,
-  output: ListMeteredProductsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMeteredProducts =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMeteredProductsRequest,
+    output: ListMeteredProductsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "meteredProducts",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Gets information about the specified monitor.
  */
@@ -5838,7 +6004,7 @@ export const updateWorker = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists farms.
  */
-export const listFarms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listFarms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListFarmsRequest,
   output: ListFarmsResponse,
   errors: [
@@ -5847,20 +6013,34 @@ export const listFarms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     ThrottlingException,
     ValidationException,
   ],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "farms",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Gets a list of your monitors in Deadline Cloud.
  */
-export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMonitorsRequest,
-  output: ListMonitorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listMonitors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMonitorsRequest,
+    output: ListMonitorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "monitors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Removes a limit from the specified farm. Before you delete a limit you must use the
  * `DeleteQueueLimitAssociation` operation to remove the association with any
@@ -5925,17 +6105,25 @@ export const createQueueFleetAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists session actions.
  */
-export const listSessionActions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSessionActionsRequest,
-  output: ListSessionActionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listSessionActions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSessionActionsRequest,
+    output: ListSessionActionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "sessionActions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a license endpoint to integrate your various licensed software used for
  * rendering on Deadline Cloud.

@@ -1623,11 +1623,18 @@ export const deleteDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * the value you received for `NextToken` in the first call, to receive the next
  * 1000 results.
  */
-export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDashboardsInput,
-  output: ListDashboardsOutput,
-  errors: [InternalServiceFault, InvalidParameterValueException],
-}));
+export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDashboardsInput,
+    output: ListDashboardsOutput,
+    errors: [InternalServiceFault, InvalidParameterValueException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "DashboardEntries",
+    } as const,
+  }),
+);
 /**
  * List the specified metrics. You can use the returned metrics with GetMetricData or GetMetricStatistics to get statistical data.
  *
@@ -1644,11 +1651,14 @@ export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `ListMetrics` doesn't return information about metrics if those metrics
  * haven't reported data in the past two weeks. To retrieve those metrics, use GetMetricData or GetMetricStatistics.
  */
-export const listMetrics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMetricsInput,
-  output: ListMetricsOutput,
-  errors: [InternalServiceFault, InvalidParameterValueException],
-}));
+export const listMetrics = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMetricsInput,
+    output: ListMetricsOutput,
+    errors: [InternalServiceFault, InvalidParameterValueException],
+    pagination: { inputToken: "NextToken", outputToken: "NextToken" } as const,
+  }),
+);
 /**
  * Assigns one or more tags (key-value pairs) to the specified CloudWatch resource.
  * Currently, the only CloudWatch resources that can be tagged are alarms and Contributor
@@ -1893,13 +1903,18 @@ export const putManagedInsightRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * scoped to `*`. You can't return information about composite alarms if your
  * `cloudwatch:DescribeAlarmHistory` permission has a narrower scope.
  */
-export const describeAlarmHistory = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAlarmHistory =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAlarmHistoryInput,
     output: DescribeAlarmHistoryOutput,
     errors: [InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AlarmHistoryItems",
+      pageSize: "MaxRecords",
+    } as const,
+  }));
 /**
  * This operation returns the time series data collected by a Contributor Insights rule.
  * The data includes the identity and number of contributors to the log group.
@@ -2016,8 +2031,8 @@ export const getMetricStatistics = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns a list that contains the number of managed Contributor Insights rules in your
  * account.
  */
-export const listManagedInsightRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listManagedInsightRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListManagedInsightRulesInput,
     output: ListManagedInsightRulesOutput,
     errors: [
@@ -2025,8 +2040,12 @@ export const listManagedInsightRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterValueException,
       MissingRequiredParameterException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a dashboard if it does not already exist, or updates an existing dashboard.
  * If you update a dashboard, the entire contents are replaced with what you specify
@@ -2175,11 +2194,18 @@ export const putMetricStream = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `*`. You can't return information about composite alarms if your
  * `cloudwatch:DescribeAlarms` permission has a narrower scope.
  */
-export const describeAlarms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeAlarmsInput,
-  output: DescribeAlarmsOutput,
-  errors: [InvalidNextToken],
-}));
+export const describeAlarms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeAlarmsInput,
+    output: DescribeAlarmsOutput,
+    errors: [InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxRecords",
+    } as const,
+  }),
+);
 /**
  * Lists the anomaly detection models that you have created in your account. For single
  * metric anomaly detectors, you can list all of the models in your account or filter the
@@ -2188,8 +2214,8 @@ export const describeAlarms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * `METRIC_MATH` to the `AnomalyDetectorTypes` array. This will
  * return all metric math anomaly detectors in your account.
  */
-export const describeAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeAnomalyDetectors =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeAnomalyDetectorsInput,
     output: DescribeAnomalyDetectorsOutput,
     errors: [
@@ -2198,34 +2224,50 @@ export const describeAnomalyDetectors = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterCombinationException,
       InvalidParameterValueException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "AnomalyDetectors",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all the Contributor Insights rules in your account.
  *
  * For more information about Contributor Insights, see Using Contributor
  * Insights to Analyze High-Cardinality Data.
  */
-export const describeInsightRules = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeInsightRules =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeInsightRulesInput,
     output: DescribeInsightRulesOutput,
     errors: [InvalidNextToken],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of metric streams in this account.
  */
-export const listMetricStreams = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMetricStreamsInput,
-  output: ListMetricStreamsOutput,
-  errors: [
-    InternalServiceFault,
-    InvalidNextToken,
-    InvalidParameterValueException,
-    MissingRequiredParameterException,
-  ],
-}));
+export const listMetricStreams = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListMetricStreamsInput,
+    output: ListMetricStreamsOutput,
+    errors: [
+      InternalServiceFault,
+      InvalidNextToken,
+      InvalidParameterValueException,
+      MissingRequiredParameterException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns the information of the current alarm contributors that are in `ALARM` state. This operation returns details about the individual time series that contribute to the alarm's state.
  */
@@ -2302,8 +2344,15 @@ export const describeAlarmContributors = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * (TS[]), and can be used as input for a metric math expression that expects an array of
  * time series.
  */
-export const getMetricData = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetMetricDataInput,
-  output: GetMetricDataOutput,
-  errors: [InvalidNextToken],
-}));
+export const getMetricData = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetMetricDataInput,
+    output: GetMetricDataOutput,
+    errors: [InvalidNextToken],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      pageSize: "MaxDatapoints",
+    } as const,
+  }),
+);

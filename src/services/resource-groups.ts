@@ -920,8 +920,8 @@ export const createGroup = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Returns the status of the last grouping or ungrouping action for
  * each resource in the specified application group.
  */
-export const listGroupingStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listGroupingStatuses =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListGroupingStatusesInput,
     output: ListGroupingStatusesOutput,
     errors: [
@@ -931,8 +931,13 @@ export const listGroupingStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(
       MethodNotAllowedException,
       TooManyRequestsException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "GroupingStatuses",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Returns a list of existing Resource Groups in your account.
  *
@@ -942,7 +947,7 @@ export const listGroupingStatuses = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * - `resource-groups:ListGroups`
  */
-export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListGroupsInput,
   output: ListGroupsOutput,
   errors: [
@@ -952,6 +957,12 @@ export const listGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     MethodNotAllowedException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "NextToken",
+    outputToken: "NextToken",
+    items: "GroupIdentifiers",
+    pageSize: "MaxResults",
+  } as const,
 }));
 /**
  * Retrieves the current status of optional features in Resource Groups.
@@ -1312,19 +1323,27 @@ export const cancelTagSyncTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - `tag:GetResources`
  */
-export const listGroupResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroupResourcesInput,
-  output: ListGroupResourcesOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    MethodNotAllowedException,
-    NotFoundException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listGroupResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroupResourcesInput,
+    output: ListGroupResourcesOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      MethodNotAllowedException,
+      NotFoundException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceIdentifiers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of tag-sync tasks.
  *
@@ -1335,18 +1354,26 @@ export const listGroupResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * - `resource-groups:ListTagSyncTasks` with the group passed in the filters as the resource
  * or * if using no filters
  */
-export const listTagSyncTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagSyncTasksInput,
-  output: ListTagSyncTasksOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    MethodNotAllowedException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const listTagSyncTasks = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTagSyncTasksInput,
+    output: ListTagSyncTasksOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      MethodNotAllowedException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "TagSyncTasks",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of Amazon Web Services resource identifiers that matches the specified query. The
  * query uses the same format as a resource query in a CreateGroup or
@@ -1364,18 +1391,26 @@ export const listTagSyncTasks = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - `tag:GetResources`
  */
-export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchResourcesInput,
-  output: SearchResourcesOutput,
-  errors: [
-    BadRequestException,
-    ForbiddenException,
-    InternalServerErrorException,
-    MethodNotAllowedException,
-    TooManyRequestsException,
-    UnauthorizedException,
-  ],
-}));
+export const searchResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchResourcesInput,
+    output: SearchResourcesOutput,
+    errors: [
+      BadRequestException,
+      ForbiddenException,
+      InternalServerErrorException,
+      MethodNotAllowedException,
+      TooManyRequestsException,
+      UnauthorizedException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResourceIdentifiers",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about a specified tag-sync task.
  *

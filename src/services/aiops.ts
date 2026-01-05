@@ -574,8 +574,8 @@ export class ServiceQuotaExceededException extends S.TaggedError<ServiceQuotaExc
 /**
  * Returns the ARN and name of each investigation group in the account.
  */
-export const listInvestigationGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listInvestigationGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListInvestigationGroupsInput,
     output: ListInvestigationGroupsOutput,
     errors: [
@@ -583,8 +583,13 @@ export const listInvestigationGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InternalServerException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "investigationGroups",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Deletes the specified investigation group from your account. You can currently have one investigation group per Region in your account. After you delete an investigation group, you can later create a new investigation group in the same Region.
  */

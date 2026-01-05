@@ -1212,8 +1212,8 @@ export const getPortfolioPreferences = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Retrieves a list of all the application components (processes).
  */
-export const listApplicationComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listApplicationComponents =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListApplicationComponentsRequest,
     output: ListApplicationComponentsResponse,
     errors: [
@@ -1222,8 +1222,13 @@ export const listApplicationComponents = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ServiceLinkedRoleLockClientException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "applicationComponentInfos",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Stops the assessment of an on-premises environment.
  */
@@ -1327,21 +1332,29 @@ export const getServerStrategies = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the servers.
  */
-export const listServers = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServersRequest,
-  output: ListServersResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listServers = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServersRequest,
+    output: ListServersResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serverInfos",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of all the servers fetched from customer vCenter using Strategy Recommendation Collector.
  */
-export const listAnalyzableServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAnalyzableServers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAnalyzableServersRequest,
     output: ListAnalyzableServersResponse,
     errors: [
@@ -1350,21 +1363,34 @@ export const listAnalyzableServers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "analyzableServers",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Retrieves a list of all the imports performed.
  */
-export const listImportFileTask = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListImportFileTaskRequest,
-  output: ListImportFileTaskResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listImportFileTask = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListImportFileTaskRequest,
+    output: ListImportFileTaskResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "taskInfos",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts generating a recommendation report.
  */
@@ -1396,30 +1422,46 @@ export const updateServerConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Retrieves detailed information about a specified server.
  */
-export const getServerDetails = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetServerDetailsRequest,
-  output: GetServerDetailsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getServerDetails = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetServerDetailsRequest,
+    output: GetServerDetailsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "associatedApplications",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves a list of all the installed collectors.
  */
-export const listCollectors = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListCollectorsRequest,
-  output: ListCollectorsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listCollectors = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListCollectorsRequest,
+    output: ListCollectorsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "Collectors",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Retrieves details about an application component.
  */

@@ -1176,16 +1176,24 @@ export const describeChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * You can describe a change during the 60-day request history retention period for API
  * calls.
  */
-export const listChangeSets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListChangeSetsRequest,
-  output: ListChangeSetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listChangeSets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListChangeSetsRequest,
+    output: ListChangeSetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ChangeSetSummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Used to cancel an open change request. Must be sent before the status of the request
  * changes to `APPLYING`, the final stage of completing your change request. You
@@ -1327,14 +1335,22 @@ export const startChangeSet = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Provides the list of entities of a given type.
  */
-export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEntitiesRequest,
-  output: ListEntitiesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listEntities = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEntitiesRequest,
+    output: ListEntitiesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "EntitySummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);

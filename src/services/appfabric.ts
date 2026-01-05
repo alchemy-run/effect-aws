@@ -1069,16 +1069,24 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
 /**
  * Returns a list of app bundles.
  */
-export const listAppBundles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListAppBundlesRequest,
-  output: ListAppBundlesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listAppBundles = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListAppBundlesRequest,
+    output: ListAppBundlesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "appBundleSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns information about an app authorization.
  */
@@ -1112,8 +1120,8 @@ export const getIngestionDestination = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Returns a list of all app authorizations configured for an app bundle.
  */
-export const listAppAuthorizations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listAppAuthorizations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListAppAuthorizationsRequest,
     output: ListAppAuthorizationsResponse,
     errors: [
@@ -1123,13 +1131,18 @@ export const listAppAuthorizations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "appAuthorizationSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all ingestion destinations configured for an ingestion.
  */
-export const listIngestionDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listIngestionDestinations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListIngestionDestinationsRequest,
     output: ListIngestionDestinationsResponse,
     errors: [
@@ -1139,22 +1152,35 @@ export const listIngestionDestinations = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ingestionDestinations",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of all ingestions configured for an app bundle.
  */
-export const listIngestions = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListIngestionsRequest,
-  output: ListIngestionsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listIngestions = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListIngestionsRequest,
+    output: ListIngestionsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ingestions",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Starts the tasks to search user access status for a specific email address.
  *

@@ -2166,11 +2166,23 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of kdb environments created in an account.
  */
-export const listKxEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxEnvironmentsRequest,
-  output: ListKxEnvironmentsResponse,
-  errors: [AccessDeniedException, InternalServerException, ValidationException],
-}));
+export const listKxEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKxEnvironmentsRequest,
+    output: ListKxEnvironmentsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "environments",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Update your FinSpace environment.
  */
@@ -2204,18 +2216,25 @@ export const updateKxDataview = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Lists all the nodes in a kdb cluster.
  */
-export const listKxClusterNodes = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxClusterNodesRequest,
-  output: ListKxClusterNodesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKxClusterNodes = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKxClusterNodesRequest,
+    output: ListKxClusterNodesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of clusters.
  */
@@ -2235,19 +2254,25 @@ export const listKxClusters = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of scaling groups in a kdb environment.
  */
-export const listKxScalingGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxScalingGroupsRequest,
-  output: ListKxScalingGroupsResponse,
-  errors: [
-    AccessDeniedException,
-    ConflictException,
-    InternalServerException,
-    LimitExceededException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKxScalingGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListKxScalingGroupsRequest,
+    output: ListKxScalingGroupsResponse,
+    errors: [
+      AccessDeniedException,
+      ConflictException,
+      InternalServerException,
+      LimitExceededException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Lists all the volumes in a kdb environment.
  */
@@ -2728,45 +2753,66 @@ export const getKxDataview = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all the changesets for a database.
  */
-export const listKxChangesets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxChangesetsRequest,
-  output: ListKxChangesetsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKxChangesets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKxChangesetsRequest,
+    output: ListKxChangesetsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all the databases in the kdb environment.
  */
-export const listKxDatabases = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxDatabasesRequest,
-  output: ListKxDatabasesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKxDatabases = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKxDatabasesRequest,
+    output: ListKxDatabasesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of all the dataviews in the database.
  */
-export const listKxDataviews = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListKxDataviewsRequest,
-  output: ListKxDataviewsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listKxDataviews = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListKxDataviewsRequest,
+    output: ListKxDataviewsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the users in a kdb environment.
  */

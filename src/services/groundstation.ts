@@ -1522,20 +1522,28 @@ export const deleteEphemeris = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of `Config` objects.
  */
-export const listConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListConfigsRequest,
-  output: ListConfigsResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listConfigs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListConfigsRequest,
+    output: ListConfigsResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "configList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of `DataflowEndpoint` groups.
  */
-export const listDataflowEndpointGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listDataflowEndpointGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListDataflowEndpointGroupsRequest,
     output: ListDataflowEndpointGroupsResponse,
     errors: [
@@ -1543,44 +1551,72 @@ export const listDataflowEndpointGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ResourceNotFoundException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dataflowEndpointGroupList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * List your existing ephemerides.
  */
-export const listEphemerides = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListEphemeridesRequest,
-  output: ListEphemeridesResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listEphemerides = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListEphemeridesRequest,
+    output: ListEphemeridesResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "ephemerides",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of ground stations.
  */
-export const listGroundStations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListGroundStationsRequest,
-  output: ListGroundStationsResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listGroundStations = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListGroundStationsRequest,
+    output: ListGroundStationsResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "groundStationList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Returns a list of mission profiles.
  */
-export const listMissionProfiles = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListMissionProfilesRequest,
-  output: ListMissionProfilesResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listMissionProfiles =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListMissionProfilesRequest,
+    output: ListMissionProfilesResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "missionProfileList",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a satellite.
  */
@@ -1596,15 +1632,23 @@ export const getSatellite = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of satellites.
  */
-export const listSatellites = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSatellitesRequest,
-  output: ListSatellitesResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listSatellites = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSatellitesRequest,
+    output: ListSatellitesResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "satellites",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * For use by AWS Ground Station Agent and shouldn't be called directly.
  *
@@ -1841,15 +1885,23 @@ export const reserveContact = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * If `statusList` contains AVAILABLE, the request must include `groundStation`, `missionprofileArn`, and `satelliteArn`.
  */
-export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListContactsRequest,
-  output: ListContactsResponse,
-  errors: [
-    DependencyException,
-    InvalidParameterException,
-    ResourceNotFoundException,
-  ],
-}));
+export const listContacts = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListContactsRequest,
+    output: ListContactsResponse,
+    errors: [
+      DependencyException,
+      InvalidParameterException,
+      ResourceNotFoundException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "contactList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Creates a `DataflowEndpointGroupV2` containing the specified list of `DataflowEndpoint` objects.
  *

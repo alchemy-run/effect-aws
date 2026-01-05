@@ -665,16 +665,23 @@ export class ValidationException extends S.TaggedError<ValidationException>()(
  *
  * To filter by `EndTime`, you can use either `BeforeEndTime` or `AfterEndTime`. Only `EndTime` is supported for sorting.
  */
-export const searchAgreements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: SearchAgreementsInput,
-  output: SearchAgreementsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const searchAgreements = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: SearchAgreementsInput,
+    output: SearchAgreementsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Obtains details about the terms in an agreement that you participated in as proposer or acceptor.
  *
@@ -688,17 +695,24 @@ export const searchAgreements = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * - `Configuration` – The buyer/acceptor's selection at the time of agreement creation, such as the number of units purchased for a dimension or setting the `EnableAutoRenew` flag.
  */
-export const getAgreementTerms = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetAgreementTermsInput,
-  output: GetAgreementTermsOutput,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const getAgreementTerms = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetAgreementTermsInput,
+    output: GetAgreementTermsOutput,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Provides details about an agreement, such as the proposer, acceptor, start date, and end date.
  */

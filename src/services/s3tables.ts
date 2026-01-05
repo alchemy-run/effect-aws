@@ -1737,19 +1737,27 @@ export const putTableMaintenanceConfiguration =
  *
  * You must have the `s3tables:ListTableBuckets` permission to use this operation.
  */
-export const listTableBuckets = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTableBucketsRequest,
-  output: ListTableBucketsResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listTableBuckets = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListTableBucketsRequest,
+    output: ListTableBucketsResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "continuationToken",
+      outputToken: "continuationToken",
+      items: "tableBuckets",
+      pageSize: "maxBuckets",
+    } as const,
+  }),
+);
 /**
  * Gets details about the maintenance configuration of a table. For more information, see S3 Tables maintenance in the *Amazon Simple Storage Service User Guide*.
  *
@@ -1779,7 +1787,7 @@ export const getTableMaintenanceConfiguration =
  *
  * You must have the `s3tables:ListTables` permission to use this operation.
  */
-export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListTablesRequest,
   output: ListTablesResponse,
   errors: [
@@ -1790,6 +1798,12 @@ export const listTables = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     NotFoundException,
     TooManyRequestsException,
   ],
+  pagination: {
+    inputToken: "continuationToken",
+    outputToken: "continuationToken",
+    items: "tables",
+    pageSize: "maxTables",
+  } as const,
 }));
 /**
  * Creates a namespace. A namespace is a logical grouping of tables within your table bucket, which you can use to organize tables. For more information, see Create a namespace in the *Amazon Simple Storage Service User Guide*.
@@ -2429,19 +2443,27 @@ export const untagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * You must have the `s3tables:ListNamespaces` permission to use this operation.
  */
-export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListNamespacesRequest,
-  output: ListNamespacesResponse,
-  errors: [
-    AccessDeniedException,
-    BadRequestException,
-    ConflictException,
-    ForbiddenException,
-    InternalServerErrorException,
-    NotFoundException,
-    TooManyRequestsException,
-  ],
-}));
+export const listNamespaces = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListNamespacesRequest,
+    output: ListNamespacesResponse,
+    errors: [
+      AccessDeniedException,
+      BadRequestException,
+      ConflictException,
+      ForbiddenException,
+      InternalServerErrorException,
+      NotFoundException,
+      TooManyRequestsException,
+    ],
+    pagination: {
+      inputToken: "continuationToken",
+      outputToken: "continuationToken",
+      items: "namespaces",
+      pageSize: "maxNamespaces",
+    } as const,
+  }),
+);
 /**
  * Creates a table bucket. For more information, see Creating a table bucket in the *Amazon Simple Storage Service User Guide*.
  *

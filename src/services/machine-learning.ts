@@ -914,37 +914,64 @@ export class PredictorNotMountedException extends S.TaggedError<PredictorNotMoun
 /**
  * Returns a list of `BatchPrediction` operations that match the search criteria in the request.
  */
-export const describeBatchPredictions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeBatchPredictions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeBatchPredictionsInput,
     output: DescribeBatchPredictionsOutput,
     errors: [InternalServerException, InvalidInputException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a list of `DataSource` that match the search criteria in the request.
  */
-export const describeDataSources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeDataSourcesInput,
-  output: DescribeDataSourcesOutput,
-  errors: [InternalServerException, InvalidInputException],
-}));
+export const describeDataSources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeDataSourcesInput,
+    output: DescribeDataSourcesOutput,
+    errors: [InternalServerException, InvalidInputException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a list of `DescribeEvaluations` that match the search criteria in the request.
  */
-export const describeEvaluations = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeEvaluationsInput,
-  output: DescribeEvaluationsOutput,
-  errors: [InternalServerException, InvalidInputException],
-}));
+export const describeEvaluations =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: DescribeEvaluationsInput,
+    output: DescribeEvaluationsOutput,
+    errors: [InternalServerException, InvalidInputException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
+  }));
 /**
  * Returns a list of `MLModel` that match the search criteria in the request.
  */
-export const describeMLModels = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeMLModelsInput,
-  output: DescribeMLModelsOutput,
-  errors: [InternalServerException, InvalidInputException],
-}));
+export const describeMLModels = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeMLModelsInput,
+    output: DescribeMLModelsOutput,
+    errors: [InternalServerException, InvalidInputException],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "Limit",
+    } as const,
+  }),
+);
 /**
  * Creates a new `Evaluation` of an `MLModel`. An `MLModel` is evaluated on a set of observations associated to a `DataSource`. Like a `DataSource`
  * for an `MLModel`, the `DataSource` for an `Evaluation` contains values for the `Target Variable`. The `Evaluation` compares the predicted result for each observation to the actual outcome and provides a

@@ -1606,7 +1606,7 @@ export const getResolverRuleAssociation = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Gets the IP addresses for a specified Resolver endpoint.
  */
 export const listResolverEndpointIpAddresses =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverEndpointIpAddressesRequest,
     output: ListResolverEndpointIpAddressesResponse,
     errors: [
@@ -1616,6 +1616,12 @@ export const listResolverEndpointIpAddresses =
       ResourceNotFoundException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "IpAddresses",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Deletes the specified domain list.
@@ -1773,7 +1779,7 @@ export const getResolverQueryLogConfigPolicy =
  * Lists information about associations between Amazon VPCs and query logging configurations.
  */
 export const listResolverQueryLogConfigAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverQueryLogConfigAssociationsRequest,
     output: ListResolverQueryLogConfigAssociationsResponse,
     errors: [
@@ -1784,6 +1790,12 @@ export const listResolverQueryLogConfigAssociations =
       LimitExceededException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverQueryLogConfigAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Updates an existing DNSSEC validation configuration. If there is no existing DNSSEC validation configuration, one is created.
@@ -1805,8 +1817,8 @@ export const updateResolverDnssecConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists all the Resolver endpoints that were created using the current Amazon Web Services account.
  */
-export const listResolverEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResolverEndpoints =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverEndpointsRequest,
     output: ListResolverEndpointsResponse,
     errors: [
@@ -1816,8 +1828,13 @@ export const listResolverEndpoints = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverEndpoints",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Removes one or more tags from a specified resource.
  */
@@ -1875,7 +1892,7 @@ export const getResolverDnssecConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * Lists the associations that were created between Resolver rules and VPCs using the current Amazon Web Services account.
  */
 export const listResolverRuleAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverRuleAssociationsRequest,
     output: ListResolverRuleAssociationsResponse,
     errors: [
@@ -1885,41 +1902,62 @@ export const listResolverRuleAssociations =
       InvalidRequestException,
       ThrottlingException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverRuleAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Lists the Resolver rules that were created using the current Amazon Web Services account.
  */
-export const listResolverRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResolverRulesRequest,
-  output: ListResolverRulesResponse,
-  errors: [
-    InternalServiceErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ThrottlingException,
-  ],
-}));
+export const listResolverRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListResolverRulesRequest,
+    output: ListResolverRulesResponse,
+    errors: [
+      InternalServiceErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists the tags that you associated with the specified resource.
  */
-export const listTagsForResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListTagsForResourceRequest,
-  output: ListTagsForResourceResponse,
-  errors: [
-    InternalServiceErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ResourceNotFoundException,
-    ThrottlingException,
-  ],
-}));
+export const listTagsForResource =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListTagsForResourceRequest,
+    output: ListTagsForResourceResponse,
+    errors: [
+      InternalServiceErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ResourceNotFoundException,
+      ThrottlingException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Tags",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists the configurations for DNSSEC validation that are associated with the current Amazon Web Services account.
  */
-export const listResolverDnssecConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResolverDnssecConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverDnssecConfigsRequest,
     output: ListResolverDnssecConfigsResponse,
     errors: [
@@ -1930,14 +1968,19 @@ export const listResolverDnssecConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverDnssecConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Lists information about the specified query logging configurations. Each configuration defines where you want Resolver to save
  * DNS query logs and specifies the VPCs that you want to log queries for.
  */
-export const listResolverQueryLogConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listResolverQueryLogConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListResolverQueryLogConfigsRequest,
     output: ListResolverQueryLogConfigsResponse,
     errors: [
@@ -1948,8 +1991,13 @@ export const listResolverQueryLogConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidRequestException,
       ThrottlingException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverQueryLogConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Specifies an Amazon Web Services rule that you want to share with another account, the account that you want to share the rule with,
  * and the operations that you want the account to be able to perform on the rule.
@@ -1972,8 +2020,8 @@ export const putResolverRulePolicy = /*@__PURE__*/ /*#__PURE__*/ API.make(
  *
  * A single call to this list operation might return only a partial list of the domain lists. For information, see `MaxResults`.
  */
-export const listFirewallDomainLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFirewallDomainLists =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFirewallDomainListsRequest,
     output: ListFirewallDomainListsResponse,
     errors: [
@@ -1982,8 +2030,13 @@ export const listFirewallDomainLists = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallDomainLists",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Adds one or more tags to a specified resource.
  */
@@ -2231,38 +2284,53 @@ export const getOutpostResolver = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * A single call might return only a partial list of the domains. For information, see `MaxResults`.
  */
-export const listFirewallDomains = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallDomainsRequest,
-  output: ListFirewallDomainsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFirewallDomains =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFirewallDomainsRequest,
+    output: ListFirewallDomainsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Domains",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the firewall rules that you have defined for the specified firewall rule group. DNS Firewall uses the rules in a rule group to filter DNS network traffic for a VPC.
  *
  * A single call might return only a partial list of the rules. For information, see `MaxResults`.
  */
-export const listFirewallRules = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallRulesRequest,
-  output: ListFirewallRulesResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    ResourceNotFoundException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFirewallRules = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListFirewallRulesRequest,
+    output: ListFirewallRulesResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      ResourceNotFoundException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallRules",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Lists all the Resolvers on Outposts that were created using the current Amazon Web Services account.
  */
-export const listOutpostResolvers = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listOutpostResolvers =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListOutpostResolversRequest,
     output: ListOutpostResolversResponse,
     errors: [
@@ -2272,8 +2340,13 @@ export const listOutpostResolvers = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "OutpostResolvers",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Attaches an Identity and Access Management (Amazon Web Services IAM) policy for sharing the rule
  * group. You can use the policy to share the rule group using Resource Access Manager
@@ -2330,8 +2403,8 @@ export const getResolverConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * A single call might return only a partial list of the rule groups. For information, see `MaxResults`.
  */
-export const listFirewallRuleGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listFirewallRuleGroups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFirewallRuleGroupsRequest,
     output: ListFirewallRuleGroupsResponse,
     errors: [
@@ -2340,30 +2413,42 @@ export const listFirewallRuleGroups = /*@__PURE__*/ /*#__PURE__*/ API.make(
       ThrottlingException,
       ValidationException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallRuleGroups",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the firewall configurations that you have defined. DNS Firewall uses the configurations to manage firewall behavior for your VPCs.
  *
  * A single call might return only a partial list of the configurations. For information, see `MaxResults`.
  */
-export const listFirewallConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListFirewallConfigsRequest,
-  output: ListFirewallConfigsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listFirewallConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListFirewallConfigsRequest,
+    output: ListFirewallConfigsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Retrieves the firewall rule group associations that you have defined. Each association enables DNS filtering for a VPC with one rule group.
  *
  * A single call might return only a partial list of the associations. For information, see `MaxResults`.
  */
 export const listFirewallRuleGroupAssociations =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListFirewallRuleGroupAssociationsRequest,
     output: ListFirewallRuleGroupAssociationsResponse,
     errors: [
@@ -2372,6 +2457,12 @@ export const listFirewallRuleGroupAssociations =
       ThrottlingException,
       ValidationException,
     ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "FirewallRuleGroupAssociations",
+      pageSize: "MaxResults",
+    } as const,
   }));
 /**
  * Retrieves the configuration of the firewall behavior provided by DNS Firewall for a
@@ -2392,19 +2483,26 @@ export const getFirewallConfig = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * Retrieves the Resolver configurations that you have defined.
  * Route 53 Resolver uses the configurations to manage DNS resolution behavior for your VPCs.
  */
-export const listResolverConfigs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListResolverConfigsRequest,
-  output: ListResolverConfigsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServiceErrorException,
-    InvalidNextTokenException,
-    InvalidParameterException,
-    InvalidRequestException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listResolverConfigs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
+    input: ListResolverConfigsRequest,
+    output: ListResolverConfigsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServiceErrorException,
+      InvalidNextTokenException,
+      InvalidParameterException,
+      InvalidRequestException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ResolverConfigs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Creates a single DNS Firewall rule in the specified rule group, using the specified domain list.
  */

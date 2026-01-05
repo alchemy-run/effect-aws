@@ -23,12 +23,43 @@ import { test } from "../test.ts";
 // LocalStack community edition has limited API Gateway v2 support
 const isLocalStack = process.env.LOCAL === "true" || process.env.LOCAL === "1";
 
+// ============================================================================
+// Cleanup Helpers
+// ============================================================================
+
+// Find and delete any existing API with the given name
+// API Gateway v2 names are NOT unique, so we need to clean up duplicates
+const deleteExistingApiByName = (name: string) =>
+  Effect.gen(function* () {
+    // First collect all matching APIs (pagination completes before deletions)
+    const toDelete: string[] = [];
+    let nextToken: string | undefined;
+
+    do {
+      const response = yield* getApis({ NextToken: nextToken });
+      for (const api of response.Items ?? []) {
+        if (api.Name === name && api.ApiId) {
+          toDelete.push(api.ApiId);
+        }
+      }
+      nextToken = response.NextToken;
+    } while (nextToken);
+
+    // Then delete them
+    for (const id of toDelete) {
+      yield* deleteApi({ ApiId: id }).pipe(Effect.ignore);
+    }
+  });
+
 // Helper to ensure cleanup happens even on failure
 const withWebSocketApi = <A, E, R>(
   apiName: string,
   testFn: (apiId: string) => Effect.Effect<A, E, R>,
 ) =>
   Effect.gen(function* () {
+    // Clean up any existing API with the same name from failed test runs
+    yield* deleteExistingApiByName(apiName);
+
     const api = yield* createApi({
       Name: apiName,
       ProtocolType: "WEBSOCKET",

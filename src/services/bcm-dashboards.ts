@@ -405,16 +405,24 @@ export const deleteDashboard = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of all dashboards in your account.
  */
-export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListDashboardsRequest,
-  output: ListDashboardsResponse,
-  errors: [
-    AccessDeniedException,
-    InternalServerException,
-    ThrottlingException,
-    ValidationException,
-  ],
-}));
+export const listDashboards = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListDashboardsRequest,
+    output: ListDashboardsResponse,
+    errors: [
+      AccessDeniedException,
+      InternalServerException,
+      ThrottlingException,
+      ValidationException,
+    ],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "dashboards",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Adds or updates tags for a specified dashboard resource.
  */

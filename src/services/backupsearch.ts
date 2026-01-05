@@ -583,13 +583,18 @@ export const tagResource = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  *
  * Only recovery points with a backup index that has a status of `ACTIVE` will be included in search results. If the index has any other status, its status will be displayed along with a status message.
  */
-export const listSearchJobBackups = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSearchJobBackups =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSearchJobBackupsInput,
     output: ListSearchJobBackupsOutput,
     errors: [ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation retrieves metadata of a search job, including its progress.
  */
@@ -601,31 +606,49 @@ export const getSearchJob = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * This operation returns a list of search jobs belonging to an account.
  */
-export const listSearchJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListSearchJobsInput,
-  output: ListSearchJobsOutput,
-  errors: [],
-}));
+export const listSearchJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListSearchJobsInput,
+    output: ListSearchJobsOutput,
+    errors: [],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "SearchJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * This operation returns a list of a specified search job.
  */
-export const listSearchJobResults = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSearchJobResults =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSearchJobResultsInput,
     output: ListSearchJobResultsOutput,
     errors: [ResourceNotFoundException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "Results",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operation exports search results of a search job to a specified destination S3 bucket.
  */
-export const listSearchResultExportJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSearchResultExportJobs =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSearchResultExportJobsInput,
     output: ListSearchResultExportJobsOutput,
     errors: [ResourceNotFoundException, ServiceQuotaExceededException],
-  }),
-);
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "ExportJobs",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * This operations starts a job to export the results of search job to a designated S3 bucket.
  */

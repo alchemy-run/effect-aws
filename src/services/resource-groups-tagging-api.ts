@@ -532,16 +532,24 @@ export const describeReportCreation = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Lists the required tags for supported resource types in an Amazon Web Services account.
  */
-export const listRequiredTags = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListRequiredTagsInput,
-  output: ListRequiredTagsOutput,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    PaginationTokenExpiredException,
-    ThrottledException,
-  ],
-}));
+export const listRequiredTags = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListRequiredTagsInput,
+    output: ListRequiredTagsOutput,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      PaginationTokenExpiredException,
+      ThrottledException,
+    ],
+    pagination: {
+      inputToken: "NextToken",
+      outputToken: "NextToken",
+      items: "RequiredTags",
+      pageSize: "MaxResults",
+    } as const,
+  }),
+);
 /**
  * Removes the specified tags from the specified resources. When you specify a tag key,
  * the action removes both that key and its associated value. The operation succeeds even
@@ -600,8 +608,8 @@ export const untagResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getComplianceSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const getComplianceSummary =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: GetComplianceSummaryInput,
     output: GetComplianceSummaryOutput,
     errors: [
@@ -610,8 +618,13 @@ export const getComplianceSummary = /*@__PURE__*/ /*#__PURE__*/ API.make(
       InvalidParameterException,
       ThrottledException,
     ],
-  }),
-);
+    pagination: {
+      inputToken: "PaginationToken",
+      outputToken: "PaginationToken",
+      items: "SummaryList",
+      pageSize: "MaxResults",
+    } as const,
+  }));
 /**
  * Applies one or more tags to the specified resources. Note the following:
  *
@@ -718,7 +731,7 @@ export const startReportCreation = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getTagKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const getTagKeys = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: GetTagKeysInput,
   output: GetTagKeysOutput,
   errors: [
@@ -727,6 +740,11 @@ export const getTagKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
     PaginationTokenExpiredException,
     ThrottledException,
   ],
+  pagination: {
+    inputToken: "PaginationToken",
+    outputToken: "PaginationToken",
+    items: "TagKeys",
+  } as const,
 }));
 /**
  * Returns all tag values for the specified key that are used in the specified Amazon Web Services
@@ -739,16 +757,23 @@ export const getTagKeys = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * recieve a `null` value. A null value for `PaginationToken` indicates that
  * there are no more results waiting to be returned.
  */
-export const getTagValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetTagValuesInput,
-  output: GetTagValuesOutput,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    PaginationTokenExpiredException,
-    ThrottledException,
-  ],
-}));
+export const getTagValues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetTagValuesInput,
+    output: GetTagValuesOutput,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      PaginationTokenExpiredException,
+      ThrottledException,
+    ],
+    pagination: {
+      inputToken: "PaginationToken",
+      outputToken: "PaginationToken",
+      items: "TagValues",
+    } as const,
+  }),
+);
 /**
  * Returns all the tagged or previously tagged resources that are located in the
  * specified Amazon Web Services Region for the account.
@@ -776,13 +801,21 @@ export const getTagValues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
  * To find untagged resources in your account, use Amazon Web Services Resource Explorer with a
  * query that uses `tag:none`. For more information, see Search query syntax reference for Resource Explorer.
  */
-export const getResources = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: GetResourcesInput,
-  output: GetResourcesOutput,
-  errors: [
-    InternalServiceException,
-    InvalidParameterException,
-    PaginationTokenExpiredException,
-    ThrottledException,
-  ],
-}));
+export const getResources = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: GetResourcesInput,
+    output: GetResourcesOutput,
+    errors: [
+      InternalServiceException,
+      InvalidParameterException,
+      PaginationTokenExpiredException,
+      ThrottledException,
+    ],
+    pagination: {
+      inputToken: "PaginationToken",
+      outputToken: "PaginationToken",
+      items: "ResourceTagMappingList",
+      pageSize: "ResourcesPerPage",
+    } as const,
+  }),
+);

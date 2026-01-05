@@ -2206,32 +2206,50 @@ export const createServiceEnvironment = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * `DescribeComputeEnvironment` operation to determine the
  * `ecsClusterArn` that you launch your Amazon ECS container instances into.
  */
-export const describeComputeEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeComputeEnvironments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeComputeEnvironmentsRequest,
     output: DescribeComputeEnvironmentsResponse,
     errors: [ClientException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "computeEnvironments",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Describes a list of job definitions. You can specify a `status` (such as
  * `ACTIVE`) to only return job definitions that match that status.
  */
-export const describeJobDefinitions = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeJobDefinitions =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeJobDefinitionsRequest,
     output: DescribeJobDefinitionsResponse,
     errors: [ClientException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobDefinitions",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Describes one or more of your job queues.
  */
-export const describeJobQueues = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: DescribeJobQueuesRequest,
-  output: DescribeJobQueuesResponse,
-  errors: [ClientException, ServerException],
-}));
+export const describeJobQueues = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: DescribeJobQueuesRequest,
+    output: DescribeJobQueuesResponse,
+    errors: [ClientException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobQueues",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Describes one or more of your scheduling policies.
  */
@@ -2245,40 +2263,64 @@ export const describeSchedulingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
 /**
  * Describes one or more of your service environments.
  */
-export const describeServiceEnvironments = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const describeServiceEnvironments =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: DescribeServiceEnvironmentsRequest,
     output: DescribeServiceEnvironmentsResponse,
     errors: [ClientException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "serviceEnvironments",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of Batch jobs that require a specific consumable resource.
  */
 export const listJobsByConsumableResource =
-  /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListJobsByConsumableResourceRequest,
     output: ListJobsByConsumableResourceResponse,
     errors: [ClientException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobs",
+      pageSize: "maxResults",
+    } as const,
   }));
 /**
  * Returns a list of Batch scheduling policies.
  */
-export const listSchedulingPolicies = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listSchedulingPolicies =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListSchedulingPoliciesRequest,
     output: ListSchedulingPoliciesResponse,
     errors: [ClientException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "schedulingPolicies",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of service jobs for a specified job queue.
  */
-export const listServiceJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
-  input: ListServiceJobsRequest,
-  output: ListServiceJobsResponse,
-  errors: [ClientException, ServerException],
-}));
+export const listServiceJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(
+  () => ({
+    input: ListServiceJobsRequest,
+    output: ListServiceJobsResponse,
+    errors: [ClientException, ServerException],
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "jobSummaryList",
+      pageSize: "maxResults",
+    } as const,
+  }),
+);
 /**
  * Updates an Batch compute environment.
  */
@@ -2498,13 +2540,18 @@ export const getJobQueueSnapshot = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
 /**
  * Returns a list of Batch consumable resources.
  */
-export const listConsumableResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
-  () => ({
+export const listConsumableResources =
+  /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
     input: ListConsumableResourcesRequest,
     output: ListConsumableResourcesResponse,
     errors: [ClientException, ServerException],
-  }),
-);
+    pagination: {
+      inputToken: "nextToken",
+      outputToken: "nextToken",
+      items: "consumableResources",
+      pageSize: "maxResults",
+    } as const,
+  }));
 /**
  * Returns a list of Batch jobs.
  *
@@ -2519,10 +2566,16 @@ export const listConsumableResources = /*@__PURE__*/ /*#__PURE__*/ API.make(
  * You can filter the results by job status with the `jobStatus` parameter. If you
  * don't specify a status, only `RUNNING` jobs are returned.
  */
-export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.make(() => ({
+export const listJobs = /*@__PURE__*/ /*#__PURE__*/ API.makePaginated(() => ({
   input: ListJobsRequest,
   output: ListJobsResponse,
   errors: [ClientException, ServerException],
+  pagination: {
+    inputToken: "nextToken",
+    outputToken: "nextToken",
+    items: "jobSummaryList",
+    pageSize: "maxResults",
+  } as const,
 }));
 /**
  * Submits a service job to a specified job queue to run on SageMaker AI. A service job is a unit of work that you submit to Batch for execution on SageMaker AI.
